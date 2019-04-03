@@ -1,15 +1,15 @@
 {
-  "main.js": "/sancho.dev/static/js/main.0f23a1e2.chunk.js",
-  "main.js.map": "/sancho.dev/static/js/main.0f23a1e2.chunk.js.map",
-  "static/js/1.47febcb7.chunk.js": "/sancho.dev/static/js/1.47febcb7.chunk.js",
-  "static/js/1.47febcb7.chunk.js.map": "/sancho.dev/static/js/1.47febcb7.chunk.js.map",
-  "runtime~main.js": "/sancho.dev/static/js/runtime~main.4f06ba05.js",
-  "runtime~main.js.map": "/sancho.dev/static/js/runtime~main.4f06ba05.js.map",
-  "static/media/FiraCode-Regular.woff2": "/sancho.dev/static/media/FiraCode-Regular.24310bd0.woff2",
-  "static/media/FiraCode-Medium.woff2": "/sancho.dev/static/media/FiraCode-Medium.d293dc7c.woff2",
-  "static/media/FiraCode-Bold.woff2": "/sancho.dev/static/media/FiraCode-Bold.9ecee2ce.woff2",
-  "static/media/FiraCode-Light.woff2": "/sancho.dev/static/media/FiraCode-Light.3a7fa128.woff2",
-  "index.html": "/sancho.dev/index.html",
-  "precache-manifest.283f167ae7de9bac1239ab38e93de3f6.js": "/sancho.dev/precache-manifest.283f167ae7de9bac1239ab38e93de3f6.js",
-  "service-worker.js": "/sancho.dev/service-worker.js"
+  "main.js": "/static/js/main.0f23a1e2.chunk.js",
+  "main.js.map": "/static/js/main.0f23a1e2.chunk.js.map",
+  "static/js/1.583f834f.chunk.js": "/static/js/1.583f834f.chunk.js",
+  "static/js/1.583f834f.chunk.js.map": "/static/js/1.583f834f.chunk.js.map",
+  "runtime~main.js": "/static/js/runtime~main.229c360f.js",
+  "runtime~main.js.map": "/static/js/runtime~main.229c360f.js.map",
+  "static/media/FiraCode-Regular.woff2": "/static/media/FiraCode-Regular.24310bd0.woff2",
+  "static/media/FiraCode-Medium.woff2": "/static/media/FiraCode-Medium.d293dc7c.woff2",
+  "static/media/FiraCode-Bold.woff2": "/static/media/FiraCode-Bold.9ecee2ce.woff2",
+  "static/media/FiraCode-Light.woff2": "/static/media/FiraCode-Light.3a7fa128.woff2",
+  "index.html": "/index.html",
+  "precache-manifest.2481dbb8f0825142d0124d2f65b108dc.js": "/precache-manifest.2481dbb8f0825142d0124d2f65b108dc.js",
+  "service-worker.js": "/service-worker.js"
 }
