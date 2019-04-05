@@ -32,6 +32,7 @@ const Text = styled.p.attrs(props => {
   }
 })`
   font-size: ${props => props.size};
+  font-weight: 500;
   margin: 0;
   mix-blend-mode: screen;
 `
