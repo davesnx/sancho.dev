@@ -171,8 +171,8 @@ const App = () => {
               </Description>
               <Description>
                 Amateur triathlete{' '}
-                <Link href='https://www.strava.com/athletes/16804259'>
-                  strava.com/16804259
+                <Link href='https://www.strava.com/athletes/davesnx'>
+                  strava.com/athletes/davesnx
                 </Link>
               </Description>
               <Description>
