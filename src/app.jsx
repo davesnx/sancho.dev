@@ -52,7 +52,8 @@ const Center = styled.div`
 
 const Description = styled.p`
   color: ${props => props.color || 'white'};
-  margin: 10px 0;
+  margin-top: 0;
+  margin-bottom: 5px;
 `
 
 const Link = styled.a.attrs({
@@ -63,7 +64,7 @@ const Link = styled.a.attrs({
 
   ${props => (props.small ? 'font-size: 16px;' : '')}
 
-  transition: color 0.4s ease;
+  transition: color 0.2s ease;
 
   &:hover {
     color: #03c9a9;
@@ -160,14 +161,6 @@ const App = () => {
               <Description>
                 Software Engineer working at{' '}
                 <Link href='https://www.typeform.com'>Typeform</Link>
-              </Description>
-              <Description>
-                Maker of <Link href='https://unwel.ch'>unwel.ch</Link> with{' '}
-                <Link href='https://gerard.sh?ref=sancho.dev'>gerard.sh</Link>{' '}
-              </Description>
-              <Description>
-                Co-creator of{' '}
-                <Link href='https://yolomanifesto.com'>yolomanifesto.com</Link>
               </Description>
               <Description>
                 Amateur triathlete{' '}
