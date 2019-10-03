@@ -67,7 +67,7 @@ const Link = styled.a.attrs({
   transition: color 0.2s ease;
 
   &:hover {
-    color: #03c9a9;
+    color: #03C9A9;
   }
 `
 
