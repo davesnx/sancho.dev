@@ -1,33 +1,27 @@
 name: Build and deploy
 
 on:
-  pull_request:
-    branches:
-      - master
   push:
     branches:
       - master
 
 jobs:
-  install:
-    runs-on: ubuntu-18.04
-    steps:
-      - uses: actions/checkout@v1
-      - uses: actions/setup-node@v1
-        with:
-          node-version: 12
-      - run: |
-          yarn install
-          yarn build
-
   deploy:
-    needs: install
     runs-on: ubuntu-18.04
     steps:
-      - uses: actions/checkout@v1
-      - uses: actions/setup-node@v1
-      - uses: peaceiris/actions-gh-pages@v2.4.0
-        env:
-          PERSONAL_TOKEN: ${{ secrets.GH_TOKEN }}
-          PUBLISH_BRANCH: gh-pages
-          PUBLISH_DIR: ./public
+    - uses: actions/checkout@master
+    - uses: actions/setup-node@v1
+      with:
+        node-version: '12.10'
+
+    - name: build
+      run: |
+        yarn
+        yarn build
+
+    - name: deploy
+      uses: peaceiris/actions-gh-pages@v2.4.0
+      env:
+        PERSONAL_TOKEN: ${{ secrets.GH_TOKEN }}
+        PUBLISH_BRANCH: gh-pages
+        PUBLISH_DIR: ./build
