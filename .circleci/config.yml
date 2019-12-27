@@ -41,23 +41,17 @@ workflows:
 jobs:
   build:
     executor: node-executor
-    environment:
-      NETLIFY_SITE_ID: YOUR_NETLIFY_SITE_ID
-      NETLIFY_ACCESS_TOKEN: A_NETLIFY_ACCESS_TOKEN
     working_directory: ~/repo
     steps:
       - build
       - run:
           name: Netlify Deploy
-          command: npx netlify deploy --site $NETLIFY_SITE_ID --auth $NETLIFY_ACCESS_TOKEN --dir=build
+          command: npx netlify deploy --site $SITE_ID --auth $AUTH_TOKEN --dir=build
   release:
     executor: node-executor
-    environment:
-      NETLIFY_SITE_ID: YOUR_NETLIFY_SITE_ID
-      NETLIFY_ACCESS_TOKEN: A_NETLIFY_ACCESS_TOKEN
     working_directory: ~/repo
     steps:
       - build
       - run:
           name: Netlify Deploy
-          command: npx netlify deploy --site $NETLIFY_SITE_ID --auth $NETLIFY_ACCESS_TOKEN --prod --dir=build
+          command: npx netlify deploy --site $SITE_ID --auth $AUTH_TOKEN --prod --dir=build

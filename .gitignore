@@ -84,3 +84,5 @@ typings/
 .dynamodb/
 
 build/
+# Local Netlify folder
+.netlify
