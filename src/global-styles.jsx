@@ -9,13 +9,14 @@ const GlobalStyles = createGlobalStyle`
   body {
     margin: 0;
     padding: 0;
-    height: 100%;
-    width: 100%;
+    height: 100vh;
+    width: 100vw;
+    text-size-adjust: 100%;
   }
 
   #root {
-    height: 100%;
-    width: 100%;
+    height: 100vh;
+    width: 100vw;
   }
 
   @font-face {
@@ -48,6 +49,16 @@ const GlobalStyles = createGlobalStyle`
 
   * {
     font-family: 'Fira Code';
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+
+    line-height: 1.5;
+  }
+
+  div {
+    display: flex;
+    flex-direction: column;
+    flex-shrink: 0;
   }
 `
 
