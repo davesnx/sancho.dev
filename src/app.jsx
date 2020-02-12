@@ -1,22 +1,16 @@
-import React, { Fragment } from "react";
+import React, { Fragment, useState } from "react";
 import styled from "styled-components";
 
 import GlobalStyles from "./global-styles.jsx";
 import Spacer from "./spacer.jsx";
 import reasonLogo from "./images/reason.png";
-
-const colors = {
-  black: "#222222",
-  white: "#F2F2F2",
-  grey: "#d8d6d6",
-  primary: "#03C9A9"
-};
+import { Text as ChromaticText, Button as ChromaticButton } from "./chromatic";
+import colors from "./colors";
 
 const H1 = styled.h1`
   font-size: 3rem;
   font-weight: bold;
   margin: 0;
-  color: ${colors.white};
 `;
 
 const Main = styled.div`
@@ -96,13 +90,26 @@ const Logo = styled.img`
   padding-left: 8px;
 `;
 
+const FloatingBottom = styled.div`
+  position: absolute;
+  bottom: 10vh;
+`;
+
 const App = () => {
+  const [chromaticAberration, setChromaaticAberration] = useState(true);
+
+  const clickHandler = () => {
+    setChromaaticAberration(isEnabled => !isEnabled);
+  };
+
   return (
     <Fragment>
       <GlobalStyles />
       <Main>
         <Container>
-          <H1>David Sancho</H1>
+          <ChromaticText enabled={chromaticAberration}>
+            <H1>David Sancho</H1>
+          </ChromaticText>
           <Spacer top={4}>
             <Content>
               Software Engineer working at{" "}
@@ -136,21 +143,26 @@ const App = () => {
                 strava/davesnx
               </Link>
               .
-              <Spacer top={3}>
-                <Footer>
-                  <Button href="https://davesnx.typeform.com/to/TPD31G">
-                    Ask me anything
-                    <Spacer left={1} right={-1}>
-                      <span role="img" aria-label="hello">
-                        👋
-                      </span>
-                    </Spacer>
-                  </Button>
-                </Footer>
-              </Spacer>
             </Content>
+            <Spacer top={3}>
+              <Footer>
+                <Button href="https://davesnx.typeform.com/to/TPD31G">
+                  Ask me anything
+                  <Spacer left={1} right={-1}>
+                    <span role="img" aria-label="hello">
+                      👋
+                    </span>
+                  </Spacer>
+                </Button>
+              </Footer>
+            </Spacer>
           </Spacer>
         </Container>
+        <FloatingBottom>
+          <ChromaticButton enabled={chromaticAberration} onClick={clickHandler}>
+            Enable chromatic aberration
+          </ChromaticButton>
+        </FloatingBottom>
       </Main>
     </Fragment>
   );

@@ -1,12 +1,12 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect } from "react";
 
-function useDeviceOrientation () {
+function useDeviceOrientation() {
   const [deviceOrientation, setDeviceOrientation] = useState({
     absolute: false,
     alpha: null,
     beta: null,
     gamma: null
-  })
+  });
 
   const handle = event => {
     setDeviceOrientation({
@@ -14,18 +14,18 @@ function useDeviceOrientation () {
       alpha: event.alpha,
       beta: event.beta,
       gamma: event.gamma
-    })
-  }
+    });
+  };
 
   useEffect(() => {
-    window.addEventListener('deviceorientation', handle, true)
+    window.addEventListener("deviceorientation", handle, true);
 
     return () => {
-      window.removeEventListener('deviceorientation', handle, true)
-    }
-  }, [])
+      window.removeEventListener("deviceorientation", handle, true);
+    };
+  }, []);
 
-  return deviceOrientation
+  return deviceOrientation;
 }
 
-export default useDeviceOrientation
+export default useDeviceOrientation;
