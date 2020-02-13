@@ -128,7 +128,7 @@ const App = () => {
               >
                 Draftbit
               </Link>
-              , previously{" "}
+              , previously at{" "}
               <Link
                 target="_blank"
                 rel="noreferrer noopener"
@@ -136,7 +136,7 @@ const App = () => {
               >
                 Typeform
               </Link>{" "}
-              at core experience. Passionate about design, functional
+              on core experience. Passionate about design, functional
               programming, scalability, people and business.
               <ReasonML>
                 ReasonML

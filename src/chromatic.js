@@ -49,20 +49,17 @@ const Swing = ({ color, translateX, translateY, children, blur = 0 }) => {
   );
 };
 
-const Layer = styled.div.attrs(props => {
-  console.log(props);
-  return {
-    style: {
-      transform: `
+const Layer = styled.div.attrs(props => ({
+  style: {
+    transform: `
           translate(
             ${props.translateX}px,
             ${props.translateY}px
           )`,
-      filter: `blur(${props => props.blur}px)`,
-      color: `${props.color}`
-    }
-  };
-})`
+    filter: `blur(${props => props.blur}px)`,
+    color: `${props.color}`
+  }
+}))`
   mix-blend-mode: screen;
 `;
 
