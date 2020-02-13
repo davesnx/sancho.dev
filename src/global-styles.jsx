@@ -3,7 +3,8 @@ import colors from "./colors";
 
 const GlobalStyles = createGlobalStyle`
   html,
-  body {
+  body,
+  #root {
     margin: 0;
     padding: 0;
     height: 100vh;
@@ -11,11 +12,6 @@ const GlobalStyles = createGlobalStyle`
     text-size-adjust: 100%;
 
     color: ${colors.white};
-  }
-
-  #root {
-    height: 100vh;
-    width: 100vw;
   }
 
   * {
