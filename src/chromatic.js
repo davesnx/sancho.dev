@@ -1,6 +1,6 @@
-import React, { useRef, useState, useEffect } from "react";
+import React from "react";
 import styled from "styled-components";
-import { useSpring, animated } from "react-spring";
+import { useSpring, animated, interpolate } from "react-spring";
 
 import useMousePosition from "./mouse-position";
 import useDeviceOrientation from "./device-orientation";
@@ -29,13 +29,34 @@ const Overlap = styled.div`
   }
 `;
 
+const Swing = ({ color, translateX, translateY, children, blur = 0 }) => {
+  const { xy } = useSpring({
+    from: { xy: [0, 0] },
+    xy: [translateX, translateY]
+  });
+
+  return (
+    <animated.div
+      style={{
+        mixBlendMode: "screen",
+        filter: `blur(${blur}px)`,
+        color: `${color}`,
+        transform: xy.interpolate((x, y) => `translate3d(${x}px, ${y}px, 0px)`)
+      }}
+    >
+      {children}
+    </animated.div>
+  );
+};
+
 const Layer = styled.div.attrs(props => {
+  console.log(props);
   return {
     style: {
       transform: `
           translate(
-            ${props.translateX || 0}px,
-            ${props.translateY || 0}px
+            ${props.translateX}px,
+            ${props.translateY}px
           )`,
       filter: `blur(${props => props.blur}px)`,
       color: `${props.color}`
@@ -48,17 +69,18 @@ const Layer = styled.div.attrs(props => {
 const isTouchDevice = "ontouchstart" in window || navigator.msMaxTouchPoints;
 
 export const Text = ({
-  enabled,
   children,
   mouse = useMousePosition(),
   orientation = useDeviceOrientation()
 }) => {
-  const ref = useRef(null);
-
+  const ref = React.useRef(null);
   const positionElLeft = ref.current && ref.current.offsetLeft;
   const positionElTop = ref.current && ref.current.offsetTop;
-  const distanceX = mouse.x - positionElLeft;
-  const distanceY = mouse.y - positionElTop;
+  const halfWidth = ref.current && ref.current.offsetWidth / 2;
+  const halfHeight = ref.current && ref.current.offsetHeight / 2;
+
+  const distanceX = mouse.x - positionElLeft - halfWidth;
+  const distanceY = mouse.y - positionElTop - halfHeight;
 
   let translateX;
   let translateY;
@@ -74,10 +96,6 @@ export const Text = ({
     translateX = distanceX / 100;
     translateY = distanceY / 100;
     pita = Math.sqrt(Math.pow(translateX, 2) + Math.pow(translateY, 2)) / 10;
-  }
-
-  if (!enabled) {
-    return <Layer color={colors.white}>{children}</Layer>;
   }
 
   return (
@@ -146,39 +164,31 @@ const OverlapWrapper = styled.div`
 `;
 
 export const Button = ({ enabled, onClick }) => {
-  const props = useSpring({ number: 8, from: { number: 0 } });
-
-  console.log(props.number);
+  const derivation = enabled ? 8 : 0;
+  const toggleStatus = enabled ? "Disable" : "Enable";
 
   const clickHandler = () => {
     onClick();
   };
-
-  const derivation = props.number;
-
   return (
     <ButtonWrapper onClick={clickHandler}>
       <OverlapWrapper>
         <Overlap>
-          <animated.span>
-            <Layer blur={0} translateY={-1 * derivation} translateX={0}>
-              <Circle color={color.G} />
-            </Layer>
-            <Layer
-              blur={0}
-              translateY={derivation}
-              translateX={-1 * derivation}
-            >
-              <Circle color={color.R} />
-            </Layer>
-            <Layer blur={0} translateY={derivation} translateX={derivation}>
-              <Circle color={color.B} />
-            </Layer>
-          </animated.span>
+          <Swing translateY={-1 * derivation} translateX={0}>
+            <Circle color={color.G} />
+          </Swing>
+          <Swing translateY={derivation} translateX={-1 * derivation}>
+            <Circle color={color.R} />
+          </Swing>
+          <Swing translateY={derivation} translateX={derivation}>
+            <Circle color={color.B} />
+          </Swing>
         </Overlap>
       </OverlapWrapper>
       <Spacer left={2}>
-        <ButtonLabel>Toggle Chromatic Aberration</ButtonLabel>
+        <ButtonLabel>
+          <strong>{toggleStatus}</strong> Chromatic Aberration
+        </ButtonLabel>
       </Spacer>
     </ButtonWrapper>
   );

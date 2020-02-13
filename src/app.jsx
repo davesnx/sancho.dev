@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from "react";
+import React from "react";
 import styled from "styled-components";
 
 import GlobalStyles from "./global-styles.jsx";
@@ -21,6 +21,8 @@ const Main = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+
+  cursor: ${props => props.cursor};
 `;
 
 const Container = styled.div`
@@ -96,20 +98,26 @@ const FloatingBottom = styled.div`
 `;
 
 const App = () => {
-  const [chromaticAberration, setChromaaticAberration] = useState(true);
+  const [chromaticAberration, setChromaaticAberration] = React.useState(true);
 
   const clickHandler = () => {
     setChromaaticAberration(isEnabled => !isEnabled);
   };
 
+  const Title = chromaticAberration ? (
+    <ChromaticText>
+      <H1>David Sancho</H1>
+    </ChromaticText>
+  ) : (
+    <H1>David Sancho</H1>
+  );
+
   return (
-    <Fragment>
+    <>
       <GlobalStyles />
-      <Main>
+      <Main cursor={chromaticAberration ? "crosshair" : "auto"}>
         <Container>
-          <ChromaticText enabled={chromaticAberration}>
-            <H1>David Sancho</H1>
-          </ChromaticText>
+          {React.cloneElement(Title)}
           <Spacer top={4}>
             <Content>
               Software Engineer working at{" "}
@@ -164,7 +172,7 @@ const App = () => {
           </ChromaticButton>
         </FloatingBottom>
       </Main>
-    </Fragment>
+    </>
   );
 };
 

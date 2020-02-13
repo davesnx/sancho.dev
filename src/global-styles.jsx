@@ -4,6 +4,7 @@ import FiraCode from "./fonts/FiraCode-Regular.woff2";
 import FiraCodeLight from "./fonts/FiraCode-Light.woff2";
 import FiraCodeMedium from "./fonts/FiraCode-Medium.woff2";
 import FiraCodeBold from "./fonts/FiraCode-Bold.woff2";
+import colors from "./colors";
 
 const GlobalStyles = createGlobalStyle`
   html,
@@ -13,6 +14,8 @@ const GlobalStyles = createGlobalStyle`
     height: 100vh;
     width: 100vw;
     text-size-adjust: 100%;
+
+    color: ${colors.white};
   }
 
   #root {
