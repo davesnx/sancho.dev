@@ -6,6 +6,8 @@ import Spacer from "./spacer.jsx";
 import reasonLogo from "./images/reason.png";
 import { Text as ChromaticText, Button as ChromaticButton } from "./chromatic";
 import colors from "./colors";
+import useMousePosition from "./mouse-position";
+import useDeviceOrientation from "./device-orientation";
 
 const H1 = styled.h1`
   font-size: 3rem;
@@ -104,8 +106,11 @@ const App = () => {
     setChromaaticAberration(isEnabled => !isEnabled);
   };
 
+  const mouse = useMousePosition();
+  const orientation = useDeviceOrientation();
+
   const Title = chromaticAberration ? (
-    <ChromaticText>
+    <ChromaticText mouse={mouse} orientation={orientation}>
       <H1>David Sancho</H1>
     </ChromaticText>
   ) : (

@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import { useSpring, animated, interpolate } from "react-spring";
+import { useSpring, animated } from "react-spring";
 
 import useMousePosition from "./mouse-position";
 import useDeviceOrientation from "./device-orientation";
@@ -95,6 +95,12 @@ export const Text = ({
     pita = Math.sqrt(Math.pow(translateX, 2) + Math.pow(translateY, 2)) / 10;
   }
 
+  if (!ref.current) {
+    translateX = 0.22;
+    translateY = 4.25;
+    pita = 0.4;
+  }
+
   return (
     <Overlap ref={ref}>
       <Layer blur={pita / 2} color={color.G}>
@@ -164,11 +170,8 @@ export const Button = ({ enabled, onClick }) => {
   const derivation = enabled ? 8 : 0;
   const toggleStatus = enabled ? "Disable" : "Enable";
 
-  const clickHandler = () => {
-    onClick();
-  };
   return (
-    <ButtonWrapper onClick={clickHandler}>
+    <ButtonWrapper onClick={onClick}>
       <OverlapWrapper>
         <Overlap>
           <Swing translateY={-1 * derivation} translateX={0}>
