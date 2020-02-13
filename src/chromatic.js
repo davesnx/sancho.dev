@@ -140,12 +140,16 @@ const ButtonWrapper = styled.div`
 
   border-width: 2px;
   border-style: solid;
-  padding: 10px 20px;
+  padding: 0.8rem 1.2rem;
   border-radius: 4px;
   background-color: ${colors.white};
   color: ${colors.black};
 
   user-select: none;
+
+  @media only screen and (max-width: 600px) {
+    justify-content: center;
+  }
 `;
 
 const ButtonLabel = styled.p`
@@ -156,7 +160,7 @@ const ButtonLabel = styled.p`
 
 const OverlapWrapper = styled.div`
   width: 60px;
-  padding: 0 10px;
+  padding: 0 0.8rem;
 
   display: flex;
   justify-content: center;

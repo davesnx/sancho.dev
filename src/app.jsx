@@ -6,11 +6,12 @@ import Spacer from "./spacer.jsx";
 import reasonLogo from "./images/reason.png";
 import { Text as ChromaticText, Button as ChromaticButton } from "./chromatic";
 import colors from "./colors";
+import font from "./fonts";
 import useMousePosition from "./mouse-position";
 import useDeviceOrientation from "./device-orientation";
 
 const H1 = styled.h1`
-  font-size: 3rem;
+  font-size: ${font.fontSize2};
   font-weight: bold;
   margin: 0;
 `;
@@ -34,8 +35,8 @@ const Container = styled.div`
   flex-direction: column;
 
   margin-top: -15vh;
+  width: 80vw;
   max-width: 50rem;
-  padding: 0 5rem;
 `;
 
 const Link = styled.a`
@@ -51,7 +52,7 @@ const Link = styled.a`
 const Button = styled.a`
   color: ${colors.grey};
   font-weight: 400;
-  font-size: 1rem;
+  font-size: ${font.fontSize0};
   border: 1px solid white;
   border-radius: 4px;
   margin-top: 0.5rem;
@@ -74,7 +75,7 @@ const Footer = styled.div`
 
 const Content = styled.p`
   font-weight: 200;
-  font-size: 1.45rem;
+  font-size: ${font.fontSize1};
   line-height: 1.7;
   color: ${colors.white};
   text-align: center;
@@ -97,6 +98,10 @@ const Logo = styled.img`
 const FloatingBottom = styled.div`
   position: absolute;
   bottom: 10vh;
+
+  @media only screen and (max-width: 600px) {
+    bottom: 8px;
+  }
 `;
 
 const App = () => {
@@ -142,12 +147,14 @@ const App = () => {
                 Typeform
               </Link>{" "}
               on core experience. Passionate about design, functional
-              programming, scalability, people and business.
+              programming, scalability, people and business.{" "}
               <ReasonML>
                 ReasonML
                 <Logo src={reasonLogo} />
               </ReasonML>
-              . Amateur triathlete{" "}
+              .
+              <br />
+              Amateur triathlete{" "}
               <Link
                 target="_blank"
                 rel="noreferrer noopener"

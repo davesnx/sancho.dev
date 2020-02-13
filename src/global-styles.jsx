@@ -1,5 +1,6 @@
 import { createGlobalStyle } from "styled-components";
 import colors from "./colors";
+import font from "./fonts";
 
 const GlobalStyles = createGlobalStyle`
   html,
@@ -12,6 +13,12 @@ const GlobalStyles = createGlobalStyle`
     text-size-adjust: 100%;
 
     color: ${colors.white};
+    font-size: 100%;
+  }
+
+  body {
+    font-size: ${font.globalFontSize};
+    line-height: ${font.globalLineHeight};
   }
 
   * {
