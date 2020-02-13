@@ -34,9 +34,9 @@ const Container = styled.div`
   align-items: center;
   flex-direction: column;
 
-  margin-top: -15vh;
   width: 80vw;
-  max-width: 50rem;
+  max-width: 50rem
+  margin-top: -10vh;
 `;
 
 const Link = styled.a`
