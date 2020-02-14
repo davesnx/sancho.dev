@@ -11,7 +11,7 @@ import useMousePosition from "./mouse-position";
 import useDeviceOrientation from "./device-orientation";
 
 const H1 = styled.h1`
-  font-size: ${font.fontSize3};
+  font-size: ${font.fontSize4};
   font-weight: bold;
   margin: 0;
 `;
