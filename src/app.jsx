@@ -104,28 +104,86 @@ const FloatingBottom = styled.div`
   }
 `;
 
-const App = () => {
-  const [chromaticAberration, setChromaaticAberration] = React.useState(true);
+const SHOW_CASES = {
+  chromatic: "CHROMATIC",
+  font: "FONT"
+};
 
-  const clickHandler = () => {
-    setChromaaticAberration(isEnabled => !isEnabled);
-  };
+const SquaredMain = styled.div`
+  flex-direction: row;
+`;
+
+const Character = styled.span`
+  width: 75px;
+  font-size: 45px;
+  text-transform: uppercase;
+  font-family: "Inter";
+  font-variation-settings: "wght" ${props => props.wght};
+
+  display: flex;
+  border: 1px dashed white;
+  justify-content: center;
+  align-items: center;
+
+  & + & {
+    border-left: none;
+  }
+`;
+
+const Letter = ({ children }) => {
+  return <Character wght="100">{children}</Character>;
+};
+
+const Squared = ({ text, x }) => {
+  const ref = React.useRef(null);
+  const firstElementPosition =
+    ref.current && ref.current.getBoundingClientRect().x;
+  const letters = text.split("");
+
+  const steps = Math.floor(1000 / letters.length);
+  const charPosition = steps * letters.length + firstElementPosition;
+  return (
+    <SquaredMain ref={ref}>
+      {letters.map((char, idx) => {
+        return (
+          <Letter wght="100" key={idx}>
+            {char}
+          </Letter>
+        );
+      })}
+    </SquaredMain>
+  );
+};
+
+const App = () => {
+  const [show, setShow] = React.useState(SHOW_CASES.font);
 
   const mouse = useMousePosition();
   const orientation = useDeviceOrientation();
 
-  const Title = chromaticAberration ? (
-    <ChromaticText mouse={mouse} orientation={orientation}>
-      <H1>David Sancho</H1>
-    </ChromaticText>
-  ) : (
-    <H1>David Sancho</H1>
-  );
+  const isChromaticAberrationEnabled = SHOW_CASES.chromatic === show;
+
+  let Title = <H1>David Sancho</H1>;
+
+  switch (show) {
+    case SHOW_CASES.chromatic:
+      Title = (
+        <ChromaticText mouse={mouse} orientation={orientation}>
+          <H1>David Sancho</H1>
+        </ChromaticText>
+      );
+      break;
+    case SHOW_CASES.font:
+      Title = <Squared x={mouse.x} text="David Sancho" />;
+      break;
+    default:
+      Title = <H1>David Sancho</H1>;
+  }
 
   return (
     <>
       <GlobalStyles />
-      <Main cursor={chromaticAberration ? "crosshair" : "auto"}>
+      <Main cursor={isChromaticAberrationEnabled ? "crosshair" : "auto"}>
         <Container>
           {React.cloneElement(Title)}
           <Spacer top={4}>
@@ -179,7 +237,10 @@ const App = () => {
           </Spacer>
         </Container>
         <FloatingBottom>
-          <ChromaticButton enabled={chromaticAberration} onClick={clickHandler}>
+          <ChromaticButton
+            enabled={isChromaticAberrationEnabled}
+            onClick={() => setShow(SHOW_CASES.chromatic)}
+          >
             Enable chromatic aberration
           </ChromaticButton>
         </FloatingBottom>
