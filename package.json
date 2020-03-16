@@ -7,7 +7,7 @@
   "homepage": "https://sancho.dev",
   "dependencies": {
     "netlify": "^3.0.0",
-    "netlify-cli": "^2.25.0",
+    "netlify-cli": "^2.39.0",
     "npm-normalize-package-bin": "^1.0.1",
     "react": "16.8.3",
     "react-dom": "16.8.3",
