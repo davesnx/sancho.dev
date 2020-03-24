@@ -22,5 +22,5 @@ export default {
   fontSize4: calc(fontSize_4),
   fontSize5: calc(fontSize_5),
   globalFontSize,
-  globalLineHeight
+  globalLineHeight,
 };

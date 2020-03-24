@@ -1,48 +1,57 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="theme-color" content="#222222">
-
-  <link rel="manifest" href="%PUBLIC_URL%/manifest.json">
-  <link rel="shortcut icon" href="%PUBLIC_URL%/favicon/favicon.ico">
-  <link rel="apple-touch-icon" sizes="57x57" href="%PUBLIC_URL%/favicon/apple-touch-icon">
-  <link rel="icon" type="image/png" href="%PUBLIC_URL%/favicon/favicon-512x512.png" sizes="512x512">
-  <link rel="icon" type="image/png" href="%PUBLIC_URL%/favicon/favicon-192x192.png" sizes="192x192">
-  <link rel="icon" type="image/png" href="%PUBLIC_URL%/favicon/favicon-160x160.png" sizes="160x160">
-  <link rel="icon" type="image/png" href="%PUBLIC_URL%/favicon/favicon-16x16.png" sizes="16x16">
-  <link rel="icon" type="image/png" href="%PUBLIC_URL%/favicon/favicon-32x32.png" sizes="32x32">
-  <meta name="msapplication-TileImage" content="%PUBLIC_URL%/favicon/mstile-144x144.png">
-  <meta name="msapplication-TileColor" content="#222222">
-  <!--
-      Notice the use of %PUBLIC_URL% in the tags above.
-      It will be replaced with the URL of the `public` folder during the build.
-      Only files inside the `public` folder can be referenced from the HTML.
-
-      Unlike "/favicon.ico" or "favicon.ico", "%PUBLIC_URL%/favicon.ico" will
-      work correctly both with client-side routing and a non-root public URL.
-      Learn how to configure a non-root public URL by running `npm run build`.
-    -->
-  <title>sancho.dev</title>
-</head>
-
-<body>
-  <noscript>
-    You need to enable JavaScript to run this app.
-  </noscript>
-  <div id="root"></div>
-  <!--
-      This HTML file is a template.
-      If you open it directly in the browser, you will see an empty page.
-
-      You can add webfonts, meta tags, or analytics to this file.
-      The build step will place the bundled scripts into the <body> tag.
-
-      To begin the development, run `npm start` or `yarn start`.
-      To create a production bundle, use `npm run build` or `yarn build`.
-    -->
-</body>
-
-</html>
+<!DOCTYPE html><html><head><meta charSet="utf-8"/><meta http-equiv="x-ua-compatible" content="ie=edge"/><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/><meta name="note" content="environment=development"/><title data-react-helmet="true"></title><style type="text/css">
+    .anchor {
+      float: left;
+      padding-right: 4px;
+      margin-left: -20px;
+    }
+    h1 .anchor svg,
+    h2 .anchor svg,
+    h3 .anchor svg,
+    h4 .anchor svg,
+    h5 .anchor svg,
+    h6 .anchor svg {
+      visibility: hidden;
+    }
+    h1:hover .anchor svg,
+    h2:hover .anchor svg,
+    h3:hover .anchor svg,
+    h4:hover .anchor svg,
+    h5:hover .anchor svg,
+    h6:hover .anchor svg,
+    h1 .anchor:focus svg,
+    h2 .anchor:focus svg,
+    h3 .anchor:focus svg,
+    h4 .anchor:focus svg,
+    h5 .anchor:focus svg,
+    h6 .anchor:focus svg {
+      visibility: visible;
+    }
+  </style><script>
+    function getElementTop(el) {
+      var actualTop = el.offsetTop
+    
+      var current = el.offsetParent
+    
+      while (current !== null) {
+        actualTop += current.offsetTop
+    
+        current = current.offsetParent
+      }
+    
+      return actualTop
+    }
+    
+    document.addEventListener("DOMContentLoaded", function(event) {
+      var hash = window.decodeURI(location.hash.replace('#', ''))
+      if (hash !== '') {
+        var element = document.querySelector('[id=' + hash + ']')
+        if (element) {
+          var offset = getElementTop(element)
+          // Wait for the browser to finish rendering before scrolling.
+          setTimeout((function() {
+            window.scrollTo(0, offset)
+          }), 0)
+        }
+      }
+    })
+  </script><script src="/socket.io/socket.io.js"></script></head><body><div id="___gatsby"></div><script src="/commons.js"></script></body></html>

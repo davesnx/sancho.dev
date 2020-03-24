@@ -3,13 +3,13 @@ import { useState, useEffect } from "react";
 const useWindowMousePosition = () => {
   const [WindowMousePosition, setWindowMousePosition] = useState({
     x: null,
-    y: null
+    y: null,
   });
 
   const handleMouseMove = e => {
     setWindowMousePosition({
       x: e.pageX,
-      y: e.pageY
+      y: e.pageY,
     });
   };
 

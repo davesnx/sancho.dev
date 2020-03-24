@@ -5,7 +5,7 @@ function useDeviceOrientation() {
     absolute: false,
     alpha: null,
     beta: null,
-    gamma: null
+    gamma: null,
   });
 
   const handle = event => {
@@ -13,7 +13,7 @@ function useDeviceOrientation() {
       absolute: event.absolute,
       alpha: event.alpha,
       beta: event.beta,
-      gamma: event.gamma
+      gamma: event.gamma,
     });
   };
 

@@ -1,14 +1,19 @@
 import React from "react";
+import { graphql, Link as GatsbyLink } from "gatsby";
 import styled from "styled-components";
 
-import GlobalStyles from "./global-styles.jsx";
-import Spacer from "./spacer.jsx";
-import reasonLogo from "./images/reason.png";
-import { Text as ChromaticText, Button as ChromaticButton } from "./chromatic";
-import colors from "./colors";
-import font from "./fonts";
-import useMousePosition from "./mouse-position";
-import useDeviceOrientation from "./device-orientation";
+import Layout from "../components/layout";
+import Spacer from "../components/spacer";
+import reasonLogo from "../../static/media/reason.png";
+import {
+  Text as ChromaticText,
+  Button as ChromaticButton,
+} from "../components/chromatic";
+import colors from "../components/colors";
+import font from "../components/fonts";
+import useMousePosition from "../components/mouse-position";
+import useDeviceOrientation from "../components/device-orientation";
+import Text from "../components/text";
 
 const H1 = styled.h1`
   font-size: ${font.fontSize4};
@@ -17,10 +22,6 @@ const H1 = styled.h1`
 `;
 
 const Main = styled.div`
-  width: 100vw;
-  height: 100vh;
-  background-color: ${colors.black};
-
   display: flex;
   justify-content: center;
   align-items: center;
@@ -35,8 +36,8 @@ const Container = styled.div`
   flex-direction: column;
 
   width: 80vw;
-  max-width: 50rem
-  margin-top: -10vh;
+  max-width: 50rem;
+  margin-top: 25vh;
 `;
 
 const Link = styled.a`
@@ -50,36 +51,41 @@ const Link = styled.a`
 `;
 
 const Button = styled.a`
-  color: ${colors.grey};
-  font-weight: 400;
-  font-size: ${font.fontSize0};
+  font-weight: 600;
   border: 1px solid white;
   border-radius: 4px;
-  margin-top: 0.5rem;
   padding: 0.5rem 1.5rem;
   text-decoration: none;
   display: flex;
 
   transition: background-color 0.15s ease;
-  &:hover {
+  font-size: ${font.fontSize0};
+
+  ${props =>
+    props.inverted
+      ? `
     background-color: ${colors.white};
     color: ${colors.black};
+
+    &:hover {
+      background-color: ${colors.grey};
+    }
   }
+  `
+      : `
+    color: ${colors.grey};
+    &:hover {
+      background-color: ${colors.white};
+      color: ${colors.black};
+    }
+  }
+`}
 `;
 
 const Footer = styled.div`
   justify-content: center;
   align-items: center;
   flex-direction: row;
-`;
-
-const Content = styled.p`
-  font-weight: 200;
-  font-size: ${font.fontSize1};
-  line-height: 1.7;
-  color: ${colors.white};
-  text-align: center;
-  margin: 0;
 `;
 
 const ReasonML = styled.span`
@@ -104,90 +110,31 @@ const FloatingBottom = styled.div`
   }
 `;
 
-const SHOW_CASES = {
-  chromatic: "CHROMATIC",
-  font: "FONT"
-};
+export default ({ data }) => {
+  const [chromaticAberration, setChromaaticAberration] = React.useState(true);
 
-const SquaredMain = styled.div`
-  flex-direction: row;
-`;
-
-const Character = styled.span`
-  width: 75px;
-  font-size: 45px;
-  text-transform: uppercase;
-  font-family: "Inter";
-  font-variation-settings: "wght" ${props => props.wght};
-
-  display: flex;
-  border: 1px dashed white;
-  justify-content: center;
-  align-items: center;
-
-  & + & {
-    border-left: none;
-  }
-`;
-
-const Letter = ({ children }) => {
-  return <Character wght="100">{children}</Character>;
-};
-
-const Squared = ({ text, x }) => {
-  const ref = React.useRef(null);
-  const firstElementPosition =
-    ref.current && ref.current.getBoundingClientRect().x;
-  const letters = text.split("");
-
-  const steps = Math.floor(1000 / letters.length);
-  const charPosition = steps * letters.length + firstElementPosition;
-  return (
-    <SquaredMain ref={ref}>
-      {letters.map((char, idx) => {
-        return (
-          <Letter wght="100" key={idx}>
-            {char}
-          </Letter>
-        );
-      })}
-    </SquaredMain>
-  );
-};
-
-const App = () => {
-  const [show, setShow] = React.useState(SHOW_CASES.font);
+  const clickHandler = () => {
+    setChromaaticAberration(isEnabled => !isEnabled);
+  };
 
   const mouse = useMousePosition();
   const orientation = useDeviceOrientation();
 
-  const isChromaticAberrationEnabled = SHOW_CASES.chromatic === show;
-
-  let Title = <H1>David Sancho</H1>;
-
-  switch (show) {
-    case SHOW_CASES.chromatic:
-      Title = (
-        <ChromaticText mouse={mouse} orientation={orientation}>
-          <H1>David Sancho</H1>
-        </ChromaticText>
-      );
-      break;
-    case SHOW_CASES.font:
-      Title = <Squared x={mouse.x} text="David Sancho" />;
-      break;
-    default:
-      Title = <H1>David Sancho</H1>;
-  }
+  const Title = chromaticAberration ? (
+    <ChromaticText mouse={mouse} orientation={orientation}>
+      <H1>David Sancho</H1>
+    </ChromaticText>
+  ) : (
+    <H1>David Sancho</H1>
+  );
 
   return (
-    <>
-      <GlobalStyles />
-      <Main cursor={isChromaticAberrationEnabled ? "crosshair" : "auto"}>
+    <Layout>
+      <Main cursor={chromaticAberration ? "crosshair" : "auto"}>
         <Container>
           {React.cloneElement(Title)}
           <Spacer top={4}>
-            <Content>
+            <Text align="center">
               Software Engineer working at{" "}
               <Link
                 target="_blank"
@@ -221,7 +168,7 @@ const App = () => {
                 strava/davesnx
               </Link>
               .
-            </Content>
+            </Text>
             <Spacer top={3}>
               <Footer>
                 <Button href="https://davesnx.typeform.com/to/TPD31G">
@@ -232,21 +179,31 @@ const App = () => {
                     </span>
                   </Spacer>
                 </Button>
+                <Spacer left={2}>
+                  <Button as={GatsbyLink} inverted to="blog">
+                    Blog
+                  </Button>
+                </Spacer>
               </Footer>
             </Spacer>
           </Spacer>
         </Container>
         <FloatingBottom>
-          <ChromaticButton
-            enabled={isChromaticAberrationEnabled}
-            onClick={() => setShow(SHOW_CASES.chromatic)}
-          >
+          <ChromaticButton enabled={chromaticAberration} onClick={clickHandler}>
             Enable chromatic aberration
           </ChromaticButton>
         </FloatingBottom>
       </Main>
-    </>
+    </Layout>
   );
 };
 
-export default App;
+export const query = graphql`
+  query {
+    site {
+      siteMetadata {
+        title
+      }
+    }
+  }
+`;

@@ -11,6 +11,7 @@ const Spacer = styled.div`
   ${props => props.right && `margin-right: ${px(unit(props.right))}`};
   ${props => props.inline && "display: inline-block"};
 `;
+
 Spacer.displayName = "Spacer";
 
 Spacer.propTypes = {
@@ -18,7 +19,7 @@ Spacer.propTypes = {
   bottom: PropTypes.number,
   left: PropTypes.number,
   right: PropTypes.number,
-  inline: PropTypes.bool
+  inline: PropTypes.bool,
 };
 
 export default Spacer;

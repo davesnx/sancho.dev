@@ -7,17 +7,6 @@ import useDeviceOrientation from "./device-orientation";
 import Spacer from "./spacer";
 import colors from "./colors";
 
-const color = {
-  R: "#FF211B",
-  G: "#17E620",
-  B: "#003AEC",
-  raw: {
-    R: "#FF0000",
-    G: "#00FF00",
-    B: "#0000FF"
-  }
-};
-
 const Overlap = styled.div`
   position: relative;
   display: flex;
@@ -32,7 +21,7 @@ const Overlap = styled.div`
 const Swing = ({ color, translateX, translateY, children, blur = 0 }) => {
   const { xy } = useSpring({
     from: { xy: [0, 0] },
-    xy: [translateX, translateY]
+    xy: [translateX, translateY],
   });
 
   return (
@@ -41,7 +30,7 @@ const Swing = ({ color, translateX, translateY, children, blur = 0 }) => {
         mixBlendMode: "screen",
         filter: `blur(${blur}px)`,
         color: `${color}`,
-        transform: xy.interpolate((x, y) => `translate3d(${x}px, ${y}px, 0px)`)
+        transform: xy.interpolate((x, y) => `translate3d(${x}px, ${y}px, 0px)`),
       }}
     >
       {children}
@@ -57,19 +46,15 @@ const Layer = styled.div.attrs(props => ({
             ${props.translateY}px
           )`,
     filter: `blur(${props => props.blur}px)`,
-    color: `${props.color}`
-  }
+    color: `${props.color}`,
+  },
 }))`
   mix-blend-mode: screen;
 `;
 
 const isTouchDevice = "ontouchstart" in window || navigator.msMaxTouchPoints;
 
-export const Text = ({
-  children,
-  mouse = useMousePosition(),
-  orientation = useDeviceOrientation()
-}) => {
+export const Text = ({ children, mouse, orientation }) => {
   const ref = React.useRef(null);
   const positionElLeft = ref.current && ref.current.offsetLeft;
   const positionElTop = ref.current && ref.current.offsetTop;
@@ -103,14 +88,14 @@ export const Text = ({
 
   return (
     <Overlap ref={ref}>
-      <Layer blur={pita / 2} color={color.G}>
+      <Layer blur={pita / 2} color={colors.G}>
         {children}
       </Layer>
       <Layer
         translateY={translateY}
         translateX={translateX}
         blur={pita}
-        color={color.R}
+        color={colors.R}
       >
         {children}
       </Layer>
@@ -118,7 +103,7 @@ export const Text = ({
         translateY={-translateY}
         translateX={-translateX}
         blur={pita}
-        color={color.B}
+        color={colors.B}
       >
         {children}
       </Layer>
@@ -179,13 +164,13 @@ export const Button = ({ enabled, onClick }) => {
       <OverlapWrapper>
         <Overlap>
           <Swing translateY={-1 * derivation} translateX={0}>
-            <Circle color={color.G} />
+            <Circle color={colors.G} />
           </Swing>
           <Swing translateY={derivation} translateX={-1 * derivation}>
-            <Circle color={color.R} />
+            <Circle color={colors.R} />
           </Swing>
           <Swing translateY={derivation} translateX={derivation}>
-            <Circle color={color.B} />
+            <Circle color={colors.B} />
           </Swing>
         </Overlap>
       </OverlapWrapper>
