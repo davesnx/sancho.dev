@@ -965,6 +965,11 @@
     path-exists "^4.0.0"
     resolve "^1.12.0"
 
+"@netlify/open-api@^0.13.2":
+  version "0.13.2"
+  resolved "https://registry.yarnpkg.com/@netlify/open-api/-/open-api-0.13.2.tgz#c31223e7d0561dfddd5a0bc860eff9e03efd1604"
+  integrity sha512-OcA/IdyDv1JF4tsrb7sNu77otewa1G0mzBOcFOi9IL0CwAyGxQWolDptILFyrVQIbHban2b6l4LPFvdnVaF6bA==
+
 "@netlify/open-api@^0.9.0":
   version "0.9.0"
   resolved "https://registry.yarnpkg.com/@netlify/open-api/-/open-api-0.9.0.tgz#8ac676555df6d2ab38d1397f3b772e04fd518596"
@@ -988,10 +993,10 @@
     require-package-name "^2.0.1"
     resolve "^1.10.0"
 
-"@netlify/zip-it-and-ship-it@^0.4.0-8":
-  version "0.4.0-8"
-  resolved "https://registry.yarnpkg.com/@netlify/zip-it-and-ship-it/-/zip-it-and-ship-it-0.4.0-8.tgz#85e673591bad01a9fb95abb08483740245727605"
-  integrity sha512-lr2kafpVKqHu2lS630B9CFfpoB6suIZixZfXKerS+r1Z81sBIJpIPGYArmNa3fOZyvXt8+kyFdiXVkibQYLsWw==
+"@netlify/zip-it-and-ship-it@^0.4.0-8", "@netlify/zip-it-and-ship-it@^0.4.0-9":
+  version "0.4.0-9"
+  resolved "https://registry.yarnpkg.com/@netlify/zip-it-and-ship-it/-/zip-it-and-ship-it-0.4.0-9.tgz#bb8d9ae8496f96af546cb0ce9c77824fe0898ef9"
+  integrity sha512-93wYQiKEfBeLJS0iozCF9Uoe31tWMglnk+ozKV6ANPI8t4vUbFT5CEjUAV/gXGLFLPcQSJ25NXhi2vxgbJ4GKA==
   dependencies:
     archiver "^3.0.0"
     common-path-prefix "^2.0.0"
@@ -9238,6 +9243,36 @@ netlify@^3.0.0:
     through2-filter "^3.0.0"
     through2-map "^3.0.0"
 
+netlify@^4.0.0:
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/netlify/-/netlify-4.0.0.tgz#17e47cc47f18c58b3b6d107ebf8125eb395224af"
+  integrity sha512-JZxkVN3XHhwrfrW8kOgmSmyXrIeXdl5BKEitVO3oI8WU2fVSHYdtZ+FiUaKkL6NnrnMEnGETa8E18mXD3RCiLA==
+  dependencies:
+    "@netlify/open-api" "^0.13.2"
+    "@netlify/zip-it-and-ship-it" "^0.4.0-9"
+    backoff "^2.5.0"
+    clean-deep "^3.0.2"
+    flush-write-stream "^2.0.0"
+    folder-walker "^3.2.0"
+    from2-array "0.0.4"
+    hasha "^3.0.0"
+    lodash.camelcase "^4.3.0"
+    lodash.flatten "^4.4.0"
+    lodash.get "^4.4.2"
+    lodash.set "^4.3.2"
+    micro-api-client "^3.3.0"
+    node-fetch "^2.2.0"
+    omit.js "^1.0.2"
+    p-map "^2.1.0"
+    p-wait-for "^2.0.0"
+    parallel-transform "^1.1.0"
+    pump "^3.0.0"
+    qs "^6.7.0"
+    rimraf "^2.6.3"
+    tempy "^0.2.1"
+    through2-filter "^3.0.0"
+    through2-map "^3.0.0"
+
 nice-try@^1.0.4:
   version "1.0.5"
   resolved "https://registry.yarnpkg.com/nice-try/-/nice-try-1.0.5.tgz#a3378a7696ce7d223e88fc9b764bd7ef1089e366"
@@ -11857,14 +11892,7 @@ rgba-regex@^1.0.0:
   resolved "https://registry.yarnpkg.com/rgba-regex/-/rgba-regex-1.0.0.tgz#43374e2e2ca0968b0ef1523460b7d730ff22eeb3"
   integrity sha1-QzdOLiyglosO8VI0YLfXMP8i7rM=
 
-rimraf@^2.2.8, rimraf@^2.5.4, rimraf@^2.6.1, rimraf@~2.6.2:
-  version "2.6.3"
-  resolved "https://registry.yarnpkg.com/rimraf/-/rimraf-2.6.3.tgz#b2d104fe0d8fb27cf9e0a1cda8262dd3833c6cab"
-  integrity sha512-mwqeW5XsA2qAejG46gYdENaxXjx9onRNCfn7L0duuP4hCuTIi/QO7PDK07KJfp1d+izWPrzEJDcSqBa0OZQriA==
-  dependencies:
-    glob "^7.1.3"
-
-rimraf@^2.6.2, rimraf@^2.6.3:
+rimraf@^2.2.8, rimraf@^2.5.4, rimraf@^2.6.1, rimraf@^2.6.2, rimraf@^2.6.3:
   version "2.7.1"
   resolved "https://registry.npmjs.org/rimraf/-/rimraf-2.7.1.tgz#35797f13a7fdadc566142c29d4f07ccad483e3ec"
   integrity sha512-uWjbaKIK3T1OSVptzX7Nl6PvQ3qAGtKEtVRjRuazjfL3Bx5eI409VZSqgND+4UNnmzLVdPj9FqFJNPqBZFve4w==
@@ -11875,6 +11903,13 @@ rimraf@^3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/rimraf/-/rimraf-3.0.0.tgz#614176d4b3010b75e5c390eb0ee96f6dc0cebb9b"
   integrity sha512-NDGVxTsjqfunkds7CqsOiEnxln4Bo7Nddl3XhS4pXg5OzwkLqJ971ZVAAnB+DDLnF76N+VnDEiBHaVV8I06SUg==
+  dependencies:
+    glob "^7.1.3"
+
+rimraf@~2.6.2:
+  version "2.6.3"
+  resolved "https://registry.yarnpkg.com/rimraf/-/rimraf-2.6.3.tgz#b2d104fe0d8fb27cf9e0a1cda8262dd3833c6cab"
+  integrity sha512-mwqeW5XsA2qAejG46gYdENaxXjx9onRNCfn7L0duuP4hCuTIi/QO7PDK07KJfp1d+izWPrzEJDcSqBa0OZQriA==
   dependencies:
     glob "^7.1.3"
 
