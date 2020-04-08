@@ -6,7 +6,7 @@
   "main": "src/index.js",
   "homepage": "https://sancho.dev",
   "dependencies": {
-    "netlify": "^3.0.0",
+    "netlify": "^4.0.4",
     "netlify-cli": "^2.25.0",
     "npm-normalize-package-bin": "^1.0.1",
     "react": "16.8.3",
