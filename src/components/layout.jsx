@@ -6,8 +6,8 @@ import colors from "./colors";
 import "../../static/fonts/styles.css";
 
 const Root = styled.div`
-  width: 100vw;
-  height: 100vh;
+  min-width: 100vw;
+  min-height: 100vh;
   background-color: ${colors.black};
 `;
 

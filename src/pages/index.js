@@ -180,9 +180,9 @@ export default ({ data }) => {
                   </Spacer>
                 </Button>
                 <Spacer left={2}>
-                  <Button as={GatsbyLink} inverted to="blog">
-                    Blog
-                  </Button>
+                  <GatsbyLink to="blog">
+                    <Button inverted>Blog</Button>
+                  </GatsbyLink>
                 </Spacer>
               </Footer>
             </Spacer>

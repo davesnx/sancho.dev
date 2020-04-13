@@ -2,8 +2,6 @@ import React from "react";
 import styled from "styled-components";
 import { useSpring, animated } from "react-spring";
 
-import useMousePosition from "./mouse-position";
-import useDeviceOrientation from "./device-orientation";
 import Spacer from "./spacer";
 import colors from "./colors";
 

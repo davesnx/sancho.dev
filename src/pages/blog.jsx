@@ -41,7 +41,7 @@ export default ({ data }) => {
             <h1>Thoughts</h1>
             {data.allMarkdownRemark.edges.map(({ node }) => (
               <div key={node.id}>
-                <BlogLink>
+                <BlogLink to={node.fields.slug}>
                   <h3>{node.frontmatter.title}</h3>
                 </BlogLink>
                 <Text>
