@@ -6,13 +6,8 @@ import { Link, graphql } from "gatsby";
 import Layout from "../components/layout";
 import Spacer from "../components/spacer";
 import Text from "../components/text";
+import Main from "../components/main";
 import { formatReadingTime } from "../utils/helpers";
-
-const Main = styled.div`
-  max-width: 900px;
-  padding: 0 32px;
-  margin: 0 auto;
-`;
 
 const BlogLink = styled(Link)`
   color: inherit;

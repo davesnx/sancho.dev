@@ -2,6 +2,8 @@ import React from "react";
 import Helmet from "react-helmet";
 import { graphql } from "gatsby";
 import Layout from "../components/layout";
+import Main from "../components/main";
+import Spacer from "../components/spacer";
 
 export default ({ data }) => {
   const post = data.markdownRemark;
@@ -24,14 +26,20 @@ export default ({ data }) => {
         <meta name="twitter:image" content={post.frontmatter.imghero} />
       </Helmet>
       <Layout>
-        <div>
-          <h1>{post.frontmatter.title}</h1>
-          {post.frontmatter.subtitle && <h2>{post.frontmatter.subtitle}</h2>}
-          <p>
-            <em>{post.frontmatter.date}</em>
-          </p>
-          <div dangerouslySetInnerHTML={{ __html: post.html }} />
-        </div>
+        <Spacer top={20}>
+          <Main>
+            <div>
+              <h1>{post.frontmatter.title}</h1>
+              {post.frontmatter.subtitle && (
+                <h2>{post.frontmatter.subtitle}</h2>
+              )}
+              <p>
+                <em>{post.frontmatter.date}</em>
+              </p>
+              <div dangerouslySetInnerHTML={{ __html: post.html }} />
+            </div>
+          </Main>
+        </Spacer>
       </Layout>
     </>
   );
