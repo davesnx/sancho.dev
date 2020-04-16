@@ -22,11 +22,11 @@ const GlobalStyles = createGlobalStyle`
   }
 
   * {
-    font-family: 'Fira Code';
+    font-family: 'Silka';
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 
-    line-height: 1.5;
+    line-height: 1.4;
   }
 
   div {

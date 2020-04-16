@@ -15,7 +15,7 @@ import useMousePosition from "../components/mouse-position";
 import useDeviceOrientation from "../components/device-orientation";
 import Text from "../components/text";
 
-const H1 = styled.h1`
+const Name = styled.h1`
   font-size: ${font.fontSize4};
   font-weight: bold;
   margin: 0;
@@ -111,7 +111,7 @@ const FloatingBottom = styled.div`
 `;
 
 export default ({ data }) => {
-  const [chromaticAberration, setChromaaticAberration] = React.useState(true);
+  const [chromaticAberration, setChromaaticAberration] = React.useState(false);
 
   const clickHandler = () => {
     setChromaaticAberration(isEnabled => !isEnabled);
@@ -122,10 +122,10 @@ export default ({ data }) => {
 
   const Title = chromaticAberration ? (
     <ChromaticText mouse={mouse} orientation={orientation}>
-      <H1>David Sancho</H1>
+      <Name as="h1">David Sancho</Name>
     </ChromaticText>
   ) : (
-    <H1>David Sancho</H1>
+    <Name as="h1">David Sancho</Name>
   );
 
   return (
@@ -171,19 +171,9 @@ export default ({ data }) => {
             </Text>
             <Spacer top={3}>
               <Footer>
-                <Button href="https://davesnx.typeform.com/to/TPD31G">
-                  Ask me anything
-                  <Spacer left={1} right={-1}>
-                    <span role="img" aria-label="hello">
-                      👋
-                    </span>
-                  </Spacer>
-                </Button>
-                <Spacer left={2}>
-                  <GatsbyLink to="blog">
-                    <Button inverted>Blog</Button>
-                  </GatsbyLink>
-                </Spacer>
+                <GatsbyLink to="blog">
+                  <Button inverted>Blog</Button>
+                </GatsbyLink>
               </Footer>
             </Spacer>
           </Spacer>

@@ -4,6 +4,8 @@ import { graphql } from "gatsby";
 import Layout from "../components/layout";
 import Main from "../components/main";
 import Spacer from "../components/spacer";
+import PostInfo from "../components/info";
+import { H1, H2 } from "../components/heading";
 
 export default ({ data }) => {
   const post = data.markdownRemark;
@@ -29,13 +31,14 @@ export default ({ data }) => {
         <Spacer top={20}>
           <Main>
             <div>
-              <h1>{post.frontmatter.title}</h1>
+              <H1>{post.frontmatter.title}</H1>
               {post.frontmatter.subtitle && (
-                <h2>{post.frontmatter.subtitle}</h2>
+                <H2>{post.frontmatter.subtitle}</H2>
               )}
-              <p>
-                <em>{post.frontmatter.date}</em>
-              </p>
+              <PostInfo
+                date={post.frontmatter.date}
+                timeToRead={post.timeToRead}
+              />
               <div dangerouslySetInnerHTML={{ __html: post.html }} />
             </div>
           </Main>
@@ -54,6 +57,7 @@ export const query = graphql`
     }
     markdownRemark(fields: { slug: { eq: $slug } }) {
       html
+      timeToRead
       fields {
         slug
       }

@@ -1,6 +1,7 @@
 import React from "react";
 import { Helmet } from "react-helmet";
 import { graphql, useStaticQuery } from "gatsby";
+import colors from "./colors";
 
 const SiteMetadata = ({ pathname }) => {
   const {
@@ -29,7 +30,7 @@ const SiteMetadata = ({ pathname }) => {
         name="viewport"
         content="width=device-width, initial-scale=1, shrink-to-fit=no"
       />
-      <meta name="theme-color" content="#222222" />
+      <meta name="theme-color" content={colors.black} />
 
       <link rel="manifest" href={`${siteUrl}/manifest.json`} />
       <link rel="shortcut icon" href={`${siteUrl}/favicon/favicon.ico`} />
@@ -72,7 +73,7 @@ const SiteMetadata = ({ pathname }) => {
         name="msapplication-TileImage"
         content={`${siteUrl}/favicon/mstile-144x144.png`}
       />
-      <meta name="msapplication-TileColor" content="#222222" />
+      <meta name="msapplication-TileColor" content={colors.black} />
 
       {/* OpenGraph tags */}
       <meta property="og:locale" content="en" />

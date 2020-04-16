@@ -7,7 +7,8 @@ import Layout from "../components/layout";
 import Spacer from "../components/spacer";
 import Text from "../components/text";
 import Main from "../components/main";
-import { formatReadingTime } from "../utils/helpers";
+import PostInfo from "../components/info";
+import { H1, H2 } from "../components/heading";
 
 const BlogLink = styled(Link)`
   color: inherit;
@@ -33,22 +34,23 @@ export default ({ data }) => {
       <Layout>
         <Spacer top={20}>
           <Main>
-            <h1>Thoughts</h1>
-            {data.allMarkdownRemark.edges.map(({ node }) => (
-              <div key={node.id}>
-                <BlogLink to={node.fields.slug}>
-                  <h3>{node.frontmatter.title}</h3>
-                </BlogLink>
-                <Text>
-                  <Spacer top={1}>
-                    <em>{`${node.frontmatter.date} • ${formatReadingTime(
-                      node.timeToRead
-                    )}`}</em>
+            <H1>Thoughts</H1>
+            <Spacer top={4}>
+              {data.allMarkdownRemark.edges.map(({ node }) => (
+                <div key={node.id}>
+                  <BlogLink to={node.fields.slug}>
+                    <H2>{node.frontmatter.title}</H2>
+                  </BlogLink>
+                  <Spacer bottom={1} top={1}>
+                    <PostInfo
+                      date={node.frontmatter.date}
+                      timeToRead={node.timeToRead}
+                    />
                   </Spacer>
-                </Text>
-                <Text>{node.excerpt}</Text>
-              </div>
-            ))}
+                  <Text>{node.excerpt}</Text>
+                </div>
+              ))}
+            </Spacer>
           </Main>
         </Spacer>
       </Layout>

@@ -149,7 +149,7 @@ const OverlapWrapper = styled.div`
   justify-content: center;
   align-items: center;
 
-  background: #222222;
+  background: ${colors.black};
   border-radius: 4px;
 `;
 
