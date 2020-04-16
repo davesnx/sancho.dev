@@ -36,7 +36,7 @@ export default ({ data }) => {
           <Main>
             <H2>Thoughts</H2>
             <Spacer top={4}>
-              {data.allMarkdownRemark.edges.map(({ node }) => (
+              {data.allMdx.edges.map(({ node }) => (
                 <div key={node.id}>
                   <BlogLink to={node.fields.slug}>
                     <H3>{node.frontmatter.title}</H3>
@@ -67,7 +67,7 @@ export const query = graphql`
         description
       }
     }
-    allMarkdownRemark(sort: { fields: [frontmatter___date], order: DESC }) {
+    allMdx(sort: { fields: [frontmatter___date], order: DESC }) {
       edges {
         node {
           id

@@ -4,11 +4,11 @@ module.exports = {
     title: `David Sancho`,
     twitter: `@davesnx`,
     description:
-      "Hello, I'm the Reason fanboy near to you. Fighting for a better status quo" +
+      "Software Engineer. Fighting for a better status quo" +
       "Passionate about design, functional programming, scalability, people and business.",
   },
-
   plugins: [
+    `gatsby-plugin-feed-mdx`,
     `gatsby-plugin-react-helmet`,
     {
       resolve: `gatsby-source-filesystem`,
@@ -21,22 +21,27 @@ module.exports = {
       },
     },
     {
-      resolve: `gatsby-transformer-remark`,
+      resolve: `gatsby-plugin-mdx`,
       options: {
-        plugins: [
-          `gatsby-remark-auto-headers`,
-          `gatsby-remark-prismjs`,
+        extensions: [`.mdx`, `.md`],
+        gatsbyRemarkPlugins: [
           {
-            resolve: "gatsby-remark-external-links",
+            resolve: `gatsby-remark-images`,
             options: {
-              rel: "noopener noreferrer",
+              maxWidth: 590,
             },
           },
+          {
+            resolve: `gatsby-remark-responsive-iframe`,
+            options: {
+              wrapperStyle: `margin-bottom: 1.0725rem`,
+            },
+          },
+          `gatsby-remark-prismjs`,
+          `gatsby-remark-copy-linked-files`,
+          `gatsby-remark-smartypants`,
         ],
       },
-    },
-    {
-      resolve: `gatsby-plugin-emotion`,
     },
     {
       resolve: `gatsby-plugin-styled-components`,

@@ -1,14 +1,16 @@
 import React from "react";
 import Helmet from "react-helmet";
 import { graphql } from "gatsby";
+import { MDXRenderer } from "gatsby-plugin-mdx";
+import { MDXProvider } from "@mdx-js/react";
 import Layout from "../components/layout";
 import Main from "../components/main";
 import Spacer from "../components/spacer";
 import PostInfo from "../components/info";
-import { H1, H2 } from "../components/heading";
+import { H1, H2, H3, H4, H5, H6 } from "../components/heading";
 
 export default ({ data }) => {
-  const post = data.markdownRemark;
+  const post = data.mdx;
   const url = post.fields.slug
     ? `${data.site.siteMetadata.siteUrl}${post.fields.slug}`
     : data.site.siteMetadata.siteUrl;
@@ -39,7 +41,18 @@ export default ({ data }) => {
                 date={post.frontmatter.date}
                 timeToRead={post.timeToRead}
               />
-              <div dangerouslySetInnerHTML={{ __html: post.html }} />
+              <MDXProvider
+                components={{
+                  h1: H1,
+                  h2: H2,
+                  h3: H3,
+                  h4: H4,
+                  h5: H5,
+                  h6: H6,
+                }}
+              >
+                <MDXRenderer>{post.body}</MDXRenderer>
+              </MDXProvider>
             </div>
           </Main>
         </Spacer>
@@ -55,8 +68,8 @@ export const query = graphql`
         siteUrl
       }
     }
-    markdownRemark(fields: { slug: { eq: $slug } }) {
-      html
+    mdx(fields: { slug: { eq: $slug } }) {
+      body
       timeToRead
       fields {
         slug
