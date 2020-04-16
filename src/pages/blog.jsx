@@ -8,7 +8,7 @@ import Spacer from "../components/spacer";
 import Text from "../components/text";
 import Main from "../components/main";
 import PostInfo from "../components/info";
-import { H1, H2 } from "../components/heading";
+import { H3, H2 } from "../components/heading";
 
 const BlogLink = styled(Link)`
   color: inherit;
@@ -34,12 +34,12 @@ export default ({ data }) => {
       <Layout>
         <Spacer top={20}>
           <Main>
-            <H1>Thoughts</H1>
+            <H2>Thoughts</H2>
             <Spacer top={4}>
               {data.allMarkdownRemark.edges.map(({ node }) => (
                 <div key={node.id}>
                   <BlogLink to={node.fields.slug}>
-                    <H2>{node.frontmatter.title}</H2>
+                    <H3>{node.frontmatter.title}</H3>
                   </BlogLink>
                   <Spacer bottom={1} top={1}>
                     <PostInfo

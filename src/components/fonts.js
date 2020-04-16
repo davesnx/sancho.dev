@@ -1,6 +1,6 @@
 const calc = str => `calc(${str})`;
 
-const increment = "1.3";
+const increment = "1.25";
 const lineHeightFixed = "0.45rem";
 const lineHeightRelative = "1rem";
 
@@ -23,4 +23,6 @@ export default {
   fontSize5: calc(fontSize_5),
   globalFontSize,
   globalLineHeight,
+  body: "Fira Code",
+  title: "Silka",
 };

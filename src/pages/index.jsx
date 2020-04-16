@@ -16,9 +16,11 @@ import useDeviceOrientation from "../components/device-orientation";
 import Text from "../components/text";
 
 const Name = styled.h1`
-  font-size: ${font.fontSize4};
+  font-size: ${font.fontSize5};
+  font-family: '${font.title}';
   font-weight: bold;
   margin: 0;
+  letter-spacing: 2px;
 `;
 
 const Main = styled.div`
@@ -110,7 +112,7 @@ const FloatingBottom = styled.div`
   }
 `;
 
-export default ({ data }) => {
+export default () => {
   const [chromaticAberration, setChromaaticAberration] = React.useState(false);
 
   const clickHandler = () => {
@@ -149,10 +151,10 @@ export default ({ data }) => {
                 rel="noreferrer noopener"
                 href="https://www.typeform.com"
               >
-                Typeform
+                Typeform.
               </Link>{" "}
-              on core experience. Passionate about design, functional
-              programming, scalability, people and business.{" "}
+              Passionate about design, functional programming, scalability,
+              people and business.{" "}
               <ReasonML>
                 ReasonML
                 <Logo src={reasonLogo} />

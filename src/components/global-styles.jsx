@@ -22,7 +22,7 @@ const GlobalStyles = createGlobalStyle`
   }
 
   * {
-    font-family: 'Silka';
+    font-family: ${font.body};
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 
