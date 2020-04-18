@@ -1,12 +1,19 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import font from "./fonts";
 import colors from "./colors";
 
-export default styled.p`
+export const styles = css`
   font-weight: 200;
   font-size: ${font.fontSize1};
+  font-family: ${font.sans};
   line-height: 1.7;
   color: ${colors.white};
-  text-align: ${props => (props.align === "center" ? "center" : "left")}};
   margin: 0;
+`;
+
+export default styled.p`
+  text-align: ${props => (props.align === "center" ? "center" : "left")}};
+  margin-bottom: ${props => (!props.raw ? "8px" : "")};
+
+  ${styles};
 `;

@@ -1,5 +1,5 @@
 ---
-title: "Testing post"
+title: "Why CSS-in-Reason?"
 subtitle: ""
 date: "2012-01-01"
 imghero: "https://www.javierchavarri.com/media/data-first-and-data-last-a-comparison-01.jpg"
@@ -9,63 +9,161 @@ tags:
   - "BuckleScript"
 ---
 
-The main challenge was to create a unified design language and provide tools and assets to designers and developers so that they can further evolve the product. This language would be used by designers every day so they would need to contribute to its definition. I personally wanted to build all this without slowing down any other projects.
+**styled-ppx** is the ppx that enables *CSS-in-Reason*.
 
-# Heading 1
-## Heading 2
-### Heading 3
-#### Heading 4
-##### Heading 5
-###### Heading 6
+Allows you to create **React Components** with style definitions with CSS that don't rely on a specific DSL and keeps type-safety with great error messages. Build on top of [bs-emotion](https://github.com/ahrefs/bs-emotion), it allows you to style apps quickly, performant and as you always done it.
 
-Paragraph with [links inline](https://sancho.dev)
-[I'm an inline-style link](https://www.google.com)
-[I'm an inline-style link with title](https://www.google.com "Google's Homepage")
+> ⚠️ **Early stage** This ppx is in a early stage. Meaning that it doesn't support full functionality as [emotion](https://emotion.sh) or [styled-components](https://styled-components.com/).
+> But you can safely use it, as it would respect [Compatible Versioning](https://gitlab.com/staltz/comver).
+> In case you want to know more, take a look at the [ROADMAP](./ROADMAP.md), or feel free to chat on Discord: @davesnx#5641
 
-Emphasis, aka italics, with *asterisks* or _underscores_.
-Strong emphasis, aka bold, with **asterisks** or __underscores__.
-Combined emphasis with **asterisks and _underscores_**.
-Strikethrough uses two tildes. ~~Scratch this.~~
+## Usage
+**`styled-ppx`** implements a ppx that transforms `[%styled]` extensions points into `[@react.components]` modules with [bs-emotion](https://github.com/ahrefs/bs-emotion) as styles, which does all the CSS-in-JS under the hood thanks to [emotion](https://emotion.sh).
 
+This is how you write components in ReasonML/OCaml with this ppx:
+```reason
+module StyledComponent = [%styled.div {|
+  display: flex;
+  justify-content: center;
+  align-items: center;
 
-The context and constraints for this decision are quite nuanced and in some cases involve knowledge about concepts that are foreign for most of us, like how compiler inference works, or advanced composition techniques in functional programming. However, despite being a quite technical subject, most of the information has been spread in quite short comments in forum threads, pull requests, Discord conversations, etc.
+  height: 100vh;
+  width: 100vw;
+|}];
 
-1. First ordered list item
-2. Another item
-3. Actual numbers don't matter, just that it's a number
-4. And another item.
-
-Photo
-![data-first-and-data-last-a-comparison-01.jpg](/media/data-first-and-data-last-a-comparison-01.jpg)
-
-*Photo note with link to [unsplash](https://unsplash.com/photos/4XvAZN8_WHo?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText) on [Unsplash](https://unsplash.com/search/photos/pipeline?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText)*
-
-Inline `code` has `back-ticks around` it.
-
-```javascript
-var s = "JavaScript syntax highlighting";
-alert(s);
+ReactDOMRe.renderToElementWithId(
+  <StyledComponent>
+    {React.string("- Middle -")}
+  </StyledComponent>,
+  "app"
+);
 ```
 
-```reason
-let make = (~pro) => {
-  lola(pro);
+Take a look at all the methods in [here](./docs/apis.md).
+
+## Motivation
+I love CSS and I'm coming from the JavaScript world: writing React with styled-components mostly. I found it, one of the best combos to write scalable frontend applications and wasn't a reality in ReasonML/OCaml.
+
+As well, saw a few people asking for it ([a](https://reasonml.chat/t/idiomatic-way-to-bind-to-styled-components/886) [f](https://reasonml.chat/t/styled-components-possible/554)[e](https://reasonml.chat/t/styling-solutions-reasonreact-as-of-aug-18/958)[w](https://reasonml.chat/t/options-and-best-practices-for-styling-in-reasonreact/261) [t](https://twitter.com/lyovson/status/1233397294311100417)[i](https://discord.gg/byjdYFH)[m](https://discord.gg/byjdYFH)[e](https://discord.gg/byjdYFH)[s](https://discord.gg/byjdYFH)). So I took the time to create it with help from [@jchavarri](https://github.com/jchavarri) 🙌.
+
+If you want to know more, I really do recommend [watching my talk at WFH 2020](http://www.youtube.com/watch?feature=player_embedded&v=D8WhIeMIZQc&feature=youtu.be&t=468).
+
+## Installation
+
+This package depends on [bs-emotion](https://github.com/ahrefs/bs-emotion), [ReasonReact](https://reasonml.github.io/reason-react/) and [BuckleScript](https://bucklescript.github.io), make sure you follow their instalations.
+
+### With `esy` on native projects
+
+```bash
+esy add davesnx/styled-ppx
+```
+
+### With `npm` or `yarn` on BuckleScript projects
+
+```bash
+yarn global add @davesnx/styled-ppx @ahrefs/bs-emotion
+# Or
+npm -g install @davesnx/styled-ppx @ahrefs/bs-emotion
+```
+
+And add the PPX in your `bsconfig.json` file:
+
+```json
+{
+  "bs-dependencies": [
+    "reason-react",
+    "@ahrefs/bs-emotion"
+  ],
+  "ppx-flags": ["@davesnx/styled-ppx/styled-ppx"]
 }
 ```
 
+However, if you want to use `esy` in BuckleScript:
+Create an `esy.json` file with the content:
+
+```json
+{
+  "dependencies": {
+    "styled-ppx": "*",
+    "ocaml": "~4.6.1000"
+  },
+  "resolutions": {
+    "styled-ppx": "davesnx/styled-ppx"
+  }
+}
+```
+
+And add the PPX in your `bsconfig.json` file:
+
+```json
+{
+  "ppx-flags": ["esy x styled-ppx.exe"]
+}
+```
+
+If you want to try out of the box a project, just visit https://github.com/davesnx/try-styled-ppx and follow the instalation process there.
+
+## Thanks to
+Thanks to [Javier Chávarri](https://github.com/jchavarri), for helping me understand all the world of OCaml and his knowledge about ppx's. It has been a great experience.
+Inspired by [@astrada](https://github.com/astrada/) `bs-css-ppx` and his [CSS Parser](https://github.com/astrada/ocaml-css-parser).
+Thanks to [ahrefs/bs-emotion](https://github.com/ahrefs/bs-emotion) and [emotion](https://github.com/emotion-js/emotion).
+
+## Contributing
+We would love your help improving styled-ppx, there's still a lot to do.
+The roadmap lives under the [Projects](https://github.com/davesnx/styled-ppx/projects) in GitHub. Take a look, the tasks are well organized and clear for everybody to pick any!
+
+You need `esy`, you can install the latest version from [npm](https://npmjs.com):
+
+```bash
+yarn global add esy@latest
+# Or
+npm install -g esy@latest
+```
+
+> NOTE: Make sure `esy --version` returns at least `0.5.8` for this project to build.
+
+Then run the `esy` command from this project root to install and build depenencies.
+
+```bash
+esy
+```
+
+Now you can run your editor within the environment (which also includes merlin):
+
+```bash
+esy $EDITOR
+esy vim
+```
+
+After you make some changes to source code, you can re-run project's build
+again with the same simple `esy` command and run the native tests with
+
+```bash
+esy test
+```
+
+This project uses [Dune](https://dune.build/) as a build system, if you add a dependency in your `package.json` file, don't forget to add it to your `dune` and `dune-project` files too.
+
+### Running Tests
+
+You can test compiled executable (runs `scripts.tests` specified in `esy.json`):
+
+This will run the native unit test.
+```bash
+esy test
+```
+> This tests only ensures that the output looks exactly as a snapshot, so their mission are to ensure the ppx transforms to a valid OCaml syntax.
+
+If you want to run Bucklescript's integration test instead, you can do:
+```bash
+esy
+cd test/bucklescript
+yarn install
+yarn build
+yarn test
+```
+> This tests are more like an end to end tests, that ensures that emotion have the correct methods for each CSS property.
+
 ---
 
-```python
-s = "Python syntax highlighting"
-print s
-```
-
-```
-No language indicated, so no syntax highlighting.
-But let's throw in a <b>tag</b>.
-```
-
-> This is a very long line that will still be quoted properly when it wraps. Oh boy let's keep writing to make sure this is long enough to actually wrap for everyone. Oh, you can *put* **Markdown** into a blockquote.
-
----
-
+##### Happy reasoning!

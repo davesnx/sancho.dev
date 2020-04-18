@@ -4,6 +4,7 @@ import { useSpring, animated } from "react-spring";
 
 import Spacer from "./spacer";
 import colors from "./colors";
+import font from "./fonts";
 
 const Overlap = styled.div`
   position: relative;
@@ -127,6 +128,7 @@ const ButtonWrapper = styled.div`
   border-radius: 4px;
   background-color: ${colors.white};
   color: ${colors.black};
+  font-family: '${font.sans}';
 
   user-select: none;
 

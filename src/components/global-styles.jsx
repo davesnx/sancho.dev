@@ -22,7 +22,6 @@ const GlobalStyles = createGlobalStyle`
   }
 
   * {
-    font-family: ${font.body};
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 
@@ -37,3 +36,5 @@ const GlobalStyles = createGlobalStyle`
 `;
 
 export default GlobalStyles;
+
+/*     font-family: ${font.sans}; */

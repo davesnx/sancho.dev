@@ -4,6 +4,7 @@ import styled from "styled-components";
 
 import Layout from "../components/layout";
 import Spacer from "../components/spacer";
+import Link from "../components/link";
 import reasonLogo from "../../static/media/reason.png";
 import {
   Text as ChromaticText,
@@ -17,10 +18,19 @@ import Text from "../components/text";
 
 const Name = styled.h1`
   font-size: ${font.fontSize5};
-  font-family: '${font.title}';
+  font-family: ${font.sans};
   font-weight: bold;
   margin: 0;
   letter-spacing: 2px;
+`;
+
+const Description = styled.h1`
+  font-size: ${font.fontSize2};
+  line-height: 38px;
+  font-family: '${font.sans}';
+  font-weight: 400;
+  text-align: center;
+  margin: 0;
 `;
 
 const Main = styled.div`
@@ -42,18 +52,10 @@ const Container = styled.div`
   margin-top: 25vh;
 `;
 
-const Link = styled.a`
-  color: ${colors.grey};
-  font-weight: 600;
-  font-size: inherit;
-  transition: color 0.15s ease;
-  &:hover {
-    color: ${colors.white};
-  }
-`;
-
 const Button = styled.a`
   font-weight: 600;
+  font-family: '${font.sans}';
+
   border: 1px solid white;
   border-radius: 4px;
   padding: 0.5rem 1.5rem;
@@ -136,7 +138,7 @@ export default () => {
         <Container>
           {React.cloneElement(Title)}
           <Spacer top={4}>
-            <Text align="center">
+            <Description>
               Software Engineer working at{" "}
               <Link
                 target="_blank"
@@ -170,14 +172,15 @@ export default () => {
                 strava/davesnx
               </Link>
               .
-            </Text>
-            <Spacer top={3}>
+            </Description>
+            {/*             <Spacer top={3}>
               <Footer>
                 <GatsbyLink to="blog">
                   <Button inverted>Blog</Button>
                 </GatsbyLink>
               </Footer>
             </Spacer>
+ */}{" "}
           </Spacer>
         </Container>
         <FloatingBottom>

@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { formatReadingTime } from "../utils/helpers";
+import font from "./fonts";
 
 const Distribute = styled.div`
   width: 100%;
@@ -11,14 +12,14 @@ const Distribute = styled.div`
 `;
 
 const Span = styled.span`
-  font-size: 16px;
+  font-size: ${font.fontSize0};
+  font-family: ${font.sans};
 `;
 
-const PostInfo = ({ date, timeToRead }) => (
+const Footer = ({ date, timeToRead }) => (
   <Distribute>
-    <Span>{formatReadingTime(timeToRead)}</Span>
     <Span>{date}</Span>
   </Distribute>
 );
 
-export default PostInfo;
+export default Footer;

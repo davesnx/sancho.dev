@@ -23,6 +23,6 @@ export default {
   fontSize5: calc(fontSize_5),
   globalFontSize,
   globalLineHeight,
-  body: "Fira Code",
-  title: "Silka",
+  mono: "Fira Code",
+  sans: "Silka",
 };

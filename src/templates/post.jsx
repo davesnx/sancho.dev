@@ -1,13 +1,37 @@
 import React from "react";
 import Helmet from "react-helmet";
+import styled from "styled-components";
 import { graphql } from "gatsby";
 import { MDXRenderer } from "gatsby-plugin-mdx";
 import { MDXProvider } from "@mdx-js/react";
 import Layout from "../components/layout";
 import Main from "../components/main";
 import Spacer from "../components/spacer";
-import PostInfo from "../components/info";
+import Footer from "../components/footer";
+import Text from "../components/text";
+import Link from "../components/link";
+import { ListItem, OrderList } from "../components/list";
 import { H1, H2, H3, H4, H5, H6 } from "../components/heading";
+import colors from "../components/colors";
+
+const Hr = styled.hr`
+  width: 100%;
+  opacity: 0.1;
+`;
+
+const Blockquote = styled.blockquote`
+  font-style: italic;
+  background: ${colors.fadedBlack};
+  padding: 16px 32px;
+  margin-top: 16px;
+  margin-bottom: 16px;
+  margin-left: -32px;
+  margin-right: -32px;
+
+  & p {
+    margin: 0;
+  }
+`;
 
 export default ({ data }) => {
   const post = data.mdx;
@@ -32,15 +56,11 @@ export default ({ data }) => {
       <Layout>
         <Spacer top={20}>
           <Main>
-            <div>
-              <H1>{post.frontmatter.title}</H1>
-              {post.frontmatter.subtitle && (
-                <H2>{post.frontmatter.subtitle}</H2>
-              )}
-              <PostInfo
-                date={post.frontmatter.date}
-                timeToRead={post.timeToRead}
-              />
+            <H1 raw>{post.frontmatter.title}</H1>
+            {post.frontmatter.subtitle && (
+              <H2 raw>{post.frontmatter.subtitle}</H2>
+            )}
+            <Spacer bottom={6} top={3}>
               <MDXProvider
                 components={{
                   h1: H1,
@@ -49,11 +69,18 @@ export default ({ data }) => {
                   h4: H4,
                   h5: H5,
                   h6: H6,
+                  p: Text,
+                  a: Link,
+                  li: ListItem,
+                  ol: OrderList,
+                  hr: Hr,
+                  blockquote: Blockquote,
                 }}
               >
                 <MDXRenderer>{post.body}</MDXRenderer>
               </MDXProvider>
-            </div>
+            </Spacer>
+            <Footer date={post.frontmatter.date} timeToRead={post.timeToRead} />
           </Main>
         </Spacer>
       </Layout>
