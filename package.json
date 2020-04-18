@@ -31,7 +31,7 @@
     "netlify-cli": "^2.25.0",
     "prismjs": "^1.16.0",
     "react": "16.8.3",
-    "react-dom": "16.8.3",
+    "react-dom": "16.13.0",
     "react-helmet": "^5.2.0",
     "react-scripts": "2.0.3",
     "react-spring": "^8.0.27",
