@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { useSpring, animated } from "react-spring";
+import { window } from "browser-monads";
 
 import Spacer from "./spacer";
 import colors from "./colors";
@@ -51,7 +52,8 @@ const Layer = styled.div.attrs(props => ({
   mix-blend-mode: screen;
 `;
 
-const isTouchDevice = "ontouchstart" in window || navigator.msMaxTouchPoints;
+const isTouchDevice =
+  "ontouchstart" in window || window.navigator.msMaxTouchPoints;
 
 export const Text = ({ children, mouse, orientation }) => {
   const ref = React.useRef(null);
