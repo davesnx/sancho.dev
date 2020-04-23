@@ -8549,10 +8549,10 @@ gatsby-plugin-google-analytics@^2.0.18:
     "@babel/runtime" "^7.8.7"
     minimatch "3.0.4"
 
-gatsby-plugin-mdx@^1.1.7:
-  version "1.1.9"
-  resolved "https://registry.yarnpkg.com/gatsby-plugin-mdx/-/gatsby-plugin-mdx-1.1.9.tgz#92164a64c8e0a6bdc3098ee91a916f8ddddd9d8f"
-  integrity sha512-BdXe2pGPU9oN2LKJd4GJUC1KNtPRHnMit0CxlMHasrmzVDyGYjkG6EngL43LziLbDeYQQYdyPkWFe2+gsHlUOQ==
+gatsby-plugin-mdx@^1.1.10:
+  version "1.1.10"
+  resolved "https://registry.yarnpkg.com/gatsby-plugin-mdx/-/gatsby-plugin-mdx-1.1.10.tgz#8740e3a418a7846d0d4bd9c7c694d41180caa89c"
+  integrity sha512-qoOjJYXUF9wRHHnnaVgmXY2UVOqohY2eB/12JqUdCUAnrm76W1RLfQPk+9BiHKObknrgcWNIHj1nJz2FDtLgkw==
   dependencies:
     "@babel/core" "^7.8.7"
     "@babel/generator" "^7.8.8"
@@ -13771,22 +13771,6 @@ node-object-hash@^2.0.0:
   resolved "https://registry.yarnpkg.com/node-object-hash/-/node-object-hash-2.0.0.tgz#9971fcdb7d254f05016bd9ccf508352bee11116b"
   integrity sha512-VZR0zroAusy1ETZMZiGeLkdu50LGjG5U1KHZqTruqtTyQ2wfWhHG2Ow4nsUbfTFGlaREgNHcCWoM/OzEm6p+NQ==
 
-node-pre-gyp@*:
-  version "0.14.0"
-  resolved "https://registry.yarnpkg.com/node-pre-gyp/-/node-pre-gyp-0.14.0.tgz#9a0596533b877289bcad4e143982ca3d904ddc83"
-  integrity sha512-+CvDC7ZttU/sSt9rFjix/P05iS43qHCOOGzcr3Ry99bXG7VX953+vFyEuph/tfqoYu8dttBkE86JSKBO2OzcxA==
-  dependencies:
-    detect-libc "^1.0.2"
-    mkdirp "^0.5.1"
-    needle "^2.2.1"
-    nopt "^4.0.1"
-    npm-packlist "^1.1.6"
-    npmlog "^4.0.2"
-    rc "^1.2.7"
-    rimraf "^2.6.1"
-    semver "^5.3.0"
-    tar "^4.4.2"
-
 node-pre-gyp@^0.10.0:
   version "0.10.3"
   resolved "https://registry.yarnpkg.com/node-pre-gyp/-/node-pre-gyp-0.10.3.tgz#3070040716afdc778747b61b6887bf78880b80fc"
@@ -18709,7 +18693,7 @@ tar-stream@^2.0.0, tar-stream@^2.1.0:
     inherits "^2.0.3"
     readable-stream "^3.1.1"
 
-tar@^4, tar@^4.4.2:
+tar@^4:
   version "4.4.13"
   resolved "https://registry.yarnpkg.com/tar/-/tar-4.4.13.tgz#43b364bc52888d555298637b10d60790254ab525"
   integrity sha512-w2VwSrBoHa5BsSyH+KxEqeQBAllHhccyMFVHtGtdMpF4W7IRWfZjFiQceJPChOeTsSDVUpER2T8FA93pr0L+QA==
