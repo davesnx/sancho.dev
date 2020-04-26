@@ -17,8 +17,6 @@ yarn global add @davesnx/styled-ppx @ahrefs/bs-emotion
 npm -g install @davesnx/styled-ppx @ahrefs/bs-emotion
 ```
 
-
-
 ```json
 {
   "bs-dependencies": [
@@ -28,25 +26,6 @@ npm -g install @davesnx/styled-ppx @ahrefs/bs-emotion
   "ppx-flags": ["@davesnx/styled-ppx/styled-ppx"]
 }
 ```
-
-BuckleScript is a quite uncommon project. It takes the compiler from one language, OCaml, and modifies it in a way that it becomes more ergonomic for users of another language: JavaScript.
-
-One of the most relevant decisions —probably one of most controversial ones as well— was to choose a data-first design for Belt API (BuckleScript's standard library), as well as introducing a "pipe first" operator (|. in OCaml syntax, -> in Reason syntax) to make it easier to work with Belt functions.
-
-The context and constraints for this decision are quite nuanced and in some cases involve knowledge about concepts that are foreign for most of us, like how compiler inference works, or advanced composition techniques in functional programming. However, despite being a quite technical subject, most of the information has been spread in quite short comments in forum threads, pull requests, Discord conversations, etc.
-
-This article is an attempt to gather as much information as possible in one place, help me and hopefully others understand the alterna
-
-> However, if you want to use `esy` in BuckleScript:
-Create an `esy.json` file with the content:
-
-BuckleScript is a quite uncommon project. It takes the compiler from one language, OCaml, and modifies it in a way that it becomes more ergonomic for users of another language: JavaScript.
-
-One of the most relevant decisions —probably one of most controversial ones as well— was to choose a data-first design for Belt API (BuckleScript's standard library), as well as introducing a "pipe first" operator (|. in OCaml syntax, -> in Reason syntax) to make it easier to work with Belt functions.
-
-The context and constraints for this decision are quite nuanced and in some cases involve knowledge about concepts that are foreign for most of us, like how compiler inference works, or advanced composition techniques in functional programming. However, despite being a quite technical subject, most of the information has been spread in quite short comments in forum threads, pull requests, Discord conversations, etc.
-
-This article is an attempt to gather as much information as possible in one place, help me and hopefully others understand the alterna
 
 ```reason
 [@react.component]
@@ -95,4 +74,19 @@ commodo consequat.</dd>
     padding: 1.25rem 32px;
     background: ${background};
   }
+```
+
+```js
+  type t =
+    | Main
+    | Posts
+    | Post({slug: string});
+
+  let fromUrl = (url: ReasonReactRouter.url) =>
+    switch (url.path) {
+    | [] => Main->Some
+    | ["posts"] => Posts->Some
+    | ["posts", slug] => Post({slug: slug})->Some
+    | _ => None // 404
+    };
 ```

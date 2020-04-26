@@ -8,6 +8,7 @@ const grey = "#585858";
 const orange = "#ee750a";
 const green = "#28b3ba";
 const red = "#d91c1d";
+const strongblue = "#4c575d";
 
 export default css`
   code[class*="language-"],
@@ -36,7 +37,7 @@ export default css`
     word-spacing: normal;
     word-break: normal;
     word-wrap: normal;
-    color: #90a4ae;
+    color: ${strongblue};
     font-family: Roboto Mono, monospace;
     font-size: 1em;
     line-height: 1.5em;

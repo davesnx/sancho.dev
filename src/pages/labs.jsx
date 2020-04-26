@@ -32,7 +32,7 @@ function useHover() {
         };
       }
     },
-    [ref.current] // Recall only if ref changes
+    [ref] // Recall only if ref changes
   );
 
   return [ref, value];
