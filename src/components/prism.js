@@ -5,7 +5,8 @@ const background = "#E2E9EE";
 const blue = "#0966ba";
 const black = "rgb(95, 95, 115)";
 const grey = "#585858";
-const orange = "#ee750a";
+const orange = "#DC6439";
+const purple = "#9e4eb4";
 const green = "#28b3ba";
 const red = "#d91c1d";
 const strongblue = "#4c575d";
@@ -154,7 +155,7 @@ export default css`
   }
 
   .token.function {
-    color: #7c4dff;
+    color: ${purple};
   }
 
   .token.hexcode {

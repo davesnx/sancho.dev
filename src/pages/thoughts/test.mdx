@@ -11,10 +11,8 @@ tags:
 
 **styled-ppx** is the ppx that enables *CSS-in-Reason*.
 
-```bash
+```
 yarn global add @davesnx/styled-ppx @ahrefs/bs-emotion
-# Or
-npm -g install @davesnx/styled-ppx @ahrefs/bs-emotion
 ```
 
 ```json
@@ -77,16 +75,13 @@ commodo consequat.</dd>
 ```
 
 ```js
-  type t =
-    | Main
-    | Posts
-    | Post({slug: string});
-
-  let fromUrl = (url: ReasonReactRouter.url) =>
-    switch (url.path) {
-    | [] => Main->Some
-    | ["posts"] => Posts->Some
-    | ["posts", slug] => Post({slug: slug})->Some
-    | _ => None // 404
-    };
+switch(fruits) {
+  case "Banana":
+    alert("Hello")
+    break;
+  case "Apple":
+    alert("Welcome")
+    break;
+    alert("Neither");
+}
 ```
