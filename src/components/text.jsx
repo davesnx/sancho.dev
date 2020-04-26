@@ -7,7 +7,7 @@ export const styles = css`
   font-size: ${font.fontSize1};
   font-family: ${font.sans};
   line-height: 1.7;
-  color: ${colors.white};
+  color: ${colors.black};
   margin: 0;
 `;
 

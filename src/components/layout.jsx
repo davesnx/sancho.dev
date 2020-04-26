@@ -8,10 +8,10 @@ import "../../static/fonts/styles.css";
 const Root = styled.div`
   min-width: 100vw;
   min-height: 100vh;
-  background-color: ${colors.black};
+  background-color: ${props => props.backgroundColor};
 `;
 
-export default ({ children, pathname }) => {
+export default ({ children, pathname, backgroundColor = colors.white }) => {
   /*   const { data } = useStaticQuery(graphql`
     query {
       site {
@@ -23,7 +23,7 @@ export default ({ children, pathname }) => {
   `); */
 
   return (
-    <Root>
+    <Root backgroundColor={backgroundColor}>
       <GlobalStyles />
       <SiteMetadata pathname={pathname} />
       {children}

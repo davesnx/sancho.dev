@@ -1,5 +1,6 @@
 import { createGlobalStyle } from "styled-components";
 import colors from "./colors";
+import prism from "./prism";
 import font from "./fonts";
 
 const GlobalStyles = createGlobalStyle`
@@ -33,8 +34,8 @@ const GlobalStyles = createGlobalStyle`
     flex-direction: column;
     flex-shrink: 0;
   }
+
+  ${prism};
 `;
 
 export default GlobalStyles;
-
-/*     font-family: ${font.sans}; */

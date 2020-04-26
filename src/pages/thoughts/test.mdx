@@ -1,0 +1,98 @@
+---
+title: "Why CSS-in-Reason?"
+subtitle: ""
+date: "2012-01-01"
+imghero: "https://www.javierchavarri.com/media/data-first-and-data-last-a-comparison-01.jpg"
+tags:
+  - "OCaml"
+  - "ReasonML"
+  - "BuckleScript"
+---
+
+**styled-ppx** is the ppx that enables *CSS-in-Reason*.
+
+```bash
+yarn global add @davesnx/styled-ppx @ahrefs/bs-emotion
+# Or
+npm -g install @davesnx/styled-ppx @ahrefs/bs-emotion
+```
+
+
+
+```json
+{
+  "bs-dependencies": [
+    "reason-react",
+    "@ahrefs/bs-emotion"
+  ],
+  "ppx-flags": ["@davesnx/styled-ppx/styled-ppx"]
+}
+```
+
+BuckleScript is a quite uncommon project. It takes the compiler from one language, OCaml, and modifies it in a way that it becomes more ergonomic for users of another language: JavaScript.
+
+One of the most relevant decisions —probably one of most controversial ones as well— was to choose a data-first design for Belt API (BuckleScript's standard library), as well as introducing a "pipe first" operator (|. in OCaml syntax, -> in Reason syntax) to make it easier to work with Belt functions.
+
+The context and constraints for this decision are quite nuanced and in some cases involve knowledge about concepts that are foreign for most of us, like how compiler inference works, or advanced composition techniques in functional programming. However, despite being a quite technical subject, most of the information has been spread in quite short comments in forum threads, pull requests, Discord conversations, etc.
+
+This article is an attempt to gather as much information as possible in one place, help me and hopefully others understand the alterna
+
+> However, if you want to use `esy` in BuckleScript:
+Create an `esy.json` file with the content:
+
+BuckleScript is a quite uncommon project. It takes the compiler from one language, OCaml, and modifies it in a way that it becomes more ergonomic for users of another language: JavaScript.
+
+One of the most relevant decisions —probably one of most controversial ones as well— was to choose a data-first design for Belt API (BuckleScript's standard library), as well as introducing a "pipe first" operator (|. in OCaml syntax, -> in Reason syntax) to make it easier to work with Belt functions.
+
+The context and constraints for this decision are quite nuanced and in some cases involve knowledge about concepts that are foreign for most of us, like how compiler inference works, or advanced composition techniques in functional programming. However, despite being a quite technical subject, most of the information has been spread in quite short comments in forum threads, pull requests, Discord conversations, etc.
+
+This article is an attempt to gather as much information as possible in one place, help me and hopefully others understand the alterna
+
+```reason
+[@react.component]
+let make = (~title, ~description=?) =>
+  <ElPutoContainer>
+    /* React.Fragment works the same way as in React.js! */
+    <h1> title </h1>
+    /* Handling optional variables where you don't want to render anything */
+    {
+      switch (description) {
+      | Some(description) => <span> {React.string(description)} </span>
+      /* Since everything is typed, React.null is required */
+      | None => React.null
+      }
+    }
+  </ElPutoContainer>;
+```
+
+```html
+<dl>
+   <dt>Definition list</dt>
+   <dd>Consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna
+aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
+commodo consequat.</dd>
+   <dt>Lorem ipsum dolor sit amet</dt>
+   <dd>Consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna
+aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
+commodo consequat.</dd>
+</dl>
+```
+
+```css
+  code[class*="language-"],
+  pre[class*="language-"] {
+    font-family: "Fira Code", "Andale Mono", "Ubuntu Mono", monospace !important;
+    font-size: 16px !important;
+  }
+
+  :not(pre) > code[class*="language-"],
+  pre[class*="language-"] {
+    vertical-align: middle;
+  }
+
+  .gatsby-highlight {
+    margin: 1rem -32px;
+    padding: 1.25rem 32px;
+    background: ${background};
+  }
+```

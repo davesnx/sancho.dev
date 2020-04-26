@@ -3,12 +3,9 @@ import { Helmet } from "react-helmet";
 import styled from "styled-components";
 import { Link, graphql } from "gatsby";
 
-import Layout from "../components/layout";
-import Spacer from "../components/spacer";
 import Text from "../components/text";
-import Main from "../components/main";
-import Footer from "../components/footer";
-import { H3, H2 } from "../components/heading";
+import Page from "../components/page";
+import { H3 } from "../components/heading";
 
 const BlogLink = styled(Link)`
   color: inherit;
@@ -31,29 +28,20 @@ export default ({ data }) => {
         <meta property="og:type" content="website" />
       </Helmet>
 
-      <Layout>
-        <Spacer top={20}>
-          <Main>
-            <H2 raw>Thoughts</H2>
-            <Spacer top={4}>
-              {data.allMdx.edges.map(({ node }) => (
-                <div key={node.id}>
-                  <BlogLink to={node.fields.slug}>
-                    <H3 raw>{node.frontmatter.title}</H3>
-                  </BlogLink>
-                  <Spacer bottom={1} top={1}>
-                    {/* <PostInfo
+      <Page title="Thoughts">
+        {data.allMdx.edges.map(({ node }) => (
+          <div key={node.id}>
+            <BlogLink to={node.fields.slug}>
+              <H3 raw>{node.frontmatter.title}</H3>
+            </BlogLink>
+            {/* <PostInfo
                       date={node.frontmatter.date}
                       timeToRead={node.timeToRead}
                     /> */}
-                  </Spacer>
-                  <Text>{node.excerpt}</Text>
-                </div>
-              ))}
-            </Spacer>
-          </Main>
-        </Spacer>
-      </Layout>
+            <Text>{node.excerpt}</Text>
+          </div>
+        ))}
+      </Page>
     </>
   );
 };

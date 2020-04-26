@@ -6,15 +6,8 @@ import Layout from "../components/layout";
 import Spacer from "../components/spacer";
 import Link from "../components/link";
 import reasonLogo from "../../static/media/reason.png";
-import {
-  Text as ChromaticText,
-  Button as ChromaticButton,
-} from "../components/chromatic";
 import colors from "../components/colors";
 import font from "../components/fonts";
-import useMousePosition from "../components/mouse-position";
-import useDeviceOrientation from "../components/device-orientation";
-import Text from "../components/text";
 
 const Name = styled.h1`
   font-size: ${font.fontSize5};
@@ -22,6 +15,7 @@ const Name = styled.h1`
   font-weight: bold;
   margin: 0;
   letter-spacing: 2px;
+  color: ${colors.black};
 `;
 
 const Description = styled.h1`
@@ -31,14 +25,13 @@ const Description = styled.h1`
   font-weight: 400;
   text-align: center;
   margin: 0;
+  color: ${colors.black};
 `;
 
 const Main = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-
-  cursor: ${props => props.cursor};
 `;
 
 const Container = styled.div`
@@ -49,47 +42,43 @@ const Container = styled.div`
 
   width: 80vw;
   max-width: 50rem;
-  margin-top: 25vh;
 `;
 
-const Button = styled.a`
-  font-weight: 600;
+const ButtonLink = styled(GatsbyLink)`
+  text-decoration: none;
+`;
+
+const Button = styled.span`
+  font-weight: 500;
   font-family: '${font.sans}';
 
-  border: 1px solid white;
   border-radius: 4px;
-  padding: 0.5rem 1.5rem;
-  text-decoration: none;
+  padding: 0.5rem 0.8rem;
+
   display: flex;
 
   transition: background-color 0.15s ease;
   font-size: ${font.fontSize0};
 
-  ${props =>
-    props.inverted
-      ? `
-    background-color: ${colors.white};
-    color: ${colors.black};
+  background-color: ${colors.black};
+  color: ${colors.white};
 
-    &:hover {
-      background-color: ${colors.grey};
-    }
+  letter-spacing: 1.5px;
+
+  &:hover {
+    color: ${colors.white};
+    background-color: ${colors.grey};
   }
-  `
-      : `
-    color: ${colors.grey};
-    &:hover {
-      background-color: ${colors.white};
-      color: ${colors.black};
-    }
-  }
-`}
 `;
 
 const Footer = styled.div`
   justify-content: center;
   align-items: center;
   flex-direction: row;
+`;
+
+const NotVisible = styled.div`
+  display: none;
 `;
 
 const ReasonML = styled.span`
@@ -105,89 +94,66 @@ const Logo = styled.img`
   padding-left: 8px;
 `;
 
-const FloatingBottom = styled.div`
-  position: absolute;
-  bottom: 10vh;
-
-  @media only screen and (max-width: 600px) {
-    bottom: 8px;
-  }
-`;
-
 export default () => {
-  const [chromaticAberration, setChromaaticAberration] = React.useState(false);
-
-  const clickHandler = () => {
-    setChromaaticAberration(isEnabled => !isEnabled);
-  };
-
-  const mouse = useMousePosition();
-  const orientation = useDeviceOrientation();
-
-  const Title = chromaticAberration ? (
-    <ChromaticText mouse={mouse} orientation={orientation}>
-      <Name as="h1">David Sancho</Name>
-    </ChromaticText>
-  ) : (
-    <Name as="h1">David Sancho</Name>
-  );
-
   return (
     <Layout>
-      <Main cursor={chromaticAberration ? "crosshair" : "auto"}>
-        <Container>
-          {React.cloneElement(Title)}
-          <Spacer top={4}>
-            <Description>
-              Software Engineer working at{" "}
-              <Link
-                target="_blank"
-                rel="noreferrer noopener"
-                href="https://draftbit.com"
-              >
-                Draftbit
-              </Link>
-              , previously at{" "}
-              <Link
-                target="_blank"
-                rel="noreferrer noopener"
-                href="https://www.typeform.com"
-              >
-                Typeform.
-              </Link>{" "}
-              Passionate about design, functional programming, scalability,
-              people and business.{" "}
-              <ReasonML>
-                ReasonML
-                <Logo src={reasonLogo} />
-              </ReasonML>
-              .
-              <br />
-              Amateur triathlete{" "}
-              <Link
-                target="_blank"
-                rel="noreferrer noopener"
-                href="https://www.strava.com/athletes/davesnx"
-              >
-                strava/davesnx
-              </Link>
-              .
-            </Description>
-            {/*             <Spacer top={3}>
-              <Footer>
-                <GatsbyLink to="blog">
-                  <Button inverted>Blog</Button>
-                </GatsbyLink>
-              </Footer>
+      <Main>
+        <Spacer top={50}>
+          <Container>
+            <Name as="h1">David Sancho</Name>
+            <Spacer top={4}>
+              <Description>
+                Software Engineer working at{" "}
+                <Link
+                  target="_blank"
+                  rel="noreferrer noopener"
+                  href="https://draftbit.com"
+                >
+                  Draftbit
+                </Link>
+                , previously at{" "}
+                <Link
+                  target="_blank"
+                  rel="noreferrer noopener"
+                  href="https://www.typeform.com"
+                >
+                  Typeform.
+                </Link>{" "}
+                Passionate about design, functional programming, scalability,
+                people and business.{" "}
+                <ReasonML>
+                  ReasonML
+                  <Logo src={reasonLogo} />
+                </ReasonML>
+                .
+                <br />
+                Amateur triathlete{" "}
+                <Link
+                  target="_blank"
+                  rel="noreferrer noopener"
+                  href="https://www.strava.com/athletes/davesnx"
+                >
+                  strava/davesnx
+                </Link>
+                .
+              </Description>
+              <Spacer top={3}>
+                <Footer>
+                  <ButtonLink to="thoughts">
+                    <Button>THOUGHTS</Button>
+                  </ButtonLink>
+                  <NotVisible>
+                    <Spacer left={1}>
+                      <ButtonLink to="labs">
+                        <Button>LABS</Button>
+                      </ButtonLink>
+                    </Spacer>
+                  </NotVisible>
+                </Footer>
+              </Spacer>
             </Spacer>
- */}{" "}
-          </Spacer>
-        </Container>
-        <FloatingBottom>
-          <ChromaticButton enabled={chromaticAberration} onClick={clickHandler}>
-            Enable chromatic aberration
-          </ChromaticButton>
-        </FloatingBottom>
+          </Container>
+        </Spacer>
       </Main>
     </Layout>
   );
