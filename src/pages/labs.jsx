@@ -8,6 +8,7 @@ import Page from "../components/page";
 import Spacer from "../components/spacer";
 /* import Text from "../components/text"; */
 import Overlap from "../components/overlap";
+import { H1 } from "../components/heading";
 import colors from "../components/colors";
 import font from "../components/fonts";
 
@@ -164,7 +165,7 @@ export default ({ data }) => {
         <meta property="og:type" content="website" />
       </Helmet>
 
-      <Page title="Labs">
+      <Page title={<H1 raw>Labs</H1>}>
         <Grid>
           <Button to="labs/chromatic" />
         </Grid>

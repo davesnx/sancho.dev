@@ -68,8 +68,7 @@ export default ({ data }) => {
         <meta name="twitter:description" content={post.frontmatter.subtitle} />
         <meta name="twitter:image" content={post.frontmatter.imghero} />
       </Helmet>
-      <Page title={post.frontmatter.title}>
-        {post.frontmatter.subtitle && <H2 raw>{post.frontmatter.subtitle}</H2>}
+      <Page title={<H1 raw>{post.frontmatter.title}</H1>}>
         <Spacer bottom={6}>
           <MDXProvider
             components={{
@@ -111,9 +110,7 @@ export const query = graphql`
       }
       frontmatter {
         title
-        subtitle
         date(formatString: "MMMM DD, YYYY")
-        imghero
       }
     }
   }

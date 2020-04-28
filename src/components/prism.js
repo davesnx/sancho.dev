@@ -1,10 +1,8 @@
 import { css } from "styled-components";
-import colors from "./colors";
 
 const background = "#E2E9EE";
 const blue = "#0966ba";
 const black = "rgb(95, 95, 115)";
-const grey = "#585858";
 const orange = "#DC6439";
 const purple = "#9e4eb4";
 const green = "#28b3ba";

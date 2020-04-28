@@ -1,18 +1,18 @@
 import React from "react";
 
 import Layout from "../components/layout";
-import Spacer from "../components/spacer";
+import Spacer, { RelativeSpacer } from "../components/spacer";
 import Main from "../components/main";
 import { H1 } from "../components/heading";
 
 const Page = ({ title, children }) => (
   <Layout>
-    <Spacer top={50}>
+    <RelativeSpacer top={16}>
       <Main>
-        <H1 raw>{title}</H1>
+        {title}
         <Spacer top={4}>{children}</Spacer>
       </Main>
-    </Spacer>
+    </RelativeSpacer>
   </Layout>
 );
 

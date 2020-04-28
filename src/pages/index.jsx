@@ -2,7 +2,7 @@ import React from "react";
 import { graphql, Link as GatsbyLink } from "gatsby";
 import styled from "styled-components";
 
-import Layout from "../components/layout";
+import Page from "../components/page";
 import Spacer from "../components/spacer";
 import Link from "../components/link";
 import reasonLogo from "../../static/media/reason.png";
@@ -15,6 +15,7 @@ const Name = styled.h1`
   font-weight: bold;
   margin: 0;
   letter-spacing: 2px;
+  text-align: center;
   color: ${colors.black};
 `;
 
@@ -26,22 +27,6 @@ const Description = styled.h1`
   text-align: center;
   margin: 0;
   color: ${colors.black};
-`;
-
-const Main = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
-
-const Container = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-
-  width: 80vw;
-  max-width: 50rem;
 `;
 
 const ButtonLink = styled(GatsbyLink)`
@@ -96,66 +81,59 @@ const Logo = styled.img`
 
 export default () => {
   return (
-    <Layout>
-      <Main>
-        <Spacer top={50}>
-          <Container>
-            <Name as="h1">David Sancho</Name>
-            <Spacer top={4}>
-              <Description>
-                Software Engineer working at{" "}
-                <Link
-                  target="_blank"
-                  rel="noreferrer noopener"
-                  href="https://draftbit.com"
-                >
-                  Draftbit
-                </Link>
-                , previously at{" "}
-                <Link
-                  target="_blank"
-                  rel="noreferrer noopener"
-                  href="https://www.typeform.com"
-                >
-                  Typeform.
-                </Link>{" "}
-                Passionate about design, functional programming, scalability,
-                people and business.{" "}
-                <ReasonML>
-                  ReasonML
-                  <Logo src={reasonLogo} />
-                </ReasonML>
-                .
-                <br />
-                Amateur triathlete{" "}
-                <Link
-                  target="_blank"
-                  rel="noreferrer noopener"
-                  href="https://www.strava.com/athletes/davesnx"
-                >
-                  strava/davesnx
-                </Link>
-                .
-              </Description>
-              <Spacer top={3}>
-                <Footer>
-                  <ButtonLink to="thoughts">
-                    <Button>THOUGHTS</Button>
-                  </ButtonLink>
-                  <NotVisible>
-                    <Spacer left={1}>
-                      <ButtonLink to="labs">
-                        <Button>LABS</Button>
-                      </ButtonLink>
-                    </Spacer>
-                  </NotVisible>
-                </Footer>
+    <Page title={<Name as="h1">David Sancho</Name>}>
+      <>
+        <Description>
+          Software Engineer working at{" "}
+          <Link
+            target="_blank"
+            rel="noreferrer noopener"
+            href="https://draftbit.com"
+          >
+            Draftbit
+          </Link>
+          , previously at{" "}
+          <Link
+            target="_blank"
+            rel="noreferrer noopener"
+            href="https://www.typeform.com"
+          >
+            Typeform.
+          </Link>{" "}
+          Passionate about design, functional programming, scalability, people
+          and business.{" "}
+          <ReasonML>
+            ReasonML
+            <Logo src={reasonLogo} />
+          </ReasonML>
+          .
+          <br />
+          Amateur triathlete{" "}
+          <Link
+            target="_blank"
+            rel="noreferrer noopener"
+            href="https://www.strava.com/athletes/davesnx"
+          >
+            strava/davesnx
+          </Link>
+          .
+        </Description>
+        <Spacer top={3}>
+          <Footer>
+            <ButtonLink to="thoughts">
+              <Button>THOUGHTS</Button>
+            </ButtonLink>
+            <NotVisible>
+              <Spacer left={1}>
+                <ButtonLink to="labs">
+                  <Button>LABS</Button>
+                </ButtonLink>
               </Spacer>
-            </Spacer>
-          </Container>
+            </NotVisible>
+          </Footer>
         </Spacer>
-      </Main>
-    </Layout>
+      </>
+    </Page>
   );
 };
 

@@ -5,7 +5,7 @@ import { Link, graphql } from "gatsby";
 
 import Text from "../components/text";
 import Page from "../components/page";
-import { H3 } from "../components/heading";
+import { H1, H3 } from "../components/heading";
 
 const BlogLink = styled(Link)`
   color: inherit;
@@ -28,7 +28,7 @@ export default ({ data }) => {
         <meta property="og:type" content="website" />
       </Helmet>
 
-      <Page title="Thoughts">
+      <Page title={<H1 raw>Thoughts</H1>}>
         {data.allMdx.edges.map(({ node }) => (
           <div key={node.id}>
             <BlogLink to={node.fields.slug}>
