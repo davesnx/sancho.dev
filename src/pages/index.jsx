@@ -118,20 +118,20 @@ export default () => {
           </Link>
           .
         </Description>
-        <Spacer top={3}>
-          <Footer>
-            <ButtonLink to="thoughts">
-              <Button>THOUGHTS</Button>
-            </ButtonLink>
-            <NotVisible>
+        <NotVisible>
+          <Spacer top={3}>
+            <Footer>
+              <ButtonLink to="thoughts">
+                <Button>THOUGHTS</Button>
+              </ButtonLink>
               <Spacer left={1}>
                 <ButtonLink to="labs">
                   <Button>LABS</Button>
                 </ButtonLink>
               </Spacer>
-            </NotVisible>
-          </Footer>
-        </Spacer>
+            </Footer>
+          </Spacer>
+        </NotVisible>
       </>
     </Page>
   );
