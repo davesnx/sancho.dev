@@ -27,6 +27,7 @@ const GlobalStyles = createGlobalStyle`
     -moz-osx-font-smoothing: grayscale;
 
     line-height: 1.4;
+    box-sizing: border-box;
   }
 
   div {

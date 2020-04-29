@@ -5,6 +5,7 @@ import styled from "styled-components";
 import Page from "../components/page";
 import Spacer from "../components/spacer";
 import Link from "../components/link";
+import Text from "../components/text";
 import reasonLogo from "../../static/media/reason.png";
 import colors from "../components/colors";
 import font from "../components/fonts";
@@ -19,15 +20,7 @@ const Name = styled.h1`
   color: ${colors.black};
 `;
 
-const Description = styled.h1`
-  font-size: ${font.fontSize2};
-  line-height: 38px;
-  font-family: '${font.sans}';
-  font-weight: 400;
-  text-align: center;
-  margin: 0;
-  color: ${colors.black};
-`;
+const Description = Text;
 
 const ButtonLink = styled(GatsbyLink)`
   text-decoration: none;
@@ -66,7 +59,7 @@ const NotVisible = styled.div`
   display: none;
 `;
 
-const ReasonML = styled.span`
+const InlineLogoWrapper = styled.span`
   display: inline-flex;
   justify-content: center;
   align-items: center;
@@ -102,10 +95,10 @@ export default () => {
           </Link>{" "}
           Passionate about design, functional programming, scalability, people
           and business.{" "}
-          <ReasonML>
-            ReasonML
+          <InlineLogoWrapper>
+            Reason
             <Logo src={reasonLogo} />
-          </ReasonML>
+          </InlineLogoWrapper>
           .
           <br />
           Amateur triathlete{" "}

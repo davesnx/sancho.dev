@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
-import { formatReadingTime } from "../utils/helpers";
 import font from "./fonts";
+/* import { formatReadingTime } from "../utils/helpers"; */
 
 const Distribute = styled.div`
   width: 100%;

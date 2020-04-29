@@ -10,7 +10,7 @@ const fontSize_2 = `(${fontSize_1}) * ${increment}`;
 const fontSize_3 = `(${fontSize_2}) * ${increment}`;
 const fontSize_4 = `(${fontSize_3}) * ${increment}`;
 const fontSize_5 = `(${fontSize_4}) * ${increment}`;
-const fontSize_6 = `(${fontSize_5}) * ${increment} * ${increment}`;
+const fontSize_6 = `(${fontSize_5}) * ${increment}`;
 
 const globalFontSize = calc(fontSize_0);
 const globalLineHeight = `calc(${lineHeightFixed} + ${lineHeightRelative})`;
