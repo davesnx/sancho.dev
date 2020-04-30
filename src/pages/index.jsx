@@ -20,8 +20,6 @@ const Name = styled.h1`
   color: ${colors.black};
 `;
 
-const Description = Text;
-
 const ButtonLink = styled(GatsbyLink)`
   text-decoration: none;
 `;
@@ -76,7 +74,7 @@ export default () => {
   return (
     <Page title={<Name as="h1">David Sancho</Name>}>
       <>
-        <Description>
+        <Text align="center">
           Software Engineer working at{" "}
           <Link
             target="_blank"
@@ -110,7 +108,7 @@ export default () => {
             strava/davesnx
           </Link>
           .
-        </Description>
+        </Text>
         <NotVisible>
           <Spacer top={3}>
             <Footer>
