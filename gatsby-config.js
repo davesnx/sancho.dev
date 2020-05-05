@@ -4,7 +4,7 @@ module.exports = {
     title: `David Sancho`,
     twitter: `@davesnx`,
     description:
-      "Software Engineer. Fighting for a better status quo" +
+      "Software Engineer." +
       "Passionate about design, functional programming, scalability, people and business.",
   },
   plugins: [
@@ -46,6 +46,7 @@ module.exports = {
     {
       resolve: `gatsby-plugin-styled-components`,
       options: {
+        pure: true,
         // Add any options here
       },
     },

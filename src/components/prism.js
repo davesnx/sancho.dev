@@ -4,9 +4,11 @@ const background = "#E2E9EE";
 const blue = "#0966ba";
 const black = "rgb(95, 95, 115)";
 const orange = "#DC6439";
+const yellow = "#f6a434";
 const purple = "#9e4eb4";
 const green = "#28b3ba";
-const red = "#d91c1d";
+const red = "${red}";
+const grey = "#aabfc9";
 const strongblue = "#4c575d";
 
 export default css`
@@ -85,7 +87,7 @@ export default css`
   .language-css > code,
   .language-sass > code,
   .language-scss > code {
-    color: #f76d47;
+    color: ${orange};
   }
 
   [class*="language-"] .namespace {
@@ -93,39 +95,39 @@ export default css`
   }
 
   .token.atrule {
-    color: #7c4dff;
+    color: ${purple};
   }
 
   .token.attr-name {
-    color: #39adb5;
+    color: ${green};
   }
 
   .token.attr-value {
-    color: #f6a434;
+    color: ${yellow};
   }
 
   .token.attribute {
-    color: #f6a434;
+    color: ${yellow};
   }
 
   .token.boolean {
-    color: #7c4dff;
+    color: ${purple};
   }
 
   .token.builtin {
-    color: #39adb5;
+    color: ${green};
   }
 
   .token.cdata {
-    color: #39adb5;
+    color: ${green};
   }
 
   .token.char {
-    color: #39adb5;
+    color: ${green};
   }
 
   .token.class {
-    color: #39adb5;
+    color: ${green};
   }
 
   .token.class-name {
@@ -133,23 +135,23 @@ export default css`
   }
 
   .token.comment {
-    color: #aabfc9;
+    color: ${grey};
   }
 
   .token.constant {
-    color: #7c4dff;
+    color: ${purple};
   }
 
   .token.deleted {
-    color: #e53935;
+    color: ${red};
   }
 
   .token.doctype {
-    color: #aabfc9;
+    color: ${grey};
   }
 
   .token.entity {
-    color: #e53935;
+    color: ${red};
   }
 
   .token.function {
@@ -157,11 +159,11 @@ export default css`
   }
 
   .token.hexcode {
-    color: #f76d47;
+    color: ${orange};
   }
 
   .token.id {
-    color: #7c4dff;
+    color: ${purple};
   }
 
   .token.important {
@@ -169,7 +171,7 @@ export default css`
   }
 
   .token.inserted {
-    color: #39adb5;
+    color: ${green};
   }
 
   .token.keyword {
@@ -177,15 +179,15 @@ export default css`
   }
 
   .token.number {
-    color: #f76d47;
+    color: ${orange};
   }
 
   .token.operator {
-    color: #39adb5;
+    color: ${green};
   }
 
   .token.prolog {
-    color: #aabfc9;
+    color: ${grey};
   }
 
   .token.property {
@@ -193,11 +195,11 @@ export default css`
   }
 
   .token.pseudo-class {
-    color: #f6a434;
+    color: ${yellow};
   }
 
   .token.pseudo-element {
-    color: #f6a434;
+    color: ${yellow};
   }
 
   .token.punctuation {
@@ -217,7 +219,7 @@ export default css`
   }
 
   .token.symbol {
-    color: #7c4dff;
+    color: ${purple};
   }
 
   .token.tag {
@@ -225,11 +227,11 @@ export default css`
   }
 
   .token.unit {
-    color: #f76d47;
+    color: ${orange};
   }
 
   .token.url {
-    color: #e53935;
+    color: ${red};
   }
 
   .token.variable {

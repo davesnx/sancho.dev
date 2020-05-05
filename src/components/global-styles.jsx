@@ -4,6 +4,8 @@ import prism from "./prism";
 import font from "./fonts";
 
 const GlobalStyles = createGlobalStyle`
+  ${prism};
+
   html,
   body,
   #root {
@@ -36,7 +38,6 @@ const GlobalStyles = createGlobalStyle`
     flex-shrink: 0;
   }
 
-  ${prism};
 `;
 
 export default GlobalStyles;

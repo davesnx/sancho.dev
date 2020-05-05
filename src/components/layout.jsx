@@ -23,10 +23,12 @@ export default ({ children, pathname, backgroundColor = colors.white }) => {
   `); */
 
   return (
-    <Root backgroundColor={backgroundColor}>
+    <>
       <GlobalStyles />
-      <SiteMetadata pathname={pathname} />
-      {children}
-    </Root>
+      <Root backgroundColor={backgroundColor}>
+        <SiteMetadata pathname={pathname} />
+        {children}
+      </Root>
+    </>
   );
 };
