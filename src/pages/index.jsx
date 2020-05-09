@@ -6,9 +6,9 @@ import Page from "../components/page";
 import Spacer from "../components/spacer";
 import Link from "../components/link";
 import Text from "../components/text";
-import reasonLogo from "../../static/media/reason.png";
 import colors from "../components/colors";
 import font from "../components/fonts";
+import SocialMedia from "../components/social-media";
 
 const Name = styled.h1`
   font-size: ${font.fontSize5};
@@ -16,7 +16,7 @@ const Name = styled.h1`
   font-weight: bold;
   margin: 0;
   letter-spacing: 2px;
-  text-align: center;
+  text-align: left;
   color: ${colors.black};
 `;
 
@@ -34,7 +34,7 @@ const Button = styled.span`
   display: flex;
 
   transition: background-color 0.15s ease;
-  font-size: ${font.fontSize0};
+  font-size: ${font.fontSizeN1};
 
   background-color: ${colors.black};
   color: ${colors.white};
@@ -48,33 +48,24 @@ const Button = styled.span`
 `;
 
 const Footer = styled.div`
-  justify-content: center;
+  justify-content: left;
   align-items: center;
   flex-direction: row;
 `;
 
-const NotVisible = styled.div`
-  display: none;
-`;
-
-const InlineLogoWrapper = styled.span`
-  display: inline-flex;
-  justify-content: center;
+const FlexWrapper = styled.div`
+  flex: 1;
+  display: flex;
+  justify-content: ${props => props.position};
   align-items: center;
-`;
-
-const Logo = styled.img`
-  width: 22px;
-  heigth: 22px;
-  padding: 0;
-  padding-left: 8px;
+  flex-direction: row;
 `;
 
 export default () => {
   return (
     <Page title={<Name as="h1">David Sancho</Name>}>
       <>
-        <Text align="center">
+        <Text align="left">
           Software Engineer working at{" "}
           <Link
             target="_blank"
@@ -91,38 +82,28 @@ export default () => {
           >
             Typeform.
           </Link>{" "}
-          Passionate about design, functional programming, scalability, people
-          and business.{" "}
-          <InlineLogoWrapper>
-            Reason
-            <Logo src={reasonLogo} />
-          </InlineLogoWrapper>
-          .
           <br />
-          Amateur triathlete{" "}
-          <Link
-            target="_blank"
-            rel="noreferrer noopener"
-            href="https://www.strava.com/athletes/davesnx"
-          >
-            strava/davesnx
-          </Link>
-          .
+          Passionate about design, functional programming, scalability, people
+          and business. Amateur triathlete{" "}
         </Text>
-        <NotVisible>
-          <Spacer top={3}>
-            <Footer>
-              <ButtonLink to="thoughts">
-                <Button>THOUGHTS</Button>
+        <Spacer top={3}>
+          <Footer>
+            <FlexWrapper position="left">
+              <ButtonLink to="blog">
+                <Button>BLOG</Button>
               </ButtonLink>
-              <Spacer left={1}>
+              <Spacer left={2}>
                 <ButtonLink to="labs">
                   <Button>LABS</Button>
                 </ButtonLink>
               </Spacer>
-            </Footer>
-          </Spacer>
-        </NotVisible>
+            </FlexWrapper>
+
+            <FlexWrapper position="flex-end">
+              <SocialMedia />
+            </FlexWrapper>
+          </Footer>
+        </Spacer>
       </>
     </Page>
   );
