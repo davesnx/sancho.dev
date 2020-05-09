@@ -7,7 +7,7 @@ const orange = "#DC6439";
 const yellow = "#f6a434";
 const purple = "#9e4eb4";
 const green = "#28b3ba";
-const red = "${red}";
+const red = "#ef6b73";
 const grey = "#aabfc9";
 const strongblue = "#4c575d";
 

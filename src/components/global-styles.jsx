@@ -8,7 +8,9 @@ const GlobalStyles = createGlobalStyle`
 
   html,
   body,
-  #root {
+  #root,
+  #gatsby-focus-wrapper,
+  #___gatsby {
     margin: 0;
     padding: 0;
     height: 100vh;

@@ -20,6 +20,10 @@ const Hr = styled.hr`
   opacity: 0.1;
 `;
 
+const TwitterLink = styled.a`
+  margin-left: 8px;
+`;
+
 const Blockquote = styled.blockquote`
   font-style: italic;
   padding: 16px 24px;
@@ -69,7 +73,7 @@ export default ({ data }) => {
         <meta name="twitter:image" content={post.frontmatter.imghero} />
       </Helmet>
       <Page title={<H1 raw>{post.frontmatter.title}</H1>}>
-        <Spacer bottom={6}>
+        <Spacer bottom={2}>
           <MDXProvider
             components={{
               h1: H1,
@@ -89,7 +93,9 @@ export default ({ data }) => {
             <MDXRenderer>{post.body}</MDXRenderer>
           </MDXProvider>
         </Spacer>
-        <Footer date={post.frontmatter.date} timeToRead={post.timeToRead} />
+        <Spacer bottom={10}>
+          <Footer date={post.frontmatter.date} timeToRead={post.timeToRead} />
+        </Spacer>
       </Page>
     </>
   );
@@ -110,7 +116,7 @@ export const query = graphql`
       }
       frontmatter {
         title
-        date(formatString: "MMMM DD, YYYY")
+        date(formatString: "MMMM YYYY")
       }
     }
   }

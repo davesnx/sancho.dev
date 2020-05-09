@@ -66,7 +66,7 @@ export default () => {
     <Page title={<Name as="h1">David Sancho</Name>}>
       <>
         <Text align="left">
-          Software Engineer working at{" "}
+          Hello, I'm a Software Engineer working at{" "}
           <Link
             target="_blank"
             rel="noreferrer noopener"
@@ -83,8 +83,8 @@ export default () => {
             Typeform.
           </Link>{" "}
           <br />
-          Passionate about design, functional programming, scalability, people
-          and business. Amateur triathlete{" "}
+          Passionate about functional programming, design, scalability, people
+          and business. Amateur triathlete,
         </Text>
         <Spacer top={3}>
           <Footer>

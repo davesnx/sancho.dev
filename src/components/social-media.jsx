@@ -15,7 +15,7 @@ const InlineLogoWrapper = styled.span`
   align-items: center;
 `;
 
-const Icon = ({ svg: Svg, color, bg, href }) => (
+const Icon = ({ svg: Svg, bg, href }) => (
   <Link target="_blank" rel="noreferrer noopener" href={href}>
     <Logo color={bg}>
       <Svg fill={colors.black}></Svg>
@@ -36,33 +36,29 @@ const Logo = styled.div`
   }
 `;
 
+export const GithubIcon = ({ href }) => (
+  <Icon href={href} svg={Github} bg="rgba(24, 23, 23, 0.2)" />
+);
+
 export default () => (
   <InlineLogoWrapper>
     <Icon
       svg={Twitter}
       href="https://github.com/davesnx"
-      color="rgb(29, 161, 242)"
       bg="rgba(29, 161, 242, 0.2)"
     />
     <Spacer left={2} />
-    <Icon
-      svg={Github}
-      href="https://github.com/davesnx"
-      color="rgb(24, 23, 23)"
-      bg="rgba(24, 23, 23, 0.2)"
-    />
+    <GithubIcon href="https://github.com/davesnx" />
     <Spacer left={2} />
     <Icon
       svg={Strava}
       href="https://www.strava.com/athletes/davesnx"
-      color="rgb(252, 76, 2)"
       bg="rgba(252, 76, 2, 0.2)"
     />
     <Spacer left={2} />
     <Icon
       svg={Discord}
       href="https://discord.gg/xFHUBgx"
-      color="rgb(114, 137, 218)"
       bg="rgba(114, 137, 218, 0.2)"
     />
   </InlineLogoWrapper>
