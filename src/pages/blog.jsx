@@ -3,13 +3,17 @@ import { Helmet } from "react-helmet";
 import styled from "styled-components";
 import { Link, graphql } from "gatsby";
 
-import Text from "../components/text";
-import Page from "../components/page";
-import { H1, H3 } from "../components/heading";
+import Text from "./../components/text";
+import Page from "./../components/page";
+import { H1, H3 } from "./../components/heading";
 
 const BlogLink = styled(Link)`
   color: inherit;
   text-decoration: none;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 `;
 
 export default ({ data }) => {
@@ -33,11 +37,8 @@ export default ({ data }) => {
           <div key={node.id}>
             <BlogLink to={node.fields.slug}>
               <H3 raw>{node.frontmatter.title}</H3>
+              <Text raw>{node.frontmatter.date}</Text>
             </BlogLink>
-            {/* <PostInfo
-                      date={node.frontmatter.date}
-                      timeToRead={node.timeToRead}
-                    /> */}
             <Text>{node.excerpt}</Text>
           </div>
         ))}

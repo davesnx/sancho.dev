@@ -93,12 +93,11 @@ export default () => {
                 <Button>BLOG</Button>
               </ButtonLink>
               <Spacer left={2}>
-                <ButtonLink to="labs">
-                  <Button>LABS</Button>
+                <ButtonLink to="experiments">
+                  <Button>EXPERIMENTS</Button>
                 </ButtonLink>
               </Spacer>
             </FlexWrapper>
-
             <FlexWrapper position="flex-end">
               <SocialMedia />
             </FlexWrapper>

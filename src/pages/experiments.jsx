@@ -165,9 +165,9 @@ export default ({ data }) => {
         <meta property="og:type" content="website" />
       </Helmet>
 
-      <Page title={<H1 raw>Labs</H1>}>
+      <Page title={<H1 raw>Experiments</H1>}>
         <Grid>
-          <Button to="labs/chromatic" />
+          <Button to="experiments/chromatic" />
         </Grid>
       </Page>
     </>

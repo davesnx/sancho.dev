@@ -12,8 +12,8 @@ export const styles = css`
 `;
 
 export default styled.p`
-  text-align: ${props => (props.align === "center" ? "center" : "left")}};
-  margin-bottom: ${props => (!props.raw ? "8px" : "")};
-
   ${styles};
+
+  text-align: ${props => (props.align === "center" ? "center" : "left")}};
+  margin-bottom: ${props => (!props.raw ? "24px" : "")};
 `;
