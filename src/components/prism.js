@@ -1,7 +1,7 @@
 import { css } from "styled-components";
+import colors from "./colors";
 
 const background = "#E2E9EE";
-const blue = "#0966ba";
 const black = "rgb(95, 95, 115)";
 const orange = "#DC6439";
 const yellow = "#f6a434";
@@ -131,7 +131,7 @@ export default css`
   }
 
   .token.class-name {
-    color: #6182b8;
+    color: ${colors.blue};
   }
 
   .token.comment {
@@ -175,7 +175,7 @@ export default css`
   }
 
   .token.keyword {
-    color: ${blue};
+    color: ${colors.blue};
   }
 
   .token.number {
@@ -207,11 +207,11 @@ export default css`
   }
 
   .token.regex {
-    color: #6182b8;
+    color: ${colors.blue};
   }
 
   .token.selector {
-    color: ${blue};
+    color: ${colors.blue};
   }
 
   .token.string {
@@ -223,7 +223,7 @@ export default css`
   }
 
   .token.tag {
-    color: ${blue};
+    color: ${colors.blue};
   }
 
   .token.unit {
@@ -235,6 +235,6 @@ export default css`
   }
 
   .token.variable {
-    color: ${blue};
+    color: ${colors.blue};
   }
 `;

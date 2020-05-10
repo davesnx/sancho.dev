@@ -8,7 +8,7 @@ import Link from "../components/link";
 import Text from "../components/text";
 import colors from "../components/colors";
 import font from "../components/fonts";
-import SocialMedia from "../components/social-media";
+import SocialMedia, { ReasonLogo } from "../components/social-media";
 
 const Name = styled.h1`
   font-size: ${font.fontSize5};
@@ -61,6 +61,12 @@ const FlexWrapper = styled.div`
   flex-direction: row;
 `;
 
+const InlineLogoWrapper = styled.span`
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+`;
+
 export default () => {
   return (
     <Page title={<Name as="h1">David Sancho</Name>}>
@@ -84,7 +90,14 @@ export default () => {
           </Link>{" "}
           <br />
           Passionate about functional programming, design, scalability, people
-          and business. Amateur triathlete,
+          and business. Lately into{" "}
+          <InlineLogoWrapper>
+            Reason{" "}
+            <Spacer left={0.5} right={0.1}>
+              <ReasonLogo />
+            </Spacer>
+          </InlineLogoWrapper>
+          . Amateur triathlete.
         </Text>
         <Spacer top={3}>
           <Footer>

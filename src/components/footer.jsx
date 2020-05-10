@@ -1,10 +1,11 @@
 import React from "react";
 import styled from "styled-components";
-import { Link } from "gatsby";
 
+import Link from "./link";
 import font from "./fonts";
 import colors from "./colors";
 import { GithubIcon } from "./social-media";
+import Twitter from "./../svgs/twitter";
 
 const Distribute = styled.div`
   display: flex;
@@ -21,6 +22,7 @@ const Item = styled.span`
   font-family: ${font.sans};
   font-weight: bold;
   color: ${colors.black};
+  display: inline-flex;
 `;
 
 const Root = styled.div`
@@ -35,16 +37,28 @@ const Root = styled.div`
   border-top: 1px solid ${colors.fadedBlack};
 `;
 
+const BlueTwitter = "rgb(29, 161, 242)";
+
 const TwitterLink = styled(Link)`
   margin-left: 4px;
   text-decoration: none;
+  color: ${BlueTwitter};
+`;
+
+const InlineLogo = styled.div`
+  display: inline-flex;
+  align-self: center;
+  margin-left: 4px;
 `;
 
 const Footer = () => (
   <>
     <Item>
       Thanks for reading. If you have any feedback please contact me on
-      <TwitterLink href="https://twitter.com/davesnx">Twitter</TwitterLink>.
+      <TwitterLink href="https://twitter.com/davesnx">Twitter</TwitterLink>{" "}
+      <InlineLogo>
+        <Twitter fill={BlueTwitter} size={16} />
+      </InlineLogo>
     </Item>
     <Root>
       <Distribute>
