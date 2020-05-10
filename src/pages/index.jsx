@@ -93,7 +93,7 @@ export default () => {
           and business. Lately into{" "}
           <InlineLogoWrapper>
             Reason{" "}
-            <Spacer left={0.5} right={0.1}>
+            <Spacer left={1}>
               <ReasonLogo />
             </Spacer>
           </InlineLogoWrapper>
