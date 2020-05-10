@@ -1,13 +1,13 @@
 import React from "react";
 import { Helmet } from "react-helmet";
 import styled from "styled-components";
-import { Link, graphql } from "gatsby";
+import { Link as Navigate, graphql } from "gatsby";
 
 import Text from "./../components/text";
 import Page from "./../components/page";
 import { H1, H3 } from "./../components/heading";
 
-const BlogLink = styled(Link)`
+const BlogLink = styled(Navigate)`
   color: inherit;
   text-decoration: none;
 

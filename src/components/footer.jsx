@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import { Link as Navigate } from "gatsby";
 
 import Link from "./link";
 import font from "./fonts";
@@ -37,12 +38,10 @@ const Root = styled.div`
   border-top: 1px solid ${colors.fadedBlack};
 `;
 
-const BlueTwitter = "rgb(29, 161, 242)";
-
 const TwitterLink = styled(Link)`
   margin-left: 4px;
   text-decoration: none;
-  color: ${BlueTwitter};
+  color: ${colors.paleBlue};
 `;
 
 const InlineLogo = styled.div`
@@ -57,20 +56,20 @@ const Footer = () => (
       Thanks for reading. If you have any feedback please contact me on
       <TwitterLink href="https://twitter.com/davesnx">Twitter</TwitterLink>{" "}
       <InlineLogo>
-        <Twitter fill={BlueTwitter} size={16} />
+        <Twitter fill={colors.paleBlue} size={16} />
       </InlineLogo>
     </Item>
     <Root>
       <Distribute>
-        <Link to="/blog">
+        <Navigate to="/blog">
           <Item>Blog</Item>
-        </Link>
-        <Link to="/">
+        </Navigate>
+        <Navigate to="/">
           <Item>About</Item>
-        </Link>
-        <Link to="/experiments">
+        </Navigate>
+        <Navigate to="/experiments">
           <Item>Experiments</Item>
-        </Link>
+        </Navigate>
       </Distribute>
       <GithubIcon href="https://github.com/davesnx/sancho.dev" />
     </Root>

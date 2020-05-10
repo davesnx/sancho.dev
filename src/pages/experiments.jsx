@@ -1,6 +1,6 @@
 import React from "react";
 import { Helmet } from "react-helmet";
-import { Link } from "gatsby";
+import { Link as Navigate } from "gatsby";
 import styled from "styled-components";
 import { useSpring, animated } from "react-spring";
 
@@ -67,7 +67,7 @@ const Circle = styled.div`
   border-radius: 50%;
 `;
 
-const ButtonWrapper = styled(Link)`
+const ButtonWrapper = styled(Navigate)`
   display: flex;
   cursor: pointer;
   flex-direction: row;
