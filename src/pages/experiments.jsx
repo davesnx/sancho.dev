@@ -168,6 +168,7 @@ export default ({ data }) => {
       <Page title={<H1 raw>Experiments</H1>}>
         <Grid>
           <Button to="experiments/chromatic" />
+          <Button to="experiments/variable" />
         </Grid>
       </Page>
     </>
