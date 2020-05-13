@@ -10,7 +10,7 @@ const Page = ({ title, children }) => (
     <RelativeSpacer top={isMobile ? 8 : 16}>
       <Main>
         {title}
-        <Spacer top={4}>{children}</Spacer>
+        <Spacer top={3}>{children}</Spacer>
       </Main>
     </RelativeSpacer>
   </Layout>

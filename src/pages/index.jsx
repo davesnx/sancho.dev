@@ -11,7 +11,7 @@ import font from "../components/fonts";
 import SocialMedia, { ReasonLogo } from "../components/social-media";
 
 const Name = styled.h1`
-  font-size: ${font.fontSize5};
+  font-size: ${font.fontSize6};
   font-family: ${font.sans};
   font-weight: bold;
   margin: 0;
@@ -72,7 +72,7 @@ export default () => {
     <Page title={<Name as="h1">David Sancho</Name>}>
       <>
         <Text align="left">
-          Hello, I'm a Software Engineer working at{" "}
+          I'm a Software Engineer working at{" "}
           <Link
             target="_blank"
             rel="noreferrer noopener"
