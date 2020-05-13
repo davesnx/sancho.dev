@@ -10,8 +10,9 @@ import colors from "./colors";
 
 const InlineLogoWrapper = styled.span`
   display: flex;
-  justify-content: start;
+  justify-content: flex-end;
   align-items: center;
+  width: 100%;
 `;
 
 const Icon = ({ svg: Svg, size, bg, href }) => (
