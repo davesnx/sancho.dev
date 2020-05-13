@@ -1,0 +1,60 @@
+@font-face {
+  font-family: 'Fira Code';
+  src: url('./FiraCode-Regular.woff2');
+  font-weight: 300;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Fira Code';
+  src: url('./FiraCode-Regular.woff2');
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Fira Code';
+  src: url("./FiraCode-Medium.woff2");
+  font-weight: 500;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Fira Code';
+  src: url("./FiraCode-Bold.woff2");
+  font-weight: 700;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Inter';
+  src: url("./Inter.otf");
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Silka';
+  src: url("./silka-bold.ttf");
+  font-weight: bold;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Silka';
+  src: url("./silka-medium.ttf");
+  font-weight: medium;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Silka';
+  src: url("./silka-regular.ttf");
+  font-weight: 400;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Silka';
+  src: url("./silka-semibold.ttf");
+  font-weight: 500;
+  font-style: normal;
+}
+
