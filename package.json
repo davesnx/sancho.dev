@@ -47,7 +47,7 @@
   },
   "scripts": {
     "predeploy": "yarn build",
-    "deploy": "gh-pages -d build",
+    "deploy": "gh-pages -d public",
     "build": "gatsby build",
     "develop": "gatsby develop",
     "format": "prettier --write src/**/*.{js,jsx}",

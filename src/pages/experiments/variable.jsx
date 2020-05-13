@@ -47,17 +47,17 @@ const Squared = ({ text, x: mousePosition }) => {
   const steps = Math.floor(1000 / letters.length);
   const charPosition = steps * letters.length + firstElementPosition;
 
-  console.log("---");
+  /*   console.log("---");
   console.log("---");
   console.log("---");
   console.log(firstElementPosition);
-
+ */
   letters.forEach((l, index) => {
-    console.log(
+    /*     console.log(
       l,
       mousePosition,
       Math.abs(1000 - (mousePosition - firstElementPosition + 75 * index))
-    );
+    ); */
   });
 
   return (
