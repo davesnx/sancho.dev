@@ -90,14 +90,7 @@ export default () => {
           </Link>{" "}
           <br />
           Passionate about functional programming, design, scalability, people
-          and business. Lately into{" "}
-          <InlineLogoWrapper>
-            Reason{" "}
-            <Spacer left={1}>
-              <ReasonLogo />
-            </Spacer>
-          </InlineLogoWrapper>
-          . Amateur triathlete.
+          and business. Amateur triathlete.
         </Text>
         <Spacer top={3}>
           <Footer>

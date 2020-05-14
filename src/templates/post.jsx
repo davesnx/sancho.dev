@@ -20,10 +20,6 @@ const Hr = styled.hr`
   opacity: 0.1;
 `;
 
-const TwitterLink = styled.a`
-  margin-left: 8px;
-`;
-
 const Blockquote = styled.blockquote`
   font-style: italic;
   padding: 16px 24px;
