@@ -98,11 +98,13 @@ export default () => {
               <ButtonLink to="blog">
                 <Button>BLOG</Button>
               </ButtonLink>
-              <Spacer left={2}>
-                <ButtonLink to="experiments">
-                  <Button>EXPERIMENTS</Button>
-                </ButtonLink>
-              </Spacer>
+              <div style={{ display: none }}>
+                <Spacer left={2}>
+                  <ButtonLink to="experiments">
+                    <Button>EXPERIMENTS</Button>
+                  </ButtonLink>
+                </Spacer>
+              </div>
             </FlexWrapper>
             <FlexWrapper position="flex-end">
               <SocialMedia />
