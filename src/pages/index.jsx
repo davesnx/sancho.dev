@@ -8,7 +8,7 @@ import Link from "../components/link";
 import Text from "../components/text";
 import colors from "../components/colors";
 import font from "../components/fonts";
-import SocialMedia, { ReasonLogo } from "../components/social-media";
+import SocialMedia from "../components/social-media";
 
 const Name = styled.h1`
   font-size: ${font.fontSize6};
@@ -98,7 +98,7 @@ export default () => {
               <ButtonLink to="blog">
                 <Button>BLOG</Button>
               </ButtonLink>
-              <div style={{ display: none }}>
+              <div style={{ display: "none" }}>
                 <Spacer left={2}>
                   <ButtonLink to="experiments">
                     <Button>EXPERIMENTS</Button>
