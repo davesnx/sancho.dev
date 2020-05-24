@@ -11,7 +11,7 @@ import { RelativeSpacer } from "../../components/spacer";
 import useMousePosition from "../../components/mouse-position";
 import useDeviceOrientation from "../../components/device-orientation";
 
-const Character = styled.span`
+export const Character = styled.span`
   width: 75px;
   font-size: 45px;
   text-transform: uppercase;
@@ -38,6 +38,7 @@ const Letter = ({ children, weight }) => (
 
 const charSize = 75;
 const middle = charSize / 2;
+
 const Squared = ({ text, x: mousePosition }) => {
   const ref = React.useRef(null);
   const firstElementPosition =

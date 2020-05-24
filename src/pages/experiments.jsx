@@ -1,6 +1,6 @@
 import React from "react";
 import { Helmet } from "react-helmet";
-import { Link as Navigate } from "gatsby";
+import { Link as Navigate, graphql } from "gatsby";
 import styled from "styled-components";
 import { useSpring, animated } from "react-spring";
 
@@ -11,6 +11,7 @@ import Overlap from "../components/overlap";
 import { H1 } from "../components/heading";
 import colors from "../components/colors";
 import font from "../components/fonts";
+import { Character } from "../pages/experiments/variable";
 
 function useHover() {
   const [value, setValue] = React.useState(false);
@@ -115,7 +116,7 @@ const Align = styled.div`
   height: 100%;
 `;
 
-const Button = ({ to, enabled }) => {
+const ChromaticButton = ({ to }) => {
   const [hoverRef, isHovered] = useHover();
   const derivation = isHovered ? 0 : 8;
 
@@ -143,10 +144,28 @@ const Button = ({ to, enabled }) => {
   );
 };
 
+const VariableButton = ({ to }) => {
+  const [hoverRef, isHovered] = useHover();
+  const derivation = isHovered ? 500 : 200;
+
+  return (
+    <ButtonWrapper ref={hoverRef} to={to}>
+      <OverlapWrapper>
+        <Character wght={derivation}>A</Character>
+      </OverlapWrapper>
+      <Spacer left={2}>
+        <Align>
+          <ButtonLabel>Dynamic font-weight</ButtonLabel>
+        </Align>
+      </Spacer>
+    </ButtonWrapper>
+  );
+};
+
 const Grid = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: start;
+  display: grid;
+  grid-template-columns: 200px 200px 200px;
+  grid-gap: 16px;
 `;
 
 export default ({ data }) => {
@@ -167,8 +186,8 @@ export default ({ data }) => {
 
       <Page title={<H1 raw>Experiments</H1>}>
         <Grid>
-          <Button to="experiments/chromatic" />
-          <Button to="experiments/variable" />
+          <ChromaticButton to="experiments/chromatic" />
+          <VariableButton to="experiments/variable" />
         </Grid>
       </Page>
     </>
