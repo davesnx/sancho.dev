@@ -14,7 +14,7 @@ const strongblue = "#4c575d";
 export default css`
   code[class*="language-"],
   pre[class*="language-"] {
-    font-family: "Fira Code", "Andale Mono", "Ubuntu Mono", monospace !important;
+    font-family: "Fira Code", monospace !important;
     font-size: 16px !important;
   }
 
@@ -43,13 +43,7 @@ export default css`
     font-size: 1em;
     line-height: 1.5em;
 
-    -moz-tab-size: 4;
-    -o-tab-size: 4;
     tab-size: 4;
-
-    -webkit-hyphens: none;
-    -moz-hyphens: none;
-    -ms-hyphens: none;
     hyphens: none;
   }
 

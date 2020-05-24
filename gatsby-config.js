@@ -10,6 +10,7 @@ module.exports = {
   plugins: [
     `gatsby-plugin-feed-mdx`,
     `gatsby-plugin-react-helmet`,
+    `gatsby-plugin-styled-components`,
     {
       resolve: `gatsby-source-filesystem`,
       options: { name: `src`, path: `${__dirname}/src/` },
@@ -41,13 +42,6 @@ module.exports = {
           `gatsby-remark-copy-linked-files`,
           `gatsby-remark-smartypants`,
         ],
-      },
-    },
-    {
-      resolve: `gatsby-plugin-styled-components`,
-      options: {
-        pure: true,
-        // Add any options here
       },
     },
   ],
