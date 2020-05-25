@@ -8,7 +8,6 @@ module.exports = {
       "Passionate about design, functional programming, scalability, people and business.",
   },
   plugins: [
-    `gatsby-plugin-feed-mdx`,
     `gatsby-plugin-react-helmet`,
     {
       resolve: `gatsby-source-filesystem`,
@@ -17,7 +16,7 @@ module.exports = {
     {
       resolve: `gatsby-plugin-google-analytics`,
       options: {
-        trackingId: process.env.GA_TRACKING_ID,
+        trackingId: "UA-45029133-1",
       },
     },
     {

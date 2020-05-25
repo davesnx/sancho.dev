@@ -3,7 +3,6 @@ import styled from "styled-components";
 import { window } from "browser-monads";
 
 import Layout from "../../components/layout";
-import Overlap from "../../components/overlap";
 import colors from "../../components/colors";
 import Main from "../../components/main";
 import Text from "../../components/text";

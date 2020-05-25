@@ -61,12 +61,6 @@ const FlexWrapper = styled.div`
   flex-direction: row;
 `;
 
-const InlineLogoWrapper = styled.span`
-  display: inline-flex;
-  justify-content: center;
-  align-items: center;
-`;
-
 export default () => {
   return (
     <Page title={<Name as="h1">David Sancho</Name>}>
