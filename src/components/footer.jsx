@@ -28,7 +28,7 @@ const Item = styled.span`
   display: inline-flex;
 `;
 
-const Root = styled.div`
+const Main = styled.div`
   width: 100%;
   display: flex;
   align-items: center;
@@ -66,7 +66,7 @@ const Footer = () => (
         <Twitter fill={colors.paleBlue} size={16} />
       </InlineLogo>
     </Text>
-    <Root>
+    <Main>
       <Distribute>
         <NavigateStyled to="/blog">
           <Item>Blog</Item>
@@ -79,7 +79,7 @@ const Footer = () => (
         </NavigateStyled>
       </Distribute>
       <GithubIcon href="https://github.com/davesnx/sancho.dev" />
-    </Root>
+    </Main>
   </>
 );
 

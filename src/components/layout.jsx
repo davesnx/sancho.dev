@@ -12,16 +12,6 @@ const Root = styled.div`
 `;
 
 export default ({ children, pathname, backgroundColor = colors.white }) => {
-  /*   const { data } = useStaticQuery(graphql`
-    query {
-      site {
-        siteMetadata {
-          title
-        }
-      }
-    }
-  `); */
-
   return (
     <>
       <GlobalStyles />

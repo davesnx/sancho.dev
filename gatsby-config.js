@@ -10,7 +10,6 @@ module.exports = {
   plugins: [
     `gatsby-plugin-feed-mdx`,
     `gatsby-plugin-react-helmet`,
-    `gatsby-plugin-styled-components`,
     {
       resolve: `gatsby-source-filesystem`,
       options: { name: `src`, path: `${__dirname}/src/` },
@@ -57,5 +56,6 @@ module.exports = {
         ],
       },
     },
+    `gatsby-plugin-styled-components`,
   ],
 };
