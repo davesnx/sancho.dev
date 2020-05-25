@@ -33,7 +33,7 @@
     "react": "16.8.3",
     "react-device-detect": "^1.12.1",
     "react-dom": "16.8.3",
-    "react-helmet": "^5.2.0",
+    "react-helmet": "^6.0.0",
     "react-scripts": "2.0.3",
     "react-spring": "^8.0.27",
     "styled-components": "^5.0.1",
