@@ -51,20 +51,11 @@ const NavigateStyled = styled(Navigate)`
   letter-spacing: 1.5px;
 `;
 
-const InlineLogo = styled.div`
-  display: inline-flex;
-  align-self: center;
-  margin-left: 4px;
-`;
-
 const End = () => (
   <>
     <Text>
       Thanks for reading. If you have any feedback please contact me on
       <TwitterLink href="https://twitter.com/davesnx">Twitter</TwitterLink>{" "}
-      <InlineLogo>
-        <Twitter fill={colors.paleBlue} size={16} />
-      </InlineLogo>
     </Text>
     <Main>
       <Distribute>
