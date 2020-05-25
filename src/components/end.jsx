@@ -7,7 +7,7 @@ import font from "./fonts";
 import colors from "./colors";
 import Text from "./text";
 import { GithubIcon } from "./social-media";
-import Twitter from "./../svgs/twitter";
+import Twitter from "../svgs/twitter";
 
 const Distribute = styled.div`
   display: flex;
@@ -57,7 +57,7 @@ const InlineLogo = styled.div`
   margin-left: 4px;
 `;
 
-const Footer = () => (
+const End = () => (
   <>
     <Text>
       Thanks for reading. If you have any feedback please contact me on
@@ -83,4 +83,4 @@ const Footer = () => (
   </>
 );
 
-export default Footer;
+export default End;

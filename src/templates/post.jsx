@@ -7,7 +7,7 @@ import { MDXProvider } from "@mdx-js/react";
 
 import Page from "../components/page";
 import Spacer from "../components/spacer";
-import Footer from "../components/footer";
+import End from "../components/end";
 import Text from "../components/text";
 import Link from "../components/link";
 import { ListItem, OrderList } from "../components/list";
@@ -90,7 +90,7 @@ export default ({ data }) => {
           </MDXProvider>
         </Spacer>
         <Spacer bottom={10}>
-          <Footer date={post.frontmatter.date} timeToRead={post.timeToRead} />
+          <End date={post.frontmatter.date} timeToRead={post.timeToRead} />
         </Spacer>
       </Page>
     </>

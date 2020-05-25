@@ -9,6 +9,29 @@ module.exports = {
   },
   plugins: [
     { resolve: `gatsby-plugin-styled-components`, options: {} },
+    {
+      resolve: `gatsby-plugin-manifest`,
+      options: {
+        name: `David Sancho`,
+        short_name: `davesnx`,
+        start_url: `/`,
+        background_color: `#F6F6F6`,
+        theme_color: `#F6F6F6`,
+        display: `standalone`,
+        /* icons: [
+          {
+            src: `${__dirname}/static/favicon/android-chrome-192x192.png`,
+            sizes: `192x192`,
+            type: `image/png`,
+          },
+          {
+            src: `${__dirname}/static/favicon/android-chrome-512x512.png`,
+            sizes: `512x512`,
+            type: `image/png`,
+          },
+        ], */
+      },
+    },
     `gatsby-plugin-react-helmet`,
     {
       resolve: `gatsby-source-filesystem`,
