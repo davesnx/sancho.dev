@@ -8,7 +8,7 @@ module.exports = {
       "Passionate about design, functional programming, scalability, people and business.",
   },
   plugins: [
-    `gatsby-plugin-styled-components`,
+    { resolve: `gatsby-plugin-styled-components`, options: {} },
     `gatsby-plugin-react-helmet`,
     {
       resolve: `gatsby-source-filesystem`,
