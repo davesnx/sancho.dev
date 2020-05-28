@@ -88,16 +88,7 @@ const Name = styled.h1`
   font-family: ${font.sans};
   font-weight: bold;
   margin: 0;
-  letter-spacing: 2px;
-`;
-
-const Main = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  height: 100vh;
-  margin-top: -15vh;
+  letter-spacing: 10px;
 `;
 
 const Container = styled.div`
@@ -106,8 +97,6 @@ const Container = styled.div`
   align-items: center;
   flex-direction: column;
 
-  width: 80vw;
-  max-width: 50rem;
   height: 100%;
 `;
 
@@ -117,13 +106,11 @@ export default () => {
 
   return (
     <Layout backgroundColor={colors.black}>
-      <Main>
-        <Container>
-          <Text mouse={mouse} orientation={orientation}>
-            <Name as="h1">DAVID SANCHO</Name>
-          </Text>
-        </Container>
-      </Main>
+      <Container>
+        <Text mouse={mouse} orientation={orientation}>
+          <Name as="h1">DAVID SANCHO</Name>
+        </Text>
+      </Container>
     </Layout>
   );
 };

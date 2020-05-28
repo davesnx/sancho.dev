@@ -3,10 +3,8 @@ import styled from "styled-components";
 
 import Layout from "../../components/layout";
 import colors from "../../components/colors";
-import Main from "../../components/main";
 import { RelativeSpacer } from "../../components/spacer";
 import useMousePosition from "../../components/mouse-position";
-import useDeviceOrientation from "../../components/device-orientation";
 
 export const Character = styled.span.attrs(props => ({
   style: {
@@ -18,7 +16,6 @@ export const Character = styled.span.attrs(props => ({
   text-transform: uppercase;
   font-family: "Inter";
   display: flex;
-  border: 1px dashed white;
   justify-content: center;
   align-items: center;
   color: ${colors.white};
@@ -65,8 +62,6 @@ const Container = styled.div`
   align-items: center;
   flex-direction: column;
 
-  width: 80vw;
-  max-width: 50rem;
   height: 100%;
 
   cursor: ew-resize;
@@ -77,13 +72,9 @@ export default () => {
 
   return (
     <Layout backgroundColor={colors.black}>
-      <Main>
-        <RelativeSpacer top={24}>
-          <Container>
-            <Squared x={mouse.x} text="DavidSancho" />
-          </Container>
-        </RelativeSpacer>
-      </Main>
+      <Container>
+        <Squared x={mouse.x} text="David Sancho" />
+      </Container>
     </Layout>
   );
 };

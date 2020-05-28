@@ -21,21 +21,18 @@ function useHover() {
   const handleMouseOver = () => setValue(true);
   const handleMouseOut = () => setValue(false);
 
-  React.useEffect(
-    () => {
-      const node = ref.current;
-      if (node) {
-        node.addEventListener("mouseover", handleMouseOver);
-        node.addEventListener("mouseout", handleMouseOut);
+  React.useEffect(() => {
+    const node = ref.current;
+    if (node) {
+      node.addEventListener("mouseover", handleMouseOver);
+      node.addEventListener("mouseout", handleMouseOut);
 
-        return () => {
-          node.removeEventListener("mouseover", handleMouseOver);
-          node.removeEventListener("mouseout", handleMouseOut);
-        };
-      }
-    },
-    [ref] // Recall only if ref changes
-  );
+      return () => {
+        node.removeEventListener("mouseover", handleMouseOver);
+        node.removeEventListener("mouseout", handleMouseOut);
+      };
+    }
+  }, [ref]);
 
   return [ref, value];
 }
@@ -69,8 +66,10 @@ const Circle = styled.div`
 `;
 
 const ButtonWrapper = styled(Navigate)`
-  display: flex;
   cursor: pointer;
+
+  display: flex;
+  align-items: center;
   flex-direction: row;
 
   border-width: 2px;
@@ -94,6 +93,7 @@ const ButtonLabel = styled.p`
   color: inherit;
   margin: 0;
   width: min-content;
+  min-width: 100px;
 `;
 
 const OverlapWrapper = styled.div`
@@ -155,7 +155,7 @@ const VariableButton = ({ to }) => {
       </OverlapWrapper>
       <Spacer left={2}>
         <Align>
-          <ButtonLabel>Dynamic font-weight</ButtonLabel>
+          <ButtonLabel>Dynamic font weight</ButtonLabel>
         </Align>
       </Spacer>
     </ButtonWrapper>
@@ -164,7 +164,7 @@ const VariableButton = ({ to }) => {
 
 const Grid = styled.div`
   display: grid;
-  grid-template-columns: 200px 200px 200px;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
   grid-gap: 16px;
 `;
 
