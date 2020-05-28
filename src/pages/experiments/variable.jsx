@@ -1,21 +1,22 @@
 import React from "react";
 import styled from "styled-components";
-import { window } from "browser-monads";
 
 import Layout from "../../components/layout";
 import colors from "../../components/colors";
 import Main from "../../components/main";
-import Text from "../../components/text";
 import { RelativeSpacer } from "../../components/spacer";
 import useMousePosition from "../../components/mouse-position";
 import useDeviceOrientation from "../../components/device-orientation";
 
-export const Character = styled.span`
+export const Character = styled.span.attrs(props => ({
+  style: {
+    fontVariationSettings: `"wght" ${props.wght}`,
+  },
+}))`
   width: 75px;
-  font-size: 45px;
+  font-size: 50px;
   text-transform: uppercase;
   font-family: "Inter";
-  font-variation-settings: "wght" ${props => props.wght};
   display: flex;
   border: 1px dashed white;
   justify-content: center;
@@ -31,10 +32,6 @@ const Row = styled.div`
   flex-direction: row;
 `;
 
-const Letter = ({ children, weight }) => (
-  <Character wght={weight}>{children}</Character>
-);
-
 const charSize = 75;
 const middle = charSize / 2;
 
@@ -44,32 +41,18 @@ const Squared = ({ text, x: mousePosition }) => {
     ref.current && ref.current.getBoundingClientRect().left + middle;
   const letters = text.split("");
 
-  const steps = Math.floor(1000 / letters.length);
-  const charPosition = steps * letters.length + firstElementPosition;
-
-  /*   console.log("---");
-  console.log("---");
-  console.log("---");
-  console.log(firstElementPosition);
- */
-  letters.forEach((l, index) => {
-    /*     console.log(
-      l,
-      mousePosition,
-      Math.abs(1000 - (mousePosition - firstElementPosition + 75 * index))
-    ); */
-  });
-
   return (
     <Row ref={ref}>
       {letters.map((char, idx) => {
         return (
-          <Letter
+          <Character
             key={idx}
-            weight={Math.abs(mousePosition - firstElementPosition + 75 * idx)}
+            wght={
+              1000 - Math.abs(mousePosition - firstElementPosition - 75 * idx)
+            }
           >
             {char}
-          </Letter>
+          </Character>
         );
       })}
     </Row>
@@ -85,20 +68,19 @@ const Container = styled.div`
   width: 80vw;
   max-width: 50rem;
   height: 100%;
+
+  cursor: ew-resize;
 `;
 
 export default () => {
   const mouse = useMousePosition();
-  const orientation = useDeviceOrientation();
 
   return (
     <Layout backgroundColor={colors.black}>
       <Main>
         <RelativeSpacer top={24}>
           <Container>
-            <Text mouse={mouse} orientation={orientation.absolute}>
-              <Squared x={mouse.x} text="David Sancho" />;
-            </Text>
+            <Squared x={mouse.x} text="DavidSancho" />
           </Container>
         </RelativeSpacer>
       </Main>
