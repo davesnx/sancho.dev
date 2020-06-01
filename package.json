@@ -7,7 +7,7 @@
   "homepage": "https://sancho.dev",
   "dependencies": {
     "@mdx-js/mdx": "^1.5.8",
-    "@mdx-js/react": "^1.5.8",
+    "@mdx-js/react": "^1.6.5",
     "babel-plugin-styled-components": "^1.10.7",
     "browser-monads": "^1.0.0",
     "gatsby": "^2.20.22",
