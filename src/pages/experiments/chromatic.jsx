@@ -4,6 +4,7 @@ import { window } from "browser-monads";
 
 import Layout from "../../components/layout";
 import Overlap from "../../components/overlap";
+import RawText from "../../components/text";
 import colors from "../../components/colors";
 import font from "../../components/fonts";
 import useMousePosition from "../../components/mouse-position";
@@ -97,7 +98,7 @@ const Container = styled.div`
   align-items: center;
   flex-direction: column;
 
-  height: 100%;
+  flex: 1;
 `;
 
 export default () => {
@@ -105,11 +106,12 @@ export default () => {
   const orientation = useDeviceOrientation();
 
   return (
-    <Layout backgroundColor={colors.black}>
+    <Layout kind={colors.black}>
       <Container>
         <Text mouse={mouse} orientation={orientation}>
           <Name as="h1">DAVID SANCHO</Name>
         </Text>
+        <RawText align="center">Mouse the mouse</RawText>
       </Container>
     </Layout>
   );

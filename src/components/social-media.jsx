@@ -10,7 +10,6 @@ import colors from "./colors";
 
 const InlineLogoWrapper = styled.span`
   display: flex;
-  justify-content: flex-end;
   align-items: center;
   width: 100%;
 `;

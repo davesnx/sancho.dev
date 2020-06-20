@@ -1,5 +1,5 @@
 import React from "react";
-import { graphql, Link as GatsbyLink } from "gatsby";
+import { graphql } from "gatsby";
 import styled from "styled-components";
 
 import Page from "../components/page";
@@ -18,47 +18,6 @@ const Name = styled.h1`
   letter-spacing: 2px;
   text-align: left;
   color: ${colors.black};
-`;
-
-const ButtonLink = styled(GatsbyLink)`
-  text-decoration: none;
-`;
-
-const Button = styled.span`
-  font-weight: 500;
-  font-family: '${font.sans}';
-
-  border-radius: 4px;
-  padding: 0.5rem 0.8rem;
-
-  display: flex;
-
-  transition: background-color 0.15s ease;
-  font-size: ${font.fontSizeN1};
-
-  background-color: ${colors.black};
-  color: ${colors.white};
-
-  letter-spacing: 1.5px;
-
-  &:hover {
-    color: ${colors.white};
-    background-color: ${colors.grey};
-  }
-`;
-
-const Footer = styled.div`
-  justify-content: left;
-  align-items: center;
-  flex-direction: row;
-`;
-
-const FlexWrapper = styled.div`
-  flex: 1;
-  display: flex;
-  justify-content: ${props => props.position};
-  align-items: center;
-  flex-direction: row;
 `;
 
 export default () => {
@@ -82,29 +41,11 @@ export default () => {
           >
             Typeform.
           </Link>{" "}
-          <br />
+          <Spacer top={2} />
           Passionate about functional programming, design, scalability, people
           and business. Amateur triathlete.
         </Text>
-        <Spacer top={3}>
-          <Footer>
-            <FlexWrapper position="left">
-              <ButtonLink to="blog">
-                <Button>BLOG</Button>
-              </ButtonLink>
-              <div style={{ display: "none" }}>
-                <Spacer left={2}>
-                  <ButtonLink to="experiments">
-                    <Button>EXPERIMENTS</Button>
-                  </ButtonLink>
-                </Spacer>
-              </div>
-            </FlexWrapper>
-            <FlexWrapper position="flex-end">
-              <SocialMedia />
-            </FlexWrapper>
-          </Footer>
-        </Spacer>
+        <SocialMedia />
       </>
     </Page>
   );

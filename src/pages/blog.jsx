@@ -3,9 +3,10 @@ import { Helmet } from "react-helmet";
 import styled from "styled-components";
 import { Link as Navigate, graphql } from "gatsby";
 
-import Text from "./../components/text";
-import Page from "./../components/page";
-import { H1, H3 } from "./../components/heading";
+import Text from "../components/text";
+import Page from "../components/page";
+import Spacer from "../components/spacer";
+import { H1, H3 } from "../components/heading";
 
 const BlogLink = styled(Navigate)`
   color: inherit;
@@ -15,6 +16,16 @@ const BlogLink = styled(Navigate)`
   justify-content: space-between;
   align-items: center;
 `;
+
+const Title = () => {
+  return (
+    <div>
+      <H1 raw>Thoughts</H1>
+      <Spacer top={1} />
+      <Text>Here is where I will collect some ideas about Software</Text>
+    </div>
+  );
+};
 
 export default ({ data }) => {
   const {
@@ -32,15 +43,15 @@ export default ({ data }) => {
         <meta property="og:type" content="website" />
       </Helmet>
 
-      <Page title={<H1 raw>Thoughts</H1>}>
+      <Page title={<Title />}>
         {data.allMdx.edges.map(({ node }) => (
-          <div key={node.id}>
+          <Spacer bottom={3} key={node.id}>
             <BlogLink to={node.fields.slug}>
               <H3 raw>{node.frontmatter.title}</H3>
               <Text raw>{node.frontmatter.date}</Text>
             </BlogLink>
             <Text>{node.excerpt}</Text>
-          </div>
+          </Spacer>
         ))}
       </Page>
     </>

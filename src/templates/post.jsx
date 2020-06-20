@@ -7,7 +7,6 @@ import { MDXProvider } from "@mdx-js/react";
 
 import Page from "../components/page";
 import Spacer from "../components/spacer";
-import End from "../components/end";
 import Text from "../components/text";
 import Link from "../components/link";
 import { ListItem, OrderList } from "../components/list";
@@ -88,9 +87,6 @@ export default ({ data }) => {
           >
             <MDXRenderer>{post.body}</MDXRenderer>
           </MDXProvider>
-        </Spacer>
-        <Spacer bottom={10}>
-          <End date={post.frontmatter.date} timeToRead={post.timeToRead} />
         </Spacer>
       </Page>
     </>

@@ -3,7 +3,6 @@ import styled from "styled-components";
 
 import Layout from "../../components/layout";
 import colors from "../../components/colors";
-import { RelativeSpacer } from "../../components/spacer";
 import useMousePosition from "../../components/mouse-position";
 
 export const Character = styled.span.attrs(props => ({
@@ -62,16 +61,15 @@ const Container = styled.div`
   align-items: center;
   flex-direction: column;
 
-  height: 100%;
-
   cursor: ew-resize;
+  flex: 1;
 `;
 
 export default () => {
   const mouse = useMousePosition();
 
   return (
-    <Layout backgroundColor={colors.black}>
+    <Layout kind={colors.black}>
       <Container>
         <Squared x={mouse.x} text="David Sancho" />
       </Container>
