@@ -6,7 +6,6 @@ import { useSpring, animated } from "react-spring";
 
 import Page from "../components/page";
 import Spacer from "../components/spacer";
-/* import Text from "../components/text"; */
 import Overlap from "../components/overlap";
 import { H1 } from "../components/heading";
 import colors from "../components/colors";

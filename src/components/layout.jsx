@@ -46,6 +46,7 @@ const MenuItem = styled.li`
 
   color: ${props => props.color};
 `;
+
 const Logo = styled(Navigate)`
   font-weight: bold;
   font-size: ${font.fontSize0};
@@ -82,9 +83,7 @@ export default ({ children, pathname, kind = colors.white }) => {
       <Main>
         <Spacer top={4}>
           <Header>
-            <div>
-              <Logo to="/">@davesnx</Logo>
-            </div>
+            <Logo to="/">@davesnx</Logo>
             <MenuWrapper>
               <Menu>
                 <MenuItem color={color}>

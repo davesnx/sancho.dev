@@ -1,3 +1,4 @@
+import React from "react";
 import styled, { css } from "styled-components";
 import font from "./fonts";
 import colors from "./colors";
@@ -7,13 +8,22 @@ export const styles = css`
   font-size: ${font.fontSize1};
   font-family: ${font.sans};
   line-height: 1.7;
-  color: ${colors.black};
+  color: ${props => props.color};
   margin: 0;
 `;
 
-export default styled.p`
+const Text = styled.p`
   ${styles};
 
   text-align: ${props => (props.align === "center" ? "center" : "left")}};
   margin-bottom: ${props => (!props.raw ? "24px" : "")};
 `;
+
+export default ({ children, ...rest }) => {
+  const color = rest.color || colors.black;
+  return (
+    <Text {...rest} color={color}>
+      {children}
+    </Text>
+  );
+};

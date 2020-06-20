@@ -4,6 +4,10 @@ import styled from "styled-components";
 import Layout from "../../components/layout";
 import colors from "../../components/colors";
 import useMousePosition from "../../components/mouse-position";
+import { RelativeSpacer } from "../../components/spacer";
+import Spacer from "../../components/spacer";
+import Link from "../../components/link";
+import Text from "../../components/text";
 
 export const Character = styled.span.attrs(props => ({
   style: {
@@ -61,8 +65,8 @@ const Container = styled.div`
   align-items: center;
   flex-direction: column;
 
-  cursor: ew-resize;
   flex: 1;
+  cursor: ew-resize;
 `;
 
 export default () => {
@@ -73,6 +77,18 @@ export default () => {
       <Container>
         <Squared x={mouse.x} text="David Sancho" />
       </Container>
+      <Spacer bottom={4}>
+        <Text raw align="center" color={colors.white}>
+          Move the mouse in the y axis to see the{" "}
+          <Link
+            target="_blank"
+            rel="noopener noreferer"
+            href="https://en.wikipedia.org/wiki/Chromatic_aberration"
+          >
+            Variable font weight effect
+          </Link>
+        </Text>
+      </Spacer>
     </Layout>
   );
 };
