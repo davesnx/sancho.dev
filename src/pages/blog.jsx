@@ -7,6 +7,7 @@ import Text from "../components/text";
 import Page from "../components/page";
 import Spacer from "../components/spacer";
 import { H1, H3 } from "../components/heading";
+import { isMobile } from "react-device-detect";
 
 const BlogLink = styled(Navigate)`
   color: inherit;
@@ -14,14 +15,15 @@ const BlogLink = styled(Navigate)`
 
   display: flex;
   justify-content: space-between;
-  align-items: center;
+
+  ${isMobile ? "flex-direction: column-reverse" : ""};
+  align-items: ${isMobile ? "left" : "center"};
 `;
 
 const Title = () => {
   return (
     <div>
       <H1 raw>Thoughts</H1>
-      <Spacer top={1} />
       <Text>Here is where I will collect some ideas about Software</Text>
     </div>
   );

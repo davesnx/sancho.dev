@@ -6,6 +6,7 @@ import font from "./fonts";
 import Main from "./../components/main";
 import Spacer from "./../components/spacer";
 import { Link as Navigate } from "gatsby";
+import { isMobile } from "react-device-detect";
 
 const NavigateStyled = styled(Navigate)`
   text-decoration: none;
@@ -23,11 +24,14 @@ const Header = styled.header`
   display: flex;
   justify-content: space-between;
   align-items: center;
+
+  flex-direction: ${isMobile ? "column" : "row"};
 `;
 
 const MenuWrapper = styled.div``;
 
 const Menu = styled.ul`
+  padding: 0;
   display: flex;
   flex-direction: row;
   align-items: center;

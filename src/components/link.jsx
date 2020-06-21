@@ -11,6 +11,9 @@ const Link = styled.a`
   &:hover {
     color: ${colors.blue};
   }
+
+  overflow-wrap: break-word;
+  word-wrap: break-word;
 `;
 
 export default Link;

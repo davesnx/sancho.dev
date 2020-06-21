@@ -81,10 +81,6 @@ const ButtonWrapper = styled(Navigate)`
 
   user-select: none;
   text-decoration: none;
-
-  @media only screen and (max-width: 600px) {
-    justify-content: center;
-  }
 `;
 
 const ButtonLabel = styled.p`

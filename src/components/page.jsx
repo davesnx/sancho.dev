@@ -7,7 +7,7 @@ import { isMobile } from "react-device-detect";
 
 const Page = ({ title, children }) => (
   <Layout>
-    <RelativeSpacer top={isMobile ? 8 : 16}>
+    <RelativeSpacer top={isMobile ? 6 : 12}>
       <Main>
         {title}
         <Spacer top={3}>{children}</Spacer>
