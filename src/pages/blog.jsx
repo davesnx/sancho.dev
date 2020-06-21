@@ -2,12 +2,13 @@ import React from "react";
 import { Helmet } from "react-helmet";
 import styled from "styled-components";
 import { Link as Navigate, graphql } from "gatsby";
+import { isMobile } from "react-device-detect";
 
 import Text from "../components/text";
 import Page from "../components/page";
 import Spacer from "../components/spacer";
 import { H1, H3 } from "../components/heading";
-import { isMobile } from "react-device-detect";
+import font from "../components/fonts";
 
 const BlogLink = styled(Navigate)`
   color: inherit;
@@ -18,6 +19,10 @@ const BlogLink = styled(Navigate)`
 
   ${isMobile ? "flex-direction: column-reverse" : ""};
   align-items: ${isMobile ? "left" : "center"};
+`;
+
+const SmallText = styled(Text)`
+  font-size: ${font.fontSize0};
 `;
 
 const Title = () => {
@@ -50,7 +55,7 @@ export default ({ data }) => {
           <Spacer bottom={3} key={node.id}>
             <BlogLink to={node.fields.slug}>
               <H3 raw>{node.frontmatter.title}</H3>
-              <Text raw>{node.frontmatter.date}</Text>
+              <SmallText raw>{node.frontmatter.date}</SmallText>
             </BlogLink>
             <Text>{node.excerpt}</Text>
           </Spacer>
