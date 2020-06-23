@@ -21,7 +21,7 @@
     "gatsby-plugin-sharp": "^2.5.4",
     "gatsby-plugin-styled-components": "^3.2.1",
     "gatsby-remark-auto-headers": "^1.0.3",
-    "gatsby-remark-copy-linked-files": "^2.2.1",
+    "gatsby-remark-copy-linked-files": "^2.3.6",
     "gatsby-remark-external-links": "^0.0.4",
     "gatsby-remark-images": "^3.2.2",
     "gatsby-remark-prismjs": "^3.2.8",
