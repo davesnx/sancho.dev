@@ -25,11 +25,14 @@ const SmallText = styled(Text)`
   font-size: ${font.fontSize0};
 `;
 
+const Column = styled.div`
+  flex: ${props => props.size || 1};
+`;
+
 const Title = () => {
   return (
     <div>
       <H1 raw>Thoughts</H1>
-      <Text>Here is where I will collect some ideas about Software</Text>
     </div>
   );
 };
@@ -54,8 +57,14 @@ export default ({ data }) => {
         {data.allMdx.edges.map(({ node }) => (
           <Spacer bottom={3} key={node.id}>
             <BlogLink to={node.fields.slug}>
-              <H3 raw>{node.frontmatter.title}</H3>
-              <SmallText raw>{node.frontmatter.date}</SmallText>
+              <Column size={5}>
+                <H3 raw>{node.frontmatter.title}</H3>
+              </Column>
+              <Column size={1}>
+                <SmallText raw align="right">
+                  {node.frontmatter.date}
+                </SmallText>
+              </Column>
             </BlogLink>
             <Text>{node.excerpt}</Text>
           </Spacer>

@@ -15,7 +15,7 @@ export const styles = css`
 const Text = styled.p`
   ${styles};
 
-  text-align: ${props => (props.align === "center" ? "center" : "left")}};
+  text-align: ${props => props.align}};
   margin-bottom: ${props => (!props.raw ? "24px" : "")};
 `;
 
