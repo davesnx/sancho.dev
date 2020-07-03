@@ -14,5 +14,6 @@ export const OrderList = styled.ol`
 
 export const UnorderList = styled.ul`
   margin: 8px 16px;
+  padding: 0;
   color: ${colors.black};
 `;

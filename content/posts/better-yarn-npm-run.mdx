@@ -62,21 +62,26 @@ fi
 This can be intimidating at first so in order to understand it better, let's break it down to explain a little what each command does.
 
 The first interesting bit is to preview the content of `package.json` and make it appear on a `fzf` menu.
-`cat package.json | jq .scripts | sed '1d;$d'`
 
-- `cat package.json` prints the content of the package.json
-- `jq .scripts` parses the json and selects only "scripts"
-- `sed '1d;$d'` removes the first and the last line
+```
+cat package.json | jq .scripts | sed '1d;$d'
+```
+
+`cat package.json` prints the content of the package.json
+
+`jq .scripts` parses the json and selects only "scripts"
+
+`sed '1d;$d'` removes the first and the last line
 
 ```json
-  "predeploy": "yarn build",
-  "deploy": "gh-pages -d public",
-  "build": "gatsby build",
-  "develop": "gatsby develop",
-  "format": "prettier --write src/**/*.{js,jsx}",
-  "start": "npm run develop",
-  "serve": "gatsby serve",
-  "test": "echo \"Write tests! -> https://gatsby.dev/unit-testing\""
+"predeploy": "yarn build",
+"deploy": "gh-pages -d public",
+"build": "gatsby build",
+"develop": "gatsby develop",
+"format": "prettier --write src/**/*.{js,jsx}",
+"start": "npm run develop",
+"serve": "gatsby serve",
+"test": "echo \"Write tests! -> https://gatsby.dev/unit-testing\""
 ```
 
 This output gets passed to [fzf](https://github.com/junegunn/fzf), which creates the floating menu, and once you select one of the rows, the `$script` value is set to `"start": "npm run develop"` and finally you are able to get the command name `"start"` and finishes running `"yarn run start"`.
@@ -93,6 +98,6 @@ Feel free to can change this script to use `npm` or do any sort of change, I fou
 
 - For an introduction to the fzf, see its excellent [blog posts](https://www.freecodecamp.org/news/fzf-a-command-line-fuzzy-finder-missing-demo-a7de312403ff)
 - My personal setup [davesnx/setup](https://github.com/davesnx/setup) using zsh
-- If you aren't familiar with the dotfiles this would give a little clarity [https://www.freecodecamp.org/news/dive-into-dotfiles-part-1-e4eb1003cff6/]
+- If you aren't familiar with the dotfiles [this](https://www.freecodecamp.org/news/dive-into-dotfiles-part-1-e4eb1003cff6/) would give a little clarity.
 - For the spanish speakers I found this [course](https://pro.codely.tv/library/terminal-zsh/about) amazing
 

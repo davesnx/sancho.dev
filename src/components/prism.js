@@ -2,7 +2,7 @@ import { css } from "styled-components";
 import colors from "./colors";
 
 const background = "#E2E9EE";
-const black = "rgb(95, 95, 115)";
+const black = "rgb(76, 76, 92)";
 const orange = "#DC6439";
 const yellow = "#f6a434";
 const purple = "#9e4eb4";
