@@ -9,7 +9,7 @@ import Page from "../components/page";
 import Spacer from "../components/spacer";
 import Text from "../components/text";
 import Link from "../components/link";
-import { ListItem, OrderList } from "../components/list";
+import { ListItem, OrderList, UnorderList } from "../components/list";
 import { H1, H2, H3, H4, H5, H6 } from "../components/heading";
 import colors from "../components/colors";
 import fonts from "../components/fonts";
@@ -19,10 +19,25 @@ const Hr = styled.hr`
   opacity: 0.1;
 `;
 
+const ImageWrapper = styled.div`
+  margin: 0px -32px;
+`;
+
+const PaddedImage = styled.img`
+  width: 100%;
+  border-radius: 4px;
+`;
+
+const Image = props => (
+  <ImageWrapper>
+    <PaddedImage {...props} />
+  </ImageWrapper>
+);
+
 const Blockquote = styled.blockquote`
   font-style: italic;
   padding: 16px 24px;
-  margin: 16px 0px;
+  margin: 0px;
 
   &:before {
     content: ">";
@@ -81,8 +96,10 @@ export default ({ data }) => {
               a: Link,
               li: ListItem,
               ol: OrderList,
+              ul: UnorderList,
               hr: Hr,
               blockquote: Blockquote,
+              img: Image,
             }}
           >
             <MDXRenderer>{post.body}</MDXRenderer>

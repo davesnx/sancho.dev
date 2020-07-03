@@ -1,6 +1,7 @@
 import styled from "styled-components";
+
 import { styles } from "./text";
-import { unit, px } from "./unit";
+import colors from "./colors";
 
 export const ListItem = styled.li`
   ${styles};
@@ -8,5 +9,10 @@ export const ListItem = styled.li`
 `;
 
 export const OrderList = styled.ol`
-  margin: ${px(unit(3))};
+  margin: 8px 16px;
+`;
+
+export const UnorderList = styled.ul`
+  margin: 8px 16px;
+  color: ${colors.black};
 `;

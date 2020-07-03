@@ -1,0 +1,50 @@
+---
+title: "The missing explanation about ppx"
+date: "2020-07-20"
+tags:
+  - "ReasonML"
+  - "BuckleScript"
+  - "ppx"
+  - "OCaml"
+---
+
+Disclamer: You might found the need to create something dynamic, since many of use come from JavaScript and its nature it's a very dynamic language, but please don't writte everything as a ppx.
+
+Hope we are mature enough to not fall into those traps, ppx (as any other Software ) solves one particular problem, not all.
+
+<!-- explaining what jared said on the podcast Reason Town -->
+
+# What's a ppx
+
+<!-- - What is? [https://github.com/jccampagne/ocaml_ppx_extension_simple_tutorial](https://github.com/jccampagne/ocaml_ppx_extension_simple_tutorial) -->
+
+You might have asked yourself: What are these `[%% ...]` or `[@@ ...]` expressions that I see in others people’s code? They look like decorators, but what they do? and what about a percent sign in the middle of a let declaration, as in `let%lwt`? What's that kind of syntax?
+
+<!-- Mention fear -->
+
+# Why it exists?
+
+<!-- Get the story about OCaml compiler team creating the ppx solution for people who wanted to extend the compiler without affecting the development. -->
+
+# How it works?
+
+<!-- What are the proceses of the compiler -->
+<!--
+  typed ast
+      - [https://bitbucket.org/camlspotter/ppx_integer/src/default/](https://bitbucket.org/camlspotter/ppx_integer/src/default/)
+      - [https://bitbucket.org/camlspotter/typpx/src/default/](https://bitbucket.org/camlspotter/typpx/src/default/)
+ -->
+
+# ppx: f(AST) -> AST
+<!-- Explain some concepts that you need to understand -->
+# AST
+
+- Try to describe what are the tools that we will need to use (Ast_helper, ocamlmigration, blabla): [https://gist.github.com/davesnx/edeb4fe1d2f3f6448bb2cc42b7d7958d](https://gist.github.com/davesnx/edeb4fe1d2f3f6448bb2cc42b7d7958d)
+
+- Showcase examples on how to create a variable/a function call/a type definition/etc.
+
+[https://ocamlverse.github.io/content/ppx.html](https://ocamlverse.github.io/content/ppx.html)
+
+[https://www.victor.darvariu.me/jekyll/update/2018/06/19/ppx-tutorial.html](https://www.victor.darvariu.me/jekyll/update/2018/06/19/ppx-tutorial.html)
+
+

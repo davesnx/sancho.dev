@@ -20,11 +20,11 @@ export default css`
 
   :not(pre) > code[class*="language-"],
   pre[class*="language-"] {
-    vertical-align: middle;
   }
 
   .gatsby-highlight {
     margin: 1rem -32px;
+    margin-bottom: 2rem;
     padding: 1.25rem 32px;
     border-radius: 4px;
     background: ${background};
