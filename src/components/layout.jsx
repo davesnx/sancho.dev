@@ -1,12 +1,13 @@
 import React from "react";
 import styled from "styled-components";
+import { Link as Navigate } from "gatsby";
+
 import SiteMetadata from "./site-metadata";
 import colors from "./colors";
 import font from "./fonts";
 import Main from "./../components/main";
 import Spacer from "./../components/spacer";
-import { Link as Navigate } from "gatsby";
-import { isMobile } from "react-device-detect";
+import { isMobile } from "./../utils/helpers";
 
 const NavigateStyled = styled(Navigate)`
   text-decoration: none;
@@ -25,7 +26,7 @@ const Header = styled.header`
   justify-content: space-between;
   align-items: center;
 
-  flex-direction: ${isMobile ? "column" : "row"};
+  flex-direction: ${isMobile() ? "column" : "row"};
 `;
 
 const MenuWrapper = styled.div``;

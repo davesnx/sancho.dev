@@ -2,13 +2,13 @@ import React from "react";
 import { Helmet } from "react-helmet";
 import styled from "styled-components";
 import { Link as Navigate, graphql } from "gatsby";
-import { isMobile } from "react-device-detect";
 
 import Text from "../components/text";
 import Page from "../components/page";
 import Spacer from "../components/spacer";
 import { H1, H3 } from "../components/heading";
 import font from "../components/fonts";
+import { isMobile } from "./../utils/helpers";
 
 const BlogLink = styled(Navigate)`
   color: inherit;
@@ -17,8 +17,8 @@ const BlogLink = styled(Navigate)`
   display: flex;
   justify-content: space-between;
 
-  ${isMobile ? "flex-direction: column-reverse" : ""};
-  align-items: ${isMobile ? "left" : "center"};
+  ${isMobile() ? "flex-direction: column-reverse" : ""};
+  align-items: ${isMobile() ? "left" : "center"};
 `;
 
 const SmallText = styled(Text)`

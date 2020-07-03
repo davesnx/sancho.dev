@@ -7,15 +7,15 @@ import useMousePosition from "../../components/mouse-position";
 import Spacer from "../../components/spacer";
 import Link from "../../components/link";
 import Text from "../../components/text";
-import { isMobile } from "react-device-detect";
+import { isMobile } from "./../../utils/helpers";
 
 export const Character = styled.span.attrs(props => ({
   style: {
     fontVariationSettings: `"wght" ${props.wght}`,
   },
 }))`
-  width: ${isMobile ? "25px" : "75px"};
-  font-size: ${isMobile ? "25px" : "50px"};
+  width: ${isMobile() ? "25px" : "75px"};
+  font-size: ${isMobile() ? "25px" : "50px"};
   text-transform: uppercase;
   font-family: "Inter";
   display: flex;
@@ -79,7 +79,7 @@ export default () => {
       </Container>
       <Spacer bottom={4}>
         <Text raw align="center" color={colors.white}>
-          {isMobile
+          {isMobile()
             ? "Tap into the name to see the "
             : "Move the mouse in the y axis to see the "}
           <Link

@@ -12,7 +12,7 @@ import { RelativeSpacer } from "../../components/spacer";
 import font from "../../components/fonts";
 import useMousePosition from "../../components/mouse-position";
 import useDeviceOrientation from "../../components/device-orientation";
-import { isMobile } from "react-device-detect";
+import { isMobile } from "./../../utils/helpers";
 
 const Layer = styled.div.attrs(props => ({
   style: {
@@ -89,7 +89,7 @@ const ChromaticText = ({ children, mouse, orientation }) => {
 };
 
 const Name = styled.h1`
-  font-size: ${isMobile ? font.fontSize3 : font.fontSize5};
+  font-size: ${isMobile() ? font.fontSize3 : font.fontSize5};
   font-family: ${font.sans};
   font-weight: bold;
   margin: 0;
@@ -113,7 +113,7 @@ export default () => {
   return (
     <Layout kind={colors.black}>
       <Container>
-        <RelativeSpacer top={isMobile ? -5 : -20}>
+        <RelativeSpacer top={isMobile() ? -5 : -20}>
           <ChromaticText mouse={mouse} orientation={orientation}>
             <Name as="h1">DAVID SANCHO</Name>
           </ChromaticText>
@@ -121,7 +121,7 @@ export default () => {
       </Container>
       <Spacer bottom={4}>
         <Text raw align="center" color={colors.white}>
-          {isMobile
+          {isMobile()
             ? "Incline the phone to see the "
             : "Move the mouse across the screen to see the "}
           <Link
