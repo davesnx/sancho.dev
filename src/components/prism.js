@@ -14,7 +14,7 @@ const strongblue = "#4c575d";
 export default css`
   code[class*="language-"],
   pre[class*="language-"] {
-    font-family: "Fira Code", monospace !important;
+    font-family: "SF Mono", "Fira Code", monospace !important;
     font-size: 16px !important;
   }
 
