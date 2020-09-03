@@ -38,7 +38,7 @@ I was a little frustrated by it and I created a small bash script that solves it
 
 ![yarn-run.gif](/media/yarn-run.gif)
 
-It uses [fzf](https://github.com/junegunn/fzf) to filter the commands available and allows a fast search for them. If you don't know what's fzf, I can't recommend enough using it. fzf stands for [fuzzy finder]() and it's used by default to navigate the bash history and the common use of it it's with a bind to open a file with your editor.
+It uses [fzf](https://github.com/junegunn/fzf) to filter the commands available and allows a fast search for them. If you don't know what's fzf, I can't recommend enough tacking a look at it. fzf stands for *fuzzy finder* and it's used by when hit `CTRL+R` to navigate the bash history and It's commonly used to navigate between files in your editor.
 
 ![fzf.gif](/media/fzf.gif)
 
@@ -50,7 +50,7 @@ if cat package.json > /dev/null 2>&1; then
 
     if [[ -n $scripts ]]; then
         script_name=$(echo $scripts | awk -F ': ' '{gsub(/"/, "", $1); print $1}')
-
+        print -s "yarn run "$script_name;
         yarn run $script_name
     else
         echo "Exit: You haven't selected any script"
@@ -81,23 +81,22 @@ cat package.json | jq .scripts | sed '1d;$d'
 "format": "prettier --write src/**/*.{js,jsx}",
 "start": "npm run develop",
 "serve": "gatsby serve",
-"test": "echo \"Write tests! -> https://gatsby.dev/unit-testing\""
 ```
 
-This output gets passed to [fzf](https://github.com/junegunn/fzf), which creates the floating menu, and once you select one of the rows, the `$script` value is set to `"start": "npm run develop"` and finally you are able to get the command name `"start"` and finishes running `"yarn run start"`.
+This output gets passed to [fzf](https://github.com/junegunn/fzf), which creates the floating menu, and once you select one of the rows, the `$script` value is set to `"start": "npm run develop"` and finally you are able to get the command name `"start"`, saves that command to the history and finaly runs `"yarn run start"`.
 
 > I appended `yarn run` instead of `yarn start` which is also valid, to avoid shadowing any binary.
 
 ## Custom
 
-This script lives under my dotfiles that lives in my personal [setup repo](https://github.com/davesnx/setup/blob/master/bin/run), which is an easy way to install and setup your enviroment each time you change laptops.
+This script lives under my [dotfiles repo](https://github.com/davesnx/setup/blob/master/bin/run), which is an easy way to install and setup your enviroment each time you change laptops.
 
-Feel free to can change this script to use `npm` or do any sort of change, I found playing with my terminal very rewarding and getting those productivity improvements allowed me to do stuff that I wasn't capable before. I will keep sharing more as they pop in my head.
+Feel free to can change this script to use `npm` or do any sort of change, I found playing with my terminal very rewarding, getting to learn deeper about the tools that I used everyday, allowed me to do stuff that I wasn't capable before and having those small performance boosts made my life a little easier. I will keep sharing more as they pop in my head.
 
 ### Resources
 
-- For an introduction to the fzf, see its excellent [blog posts](https://www.freecodecamp.org/news/fzf-a-command-line-fuzzy-finder-missing-demo-a7de312403ff)
+- For an introduction to the fzf, see this [blog post](https://www.freecodecamp.org/news/fzf-a-command-line-fuzzy-finder-missing-demo-a7de312403ff)
 - My personal setup [davesnx/setup](https://github.com/davesnx/setup) using zsh
-- If you aren't familiar with the dotfiles [this](https://www.freecodecamp.org/news/dive-into-dotfiles-part-1-e4eb1003cff6/) would give a little clarity.
+- If you aren't familiar with the dotfiles [this](https://www.freecodecamp.org/news/dive-into-dotfiles-part-1-e4eb1003cff6/) would give a little clarity
 - For the spanish speakers I found this [course](https://pro.codely.tv/library/terminal-zsh/about) amazing
 
