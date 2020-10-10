@@ -23,7 +23,7 @@ export default css`
   }
 
   .gatsby-highlight {
-    margin: 1rem -32px;
+    margin: 0;
     margin-bottom: 2rem;
     padding: 1.25rem 32px;
     border-radius: 4px;
@@ -74,8 +74,8 @@ export default css`
   pre[class*="language-"] {
     overflow: auto;
     position: relative;
-    margin: 0.5em 0;
-    padding: 1.25em 1em;
+    margin: 0;
+    padding: 0;
   }
 
   .language-css > code,

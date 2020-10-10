@@ -22,11 +22,10 @@ const BlogLink = styled(Navigate)`
 `;
 
 const SmallText = styled(Text)`
-  font-size: ${font.fontSize0};
-`;
-
-const Column = styled.div`
-  flex: ${props => props.size || 1};
+  font-size: ${font.fontSizeN1};
+  font-weight: bold;
+  opacity: 0.35;
+  text-transform: uppercase;
 `;
 
 const Title = () => {
@@ -56,17 +55,13 @@ export default ({ data }) => {
       <Page title={<Title />}>
         {data.allMdx.edges.map(({ node }) => (
           <Spacer bottom={3} key={node.id}>
+            <SmallText raw align="left">
+              {node.frontmatter.date}
+            </SmallText>
             <BlogLink to={node.fields.slug}>
-              <Column size={5}>
-                <H3 raw>{node.frontmatter.title}</H3>
-              </Column>
-              <Column size={1}>
-                <SmallText raw align="right">
-                  {node.frontmatter.date}
-                </SmallText>
-              </Column>
+              <H3 raw>{node.frontmatter.title}</H3>
             </BlogLink>
-            <Text>{node.excerpt}</Text>
+            <Text raw>{node.excerpt}</Text>
           </Spacer>
         ))}
       </Page>
