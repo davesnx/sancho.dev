@@ -1,6 +1,6 @@
 ---
 title: "query-json: A story of cross-compilation with Reason"
-date: "2020-10-10"
+date: "2020-10-12"
 tags:
   - "query-json"
   - "json"
@@ -12,31 +12,29 @@ tags:
 ---
 
 <!-- TODO: Disclamer Difference between Rescript/Reason/BuckleScript/OCaml -->
+
 # What's query-json
 
-[query-json](https://github.com/davesnx/query-json) is a re-implementation of [jq's language](https://github.com/stedolan/jq/wiki/jq-Language-Description) in Reason Native.
+[query-json](https://github.com/davesnx/query-json) is a faster and simpler re-implementation of [jq's language](https://github.com/stedolan/jq/wiki/jq-Language-Description) in Reason Native.
 
-Started with the goal to create something useful and learn during the process. I was interested to learn about how to write parsers and compilers using the OCaml stack: [menhir](https://opam.ocaml.org/packages/menhir) and [sedlex](https://github.com/ocaml-community/sedlex), compile it to any architecture and try to compile it to JavaScript as well.
+It's a CLI to run small programs against JSON, the same idea as [sed](https://www.linode.com/docs/tools-reference/tools/manipulate-text-from-the-command-line-with-sed/), but for JSON files. As a web engineer is an essential tool while developing APIs.
 
-This post explains the project, how it was made and which decisions where followed.
+Started with the goal to create something useful and learn during the process. Was very interested in learning about how to write parsers and compilers using the OCaml stack: [menhir](https://opam.ocaml.org/packages/menhir) and [sedlex](https://github.com/ocaml-community/sedlex), compile it to any architecture and try to compile it to JavaScript.
 
-<!-- ## Why re-implement `jq` - Explain atom-jq and node-jq -->
+This post explains the project, how it was made and which decisions where followed and some reflections.
 
 ## Why learning parsers/compilers
-<!-- TODO: Simplify this -->
+I had a little idea about the theory, but very vague and useless. Since I create [styled-ppx](https://github.com/davesnx/styled-ppx) which is a
+ppx (**P**re**P**rocessor E**x**tension) that allows CSS-in-Reason/OCaml. Needs to parse the CSS and have a backend that compiles to [bs-emotion](https://github.com/ahrefs/bs-emotion).
 
-I had a little idea about the theory, but very vague and useless. Since I create [styled-ppx](https://github.com/davesnx/styled-ppx) -which is a
-ppx (**P**re**P**rocessor E**x**tension) that allows CSS-in-Reason/OCaml- It needs to parse the CSS and have a backend that compiles to [bs-emotion](https://github.com/ahrefs/bs-emotion). In the future I want to implement a CSS-in-JS solution written in Reason entirely.
-
-I used [astrada/ocaml-css-parser](https://github.com/astrada/ocaml-css-parser) for acomplising the parsing but It's incomplete, so, in order to have full [CSS3]() support I asked for some help to [@EduardoRFS](https://www.twitch.tv/eduardorfs) and made a CSS Parser which I wanted to understand, improve and maintain.
+I asked for some help to [@EduardoRFS](https://www.twitch.tv/eduardorfs) about writting a CSS Parser that supports the entire [CSS3 specification](https://www.w3.org/TR/2001/WD-css3-roadmap-20010523/) which I will want to understand, improve and maintain over time.
 
 ## How it works
-
 ```bash
 query-json ".store.books | filter(.price > 10)" stores.json
 ```
 
-This would red the `stores.json` and access to "store" field, access to "books" field, since it's an array, it will run a filter on each item and if "price" field is bigger than 10 will keep that item on the list and finally print the resultant list.
+This would read `stores.json` and access to `"store"` field, access to `"books"` field, since it's an array, it will run a filter on each item and if `"price" `field is bigger than 10 will keep that item on the list and finally print the resultant list.
 
 ```json
 [
@@ -55,7 +53,13 @@ This would red the `stores.json` and access to "store" field, access to "books" 
 
 The first argument it's called `query` it's a jq expression and the second one `json` or `payload` and it's a valid JSON file.
 
-In order to transform the `query` to a set of operations that run against a JSON, we will need to divide the problem in 3 steps: **parse**, **compile** and **run**.
+The semantics of jq consists of a set of piped operations, where each output is connected to an input where the first input it's the JSON itself. Some pseudo-code to ilustate:
+
+```
+{ /* json */ } | filter | transform | count
+```
+
+In order to transform the `query` to a set of operations that run against a JSON, we will divide the problem in 3 steps: **parse**, **compile** and **run**.
 
 ### Parsing
 Responsible for transforming a string into an Abstract Syntax Tree and provide a good error message when the input is malformed.
@@ -63,10 +67,9 @@ Responsible for transforming a string into an Abstract Syntax Tree and provide a
 <!-- Explain what kind of parser LR -->
 
 <!-- Explain this better/copy paste jq-language explaination -->
-One of the beauties of `jq` is that all the expressions are piped by default, so
-`.store | .books` is equivalent to `.store.books`
+One of the beauties of `jq` is that all the expressions are piped by default, so `.store | .books` is equivalent to `.store.books`. I designed the AST to represent the pipe structure in it's nature.
 
-If the parser recieves `.store.books` it will give back:
+Let's dive into an example. When the parser recieves `.store.books` will return:
 
 ```reason
 Pipe(
@@ -75,11 +78,11 @@ Pipe(
 )
 ```
 
-All the operations are transformed to these constructors that you can see above (`Pipe`, `Key`), which are called variants. The entire jq program it's one big recursive expression.
+All the operations are transformed to these constructors that you can see above (`Pipe`, `Key`).
 
-These expressions are called [Variants](https://reasonml.github.io/docs/en/variant), it's using one of the best features of Reason, some functional programming communities call it ADT (Algebraic Data Type) which is also correct.
+These expressions are called [Variants](https://reasonml.github.io/docs/en/variant), are one of the best features of Reason, some functional programming communities call it *ADT* (Algebraic Data Type) which is also correct.
 
-In this case those are GADT (Generic Algebraic Data Type) a kind of ADTs since they contain arguments and those can be recusrive.
+In this case those are *GADT* (Generic Algebraic Data Type) a kind of *ADTs* since they contain arguments and those can be recursive. The entire `query-json` program representation it's one big recursive Variant.
 
 Following with a more complex example, let's parse `.store.books | filter(.price > 10)`:
 
@@ -100,8 +103,8 @@ Pipe(
 
 You can see more examples in the [parsing tests](https://github.com/davesnx/query-json/blob/master/test/ParseTest.re)
 
-### Compile
-Compile recieve the AST expression and transforms it to code. It's a big recurive [pattern match](https://reasonml.github.io/docs/en/pattern-matching), which is another great feature of Reason and looks something like this:
+### Compiling
+Compile recieve the *AST* expression and transforms it to code. It's a big recurive [pattern match](https://reasonml.github.io/docs/en/pattern-matching), which is another great feature of Reason and looks something like this:
 
 ```reason
 let rec compile = (expression, json) => {
@@ -120,21 +123,21 @@ let rec compile = (expression, json) => {
 On the left site are defined all the possible `Variants` and on the right site the operations. Those operations transforms the JSON. Here is where `map`, `filter`, `reduce`, `index`, etc... are implemented.
 
 ### Running
-The easier part, the compile step give us back a curried function that expects a json as only argument, we just apply the function to a JSON file.
+The easier part, the compile step give us back a curried function that expects a json as only argument, we just apply the function to this JSON and print the result.
 
-These representations only describe the happy path, in reality all steps of the parsing and compilation return a `Result` type which makes handlings errors more composable.
+This example only describe the happy path, in reality the parsing and compilation steps return a `Result` type which allows handling errors more composable.
 
-## Distribution
-Now we already covered how it works internally and a little overview of the architecture of query-json. Now let's dive on how developers can use it in their machines.
+# Distribution
+Now we already covered how it works internally and a little overview of the architecture. Now let's dive on how developers can use it in their machines.
 
-### How binary cross-compilation works
+## How to cross-compilation to binary
 query-json uses `esy` as a package manager that helps managing either native OCaml and Reason from opam registry or JavaScript packages from npm registry; and `dune` as a build system.
 
 All of the build process and their tests runs on our CI in Github Actions, which allows to run Mac, Windows and Linux images to compile with the OCaml compiler to different architectures.
 
 Once the build is success it pushes the binary into Github Releases and npm registry.
 
-### How compilation to the Web
+## How compile to the Web
 The compilation to JavaScript is the sweet section of this blog post, since we are using OCaml (under the hood while writting Reason), it allows us to compile directlty to JavaScript using [js_of_ocaml](https://github.com/ocsigen/js_of_ocaml).
 
 Using js_of_ocaml in dune is as easy as adding a flag in the dune file. Using the same build command you have an artifact in JavaScript 🤯 . It will compile any library to JavaScript.
@@ -155,7 +158,7 @@ esy add js_of_ocaml-compiler
 )
 ```
 
-### Made query-json's playground
+## Made query-json's playground
 
 After having a JavaScript artifact I was able to run it as playground to teach people how to use it or to test new versions on each pull request in the browser.
 
@@ -167,37 +170,35 @@ The query-json computation runs sincronous since it's able to run on each key-st
 where after the blur happens on the input a request needs to hit a backend and respond with the result. It's a massive improvement.
 
 ### Benefits
+This allows any OCaml backend being able to run in a browser without much hassle, sharing code between backend and frontend has been a dream for a lot of Engineering teams.
 
-This allows any OCaml backend being able to run in a browser without much hassle, moving logic between the backend and the frontend has been a dream for a lot of Engineering teams.
+But not only share logic matters, here's a list of other upsides:
 
-But not only share logic it's important matters here
-
-#### writting patterns
-#### familiarity
-- hiring
-#### portability
-#### usage of OCaml's ecosystem
-- libraries and ppxs
-- latest ocaml versions
+- **Portability**, moving code from server to client or viceversa, sharing marshal/unmarshal code, easier contract testing.
+- **Familiarity**: Writting the same patterns would benefit new commers that need to learn less platform specific rules.
+- **Usage of OCaml's ecosystem**: Access to many libraries and ppxs and latests ocaml's features.
 
 ### Challenges
 This solution has downsides as well, js_of_ocaml isn't the tool that solves all of your problems, actually there's no such tool.
 
 #### Bundlesize
-It's quite big compared to a regular JavaScript application.
+It's quite big compared to regular JavaScript applications.
 
-The entire playground is about 660kb. Includes the Monaco Editor (~356kb) which the rest is query-json and jsoo runtime (300kb).
+The entire playground is about 660kb. Includes the Monaco Editor (~356kb) and the rest is query-json and jsoo runtime (300kb).
 
-jsoo wasn't created with the same mentality as most Frontend developers solve their problems today and was borned X years ago to run some OCaml into a browser.
+jsoo wasn't created with the same mentality as most Frontend developers solve their problems today and was borned 10 years ago to run some OCaml into a browser.
 
 #### Documentation
-One of my bigests complains with OCaml community is the lack of quality documentation. It lacks some of the basics to enable compatibility with JavaScript codebases, modern build systems such as webpack and many bindings to other libraries.
+One of my biggest complains about the OCaml community is the lack of quality documentation.
 
-Comming from the JavaScript community (which have more than 9 million devs) there's plenty of tutorials, manuals for newbies, many StackOverflow results and creates this culture of the copy-paste driven development. That gives all sort of problems, but lowers the barrier to the language and the usage of many dependencies out of the box.
+Comming from the JavaScript community (which have more than 9 million devs) there's plenty of tutorials, examples, manuals, many StackOverflow resolved questions and this culture of the copy-paste driven development.
 
-It's a non-sense compare OCaml and JavaScript, but one of the biggest missing pieces are good documentation for all levels.
+That gives all sort of problems, but lowers the barrier to the language and the usage of many dependencies for new commers or not so passionate FP developers.
+
+It's a non-sense compare OCaml and JavaScript, but one of the biggest missing pieces are good documentation at all levels.
 
 #### Bridge between BuckleScript/Reason and jsoo
+It lacks some of the basics to enable compatibility with JavaScript codebases, modern build systems such as webpack and many bindings to other libraries.
 
 This isn't particular to jsoo, is more related to use jsoo and BuckleScript together. In order to run the jsoo artifact into the BuckleScript/Reason codebase, I needed to write bindings for it.
 
@@ -211,20 +212,34 @@ Using the [Result from OCaml](https://caml.inria.fr/pub/docs/manual-ocaml/libref
 There's probably better ways of achiving it since I made the implementation very unsafe [davesnx/query-json/js/Js.re](https://github.com/davesnx/query-json/blob/master/js/Js.re).
 
 ### It's a tradeoff, as always...
-You can't really compare BuckleScript/rescript with jsoo, since both tools try to solve the same problem in a very different fashion.
+You can't really compare BuckleScript/rescript with jsoo, since both tools try to solve the same problem in very different fashion.
 
-If you are writting an OCaml backend and your team is familiar with it. Your project needs to write shared login, doesn't require a hard need on a lower bundlesize and want to carry most dependencies, ppx and patterns from OCaml, jsoo it's a great option.
+If you are writting an OCaml backend and your team is familiar with it. Your project would benefit from sharing code, don't require a hard need on a lower bundlesize and want to carry all OCaml dependencies, ppx and patterns, jsoo it's the best option.
 
-Since most modern build tools such as Webpack or Rollup allows to lazy import the biggest chunks of your app, you might find no-issue with the big bundle, since most shared logic doesn't require to be present during load-time.
+Since most modern build tools such as [Webpack](https://webpack.js.org/) or [Rollup](https://rollupjs.org) allows to lazy import chunks of your app, you might find no-issue with the big bundle, since most shared logic doesn't require to be present during load-time.
 
 You won't have the facility to write frontend code with React, but I'm sure it will change soon, since there's a current implementation of React in jsso [https://github.com/jchavarri/jsoo-react](https://github.com/jchavarri/jsoo-react).
 
-For now, writting a website in ReasonReact and BuckleScript it's the most robust experience. You can find a lot of bindings to JavaScript libraries, there's a lot of usage in production.
+For now, writting a website in ReasonReact and BuckleScript it's the most robust experience. You can find a lot of bindings to JavaScript libraries, there's a lot of usage in production, plenty of examples.
 
-## Future
+I truly believe that [ReScript](https://rescript-lang.org) it's such a great project to target JavaScript developers that found TypeScript slow and liar, or Flow abandoned. It improves the status quo for many issues regarding the Reason Community and keeps delivering in a fast pace the best tooling.
 
-## Performance
+It makes me very sad that ReScript will diverge at some point from the OCaml ecosystem and won't spend time on build a cross-platform language with the advantatges of cross-compilation and future features from OCaml.
 
+# Future
+The future of query-json is to provide a better experience on running operations on top of JSON.
+
+Providing better error messages and better performance has been the goal.
+
+Currenlty jq has an issue, it's very powerful but confusing. The amount of questions of StackOverflow proves that there's a lot of problems without a solution on the language/compiler.
+
+The other mission of query-json is to push performance forward, now we are implementing most of the missing functionality since I first release it and next is to explore performance optimizations, such as:
+
+- Replacing menhir with a written parser/lexer
+- Using OCaml multicore
+- Partial JSON parsing, only parse the needed parts of a json based on the user's query
+
+## Final
 
 
 
