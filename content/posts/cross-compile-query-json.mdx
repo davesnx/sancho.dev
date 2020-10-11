@@ -34,7 +34,7 @@ I asked for some help to [@EduardoRFS](https://www.twitch.tv/eduardorfs) about w
 query-json ".store.books | filter(.price > 10)" stores.json
 ```
 
-This would read `stores.json` and access to `"store"` field, access to `"books"` field (since it's an array) it will run a filter on each item and filter each item by it's `"price"` that's bigger than 10 and finally, print the resultant list.
+This would read `stores.json` and access to `"store"` field, access to `"books"` field (since it's an array) it will run a filter on each item and filter each item by it's `"price"` that's larger than 10 and finally, print the resultant list.
 
 ```json
 [
@@ -53,7 +53,7 @@ This would read `stores.json` and access to `"store"` field, access to `"books"`
 
 The first argument is called `query` and it's a jq expression. The second one is called `json` or `payload`, and it's a valid JSON file.
 
-The semantics of jq consists of a set of piped operations, where each output is connected to an input where the first input it's the JSON itself. Some pseudo-code to illustate:
+The semantics of jq consist of a set of piped operations, where each output is connected to an input where the first input it's the JSON itself. Some pseudo-code to illustate:
 
 ```
 { /* json */ } | filter | transform | count
