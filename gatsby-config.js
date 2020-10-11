@@ -35,6 +35,10 @@ module.exports = {
     },
     {
       resolve: "gatsby-plugin-sharp",
+      options: {
+        base64Width: 30,
+        stripMetadata: true,
+      },
     },
     {
       resolve: `gatsby-plugin-mdx`,
@@ -44,7 +48,8 @@ module.exports = {
           {
             resolve: `gatsby-remark-images`,
             options: {
-              maxWidth: 590,
+              maxWidth: 836,
+              linkImagesToOriginal: false,
             },
           },
           {
