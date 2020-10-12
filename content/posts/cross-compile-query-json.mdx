@@ -24,7 +24,7 @@ This post explains the project, how it was made and which decisions were followe
 ![](./images/exploded-view.jpg)
 
 ## Why learning parsers/compilers
-I had a little idea about the theory, but very vague and useless. Since I created [styled-ppx](https://github.com/davesnx/styled-ppx) which is a
+I had a little idea about the theory, but very vague and useless and was the righ time to learn more since I created [styled-ppx](https://github.com/davesnx/styled-ppx) which is a
 **ppx** (**P**re**P**rocessor E**x**tension) that allows CSS-in-Reason/OCaml. Needs to parse the CSS and have a backend that compiles to [bs-emotion](https://github.com/ahrefs/bs-emotion).
 
 I asked for some help to [@EduardoRFS](https://www.twitch.tv/eduardorfs) about writing a CSS Parser that supports the entire [CSS3 specification](https://www.w3.org/TR/2001/WD-css3-roadmap-20010523/) which I will want to understand, improve and maintain over time.
@@ -34,7 +34,7 @@ I asked for some help to [@EduardoRFS](https://www.twitch.tv/eduardorfs) about w
 query-json ".store.books | filter(.price > 10)" stores.json
 ```
 
-This would read `stores.json` and access to `"store"` field, access to `"books"` field (since it's an array) it will run a filter on each item and filter each item by it's `"price"` that's larger than 10 and finally, print the resultant list.
+This reads `stores.json` and access to `"store"` field, access to `"books"` field (since it's an array) it will run a filter on each item and filter each item by it's `"price"` that's larger than 10 and finally, print the resultant list.
 
 ```json
 [
@@ -62,12 +62,9 @@ The semantics of jq consist of a set of piped operations, where each output is c
 In order to transform the `query` to a set of operations that run against a JSON, we will divide the problem into 3 steps: **parse**, **compile** and **run**.
 
 ### Parsing
-Responsible for transforming a string into an Abstract Syntax Tree and provide a good error message when the input is malformed.
+Responsible for transforming a string into an [AST](https://en.wikipedia.org/wiki/Abstract_syntax_tree)(Abstract Syntax Tree) and provide a good error message when the input is malformed.
 
-<!-- TODO: Explain what kind of parser LR -->
-
-<!-- TODO: Explain this better/copy paste jq-language explaination -->
-One of the beauties of `jq` is that all the expressions are piped by default, so `.store | .books` is equivalent to `.store.books`. I designed the AST to represent the pipe structure in its nature.
+One of the beauties of `jq` is that all the expressions are piped by default, so `.store | .books` is equivalent to `.store.books`. I designed the *AST* to represent the pipe structure in its nature. If you want to know more about jq's language, check their [wiki](https://en.wikipedia.org/wiki/Abstract_syntax_tree).
 
 Let's dive into an example. When the parser recieves `.store.books` will return:
 
@@ -78,10 +75,11 @@ Pipe(
 )
 ```
 
-All the operations are transformed into these constructors that you can see above (`Pipe`, `Key`).
+All the operations are transformed into these constructors from above (`Pipe`, `Key`). Those constructors are called Variants.
 
-Variants belong to a large group of types called [*ADTs*](https://en.wikipedia.org/wiki/Algebraic_data_type)
-In this case, those are *GADT* (Generic Algebraic Data Type) a kind of *ADTs* since they contain arguments and those can be recursive. The entire `query-json` program representation it's one big recursive Variant.
+Variants models values that may assume one of many known variations. This feature is similar to `enums` in other languages, but each variant may optionally contain data that is carried inside. Variants belong to a large group of types called [*ADTs*](https://en.wikipedia.org/wiki/Algebraic_data_type).
+
+The entire `query-json` program representation it's one big recursive Variant.
 
 Following with a more complex example, let's parse `.store.books | filter(.price > 10)`:
 
@@ -149,13 +147,13 @@ js_of_ocaml is a compiler that can be plugged to the OCaml's one and It makes it
 
 As you can see, query-json uses menhir, sedlex and [yojson](https://github.com/ocaml-community/yojson)
 
-In order to use it in esy, I only needed to add
+In order to use it in [esy](http://esy.sh), the package manager, I only needed to add
 ```bash
 esy add js_of_ocaml
 esy add js_of_ocaml-compiler
 ```
 
-and modify it's dune entry-point
+and modify it's [dune](https://dune.build) file, the build system
 ```clojure
 (executable
  (name Js)
@@ -247,6 +245,6 @@ The other mission of query-json is to push performance forward, now we are imple
 - Partial JSON parsing, only parse the needed parts of a json based on the user's query
 
 ## Final
-Hope you liked the project and the story, let me know if you are interested in those topics I'm always happy to chat and help.
+Hope you liked the project and the story, let me know if you are interested in those topics I'm always happy to chat and help. I answer to all the DMs on [Twitter](https://twitter.com/davesnx).
 
 See you next time 👋
