@@ -21,6 +21,13 @@ module.exports = {
       },
     },
     {
+      resolve: `gatsby-plugin-splitbee`,
+      options: {
+        includeInDevelopment: false,
+        delayTimeout: 0,
+      },
+    },
+    {
       resolve: `gatsby-source-filesystem`,
       options: {
         name: `posts`,
@@ -34,6 +41,13 @@ module.exports = {
       },
     },
     {
+      resolve: "gatsby-plugin-sharp",
+      options: {
+        base64Width: 30,
+        stripMetadata: true,
+      },
+    },
+    {
       resolve: `gatsby-plugin-mdx`,
       options: {
         extensions: [`.mdx`, `.md`],
@@ -41,7 +55,8 @@ module.exports = {
           {
             resolve: `gatsby-remark-images`,
             options: {
-              maxWidth: 590,
+              maxWidth: 836,
+              linkImagesToOriginal: false,
             },
           },
           {

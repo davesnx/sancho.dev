@@ -19,20 +19,10 @@ const Hr = styled.hr`
   opacity: 0.1;
 `;
 
-const ImageWrapper = styled.div`
-  margin: 0px -32px;
-`;
-
-const PaddedImage = styled.img`
+const Image = styled.img`
   width: 100%;
   border-radius: 4px;
 `;
-
-const Image = props => (
-  <ImageWrapper>
-    <PaddedImage {...props} />
-  </ImageWrapper>
-);
 
 const Blockquote = styled.blockquote`
   font-style: italic;
