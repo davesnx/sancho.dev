@@ -144,16 +144,15 @@ Once the build and test succeeds it pushes the binary into Github Releases and n
 The compilation to JavaScript is the sweet section of this blog post since we are using OCaml (under the hood while writing Reason), and it allows us to compile directly to JavaScript using [js_of_ocaml](https://github.com/ocsigen/js_of_ocaml).
 
 js_of_ocaml is a compiler that can be plugged to the OCaml's one and It makes it possible to run pure OCaml programs into JavaScript.
-
 As you can see, query-json uses menhir, sedlex and [yojson](https://github.com/ocaml-community/yojson)
 
-In order to use it in [esy](http://esy.sh), the package manager, I only needed to add
+In order to use it in [esy](http://esy.sh), the package manager, I only needed to add:
 ```bash
 esy add js_of_ocaml
 esy add js_of_ocaml-compiler
 ```
 
-and modify it's [dune](https://dune.build) file, the build system
+and modify it's [dune](https://dune.build) file, the build system:
 ```clojure
 (executable
  (name Js)
@@ -162,8 +161,10 @@ and modify it's [dune](https://dune.build) file, the build system
 )
 ```
 
+After running the build, it generates a bundle.js!
+
 ## Made query-json's playground
-After having a JavaScript artefact I was able to run it as a playground to teach people how to use it or to test new versions on each pull request in the browser.
+After having a JavaScript artefact I was able to run it as a playground in the browser. To teach people how to use it without the binary install or to test new versions on each pull request, well, the possibilities of the web are endless!
 
 ![](./images/playground.png)
 
@@ -171,8 +172,9 @@ I build a website using Reason and BuckleScript which uses query-json JavaScript
 
 https://query-json.netlify.app
 
-The query-json computation runs synchronous since it's able to run on each key-stroke. Comparing this playground with [jqplay.org](https://jqplay.org/)
-when the blur happens on the input a request needs to hit a backend and respond with the result. It's a massive improvement.
+The query-json computation runs synchronous since it's able to run on each key-stroke. Comparing this playground with [jqplay.org](https://jqplay.org/) that needs to hit a backend and respond with the result.
+
+Having a playground as a serverless frontend app It's a massive improvement over backend-dependant ones. Actually, most of the REPL's from Reason, OCaml, Flow, ReScript uses js_of_ocaml.
 
 ### Benefits
 This allows any OCaml backend being able to run in a browser without much hassle, sharing code between backend and frontend has been a dream for a lot of Engineering teams.
@@ -182,6 +184,7 @@ But not only share logic matters, here's a list of other upsides:
 - **Portability**, moving code from server to client or viceversa, sharing marshal/unmarshal code, easier contract testing.
 - **Familiarity**: Writing the same patterns would benefit new comers that need to learn less platform-specific rules.
 - **Usage of OCaml's ecosystem**: Access to many libraries and ppxs and latest ocaml's features.
+- **Features that weren't possible**: Some apps might benefit from Server-side rendering, others might benefit from moving stuff to offline, and many app-specific designs that are unblocked by this.
 
 ### Challenges
 This solution has downsides as well, js_of_ocaml isn't the tool that solves all of your problems, actually, there's no such tool.
@@ -200,7 +203,7 @@ Coming from the JavaScript community (which have more than 9 million devs) there
 
 That gives all sort of problems, but lowers the barrier to the language and the usage of many dependencies for new comers or not so passionate FP developers.
 
-It's a non-sense compare OCaml and JavaScript, but one of the biggest missing pieces are good documentation at all levels.
+It's a non-sense compare OCaml and JavaScript, but one of the biggest missing pieces is good documentation at all levels.
 
 #### Bridge between BuckleScript/Reason and js_of_ocaml
 Js_of_ocaml lacks some of the basics to enable compatibility with JavaScript codebases, modern build systems such as webpack and many bindings to other libraries. So to build the online playground, I used BuckleScript for the UI and js_of_ocaml for the query-json browser build, and this required having to make them communicate to each other.
