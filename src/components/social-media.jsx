@@ -69,7 +69,7 @@ export const TwitterIcon = ({ href, size, inline = false }) => (
 
 export default () => (
   <InlineLogoWrapper>
-    <TwitterIcon href="https://github.com/davesnx" />
+    <TwitterIcon href="https://twitter.com/davesnx" />
     <Spacer left={2} />
     <GithubIcon href="https://github.com/davesnx" />
     <Spacer left={2} />
