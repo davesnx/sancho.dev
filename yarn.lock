@@ -8831,10 +8831,10 @@ gatsby-telemetry@^1.3.9:
     stack-utils "1.0.2"
     uuid "3.4.0"
 
-gatsby-transformer-mdx@^1.1.3:
-  version "1.1.3"
-  resolved "https://registry.yarnpkg.com/gatsby-transformer-mdx/-/gatsby-transformer-mdx-1.1.3.tgz#008e4ba3ff5ef596f349f2c5615a0a61010f21b5"
-  integrity sha512-mAZiKsX96q3JKOHvaV/dB4/0Z2EnCnvxeJQWhWxqAja2njoR7yrVv9Gq9YqE5DzPjQggySRZs2LdPWAQ+C7RBQ==
+gatsby-transformer-mdx@^1.2.0:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/gatsby-transformer-mdx/-/gatsby-transformer-mdx-1.2.0.tgz#8ab77f00693c49c05afa6d0a9d91ff75b5c43707"
+  integrity sha512-sHg1AeQrhvLHj/AskFwSLOUa/Ep4qCRL0R79Vf0nXOl2p13Z7R9SKcRY0wUr7V08Yrfk+oUBiNvVy+/zQNQkzQ==
   dependencies:
     "@babel/plugin-proposal-export-default-from" "^7.2.0"
     "@mdx-js/loader" "^0.20.3"
