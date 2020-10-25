@@ -61,7 +61,6 @@ export default ({ data }) => {
             <BlogLink to={node.fields.slug}>
               <H3 raw>{node.frontmatter.title}</H3>
             </BlogLink>
-            <Text raw>{node.excerpt}</Text>
           </Spacer>
         ))}
       </Page>
