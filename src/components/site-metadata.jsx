@@ -31,6 +31,10 @@ const SiteMetadata = ({ pathname }) => {
         content="width=device-width, initial-scale=1, shrink-to-fit=no"
       />
       <meta name="theme-color" content={colors.black} />
+      <meta
+        name="ahrefs-site-verification"
+        content="bd6c5b649f70973df5dea834d5ed90214fd6acec11974bfdd1d44b2e24a03009"
+      />
 
       <link rel="manifest" href={`${siteUrl}/manifest.json`} />
       <link rel="shortcut icon" href={`${siteUrl}/favicon/favicon.ico`} />
