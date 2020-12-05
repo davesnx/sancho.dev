@@ -6,7 +6,7 @@ import SiteMetadata from "./site-metadata";
 import colors from "./colors";
 import font from "./fonts";
 import Main from "./../components/main";
-import Spacer from "./../components/spacer";
+import { RelativeSpacer } from "./../components/spacer";
 import { isMobile } from "./../utils/helpers";
 
 const NavigateStyled = styled(Navigate)`
@@ -86,26 +86,24 @@ export default ({ children, pathname, kind = colors.white }) => {
     <Root backgroundColor={backgroundColor}>
       <SiteMetadata pathname={pathname} />
       <Main>
-        <Spacer top={4}>
-          <Header>
-            <Logo to="/">@davesnx</Logo>
-            <MenuWrapper>
-              <Menu>
-                <MenuItem color={color}>
-                  <NavigateStyled to="/blog">blog</NavigateStyled>
-                </MenuItem>
-                <MenuItem color={color}>
-                  <NavigateStyled to="/experiments">experiments</NavigateStyled>
-                </MenuItem>
-                <MenuItem color={color}>
-                  <NavigateStyled to="/">about</NavigateStyled>
-                </MenuItem>
-              </Menu>
-            </MenuWrapper>
-          </Header>
-        </Spacer>
+        <Header>
+          <Logo to="/">@davesnx</Logo>
+          <MenuWrapper>
+            <Menu>
+              <MenuItem color={color}>
+                <NavigateStyled to="/blog">blog</NavigateStyled>
+              </MenuItem>
+              <MenuItem color={color}>
+                <NavigateStyled to="/experiments">experiments</NavigateStyled>
+              </MenuItem>
+              <MenuItem color={color}>
+                <NavigateStyled to="/about">about</NavigateStyled>
+              </MenuItem>
+            </Menu>
+          </MenuWrapper>
+        </Header>
       </Main>
-      {children}
+      <RelativeSpacer top={isMobile() ? 6 : 12}>{children}</RelativeSpacer>
     </Root>
   );
 };

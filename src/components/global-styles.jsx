@@ -33,13 +33,6 @@ const GlobalStyles = createGlobalStyle`
     line-height: 1.4;
     box-sizing: border-box;
   }
-
-  div {
-    display: flex;
-    flex-direction: column;
-    flex-shrink: 0;
-  }
-
 `;
 
 export default GlobalStyles;

@@ -112,27 +112,27 @@ export default () => {
 
   return (
     <Layout kind={colors.black}>
-      <Container>
-        <RelativeSpacer top={isMobile() ? -5 : -20}>
+      <RelativeSpacer top={8}>
+        <Container>
           <ChromaticText mouse={mouse} orientation={orientation}>
             <Name as="h1">DAVID SANCHO</Name>
           </ChromaticText>
-        </RelativeSpacer>
-      </Container>
-      <Spacer bottom={4}>
-        <Text raw align="center" color={colors.white}>
-          {isMobile()
-            ? "Incline the phone to see the "
-            : "Move the mouse across the screen to see the "}
-          <Link
-            target="_blank"
-            rel="noopener noreferer"
-            href="https://en.wikipedia.org/wiki/Chromatic_aberration"
-          >
-            Chromatic Distortion effect
-          </Link>
-        </Text>
-      </Spacer>
+          <Spacer top={4}>
+            <Text raw align="center" color={colors.white}>
+              {isMobile()
+                ? "Incline the phone to see the "
+                : "Move the mouse across the screen to see the "}
+              <Link
+                target="_blank"
+                rel="noopener noreferer"
+                href="https://en.wikipedia.org/wiki/Chromatic_aberration"
+              >
+                Chromatic Distortion effect
+              </Link>
+            </Text>
+          </Spacer>
+        </Container>
+      </RelativeSpacer>
     </Layout>
   );
 };

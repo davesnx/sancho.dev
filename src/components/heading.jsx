@@ -5,6 +5,8 @@ import styled, { css } from "styled-components";
 const Heading = css`
   margin: 0;
   padding: 0;
+
+  display: ${props => (props.inline ? "inline-block" : "block")};
 `;
 
 const padded = `

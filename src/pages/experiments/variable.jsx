@@ -29,6 +29,7 @@ export const Character = styled.span.attrs(props => ({
 `;
 
 const Row = styled.div`
+  display: flex;
   flex-direction: row;
 `;
 
@@ -76,21 +77,21 @@ export default () => {
     <Layout kind={colors.black}>
       <Container>
         <Squared x={mouse.x} text="David Sancho" />
+        <Spacer top={4}>
+          <Text raw align="center" color={colors.white}>
+            {isMobile()
+              ? "Tap into the name to see the "
+              : "Move the mouse in the y axis to see the "}
+            <Link
+              target="_blank"
+              rel="noopener noreferer"
+              href="https://en.wikipedia.org/wiki/Chromatic_aberration"
+            >
+              Variable font weight effect
+            </Link>
+          </Text>
+        </Spacer>
       </Container>
-      <Spacer bottom={4}>
-        <Text raw align="center" color={colors.white}>
-          {isMobile()
-            ? "Tap into the name to see the "
-            : "Move the mouse in the y axis to see the "}
-          <Link
-            target="_blank"
-            rel="noopener noreferer"
-            href="https://en.wikipedia.org/wiki/Chromatic_aberration"
-          >
-            Variable font weight effect
-          </Link>
-        </Text>
-      </Spacer>
     </Layout>
   );
 };

@@ -9,14 +9,20 @@ import Page from "../components/page";
 import Spacer from "../components/spacer";
 import Text from "../components/text";
 import Link from "../components/link";
+import Icon from "../components/icon";
+
+import Twitter from "./../svgs/twitter";
 import { ListItem, OrderList, UnorderList } from "../components/list";
 import { H1, H2, H3, H4, H5, H6 } from "../components/heading";
 import colors from "../components/colors";
 import fonts from "../components/fonts";
 
-const Hr = styled.hr`
+const Hr = styled.span`
+  display: block;
   width: 100%;
-  opacity: 0.1;
+  opacity: 0.3;
+  height: 2px;
+  background-color: ${colors.grey};
 `;
 
 const Image = styled.img`
@@ -51,6 +57,35 @@ const Blockquote = styled.blockquote`
     background-color: rgba(0, 0, 0, 0.1) !important;
   }
 `;
+
+const Align = styled.div`
+  display: flex;
+  width: 100%;
+  justify-content: flex-start;
+`;
+
+const Stack = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+const TwitterShare = ({ title, href }) => {
+  const urlToShare = `http://www.twitter.com/share?url=${href}&text=${title}: `;
+  return (
+    <Link href={urlToShare}>
+      <Align>
+        <Stack>
+          <Text tiny raw color={colors.paleBlue}>
+            Share on Twitter
+          </Text>
+          <Spacer left={1} />
+          <Icon svg={Twitter} size={20} color={colors.paleBlue} />
+        </Stack>
+      </Align>
+    </Link>
+  );
+};
 
 export default ({ data }) => {
   const post = data.mdx;
@@ -95,6 +130,17 @@ export default ({ data }) => {
             <MDXRenderer>{post.body}</MDXRenderer>
           </MDXProvider>
         </Spacer>
+        <Spacer top={4} bottom={4}>
+          <Hr />
+        </Spacer>
+        <Text>
+          Thanks for reaching the end, If you have any question, correction or
+          comment let me know!
+        </Text>
+        <TwitterShare
+          title={post.frontmatter.title}
+          href={window && window.location.href}
+        />
       </Page>
     </>
   );

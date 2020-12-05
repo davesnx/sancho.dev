@@ -10,6 +10,7 @@ export const styles = css`
   line-height: 1.7;
   color: ${props => props.color};
   margin: 0;
+  display: inline-block;
 `;
 
 const Text = styled.p`

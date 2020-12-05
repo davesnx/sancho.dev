@@ -12,8 +12,10 @@ const Link = styled.a`
     color: ${colors.blue};
   }
 
+  cursor: pointer;
   overflow-wrap: break-word;
   word-wrap: break-word;
+  display: inherit;
 `;
 
 export default Link;
