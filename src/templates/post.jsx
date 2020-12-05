@@ -4,6 +4,7 @@ import styled from "styled-components";
 import { graphql } from "gatsby";
 import { MDXRenderer } from "gatsby-plugin-mdx";
 import { MDXProvider } from "@mdx-js/react";
+import { window } from "browser-monads";
 
 import Page from "../components/page";
 import Spacer from "../components/spacer";
@@ -148,7 +149,7 @@ export default ({ data }) => {
         </Text>
         <TwitterShare
           title={post.frontmatter.title}
-          href={window && window.location.href}
+          href={window.location.href}
         />
       </Page>
     </>
