@@ -1,6 +1,5 @@
 import React from "react";
 import { graphql } from "gatsby";
-import styled from "styled-components";
 
 import Page from "../components/page";
 import Spacer from "../components/spacer";
@@ -11,7 +10,7 @@ import SocialMedia from "../components/social-media";
 
 export default () => {
   return (
-    <Page title={<H1 raw>{"David Sancho"}</H1>}>
+    <Page title="David Sancho">
       <>
         <Text align="left">
           I'm a Software Engineer working at{" "}
@@ -34,6 +33,7 @@ export default () => {
           Passionate about functional programming, design, scalability, people
           and business. Amateur triathlete.
         </Text>
+        <Spacer top={8} />
         <SocialMedia />
       </>
     </Page>

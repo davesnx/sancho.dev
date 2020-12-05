@@ -8,6 +8,7 @@ import font from "./fonts";
 import Main from "./../components/main";
 import { RelativeSpacer } from "./../components/spacer";
 import { isMobile } from "./../utils/helpers";
+import { Distribute, Stack } from "./../components/taco";
 
 const NavigateStyled = styled(Navigate)`
   text-decoration: none;
@@ -21,16 +22,6 @@ const Root = styled.div`
   background-color: ${props => props.backgroundColor};
 `;
 
-const Header = styled.header`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-
-  flex-direction: ${isMobile() ? "column" : "row"};
-`;
-
-const MenuWrapper = styled.div``;
-
 const Menu = styled.ul`
   padding: 0;
   display: flex;
@@ -40,8 +31,6 @@ const Menu = styled.ul`
 `;
 
 const MenuItem = styled.li`
-  margin-left: 24px;
-
   font-size: ${font.fontSize0};
   font-family: ${font.sans};
   font-weight: bold;
@@ -86,10 +75,14 @@ export default ({ children, pathname, kind = colors.white }) => {
     <Root backgroundColor={backgroundColor}>
       <SiteMetadata pathname={pathname} />
       <Main>
-        <Header>
-          <Logo to="/">@davesnx</Logo>
-          <MenuWrapper>
-            <Menu>
+        <header>
+          <Distribute
+            gap={2}
+            direction={isMobile() ? "vertical" : "horitzontal"}
+            distribute="between"
+          >
+            <Logo to="/">@davesnx</Logo>
+            <Stack gap={3}>
               <MenuItem color={color}>
                 <NavigateStyled to="/blog">blog</NavigateStyled>
               </MenuItem>
@@ -99,9 +92,9 @@ export default ({ children, pathname, kind = colors.white }) => {
               <MenuItem color={color}>
                 <NavigateStyled to="/about">about</NavigateStyled>
               </MenuItem>
-            </Menu>
-          </MenuWrapper>
-        </Header>
+            </Stack>
+          </Distribute>
+        </header>
       </Main>
       <RelativeSpacer top={isMobile() ? 6 : 12}>{children}</RelativeSpacer>
     </Root>

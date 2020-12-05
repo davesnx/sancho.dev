@@ -78,7 +78,7 @@ export default () => {
       <Container>
         <Squared x={mouse.x} text="David Sancho" />
         <Spacer top={4}>
-          <Text raw align="center" color={colors.white}>
+          <Text align="center" color={colors.white}>
             {isMobile()
               ? "Tap into the name to see the "
               : "Move the mouse in the y axis to see the "}

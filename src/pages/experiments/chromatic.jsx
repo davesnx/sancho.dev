@@ -118,7 +118,7 @@ export default () => {
             <Name as="h1">DAVID SANCHO</Name>
           </ChromaticText>
           <Spacer top={4}>
-            <Text raw align="center" color={colors.white}>
+            <Text align="center" color={colors.white}>
               {isMobile()
                 ? "Incline the phone to see the "
                 : "Move the mouse across the screen to see the "}

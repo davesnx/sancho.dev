@@ -179,7 +179,7 @@ export default ({ data }) => {
         <meta property="og:type" content="website" />
       </Helmet>
 
-      <Page title={<H1 raw>Experiments</H1>}>
+      <Page title="Experiments">
         <Grid>
           <ChromaticButton to="experiments/chromatic" />
           <VariableButton to="experiments/variable" />

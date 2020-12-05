@@ -17,6 +17,15 @@ import { H1, H2, H3, H4, H5, H6 } from "../components/heading";
 import colors from "../components/colors";
 import fonts from "../components/fonts";
 
+const HeadingPadded = c => styled(c)`
+  margin-top: 2.5rem;
+  margin-bottom: 1rem;
+`;
+
+const contentPadded = c => styled(c)`
+  margin-bottom: 24px;
+`;
+
 const Hr = styled.span`
   display: block;
   width: 100%;
@@ -76,7 +85,7 @@ const TwitterShare = ({ title, href }) => {
     <Link href={urlToShare}>
       <Align>
         <Stack>
-          <Text tiny raw color={colors.paleBlue}>
+          <Text tiny color={colors.paleBlue}>
             Share on Twitter
           </Text>
           <Spacer left={1} />
@@ -107,17 +116,17 @@ export default ({ data }) => {
         <meta name="twitter:description" content={post.frontmatter.subtitle} />
         <meta name="twitter:image" content={post.frontmatter.imghero} />
       </Helmet>
-      <Page title={<H1 raw>{post.frontmatter.title}</H1>}>
+      <Page title={post.frontmatter.title}>
         <Spacer bottom={2}>
           <MDXProvider
             components={{
-              h1: H1,
-              h2: H2,
-              h3: H3,
-              h4: H4,
-              h5: H5,
-              h6: H6,
-              p: Text,
+              h1: HeadingPadded(H1),
+              h2: HeadingPadded(H2),
+              h3: HeadingPadded(H3),
+              h4: HeadingPadded(H4),
+              h5: HeadingPadded(H5),
+              h6: HeadingPadded(H6),
+              p: contentPadded(Text),
               a: Link,
               li: ListItem,
               ol: OrderList,

@@ -17,7 +17,6 @@ const Text = styled.p`
   ${styles};
 
   text-align: ${props => props.align}};
-  margin-bottom: ${props => (!props.raw ? "24px" : "")};
 `;
 
 export default ({ children, ...rest }) => {

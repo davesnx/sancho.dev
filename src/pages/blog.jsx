@@ -21,20 +21,12 @@ const BlogLink = styled(Navigate)`
   align-items: ${isMobile() ? "left" : "center"};
 `;
 
-const SmallText = styled(Text)`
+const Date = styled(Text)`
   font-size: ${font.fontSizeN1};
   font-weight: bold;
   opacity: 0.35;
   text-transform: uppercase;
 `;
-
-const Title = () => {
-  return (
-    <div>
-      <H1 raw>Thoughts</H1>
-    </div>
-  );
-};
 
 export default ({ data }) => {
   const {
@@ -52,14 +44,12 @@ export default ({ data }) => {
         <meta property="og:type" content="website" />
       </Helmet>
 
-      <Page title={<Title />}>
+      <Page title="Thoughts">
         {data.allMdx.edges.map(({ node }) => (
           <Spacer bottom={3} key={node.id}>
-            <SmallText raw align="left">
-              {node.frontmatter.date}
-            </SmallText>
+            <Date align="left">{node.frontmatter.date}</Date>
             <BlogLink to={node.fields.slug}>
-              <H3 raw>{node.frontmatter.title}</H3>
+              <H3> {node.frontmatter.title}</H3>
             </BlogLink>
           </Spacer>
         ))}
