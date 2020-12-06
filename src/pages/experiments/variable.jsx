@@ -82,11 +82,7 @@ export default () => {
             {isMobile()
               ? "Tap into the name to see the "
               : "Move the mouse in the y axis to see the "}
-            <Link
-              target="_blank"
-              rel="noopener noreferer"
-              href="https://en.wikipedia.org/wiki/Chromatic_aberration"
-            >
+            <Link to="https://en.wikipedia.org/wiki/Chromatic_aberration">
               Variable font weight effect
             </Link>
           </Text>

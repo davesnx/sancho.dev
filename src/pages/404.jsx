@@ -1,22 +1,20 @@
 import React from "react";
-import Layout from "../components/layout";
-import Main from "../components/main";
-import { H1 } from "../components/heading";
+
 import Text from "../components/text";
+import Page from "../components/page";
+import Spacer from "../components/spacer";
+import Navigate from "../components/navigate";
 import Link from "../components/link";
 
 export default () => (
-  <Layout>
-    <Main>
-      <H1>
-        <span role="img" aria-label="Ghost">
-          🤔 Not found
-        </span>
-      </H1>
-      <Text>
-        It seems this page does not exist. Go back to{" "}
-        <Link href="https://sancho.dev">home</Link>
-      </Text>
-    </Main>
-  </Layout>
+  <Page title="Page cannot be found">
+    <Text>
+      If it sounds like it shoud 🤔, please open an issue{" "}
+      <Link to="https://github.com/davesnx/sancho.dev">here</Link>.
+    </Text>
+    <Spacer top={2} />
+    <Text>
+      Go back to <Navigate to="https://sancho.dev">home</Navigate>.
+    </Text>
+  </Page>
 );

@@ -83,7 +83,7 @@ const Stack = styled.div`
 const TwitterShare = ({ title, href }) => {
   const urlToShare = `http://www.twitter.com/share?url=${href}&text=${title}: `;
   return (
-    <Link href={urlToShare}>
+    <Link to={urlToShare}>
       <Align>
         <Stack>
           <Text tiny color={colors.paleBlue}>

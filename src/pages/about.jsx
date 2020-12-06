@@ -2,13 +2,12 @@ import React from "react";
 import { graphql } from "gatsby";
 
 import Page from "../components/page";
+import Description from "./../components/description";
 import Spacer from "../components/spacer";
 import Icon from "../components/icon";
 import Link from "../components/link";
 import Text from "../components/text";
-import colors from "../components/colors";
 import { H1, H4 } from "../components/heading";
-import font from "../components/fonts";
 import { VisualList as List, ListItem } from "../components/list";
 import Github from "./../svgs/github";
 import Web from "./../svgs/web";
@@ -37,7 +36,7 @@ const Item = ({ title, description, kind, link }) => {
   return (
     <ListItem>
       <Spacer bottom={5}>
-        <Link target="_blank" href={link}>
+        <Link to={link}>
           <Spacer bottom={1}>
             <H4 inline>{title}</H4>
             <Spacer inline left={1}>
@@ -55,30 +54,10 @@ export default () => {
   return (
     <Page title="About">
       <>
-        <Text align="left">
-          I'm David Sancho a Software Engineer working at{" "}
-          <Link
-            target="_blank"
-            rel="noreferrer noopener"
-            href="https://draftbit.com"
-          >
-            Draftbit
-          </Link>
-          , previously at{" "}
-          <Link
-            target="_blank"
-            rel="noreferrer noopener"
-            href="https://www.typeform.com"
-          >
-            Typeform
-          </Link>
-          . Living in Barcelona, Spain.
-          <Spacer top={2} />
-          Passionate about functional programming, design, scalability, people
-          and business. Amateur triathlete.
-        </Text>
+        <Description />
         <Spacer top={6}>
           <H1>Projects</H1>
+          <Spacer top={3} />
           <Text>
             I'm a very creative person and have a mind full of ideas, some of
             them gets materialized into code and share it as Open Source

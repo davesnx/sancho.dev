@@ -1,33 +1,25 @@
 import React from "react";
 import styled from "styled-components";
-import { Link as Navigate } from "gatsby";
 
 import SiteMetadata from "./site-metadata";
 import colors from "./colors";
 import font from "./fonts";
 import Main from "./../components/main";
+import NavigateLink from "./../components/navigate";
 import { RelativeSpacer } from "./../components/spacer";
 import { isMobile } from "./../utils/helpers";
 import { Distribute, Stack } from "./../components/taco";
 
-const NavigateStyled = styled(Navigate)`
-  text-decoration: none;
-  font-size: ${font.fontSizeN1};
+const Navigate = styled(NavigateLink)`
   color: currentColor;
+  font-size: ${font.fontSizeN1};
+  font-weight: bold;
 `;
 
 const Root = styled.div`
   min-width: 100vw;
   min-height: 100vh;
   background-color: ${props => props.backgroundColor};
-`;
-
-const Menu = styled.ul`
-  padding: 0;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  list-style: none;
 `;
 
 const MenuItem = styled.li`
@@ -84,19 +76,19 @@ export default ({ children, pathname, kind = colors.white }) => {
             <Logo to="/">@davesnx</Logo>
             <Stack gap={3}>
               <MenuItem color={color}>
-                <NavigateStyled to="/blog">blog</NavigateStyled>
+                <Navigate to="/blog">blog</Navigate>
               </MenuItem>
               <MenuItem color={color}>
-                <NavigateStyled to="/experiments">experiments</NavigateStyled>
+                <Navigate to="/experiments">experiments</Navigate>
               </MenuItem>
               <MenuItem color={color}>
-                <NavigateStyled to="/about">about</NavigateStyled>
+                <Navigate to="/about">about</Navigate>
               </MenuItem>
             </Stack>
           </Distribute>
         </header>
       </Main>
-      <RelativeSpacer top={isMobile() ? 6 : 12}>{children}</RelativeSpacer>
+      <RelativeSpacer top={isMobile() ? 3 : 6}>{children}</RelativeSpacer>
     </Root>
   );
 };

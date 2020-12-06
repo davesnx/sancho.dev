@@ -1,8 +1,9 @@
-import React from "react";
+import { Link } from "gatsby";
 import styled from "styled-components";
 import colors from "./colors";
 
-const A = styled.a`
+const Navigate = styled(Link)`
+  text-decoration: none;
   color: ${colors.paleBlue};
   font-weight: 500;
   font-size: inherit;
@@ -19,8 +20,4 @@ const A = styled.a`
   display: inherit;
 `;
 
-const Link = ({ to, ...rest }) => {
-  return <A target="_blank" rel="noreferrer noopener" {...rest} href={to} />;
-};
-
-export default Link;
+export default Navigate;
