@@ -7,7 +7,6 @@ import { useSpring, animated } from "react-spring";
 import Page from "../components/page";
 import Spacer from "../components/spacer";
 import Overlap from "../components/overlap";
-import { H1 } from "../components/heading";
 import colors from "../components/colors";
 import font from "../components/fonts";
 import { Character } from "../pages/experiments/variable";
@@ -181,8 +180,8 @@ export default ({ data }) => {
 
       <Page title="Experiments">
         <Grid>
-          <ChromaticButton to="experiments/chromatic" />
-          <VariableButton to="experiments/variable" />
+          <ChromaticButton to="/experiments/chromatic" />
+          <VariableButton to="/experiments/variable" />
         </Grid>
       </Page>
     </>

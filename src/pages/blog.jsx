@@ -6,7 +6,7 @@ import { Link as Navigate, graphql } from "gatsby";
 import Text from "../components/text";
 import Page from "../components/page";
 import Spacer from "../components/spacer";
-import { H1, H3 } from "../components/heading";
+import { H3 } from "../components/heading";
 import font from "../components/fonts";
 import { isMobile } from "./../utils/helpers";
 
