@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import Icon from "./Icon";
+import Icon from "./icon";
 
 const A = styled.a`
   display: inline-block;
