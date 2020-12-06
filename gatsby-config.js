@@ -9,7 +9,18 @@ module.exports = {
   },
   plugins: [
     `gatsby-plugin-react-helmet`,
-    `gatsby-plugin-manifest`,
+    {
+      resolve: `gatsby-plugin-manifest`,
+      options: {
+        name: "sancho.dev",
+        short_name: "sancho.dev",
+        start_url: "/",
+        background_color: "#FFFFFF",
+        theme_color: "#233044",
+        display: `standalone`,
+        icon: `static/favicon/android-chrome-512x512.png`,
+      },
+    },
     {
       resolve: `gatsby-source-filesystem`,
       options: { name: `src`, path: `${__dirname}/src/` },
