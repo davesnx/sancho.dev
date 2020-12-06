@@ -1,5 +1,5 @@
 #### sancho.dev
-My personal website. Created with `create-react-app`
+My personal website
 
 To run locally, yarn, then yarn start, then open localhost:3000
 
