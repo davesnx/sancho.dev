@@ -5,21 +5,30 @@ import colors from "./colors";
 
 export const ListItem = styled.li`
   ${styles};
-  margin: 0;
+  margin-top: 0.3em;
+  margin-bottom: 0.3em;
+  margin-left: 1.1em;
+  padding-left: 0.5em;
   display: list-item;
 
   & > * {
     display: inline-block;
   }
+
+  &::marker {
+    color: ${colors.grey};
+  }
 `;
 
 export const OrderList = styled.ol`
-  margin: 8px 16px;
+  margin: 24px 0px;
+  padding: 0px;
+  color: ${colors.black};
 `;
 
 export const UnorderList = styled.ul`
-  margin: 8px 16px;
-  padding: 0;
+  margin: 24px 0px;
+  padding: 0px;
   color: ${colors.black};
 `;
 

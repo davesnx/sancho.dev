@@ -16,23 +16,28 @@ import Twitter from "./../svgs/twitter";
 import { ListItem, OrderList, UnorderList } from "../components/list";
 import { H1, H2, H3, H4, H5, H6 } from "../components/heading";
 import colors from "../components/colors";
-import fonts from "../components/fonts";
 
 const HeadingPadded = c => styled(c)`
-  margin-top: 2.5rem;
+  margin-top: 2rem;
   margin-bottom: 1rem;
 `;
 
-const contentPadded = c => styled(c)`
+const Content = styled(Text)`
   margin-bottom: 24px;
+  display: block;
+
+  a {
+    display: inline;
+  }
 `;
 
-const Hr = styled.span`
-  display: block;
-  width: 100%;
+const Hr = styled.hr`
   opacity: 0.3;
-  height: 2px;
-  background-color: ${colors.grey};
+  border-top-width: 1px;
+  border-bottom-width: 0;
+  margin-top: 3em;
+  margin-bottom: 3em;
+  border-color: ${colors.grey};
 `;
 
 const Image = styled.img`
@@ -41,26 +46,27 @@ const Image = styled.img`
 `;
 
 const Blockquote = styled.blockquote`
-  font-style: italic;
-  padding: 16px 24px;
-  margin: 0px;
+  margin: 32px;
+  position: relative;
+  padding: 0px;
 
+  margin-left: 24px;
   &:before {
-    content: ">";
-    font-style: normal;
-    font-family: ${fonts.mono};
+    content: "";
     position: absolute;
     margin-left: -24px;
 
-    font-size: 18px;
-    line-height: 1.8;
-    color: ${colors.black};
-    opacity: 0.9;
-    font-weight: 700;
+    background-color: ${colors.black};
+    opacity: 0.5;
+
+    width: 1px;
+    height: 100%;
   }
 
   & p {
     margin: 0;
+    font-style: italic;
+    font-weight: 500;
   }
 
   & > code {
@@ -86,7 +92,7 @@ const TwitterShare = ({ title, href }) => {
     <Link to={urlToShare}>
       <Align>
         <Stack>
-          <Text tiny color={colors.paleBlue}>
+          <Text tiny weigth={500} color={colors.paleBlue}>
             Share on Twitter
           </Text>
           <Spacer left={1} />
@@ -127,7 +133,7 @@ export default ({ data }) => {
               h4: HeadingPadded(H4),
               h5: HeadingPadded(H5),
               h6: HeadingPadded(H6),
-              p: contentPadded(Text),
+              p: Content,
               a: Link,
               li: ListItem,
               ol: OrderList,
@@ -147,6 +153,7 @@ export default ({ data }) => {
           Thanks for reaching the end, If you have any question, correction or
           comment let me know!
         </Text>
+        <Spacer top={2} />
         <TwitterShare
           title={post.frontmatter.title}
           href={window.location.href}

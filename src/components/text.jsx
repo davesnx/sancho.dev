@@ -4,7 +4,7 @@ import font from "./fonts";
 import colors from "./colors";
 
 export const styles = css`
-  font-weight: 200;
+  font-weight: ${props => (props.weigth ? props.weigth : 200)};
   font-size: ${font.fontSize1};
   font-family: ${font.sans};
   line-height: 1.7;
@@ -15,7 +15,6 @@ export const styles = css`
 
 const Text = styled.p`
   ${styles};
-
   text-align: ${props => props.align}};
 `;
 
