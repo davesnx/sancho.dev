@@ -14,20 +14,19 @@ const Description = () => {
       <Spacer top={2} />
       <Text>
         Working with <Link to="https://draftbit.com">Draftbit</Link> to bring
-        the creation of mobile apps accessbile to more people. Before that I
-        worked as Frontend at{" "}
-        <Link to="https://www.typeform.com">Typeform</Link>.
+        the creation of mobile apps accessbile to more people. Before I worked
+        as Frontend at <Link to="https://www.typeform.com">Typeform</Link>.
       </Text>
       <Spacer top={2} />
       <Text>
         Passionate about functional programming, UI design, scalability, people
-        and business. Even with my limited english, trying to write about those
-        in my <Navigate to="/blog">blog</Navigate>.
+        and business. Even with my limited english, I'm trying to write about
+        those in my <Navigate to="/blog">blog</Navigate>.
       </Text>
       <Spacer top={2} />
       <Text>
-        Aside from the computer, I'm an amateur triathlete more focused on Half
-        (70.3) and Olympic distance
+        Aside from the computer, I'm an amateur triathlete focused on Half
+        (70.3) and Olympic distance.
       </Text>
     </>
   );

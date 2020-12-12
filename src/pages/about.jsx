@@ -5,25 +5,33 @@ import { graphql } from "gatsby";
 import Page from "../components/page";
 import Description from "./../components/description";
 import Spacer from "../components/spacer";
-import Icon from "../components/icon";
+import LinkIcon from "../components/link-icon";
 import Link from "../components/link";
 import Text from "../components/text";
 import { H1, H4 } from "../components/heading";
 import { Stack, Row } from "../components/taco";
+import colors from "./../components/colors";
 import Github from "./../svgs/github";
 import Web from "./../svgs/web";
 import YouTube from "./../svgs/youtube";
 
+const StackWidthDivider = styled(Stack)`
+  & > *:not(:last-child) {
+    padding-bottom: 40px;
+    border-bottom: 1px solid ${colors.fadedBlack};
+  }
+`;
+
 const GithubIcon = ({ href }) => (
-  <Icon size={32} href={href} svg={Github} bg="rgba(24, 23, 23, 0.1)" />
+  <LinkIcon size={38} href={href} svg={Github} bg="rgba(24, 23, 23, 0.1)" />
 );
 
 const WebIcon = ({ href }) => (
-  <Icon size={32} href={href} svg={Web} bg="rgba(24, 23, 23, 0.1)" />
+  <LinkIcon size={38} href={href} svg={Web} bg="rgba(24, 23, 23, 0.1)" />
 );
 
 const YouTubeIcon = ({ href }) => (
-  <Icon size={32} href={href} svg={YouTube} bg="rgba(24, 23, 23, 0.1)" />
+  <LinkIcon size={38} href={href} svg={YouTube} bg="rgba(24, 23, 23, 0.1)" />
 );
 
 const Kind = {
@@ -47,14 +55,14 @@ const Item = ({ title, description, kind, link }) => {
 
   return (
     <Row fullWidth align="center" distribute="between" gap={2}>
-      <div>
-        <Link to={link}>
+      <Link to={link}>
+        <div>
           <Stack align="left" gap={2}>
             <H4>{title}</H4>
             <Text>{description}</Text>
           </Stack>
-        </Link>
-      </div>
+        </div>
+      </Link>
       <NotShrink>
         <Icon href={link} />
       </NotShrink>
@@ -72,7 +80,7 @@ const Projects = () => (
       bunch of them:
     </Text>
     <Spacer top={4} />
-    <Stack gap={6}>
+    <StackWidthDivider gap={5}>
       <Item
         title="styled-ppx"
         description="The ppx that enables CSS-in-Reason. Writting styled components with type-safety CSS, build on top of emotion, allows you to style apps quickly, performant and as you always done it."
@@ -115,7 +123,7 @@ const Projects = () => (
         kind={Kind.GitHub}
         link="https://github.com/davesnx/shelm"
       />
-    </Stack>
+    </StackWidthDivider>
   </>
 );
 
@@ -123,26 +131,26 @@ const Talks = () => (
   <>
     <H1>Talks</H1>
     <Spacer top={3} />
-    <Stack gap={6}>
+    <StackWidthDivider gap={5}>
       <Item
-        title="The needed introduction to writing a ppx"
-        description="- ReasonSTHLM November"
+        title="The needed introduction to make a ppx"
+        description="An introduction to make your first ppx, your first OCaml preprocessor extension - ReasonSTHLM November"
         kind={Kind.YouTube}
         link="https://youtu.be/dMoRMqQ6GLs?t=4206"
       />
       <Item
         title="Presenting styled-ppx"
-        description="- ReasonSTHLM May"
+        description="Talk about my experience building and using styled-ppx - ReasonSTHLM May"
         kind={Kind.YouTube}
         link="https://www.youtube.com/watch?v=ekHCBZiCviM"
       />
       <Item
         title="CSS-in-Reason and OCaml"
-        description="- NearForm WFH Conf 2020"
+        description="Present the status quo of writting CSS inside ReasonReact apps and my approach to fix it - NearForm WFH Conf 2020"
         kind={Kind.YouTube}
         link="https://www.youtube.com/watch?v=D8WhIeMIZQc"
       />
-    </Stack>
+    </StackWidthDivider>
   </>
 );
 
