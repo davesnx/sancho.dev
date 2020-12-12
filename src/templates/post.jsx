@@ -8,6 +8,7 @@ import { window } from "browser-monads";
 
 import Page from "../components/page";
 import Spacer from "../components/spacer";
+import { Row } from "../components/taco";
 import Text from "../components/text";
 import Link from "../components/link";
 import Icon from "../components/icon";
@@ -80,24 +81,18 @@ const Align = styled.div`
   justify-content: flex-start;
 `;
 
-const Stack = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
-
 const TwitterShare = ({ title, href }) => {
   const urlToShare = `http://www.twitter.com/share?url=${href}&text=${title}: `;
   return (
     <Link to={urlToShare}>
       <Align>
-        <Stack>
+        <Row>
           <Text tiny weigth={500} color={colors.paleBlue}>
             Share on Twitter
           </Text>
           <Spacer left={1} />
           <Icon svg={Twitter} size={20} color={colors.paleBlue} />
-        </Stack>
+        </Row>
       </Align>
     </Link>
   );

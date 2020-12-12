@@ -19,17 +19,14 @@ const StackDistributeMap = {
 
 export const Stack = styled.div`
   display: flex;
+  flex-direction: column;
   height: ${props => (props.fullHeight ? "100%" : "auto")};
-
-  & > * {
-    flex: ${props => (props.fit ? "1 1 0%" : "0 0 auto")};
-  }
 
   align-items: ${props => StackAlignMap[props.align || "center"]};
   justify-content: ${props => StackDistributeMap[props.distribute || "center"]};
 
   & > *:not(:last-child) {
-    ${props => `margin-right: ${px(unit(props.gap))}`};
+    ${props => `margin-bottom: ${px(unit(props.gap || 0))}`};
   }
 `;
 
@@ -50,24 +47,24 @@ const RowDistributeMap = {
 
 export const Row = styled.div`
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   width: ${props => (props.fullWidth ? "100%" : "auto")};
 
   align-items: ${props => RowAlignMap[props.align || "center"]};
   justify-content: ${props => RowDistributeMap[props.distribute || "center"]};
 
   & > * {
-    flex: ${props => (props.fit ? "1 1 0%" : "0 0 auto")};
+    min-width: 0;
   }
 
   & > *:not(:last-child) {
-    ${props => `margin-bottom: ${px(unit(props.gap))}`};
+    ${props => `margin-right: ${px(unit(props.gap || 0))}`};
   }
 `;
 
 const DistributeMap = {
-  horitzontal: Stack,
-  vertical: Row,
+  horitzontal: Row,
+  vertical: Stack,
 };
 
 export const Distribute = ({ direction, ...rest }) => {

@@ -1,6 +1,6 @@
 import React from "react";
 
-import { Stack } from "./taco";
+import { Row } from "./taco";
 import Icon from "./link-icon";
 import Twitter from "./../svgs/twitter";
 import Github from "./../svgs/github";
@@ -16,7 +16,7 @@ const TwitterIcon = ({ href, size }) => (
 );
 
 export default () => (
-  <Stack gap={2} distribute="left">
+  <Row gap={2} distribute="left">
     <TwitterIcon href="https://twitter.com/davesnx" />
     <GithubIcon href="https://github.com/davesnx" />
     <Icon
@@ -29,5 +29,5 @@ export default () => (
       href="https://discord.gg/xFHUBgx"
       bg="rgba(114, 137, 218, 0.2)"
     />
-  </Stack>
+  </Row>
 );

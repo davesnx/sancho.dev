@@ -8,7 +8,7 @@ import Main from "./../components/main";
 import NavigateLink from "./../components/navigate";
 import { RelativeSpacer } from "./../components/spacer";
 import { isMobile } from "./../utils/helpers";
-import { Distribute, Stack } from "./../components/taco";
+import { Distribute, Row } from "./../components/taco";
 
 const Navigate = styled(NavigateLink)`
   color: currentColor;
@@ -72,9 +72,10 @@ export default ({ children, pathname, kind = colors.white }) => {
             gap={2}
             direction={isMobile() ? "vertical" : "horitzontal"}
             distribute="between"
+            fullWidth
           >
             <Logo to="/">@davesnx</Logo>
-            <Stack gap={3}>
+            <Row gap={3}>
               <MenuItem color={color}>
                 <Navigate to="/blog">blog</Navigate>
               </MenuItem>
@@ -84,7 +85,7 @@ export default ({ children, pathname, kind = colors.white }) => {
               <MenuItem color={color}>
                 <Navigate to="/about">about</Navigate>
               </MenuItem>
-            </Stack>
+            </Row>
           </Distribute>
         </header>
       </Main>

@@ -13,8 +13,10 @@ const GlobalStyles = createGlobalStyle`
   #___gatsby {
     margin: 0;
     padding: 0;
-    height: 100vh;
-    width: 100vw;
+    min-height: 100vh;
+    min-width: 100vw;
+    height: 100%;
+    width: 100%;
     text-size-adjust: 100%;
 
     color: ${colors.white};
