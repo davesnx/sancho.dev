@@ -76,8 +76,8 @@ const Projects = () => (
     <Spacer top={3} />
     <Text>
       I'm a very creative person and have a mind full of ideas, some of them
-      gets materialized into code and share it as Open Source Software, here's a
-      bunch of them:
+      gets materialized into code and eventually shared it as Open Source,
+      here's a list of the proudests
     </Text>
     <Spacer top={4} />
     <StackWidthDivider gap={5}>

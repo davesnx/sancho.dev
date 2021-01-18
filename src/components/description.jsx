@@ -9,7 +9,9 @@ const Description = () => {
   return (
     <>
       <Text align="left">
-        I'm a Software Engineer from Barcelona in love with Reason and OCaml.
+        I'm a Software Engineer from Barcelona in love with{" "}
+        <Link to="http://reasonml.github.io/">Reason</Link> and{" "}
+        <Link to="https://ocaml.org/">OCaml</Link>.
       </Text>
       <Spacer top={2} />
       <Text>
@@ -19,14 +21,16 @@ const Description = () => {
       </Text>
       <Spacer top={2} />
       <Text>
-        Passionate about functional programming, UI design, scalability, people
-        and business. Even with my limited english, I'm trying to write about
-        those in my <Navigate to="/blog">blog</Navigate>.
+        Always passionate about <strong>functional programming</strong>,{" "}
+        <strong>UI design</strong>, <strong>scalability</strong>,{" "}
+        <strong>people</strong> and <strong>business</strong>. Even with my
+        limited english, I'm trying to write about those in my{" "}
+        <Navigate to="/blog">blog</Navigate>
       </Text>
       <Spacer top={2} />
       <Text>
         Aside from the computer, I'm an amateur triathlete focused on Half
-        (70.3) and Olympic distance.
+        (70.3) and Olympic distances.
       </Text>
     </>
   );
