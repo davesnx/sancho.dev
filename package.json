@@ -19,7 +19,7 @@
     "gatsby-plugin-page-creator": "^2.3.7",
     "gatsby-plugin-preact": "^4.5.0",
     "gatsby-plugin-react-helmet": "^3.0.12",
-    "gatsby-plugin-sharp": "^2.5.4",
+    "gatsby-plugin-sharp": "^2.14.3",
     "gatsby-plugin-splitbee": "^0.1.0",
     "gatsby-plugin-styled-components": "^3.2.1",
     "gatsby-remark-auto-headers": "^1.0.3",
