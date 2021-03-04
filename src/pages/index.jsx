@@ -22,7 +22,7 @@ export default () => {
       </Text>
       <br />
       <Text>Amateur triathlete doing Olympic and Half (70.3) distances.</Text>
-      <Spacer top={4} />
+      <Spacer top={3} />
       <SocialMedia />
     </Page>
   );
