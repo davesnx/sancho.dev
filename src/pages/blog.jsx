@@ -8,7 +8,7 @@ import Page from "../components/page";
 import Spacer from "../components/spacer";
 import { H3 } from "../components/heading";
 import font from "../components/fonts";
-import { isMobile } from "./../utils/helpers";
+import { isMobile } from "../utils/helpers";
 
 const BlogLink = styled(Navigate)`
   color: inherit;
@@ -74,7 +74,7 @@ export const query = graphql`
           timeToRead
           frontmatter {
             title
-            date(formatString: "MMMM DD, YYYY")
+            date(formatString: "MMMM YYYY")
           }
           fields {
             slug

@@ -6,7 +6,7 @@ import Text from "../components/text";
 import Page from "../components/page";
 import Spacer from "../components/spacer";
 import Navigate from "../components/navigate";
-import Link from "../components/link";
+import { Link } from "../components/link";
 
 const Small = styled(Text)`
   font-size: ${font.fontSizeN1};

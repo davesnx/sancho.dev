@@ -7,7 +7,7 @@ import Overlap from "../../components/overlap";
 import Text from "../../components/text";
 import colors from "../../components/colors";
 import Spacer from "../../components/spacer";
-import Link from "../../components/link";
+import { Link } from "../../components/link";
 import { RelativeSpacer } from "../../components/spacer";
 import font from "../../components/fonts";
 import useMousePosition from "../../components/mouse-position";

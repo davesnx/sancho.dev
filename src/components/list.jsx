@@ -16,7 +16,8 @@ export const ListItem = styled.li`
   }
 
   &::marker {
-    color: ${colors.grey};
+    opacity: 0.4;
+    color: ${colors.black};
   }
 `;
 

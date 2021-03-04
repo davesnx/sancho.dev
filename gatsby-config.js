@@ -4,8 +4,8 @@ module.exports = {
     title: `David Sancho`,
     twitter: `@davesnx`,
     description:
-      "Software Engineer." +
-      "Passionate about design, functional programming, scalability, people and business.",
+      "Software Engineer. Making cute software with ReasonML and OCaml" +
+      "Passionate in design, functional programming, scalability, people and business.",
   },
   plugins: [
     `gatsby-plugin-react-helmet`,

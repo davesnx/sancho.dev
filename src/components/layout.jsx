@@ -77,14 +77,23 @@ export default ({ children, pathname, kind = colors.white }) => {
             <Logo to="/">@davesnx</Logo>
             <Row gap={3}>
               <MenuItem color={color}>
+                <Navigate to="/about">about</Navigate>
+              </MenuItem>
+              <MenuItem color={color}>
                 <Navigate to="/blog">blog</Navigate>
+              </MenuItem>
+              <MenuItem color={color}>
+                <Navigate to="/talks">talks</Navigate>
               </MenuItem>
               <MenuItem color={color}>
                 <Navigate to="/experiments">experiments</Navigate>
               </MenuItem>
-              <MenuItem color={color}>
-                <Navigate to="/about">about</Navigate>
+              {/* <MenuItem color={color}>
+                <Navigate to="/projects">projects</Navigate>
               </MenuItem>
+              <MenuItem color={color}>
+                <Navigate to="/experiments">experiments</Navigate>
+              </MenuItem> */}
             </Row>
           </Distribute>
         </header>

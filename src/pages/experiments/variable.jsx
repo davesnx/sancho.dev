@@ -5,7 +5,7 @@ import Layout from "../../components/layout";
 import colors from "../../components/colors";
 import useMousePosition from "../../components/mouse-position";
 import Spacer from "../../components/spacer";
-import Link from "../../components/link";
+import { Link } from "../../components/link";
 import Text from "../../components/text";
 import { isMobile } from "./../../utils/helpers";
 
@@ -22,6 +22,7 @@ export const Character = styled.span.attrs(props => ({
   justify-content: center;
   align-items: center;
   color: ${colors.white};
+  transition: all 200ms ease-out;
 
   & + & {
     border-left: none;
