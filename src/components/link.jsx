@@ -8,7 +8,7 @@ const A = styled.a`
   font-size: inherit;
   transition: color 0.15s ease;
 
-  text-decoration: none;
+  text-decoration: underline;
   &:hover {
     color: ${colors.blue};
   }
