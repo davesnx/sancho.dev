@@ -2,17 +2,17 @@ import React from "react";
 import styled from "styled-components";
 import { window } from "browser-monads";
 
+import colors from "../../colors";
+import font from "../../fonts";
 import Layout from "../../components/layout";
 import Overlap from "../../components/overlap";
 import Text from "../../components/text";
-import colors from "../../components/colors";
 import Spacer from "../../components/spacer";
 import { Link } from "../../components/link";
 import { RelativeSpacer } from "../../components/spacer";
-import font from "../../components/fonts";
-import useMousePosition from "../../components/mouse-position";
-import useDeviceOrientation from "../../components/device-orientation";
-import { isMobile } from "./../../utils/helpers";
+import useDeviceOrientation from "../../utils/device-orientation";
+import useMousePosition from "../../utils/mouse-position";
+import { useIsMobile } from "../../utils/media-query";
 
 const Layer = styled.div.attrs(props => ({
   style: {
@@ -89,7 +89,7 @@ const ChromaticText = ({ children, mouse, orientation }) => {
 };
 
 const Name = styled.h1`
-  font-size: ${isMobile() ? font.fontSize3 : font.fontSize5};
+  font-size: ${props => (props.isMobile ? font.fontSize3 : font.fontSize5)};
   font-family: ${font.sans};
   font-weight: bold;
   margin: 0;
@@ -109,17 +109,20 @@ const Container = styled.div`
 export default () => {
   const mouse = useMousePosition();
   const orientation = useDeviceOrientation();
+  const isMobile = useIsMobile();
 
   return (
     <Layout kind={colors.black}>
       <RelativeSpacer top={8}>
         <Container>
           <ChromaticText mouse={mouse} orientation={orientation}>
-            <Name as="h1">DAVID SANCHO</Name>
+            <Name as="h1" isMobile={isMobile}>
+              DAVID SANCHO
+            </Name>
           </ChromaticText>
           <Spacer top={4}>
             <Text align="center" color={colors.white}>
-              {isMobile()
+              {isMobile
                 ? "Incline the phone to see the "
                 : "Move the mouse across the screen to see the "}
               <Link

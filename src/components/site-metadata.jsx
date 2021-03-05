@@ -1,9 +1,10 @@
 import React from "react";
 import { Helmet } from "react-helmet";
 import { graphql, useStaticQuery } from "gatsby";
-import colors from "./colors";
 
-const SiteMetadata = ({ pathname }) => {
+import colors from "../colors";
+
+const SiteMetadata = () => {
   const {
     site: {
       siteMetadata: { siteUrl, title, twitter },

@@ -16,8 +16,8 @@ import Icon from "../components/icon";
 import Twitter from "./../svgs/twitter";
 import { ListItem, OrderList, UnorderList } from "../components/list";
 import { H1, H2, H3, H4, H5, H6 } from "../components/heading";
-import colors from "../components/colors";
-import font from "../components/fonts";
+import colors from "../colors";
+import font from "../fonts";
 
 const HeadingPadded = c => styled(c)`
   margin-top: 2rem;

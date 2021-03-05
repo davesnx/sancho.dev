@@ -1,6 +1,7 @@
 import PropTypes from "prop-types";
 import styled from "styled-components";
-import { unit, px, rem } from "./unit";
+
+import { unit, px, rem } from "../utils/unit";
 
 const Spacer = styled.div`
   ${props => props.top && `margin-top: ${px(unit(props.top))}`};

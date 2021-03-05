@@ -7,8 +7,8 @@ import { useSpring, animated } from "react-spring";
 import Page from "../components/page";
 import Spacer from "../components/spacer";
 import Overlap from "../components/overlap";
-import colors from "../components/colors";
-import font from "../components/fonts";
+import colors from "../colors";
+import font from "../fonts";
 import { Character } from "../pages/experiments/variable";
 
 function useHover() {

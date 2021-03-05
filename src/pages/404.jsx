@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
-import font from "../components/fonts";
 
+import font from "../fonts";
 import Text from "../components/text";
 import Page from "../components/page";
 import Spacer from "../components/spacer";

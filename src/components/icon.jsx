@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
-import colors from "./colors";
+
+import colors from "../colors";
 
 const Logo = styled.div`
   width: ${props => (props.size ? `${props.size}px` : "40px")};

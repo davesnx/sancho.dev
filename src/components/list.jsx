@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 import { styles } from "./text";
-import colors from "./colors";
+import colors from "../colors";
 
 export const ListItem = styled.li`
   ${styles};

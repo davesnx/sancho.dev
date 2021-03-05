@@ -1,6 +1,7 @@
-import fonts from "./fonts";
-import colors from "./colors";
 import styled, { css } from "styled-components";
+
+import fonts from "../fonts";
+import colors from "../colors";
 
 const Heading = css`
   margin: 0;

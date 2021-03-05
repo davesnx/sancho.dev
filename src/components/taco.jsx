@@ -1,7 +1,8 @@
 import React from "react";
 import styled from "styled-components";
-import { unit, px } from "./unit";
-import colors from "./colors";
+
+import { unit, px } from "../utils/unit";
+import colors from "../colors";
 
 const StackAlignMap = {
   top: "flex-start",

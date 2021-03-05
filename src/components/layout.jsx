@@ -2,12 +2,12 @@ import React from "react";
 import styled from "styled-components";
 
 import SiteMetadata from "./site-metadata";
-import colors from "./colors";
-import font from "./fonts";
+import colors from "../colors";
+import font from "../fonts";
 import Main from "./../components/main";
 import NavigateLink from "./../components/navigate";
 import { RelativeSpacer } from "./../components/spacer";
-import { isMobile } from "./../utils/helpers";
+import { useIsMobile } from "../utils/media-query";
 import { Distribute, Row } from "./../components/taco";
 
 const Navigate = styled(NavigateLink)`
@@ -62,6 +62,7 @@ const COLOR_TYPE = {
 
 export default ({ children, pathname, kind = colors.white }) => {
   const { backgroundColor, color } = COLOR_TYPE[kind];
+  const isMobile = useIsMobile();
 
   return (
     <Root backgroundColor={backgroundColor}>
@@ -70,7 +71,7 @@ export default ({ children, pathname, kind = colors.white }) => {
         <header>
           <Distribute
             gap={2}
-            direction={isMobile() ? "vertical" : "horitzontal"}
+            direction={isMobile ? "vertical" : "horitzontal"}
             distribute="between"
             fullWidth
           >
@@ -98,7 +99,7 @@ export default ({ children, pathname, kind = colors.white }) => {
           </Distribute>
         </header>
       </Main>
-      <RelativeSpacer top={isMobile() ? 3 : 6}>{children}</RelativeSpacer>
+      <RelativeSpacer top={isMobile ? 3 : 6}>{children}</RelativeSpacer>
     </Root>
   );
 };
