@@ -18,8 +18,8 @@ const About = () => {
       <Spacer top={2} />
       <Text>
         Currently working remotely at{" "}
-        <Link to="https://draftbit.com">Draftbit</Link> allowing more people the
-        creation of mobile apps. Previously worked as Frontend at{" "}
+        <Link to="https://draftbit.com">Draftbit</Link> helping people create
+        mobile apps visually. Previously worked as Frontend at{" "}
         <Link to="https://www.typeform.com">Typeform</Link> for 5 years on the
         Renderer (also known as Form Experience) with an amazing team,{" "}
         <Link to="https://stickbugs.dev">Stickbugs</Link> ♥️.
