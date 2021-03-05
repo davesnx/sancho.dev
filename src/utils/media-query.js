@@ -11,7 +11,7 @@ export const isUAMobile = () =>
 
 export const useIsMobile = () => {
   const isWide = useMedia({ minWidth: constants.width });
-  const [isMobile, setIsMobile] = React.useState(!isWide);
+  const [isMobile, setIsMobile] = React.useState(isWide);
 
   React.useEffect(() => {
     setIsMobile(isUAMobile());
