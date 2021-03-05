@@ -8,7 +8,7 @@ import Main from "./../components/main";
 import NavigateLink from "./../components/navigate";
 import { RelativeSpacer } from "./../components/spacer";
 import { useIsMobile } from "../utils/media-query";
-import { Distribute, Row } from "./../components/taco";
+import { Row } from "./../components/taco";
 
 const Navigate = styled(NavigateLink)`
   color: currentColor;
@@ -60,6 +60,25 @@ const COLOR_TYPE = {
   },
 };
 
+const DistributeResponsive = styled.div`
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  align-items: center;
+  justify-content: space-between;
+
+  @media (max-width: 900px) {
+    flex-direction: column;
+    height: auto;
+    align-items: center;
+    justify-content: space-between;
+
+    & > :not(:last-child) {
+      margin-bottom: 16px;
+    }
+  }
+`;
+
 export default ({ children, pathname, kind = colors.white }) => {
   const { backgroundColor, color } = COLOR_TYPE[kind];
   const isMobile = useIsMobile();
@@ -69,12 +88,7 @@ export default ({ children, pathname, kind = colors.white }) => {
       <SiteMetadata pathname={pathname} />
       <Main>
         <header>
-          <Distribute
-            gap={2}
-            direction={isMobile ? "vertical" : "horitzontal"}
-            distribute="between"
-            fullWidth
-          >
+          <DistributeResponsive>
             <Logo to="/">@davesnx</Logo>
             <Row gap={3}>
               <MenuItem color={color}>
@@ -96,7 +110,7 @@ export default ({ children, pathname, kind = colors.white }) => {
                 <Navigate to="/experiments">experiments</Navigate>
               </MenuItem> */}
             </Row>
-          </Distribute>
+          </DistributeResponsive>
         </header>
       </Main>
       <RelativeSpacer top={isMobile ? 3 : 6}>{children}</RelativeSpacer>
