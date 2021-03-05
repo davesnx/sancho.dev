@@ -3,11 +3,11 @@ import styled from "styled-components";
 
 import SiteMetadata from "./site-metadata";
 import colors from "../colors";
+import constants from "../constants";
 import font from "../fonts";
 import Main from "./../components/main";
 import NavigateLink from "./../components/navigate";
-import { RelativeSpacer } from "./../components/spacer";
-import { useIsMobile } from "../utils/media-query";
+import { ResponsiveSpacer } from "./../components/spacer";
 import { Row } from "./../components/taco";
 
 const Navigate = styled(NavigateLink)`
@@ -67,7 +67,7 @@ const DistributeResponsive = styled.div`
   align-items: center;
   justify-content: space-between;
 
-  @media (max-width: 900px) {
+  @media (max-width: ${constants.width}) {
     flex-direction: column;
     height: auto;
     align-items: center;
@@ -81,7 +81,6 @@ const DistributeResponsive = styled.div`
 
 export default ({ children, pathname, kind = colors.white }) => {
   const { backgroundColor, color } = COLOR_TYPE[kind];
-  const isMobile = useIsMobile();
 
   return (
     <Root backgroundColor={backgroundColor}>
@@ -113,7 +112,9 @@ export default ({ children, pathname, kind = colors.white }) => {
           </DistributeResponsive>
         </header>
       </Main>
-      <RelativeSpacer top={isMobile ? 3 : 6}>{children}</RelativeSpacer>
+      <ResponsiveSpacer mobileTop={3} desktopTop={6}>
+        {children}
+      </ResponsiveSpacer>
     </Root>
   );
 };

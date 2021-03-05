@@ -1,6 +1,6 @@
-import PropTypes from "prop-types";
 import styled from "styled-components";
 
+import constants from "../constants";
 import { unit, px, rem } from "../utils/unit";
 
 const Spacer = styled.div`
@@ -19,14 +19,20 @@ export const RelativeSpacer = styled.div`
   ${props => props.inline && "display: inline-block"};
 `;
 
-Spacer.displayName = "Spacer";
+export const ResponsiveSpacer = styled.div`
+  ${props => props.desktopTop && `margin-top: ${rem(props.desktopTop)}`};
+  ${props =>
+    props.desktopBottom && `margin-bottom: ${rem(props.desktopBottom)}`};
+  ${props => props.desktopLeft && `margin-left: ${rem(props.desktopLeft)}`};
+  ${props => props.desktopRight && `margin-right: ${rem(props.desktopRight)}`};
 
-Spacer.propTypes = {
-  top: PropTypes.number,
-  bottom: PropTypes.number,
-  left: PropTypes.number,
-  right: PropTypes.number,
-  inline: PropTypes.bool,
-};
+  @media (max-width: ${constants.width}) {
+    ${props => props.mobileTop && `margin-top: ${rem(props.mobileTop)}`};
+    ${props =>
+      props.mobileBottom && `margin-bottom: ${rem(props.mobileBottom)}`};
+    ${props => props.mobileLeft && `margin-left: ${rem(props.mobileLeft)}`};
+    ${props => props.mobileRight && `margin-right: ${rem(props.mobileRight)}`};
+  }
+`;
 
 export default Spacer;
