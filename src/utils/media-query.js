@@ -11,11 +11,12 @@ export const isUAMobile = () =>
 
 export const useIsMobile = () => {
   const isWide = useMedia({ minWidth: constants.width });
-  const [isMobile, setIsMobile] = React.useState(isWide);
+  const isSmall = !isWide;
+  const [isMobile, setIsMobile] = React.useState(false);
 
   React.useEffect(() => {
     setIsMobile(isUAMobile());
   }, []);
 
-  return isMobile || !isWide;
+  return isMobile || isSmall;
 };
