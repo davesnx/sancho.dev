@@ -3,12 +3,12 @@ import { Helmet } from "react-helmet";
 import styled from "styled-components";
 import { Link as Navigate, graphql } from "gatsby";
 
+import font from "../fonts";
 import Text from "../components/text";
 import Page from "../components/page";
 import Spacer from "../components/spacer";
 import { H3 } from "../components/heading";
-import font from "../components/fonts";
-import { isMobile } from "./../utils/helpers";
+import { useIsMobile } from "../utils/media-query";
 
 const BlogLink = styled(Navigate)`
   color: inherit;
@@ -17,8 +17,8 @@ const BlogLink = styled(Navigate)`
   display: flex;
   justify-content: space-between;
 
-  ${isMobile() ? "flex-direction: column-reverse" : ""};
-  align-items: ${isMobile() ? "left" : "center"};
+  ${props => (props.isMobile ? "flex-direction: column-reverse" : "")};
+  align-items: ${props => (props.isMobile ? "left" : "center")};
 `;
 
 const Date = styled(Text)`
@@ -35,6 +35,8 @@ export default ({ data }) => {
     },
   } = data;
 
+  const isMobile = useIsMobile();
+
   return (
     <>
       <Helmet defaultTitle={title} titleTemplate={`%s | ${title}`}>
@@ -48,7 +50,7 @@ export default ({ data }) => {
         {data.allMdx.edges.map(({ node }) => (
           <Spacer bottom={3} key={node.id}>
             <Date align="left">{node.frontmatter.date}</Date>
-            <BlogLink to={node.fields.slug}>
+            <BlogLink to={node.fields.slug} isMobile={isMobile}>
               <H3> {node.frontmatter.title}</H3>
             </BlogLink>
           </Spacer>
@@ -74,7 +76,7 @@ export const query = graphql`
           timeToRead
           frontmatter {
             title
-            date(formatString: "MMMM DD, YYYY")
+            date(formatString: "MMMM YYYY")
           }
           fields {
             slug

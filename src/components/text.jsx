@@ -1,7 +1,8 @@
 import React from "react";
 import styled, { css } from "styled-components";
-import font from "./fonts";
-import colors from "./colors";
+
+import font from "../fonts";
+import colors from "../colors";
 
 export const styles = css`
   font-weight: ${props => (props.weigth ? props.weigth : 200)};

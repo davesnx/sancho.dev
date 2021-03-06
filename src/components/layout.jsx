@@ -2,13 +2,13 @@ import React from "react";
 import styled from "styled-components";
 
 import SiteMetadata from "./site-metadata";
-import colors from "./colors";
-import font from "./fonts";
+import colors from "../colors";
+import constants from "../constants";
+import font from "../fonts";
 import Main from "./../components/main";
 import NavigateLink from "./../components/navigate";
-import { RelativeSpacer } from "./../components/spacer";
-import { isMobile } from "./../utils/helpers";
-import { Distribute, Row } from "./../components/taco";
+import { ResponsiveSpacer } from "./../components/spacer";
+import { Row } from "./../components/taco";
 
 const Navigate = styled(NavigateLink)`
   color: currentColor;
@@ -60,6 +60,25 @@ const COLOR_TYPE = {
   },
 };
 
+const DistributeResponsive = styled.div`
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  align-items: center;
+  justify-content: space-between;
+
+  @media (max-width: ${constants.width}) {
+    flex-direction: column;
+    height: auto;
+    align-items: center;
+    justify-content: space-between;
+
+    & > :not(:last-child) {
+      margin-bottom: 16px;
+    }
+  }
+`;
+
 export default ({ children, pathname, kind = colors.white }) => {
   const { backgroundColor, color } = COLOR_TYPE[kind];
 
@@ -68,28 +87,34 @@ export default ({ children, pathname, kind = colors.white }) => {
       <SiteMetadata pathname={pathname} />
       <Main>
         <header>
-          <Distribute
-            gap={2}
-            direction={isMobile() ? "vertical" : "horitzontal"}
-            distribute="between"
-            fullWidth
-          >
+          <DistributeResponsive>
             <Logo to="/">@davesnx</Logo>
             <Row gap={3}>
+              <MenuItem color={color}>
+                <Navigate to="/about">about</Navigate>
+              </MenuItem>
               <MenuItem color={color}>
                 <Navigate to="/blog">blog</Navigate>
               </MenuItem>
               <MenuItem color={color}>
-                <Navigate to="/experiments">experiments</Navigate>
+                <Navigate to="/talks">talks</Navigate>
               </MenuItem>
               <MenuItem color={color}>
-                <Navigate to="/about">about</Navigate>
+                <Navigate to="/experiments">experiments</Navigate>
               </MenuItem>
+              {/* <MenuItem color={color}>
+                <Navigate to="/projects">projects</Navigate>
+              </MenuItem>
+              <MenuItem color={color}>
+                <Navigate to="/experiments">experiments</Navigate>
+              </MenuItem> */}
             </Row>
-          </Distribute>
+          </DistributeResponsive>
         </header>
       </Main>
-      <RelativeSpacer top={isMobile() ? 3 : 6}>{children}</RelativeSpacer>
+      <ResponsiveSpacer mobileTop={3} desktopTop={6}>
+        {children}
+      </ResponsiveSpacer>
     </Root>
   );
 };

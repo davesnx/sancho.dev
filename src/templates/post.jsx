@@ -1,6 +1,6 @@
 import React from "react";
 import Helmet from "react-helmet";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import { graphql } from "gatsby";
 import { MDXRenderer } from "gatsby-plugin-mdx";
 import { MDXProvider } from "@mdx-js/react";
@@ -10,13 +10,14 @@ import Page from "../components/page";
 import Spacer from "../components/spacer";
 import { Row } from "../components/taco";
 import Text from "../components/text";
-import Link from "../components/link";
+import { Link } from "../components/link";
 import Icon from "../components/icon";
 
 import Twitter from "./../svgs/twitter";
 import { ListItem, OrderList, UnorderList } from "../components/list";
 import { H1, H2, H3, H4, H5, H6 } from "../components/heading";
-import colors from "../components/colors";
+import colors from "../colors";
+import font from "../fonts";
 
 const HeadingPadded = c => styled(c)`
   margin-top: 2rem;
@@ -32,13 +33,18 @@ const Content = styled(Text)`
   }
 `;
 
-const Hr = styled.hr`
+const Line = css`
   opacity: 0.3;
+  border: 1px dotted ${colors.grey};
+`;
+
+const Hr = styled.hr`
   border-top-width: 1px;
   border-bottom-width: 0;
   margin-top: 3em;
   margin-bottom: 3em;
-  border-color: ${colors.grey};
+
+  ${Line}
 `;
 
 const Image = styled.img`
@@ -57,11 +63,8 @@ const Blockquote = styled.blockquote`
     position: absolute;
     margin-left: -24px;
 
-    background-color: ${colors.black};
-    opacity: 0.5;
-
-    width: 1px;
     height: 100%;
+    ${Line}
   }
 
   & p {
@@ -75,26 +78,24 @@ const Blockquote = styled.blockquote`
   }
 `;
 
-const Align = styled.div`
-  display: flex;
-  width: 100%;
-  justify-content: flex-start;
+const Small = styled(Text)`
+  font-size: ${font.fontSizeN1};
 `;
 
 const TwitterShare = ({ title, href }) => {
   const urlToShare = `http://www.twitter.com/share?url=${href}&text=${title}: `;
   return (
-    <Link to={urlToShare}>
-      <Align>
-        <Row>
+    <div>
+      <Row align="center" distribute="top" gap={1}>
+        <Link to={urlToShare}>
           <Text tiny weigth={500} color={colors.paleBlue}>
             Share on Twitter
           </Text>
           <Spacer left={1} />
           <Icon svg={Twitter} size={20} color={colors.paleBlue} />
-        </Row>
-      </Align>
-    </Link>
+        </Link>
+      </Row>
+    </div>
   );
 };
 
@@ -141,18 +142,31 @@ export default ({ data }) => {
             <MDXRenderer>{post.body}</MDXRenderer>
           </MDXProvider>
         </Spacer>
-        <Spacer top={4} bottom={4}>
+        <Spacer top={2} bottom={2}>
           <Hr />
         </Spacer>
         <Text>
-          Thanks for reaching the end, If you have any question, correction or
-          comment let me know!
+          <Text weigth={500}>Thanks for reaching the end.</Text> Let me know if
+          you have any feedback, correction or question. I'm always happy to
+          chat.
         </Text>
         <Spacer top={2} />
         <TwitterShare
           title={post.frontmatter.title}
           href={window.location.href}
         />
+        <Spacer top={2} bottom={2}>
+          <Hr />
+        </Spacer>
+        <Spacer bottom={12}>
+          <Small align="center">
+            Made in Barcelona{" "}
+            <Small align="center" weigth={500}>
+              · David Sancho ·
+            </Small>{" "}
+            {new Date().getFullYear()}
+          </Small>
+        </Spacer>
       </Page>
     </>
   );

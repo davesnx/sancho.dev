@@ -1,6 +1,8 @@
 import React from "react";
 import styled from "styled-components";
-import { unit, px } from "./unit";
+
+import { unit, px } from "../utils/unit";
+import colors from "../colors";
 
 const StackAlignMap = {
   top: "flex-start",
@@ -79,4 +81,11 @@ export const Align = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+`;
+
+export const StackWithDivider = styled(Stack)`
+  & > *:not(:last-child) {
+    padding-bottom: 40px;
+    border-bottom: 1px solid ${colors.fadedBlack};
+  }
 `;

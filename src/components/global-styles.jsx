@@ -1,7 +1,8 @@
 import { createGlobalStyle } from "styled-components";
-import colors from "./colors";
+
 import prism from "./prism";
-import font from "./fonts";
+import colors from "../colors";
+import font from "../fonts";
 
 const GlobalStyles = createGlobalStyle`
   ${prism};

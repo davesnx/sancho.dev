@@ -1,5 +1,6 @@
 import { css } from "styled-components";
-import colors from "./colors";
+
+import colors from "../colors";
 
 const background = "#E2E9EE";
 const black = "rgb(76, 76, 92)";

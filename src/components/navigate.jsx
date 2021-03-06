@@ -1,6 +1,7 @@
 import { Link } from "gatsby";
 import styled from "styled-components";
-import colors from "./colors";
+
+import colors from "../colors";
 
 const Navigate = styled(Link)`
   text-decoration: none;
