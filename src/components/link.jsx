@@ -25,7 +25,14 @@ const UnstyledA = styled.a`
 `;
 
 export const Link = ({ to, ...rest }) => {
-  return <A target="_blank" rel="noreferrer noopener" {...rest} href={to} />;
+  return (
+    <A
+      target="_blank"
+      rel="noreferrer noopener"
+      {...rest}
+      href={to || rest.href}
+    />
+  );
 };
 
 export const UnstyledLink = ({ to, ...rest }) => {
