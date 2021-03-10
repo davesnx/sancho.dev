@@ -23,8 +23,8 @@ const BlogLink = styled(Navigate)`
 
 const Date = styled(Text)`
   font-size: ${font.fontSizeN1};
-  font-weight: bold;
-  opacity: 0.35;
+  font-weight: 500;
+  opacity: 0.4;
   text-transform: uppercase;
 `;
 
