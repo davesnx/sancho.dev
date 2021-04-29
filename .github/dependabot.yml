@@ -1,0 +1,95 @@
+version: 2
+updates:
+- package-ecosystem: npm
+  directory: "/"
+  schedule:
+    interval: daily
+    time: "04:00"
+  open-pull-requests-limit: 10
+  ignore:
+  - dependency-name: preact-render-to-string
+    versions:
+    - 5.1.13
+    - 5.1.14
+    - 5.1.15
+    - 5.1.16
+    - 5.1.17
+    - 5.1.18
+  - dependency-name: preact
+    versions:
+    - 10.5.12
+  - dependency-name: netlify
+    versions:
+    - 6.1.10
+    - 6.1.11
+    - 6.1.13
+    - 6.1.4
+    - 6.1.6
+    - 6.1.7
+    - 6.1.8
+    - 6.1.9
+  - dependency-name: netlify-cli
+    versions:
+    - 3.10.0
+    - 3.10.2
+    - 3.10.3
+    - 3.10.4
+    - 3.10.6
+    - 3.4.5
+    - 3.4.6
+    - 3.4.7
+    - 3.5.0
+    - 3.6.0
+    - 3.7.1
+    - 3.8.0
+    - 3.8.1
+    - 3.8.3
+    - 3.8.4
+    - 3.8.5
+    - 3.8.6
+  - dependency-name: gatsby
+    versions:
+    - 2.31.1
+    - 2.32.0
+    - 2.32.2
+    - 2.32.3
+    - 2.32.4
+    - 2.32.6
+    - 2.32.8
+    - 2.32.9
+  - dependency-name: prismjs
+    versions:
+    - 1.23.0
+  - dependency-name: gatsby-plugin-sharp
+    versions:
+    - 2.13.3
+    - 2.13.4
+    - 2.14.0
+    - 2.14.1
+    - 2.14.2
+    - 2.14.3
+  - dependency-name: gatsby-remark-images
+    versions:
+    - 3.10.0
+    - 3.11.0
+    - 3.11.1
+  - dependency-name: react-scripts
+    versions:
+    - 4.0.1
+    - 4.0.2
+    - 4.0.3
+  - dependency-name: socket.io
+    versions:
+    - 2.4.1
+  - dependency-name: react
+    versions:
+    - 16.14.0
+  - dependency-name: ini
+    versions:
+    - 1.3.8
+  - dependency-name: prettier
+    versions:
+    - 2.2.1
+  - dependency-name: object-path
+    versions:
+    - 0.11.5
