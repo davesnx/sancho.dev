@@ -9346,10 +9346,10 @@ gatsby-plugin-sharp@^2.5.4:
     svgo "1.3.2"
     uuid "3.4.0"
 
-gatsby-plugin-splitbee@^0.1.0:
-  version "0.1.0"
-  resolved "https://registry.yarnpkg.com/gatsby-plugin-splitbee/-/gatsby-plugin-splitbee-0.1.0.tgz#090442f8110cca96a38971c706013d4b27625147"
-  integrity sha512-eycKTRx5yNHeZFuKtiTh28cFl55HA5GXLuJ5p8aDG4bh6zbMThEDmufZED0iXnsLCjMBHbdiJXU3RIAgWk+jXg==
+gatsby-plugin-splitbee@^0.2.0:
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/gatsby-plugin-splitbee/-/gatsby-plugin-splitbee-0.2.0.tgz#4d8a1e6e78ae7d64bdca2e71194cb94e42792ed0"
+  integrity sha512-nIPtBtQaea3mMXJwxSXU4YtShcl4g9bjEKBHQ2bohmxoTNAKjzW88Q+Cqn6zCf3EHx8gboSV1XOvX4aB/+KcGQ==
   dependencies:
     babel-runtime "^6.26.0"
 
