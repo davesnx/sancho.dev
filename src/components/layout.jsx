@@ -79,6 +79,10 @@ const DistributeResponsive = styled.div`
   }
 `;
 
+const ThemeToggle = () => {
+  return <div/>
+}
+
 export default ({ children, pathname, kind = colors.white }) => {
   const { backgroundColor, color } = COLOR_TYPE[kind];
 
@@ -115,6 +119,7 @@ export default ({ children, pathname, kind = colors.white }) => {
       <ResponsiveSpacer mobileTop={3} desktopTop={6}>
         {children}
       </ResponsiveSpacer>
+      <ThemeToggle />
     </Root>
   );
 };

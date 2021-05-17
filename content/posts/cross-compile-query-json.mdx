@@ -68,7 +68,7 @@ One of the beauties of `jq` is that all the expressions are piped by default, so
 
 Let's dive into an example. When the parser recieves `.store.books` will return:
 
-```reason
+```javascript
 Pipe(
     Key("store"),
     Key("books")
@@ -83,7 +83,7 @@ The entire `query-json` program representation it's one big recursive Variant.
 
 Following with a more complex example, let's parse `.store.books | filter(.price > 10)`:
 
-```reason
+```javascript
 Pipe(
     Pipe(
         Key("store"),
@@ -103,7 +103,7 @@ You can see more examples in the [parsing tests](https://github.com/davesnx/quer
 ### Compiling
 The compilation step recieves the *AST* expression and transforms it to code. It's a big recursive [pattern match](https://reasonml.github.io/docs/en/pattern-matching), which is another great feature of Reason and looks something like this:
 
-```reason
+```javascript
 let rec compile = (expression, json) => {
   switch (expression) {
   | Empty => empty
@@ -210,7 +210,7 @@ Js_of_ocaml lacks some of the basics to enable compatibility with JavaScript cod
 
 This isn't particular to js_of_ocaml, is more related to the mix of js_of_ocaml and BuckleScript. In order to run the js_of_ocaml artefact into the BuckleScript/Reason codebase, I needed to write bindings for it.
 
-```reason
+```javascript
 [@bs.module "../../_build/default/js/Js.bc.js"]
 external queryJson: (string, string) => result(string, string) = "run";
 ```

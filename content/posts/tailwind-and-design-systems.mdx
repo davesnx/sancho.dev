@@ -89,7 +89,7 @@ const Card = (props) => {
 <Card gap={3} />
 ```
 
-Now our `Card` component accepts the value for padding. This have a few issues by itself. Such as `gap` could technically be any string, could be `4 flex` and break all the UI.
+Now our `Card` component accepts the value for padding. This have a few issues by itself. Such as `gap` could technically be any string, like `"4 flex"` and it will break all the UI.
 If you abuse the dynamism inside your components can be a real pain to implement the intermediate logic between your component API and your Tailwind utility classes. That dynamism is often needed while making your Design system.
 
 ### Impossible to derive styles

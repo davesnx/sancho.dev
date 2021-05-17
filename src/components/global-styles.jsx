@@ -1,11 +1,30 @@
-import { createGlobalStyle } from "styled-components";
+import { createGlobalStyle, css } from "styled-components";
 
 import prism from "./prism";
 import colors from "../colors";
 import font from "../fonts";
 
+const darkTheme = css`
+  html {
+    filter: hue-rotate(180deg) invert(90%);
+
+    img {
+      filter: invert(111%) hue-rotate(180deg);
+    }
+  }
+`;
+
 const GlobalStyles = createGlobalStyle`
   ${prism};
+
+
+  @media (prefers-color-scheme: dark) {
+    ${darkTheme}
+  }
+
+  body.__dark-theme-enabled {
+    ${darkTheme}
+  }
 
   html,
   body,
@@ -35,6 +54,10 @@ const GlobalStyles = createGlobalStyle`
 
     line-height: 1.4;
     box-sizing: border-box;
+  }
+
+  .gatsby-resp-image-background-image {
+    border-radius: 6px;
   }
 `;
 
