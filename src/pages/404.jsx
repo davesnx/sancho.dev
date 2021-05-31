@@ -14,7 +14,7 @@ const Small = styled(Text)`
 
 export default () => (
   <Page title="Page not found">
-    <Text weigth={600}>
+    <Text weight={600}>
       If it sounds like it shoud, <br /> please open an issue in{" "}
       <Link to="https://github.com/davesnx/sancho.dev">the repo</Link>.
     </Text>

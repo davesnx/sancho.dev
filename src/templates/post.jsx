@@ -88,7 +88,7 @@ const TwitterShare = ({ title, href }) => {
     <div>
       <Row align="center" distribute="top" gap={1}>
         <Link to={urlToShare}>
-          <Text tiny weigth={500} color={colors.paleBlue}>
+          <Text tiny weight={500} color={colors.paleBlue}>
             Share on Twitter
           </Text>
           <Spacer left={1} />
@@ -146,7 +146,7 @@ export default ({ data }) => {
           <Hr />
         </Spacer>
         <Text>
-          <Text weigth={500}>Thanks for reaching the end.</Text> Let me know if
+          <Text weight={500}>Thanks for reaching the end.</Text> Let me know if
           you have any feedback, correction or question. I'm always happy to
           chat.
         </Text>
@@ -161,7 +161,7 @@ export default ({ data }) => {
         <Spacer bottom={12}>
           <Small align="center">
             Made in Barcelona{" "}
-            <Small align="center" weigth={500}>
+            <Small align="center" weight={500}>
               · David Sancho ·
             </Small>{" "}
             {new Date().getFullYear()}

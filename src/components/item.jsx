@@ -1,25 +1,27 @@
 import React from "react";
 import styled from "styled-components";
 
-import LinkIcon from "./link-icon";
+import font from "../fonts";
+import Icon from "./icon";
 import Github from "./../svgs/github";
 import Web from "./../svgs/web";
 import YouTube from "./../svgs/youtube";
 import { Stack, Row } from "./taco";
 import { UnstyledLink } from "./link";
 import Text from "./text";
-import { H4 } from "./heading";
+import { H3 } from "./heading";
+import colors from "../colors";
 
 const GithubIcon = ({ href }) => (
-  <LinkIcon size={38} href={href} svg={Github} bg="rgba(24, 23, 23, 0.1)" />
+  <Icon padded size={38} href={href} svg={Github} bg="rgba(24, 23, 23, 0.1)" />
 );
 
 const WebIcon = ({ href }) => (
-  <LinkIcon size={38} href={href} svg={Web} bg="rgba(24, 23, 23, 0.1)" />
+  <Icon padded size={38} href={href} svg={Web} bg="rgba(24, 23, 23, 0.1)" />
 );
 
 const YouTubeIcon = ({ href }) => (
-  <LinkIcon size={38} href={href} svg={YouTube} bg="rgba(24, 23, 23, 0.1)" />
+  <Icon padded size={38} href={href} svg={YouTube} bg="rgba(24, 23, 23, 0.1)" />
 );
 
 export const Kind = {
@@ -38,15 +40,16 @@ const NotShrink = styled.div`
   flex-shrink: 0;
 `;
 
-export const Item = ({ title, description, kind, link }) => {
+export const Item = ({ meta, title, description, kind, link }) => {
   const Icon = KindToIcon[kind] || KindToIcon["Web"];
 
   return (
     <Row fullWidth align="center" distribute="between" gap={2}>
       <UnstyledLink to={link}>
         <div>
-          <Stack align="left" gap={2}>
-            <H4>{title}</H4>
+          <Text weight={500} color={colors.lightGrey} size={font.fontSizeN1}>{meta.toUpperCase()}</Text>
+          <Stack align="left" gap={0}>
+            <H3>{title}</H3>
             <Text>{description}</Text>
           </Stack>
         </div>
