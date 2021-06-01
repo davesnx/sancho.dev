@@ -15,23 +15,16 @@ jobs:
         with:
           node-version: 16.x
 
-      - name: Restore global node modules cache
-        uses: actions/cache@v1
-        env:
-          cache-name: cache-node-modules
+      - uses: actions/cache@v2
         with:
-          path: ~/.npm
-          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-build-${{ env.cache-name }}-
-            ${{ runner.os }}-build-
-            ${{ runner.os }}-
+          path: '**/node_modules'
+          key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
 
       - name: Install
-        run: npm install
+        run: yarn install --prefer-offline
 
       - name: Build
-        run: npm build
+        run: yarn build
 
       - name: Deploy to prod
         if: ${{ github.event_name != 'pull_request' }}
