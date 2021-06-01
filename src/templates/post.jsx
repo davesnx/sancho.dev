@@ -59,7 +59,7 @@ const Content = styled(Text)`
 `;
 
 const Line = css`
-  opacity: 0.3;
+  opacity: 0.4;
   border: 1px solid ${colors.fadedBlack};
 `;
 

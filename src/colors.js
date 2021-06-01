@@ -6,7 +6,7 @@ export default {
   primary: "#03C9A9",
   blue: "#0966ba",
   paleBlue: "#4299e8",
-  fadedBlack: "rgba(0, 0, 0, 0.3)",
+  fadedBlack: "rgba(0, 0, 0, 0.15)",
   R: "#FF211B",
   G: "#17E620",
   B: "#003AEC",
