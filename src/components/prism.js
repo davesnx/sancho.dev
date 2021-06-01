@@ -29,8 +29,9 @@ export default css`
     margin: 0;
     margin-bottom: 2rem;
     padding: 1.25rem 32px;
-    border-radius: 4px;
     background: ${background};
+    border-radius: 4px;
+    border: 1px solid ${colors.fadedBlack};
   }
 
   code[class*="language-"],

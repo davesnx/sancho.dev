@@ -60,7 +60,7 @@ const Content = styled(Text)`
 
 const Line = css`
   opacity: 0.3;
-  border: 1px dotted ${colors.grey};
+  border: 1px solid ${colors.fadedBlack};
 `;
 
 const Hr = styled.hr`
@@ -172,8 +172,7 @@ export default ({ data }) => {
         </Spacer>
         <Text>
           <Text weight={500}>Thanks for reaching the end.</Text> Let me know if
-          you have any feedback, correction or question. I'm always happy to
-          chat.
+          you have any feedback, correction or question. Always happy to chat.
         </Text>
         <Spacer top={2} />
         <TwitterShare
