@@ -4,6 +4,7 @@ import styled from "styled-components";
 import { Link as Navigate, graphql } from "gatsby";
 
 import font from "../fonts";
+import colors from "../colors";
 import Text from "../components/text";
 import Page from "../components/page";
 import Spacer from "../components/spacer";
@@ -19,13 +20,6 @@ const BlogLink = styled(Navigate)`
 
   ${props => (props.isMobile ? "flex-direction: column-reverse" : "")};
   align-items: ${props => (props.isMobile ? "left" : "center")};
-`;
-
-const Date = styled(Text)`
-  font-size: ${font.fontSizeN1};
-  font-weight: 500;
-  opacity: 0.4;
-  text-transform: uppercase;
 `;
 
 export default ({ data }) => {
@@ -49,7 +43,7 @@ export default ({ data }) => {
       <Page title="Thoughts">
         {data.allMdx.edges.map(({ node }) => (
           <Spacer bottom={3} key={node.id}>
-            <Date align="left">{node.frontmatter.date}</Date>
+            <Text weight={500} color={colors.lightGrey} size={font.fontSizeN1}>{node.frontmatter.date.toUpperCase()}</Text>
             <BlogLink to={node.fields.slug} isMobile={isMobile}>
               <H3> {node.frontmatter.title}</H3>
             </BlogLink>

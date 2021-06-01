@@ -2,30 +2,33 @@ import React from "react";
 
 import Page from "../components/page";
 import { Item, Kind } from "../components/item";
-import { StackWithDivider } from "../components/taco";
+import { Stack } from "../components/taco";
 
 const Talks = () => (
   <Page title="Talks">
-    <StackWithDivider gap={5}>
+    <Stack gap={5}>
       <Item
         title="The needed introduction to make a ppx"
-        description="ReasonSTHLM November: An introduction to demystify implementing a preprocessor extension for OCaml"
+        description="An introduction to make your first ppx, your first OCaml preprocessor extension"
+        meta="ReasonSTHLM November 2020"
         kind={Kind.YouTube}
         link="https://youtu.be/dMoRMqQ6GLs?t=4206"
       />
       <Item
         title="Presenting styled-ppx"
-        description="ReasonSTHLM May: Talk about my experience building and using styled-ppx"
+        description="Talk about my experience building and using styled-ppx"
+        meta={"ReasonSTHLM May 2020"}
         kind={Kind.YouTube}
         link="https://www.youtube.com/watch?v=ekHCBZiCviM"
       />
       <Item
         title="CSS-in-Reason and OCaml"
-        description="NearForm WFH Conf 2020: Present the status quo of writting CSS inside ReasonReact apps and my approach to fix it"
+        description="Present the status quo of writting CSS inside ReasonReact apps and my approach to fix it"
+        meta={"NearForm WFH Conf 2020"}
         kind={Kind.YouTube}
         link="https://www.youtube.com/watch?v=D8WhIeMIZQc"
       />
-    </StackWithDivider>
+    </Stack>
   </Page>
 );
 
