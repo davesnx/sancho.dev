@@ -19,8 +19,33 @@ import { H1, H2, H3, H4, H5, H6 } from "../components/heading";
 import colors from "../colors";
 import font from "../fonts";
 
-const HeadingPadded = c => styled(c)`
+const PaddedH1 = styled(H1)`
+  margin-top: 5.5rem;
+  margin-bottom: 1rem;
+`;
+
+const PaddedH2 = styled(H2)`
+  margin-top: 4.5rem;
+  margin-bottom: 1rem;
+`;
+
+const PaddedH3 = styled(H3)`
+  margin-top: 3.5rem;
+  margin-bottom: 1rem;
+`;
+
+const PaddedH4 = styled(H4)`
+  margin-top: 2.5rem;
+  margin-bottom: 1rem;
+`;
+
+const PaddedH5 = styled(H5)`
   margin-top: 2rem;
+  margin-bottom: 1rem;
+`;
+
+const PaddedH6 = styled(H6)`
+  margin-top: 1.5rem;
   margin-bottom: 1rem;
 `;
 
@@ -123,12 +148,12 @@ export default ({ data }) => {
         <Spacer bottom={2}>
           <MDXProvider
             components={{
-              h1: HeadingPadded(H1),
-              h2: HeadingPadded(H2),
-              h3: HeadingPadded(H3),
-              h4: HeadingPadded(H4),
-              h5: HeadingPadded(H5),
-              h6: HeadingPadded(H6),
+              h1: PaddedH1,
+              h2: PaddedH2,
+              h3: PaddedH3,
+              h4: PaddedH4,
+              h5: PaddedH5,
+              h6: PaddedH6,
               p: Content,
               a: Link,
               li: ListItem,

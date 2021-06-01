@@ -3,9 +3,9 @@ import { css } from "styled-components";
 import colors from "../colors";
 
 const background = "#E2E9EE";
-const black = "rgb(76, 76, 92)";
+const black = "#4c4c5c";
 const orange = "#DC6439";
-const yellow = "#f6a434";
+const yellow = "#e28200";
 const purple = "#9e4eb4";
 const green = "#28b3ba";
 const red = "#ef6b73";
@@ -15,8 +15,10 @@ const strongblue = "#4c575d";
 export default css`
   code[class*="language-"],
   pre[class*="language-"] {
-    font-family: "SF Mono", "Fira Code", monospace !important;
-    font-size: 16px !important;
+    font-family: "SF Mono", "Fira Code", monospace;
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 1.5em;
   }
 
   :not(pre) > code[class*="language-"],
@@ -40,28 +42,8 @@ export default css`
     word-break: normal;
     word-wrap: normal;
     color: ${strongblue};
-    font-family: Roboto Mono, monospace;
-    font-size: 1em;
-    line-height: 1.5em;
-
     tab-size: 4;
     hyphens: none;
-  }
-
-  code[class*="language-"]::-moz-selection,
-  pre[class*="language-"]::-moz-selection,
-  code[class*="language-"] ::-moz-selection,
-  pre[class*="language-"] ::-moz-selection {
-    background: #cceae7;
-    color: #263238;
-  }
-
-  code[class*="language-"]::selection,
-  pre[class*="language-"]::selection,
-  code[class*="language-"] ::selection,
-  pre[class*="language-"] ::selection {
-    background: #cceae7;
-    color: #263238;
   }
 
   :not(pre) > code[class*="language-"] {

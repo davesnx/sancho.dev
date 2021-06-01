@@ -86,6 +86,7 @@ export const Align = styled.div`
 export const StackWithDivider = styled(Stack)`
   & > *:not(:last-child) {
     padding-bottom: 40px;
-    border-bottom: 1px solid ${colors.fadedBlack};
+    opacity: 0.3;
+    border-bottom: 1px dotted ${colors.grey};
   }
 `;

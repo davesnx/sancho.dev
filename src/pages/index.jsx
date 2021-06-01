@@ -17,8 +17,8 @@ export default () => {
       </Text>
       <br />
       <Text>
-        Software Engineer at <Link to="https://ocaml.org/">draftbit</Link>,
-        previously Frontend at <Link to="https://ocaml.org/">Typeform</Link>.
+        Software Engineer at <Link to="https://draftbit.com/">draftbit</Link>,
+        previously Frontend at <Link to="https://www.typeform.com/">Typeform</Link>.
       </Text>
       <br />
       <Text>Amateur triathlete doing Olympic and Half (70.3) distances.</Text>
