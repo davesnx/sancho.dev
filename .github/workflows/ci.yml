@@ -1,0 +1,51 @@
+name: CI
+
+on: [push]
+
+jobs:
+  build:
+    name: Built
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Use Node.js 16.x
+        uses: actions/setup-node@v1
+        with:
+          node-version: 16.x
+
+      - name: Restore global node modules cache
+        uses: actions/cache@v1
+        env:
+          cache-name: cache-node-modules
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-build-${{ env.cache-name }}-
+            ${{ runner.os }}-build-
+            ${{ runner.os }}-
+
+      - name: Install
+        run: npm install
+
+      - name: Build
+        run: npm build
+
+      - name: Deploy to prod
+        if: ${{ github.event_name != 'pull_request' }}
+        working-directory: ./www
+        env:
+          SITE_ID: ${{ secrets.SITE_ID }}
+          AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+        run:
+          npx netlify deploy --site $SITE_ID --auth $AUTH_TOKEN --prod --dir=dist
+
+      - name: Deploy preview
+        working-directory: ./www
+        env:
+          SITE_ID: ${{ secrets.SITE_ID }}
+          AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+        run:
+          npx netlify deploy --site $SITE_ID --auth $AUTH_TOKEN --dir=dist
