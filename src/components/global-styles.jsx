@@ -1,30 +1,13 @@
-import { createGlobalStyle, css } from "styled-components";
+import { createGlobalStyle } from "styled-components";
 
 import prism from "./prism";
 import colors from "../colors";
 import font from "../fonts";
-
-const darkTheme = css`
-  html {
-    filter: hue-rotate(180deg) invert(90%);
-
-    img {
-      filter: invert(111%) hue-rotate(180deg);
-    }
-  }
-`;
+import { theme } from "../theme"
 
 const GlobalStyles = createGlobalStyle`
   ${prism};
-
-
-  @media (prefers-color-scheme: dark) {
-    ${darkTheme}
-  }
-
-  body.__dark-theme-enabled {
-    ${darkTheme}
-  }
+  ${theme};
 
   html,
   body,
