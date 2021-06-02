@@ -183,13 +183,10 @@ export default ({ data }) => {
           <Hr />
         </Spacer>
         <Spacer bottom={12}>
-          <Small align="center">
-            Made in Barcelona{" "}
-            <Small align="center" weight={500}>
-              · David Sancho ·
-            </Small>{" "}
-            {new Date().getFullYear()}
-          </Small>
+          <Row distribute="between">
+            <Small align="center">Made in Barcelona</Small>
+            <Small align="center" weight={500}>{new Date().getFullYear()}</Small>
+          </Row>
         </Spacer>
       </Page>
     </>
