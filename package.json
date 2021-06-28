@@ -35,7 +35,7 @@
     "netlify-cli": "^2.25.0",
     "preact": "^10.5.9",
     "preact-render-to-string": "^5.1.12",
-    "prismjs": "^1.20.0",
+    "prismjs": "^1.24.0",
     "react": "16.8.3",
     "react-dom": "16.8.3",
     "react-helmet": "^5.2.0",
