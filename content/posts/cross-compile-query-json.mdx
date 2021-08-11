@@ -1,5 +1,5 @@
 ---
-title: "query-json: implementing jq with Reason. Compiling to Native and Web"
+title: "query-json: jq written in Reason"
 date: "2020-10-12"
 tags:
   - "query-json"
@@ -13,7 +13,7 @@ tags:
 
 # What's query-json
 
-[query-json](https://github.com/davesnx/query-json) is a faster and simpler re-implementation of [jq's language](https://github.com/stedolan/jq/wiki/jq-Language-Description) in [Reason](https://reasonml.github.io).
+[query-json](https://github.com/davesnx/query-json) is a faster and simpler re-implementation of [jq's language](https://github.com/stedolan/jq/wiki/jq-Language-Description) in [Reason](https://reasonml.github.io), compiled to a native binary and to a JavaScript library.
 
 It's a CLI to run small programs against JSON, the same idea as [sed](https://www.linode.com/docs/tools-reference/tools/manipulate-text-from-the-command-line-with-sed/) but for JSON files. As a web engineer is an essential tool while developing APIs.
 
@@ -24,7 +24,7 @@ This post explains the project, how it was made and which decisions were followe
 ![](./images/exploded-view.jpg)
 
 ## Why learning parsers/compilers
-I had a little idea about the theory, but very vague and useless and was the righ time to learn more since I created [styled-ppx](https://github.com/davesnx/styled-ppx) which is a
+I had a little idea about the theory, but very vague and useless. Was the right time to learn more since I made [styled-ppx](https://github.com/davesnx/styled-ppx). Which is a
 **ppx** (**P**re**P**rocessor E**x**tension) that allows CSS-in-Reason/OCaml. Needs to parse the CSS and have a backend that compiles to [bs-emotion](https://github.com/ahrefs/bs-emotion).
 
 I asked for some help to [@EduardoRFS](https://www.twitch.tv/eduardorfs) about writing a CSS Parser that supports the entire [CSS3 specification](https://www.w3.org/TR/2001/WD-css3-roadmap-20010523/) which I will want to understand, improve and maintain over time.
