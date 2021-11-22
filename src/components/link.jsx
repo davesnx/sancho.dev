@@ -7,6 +7,7 @@ const A = styled.a`
   color: ${colors.paleBlue};
   font-weight: 500;
   font-size: inherit;
+  line-height: inherit;
   transition: color 0.15s ease;
 
   text-decoration: underline;
