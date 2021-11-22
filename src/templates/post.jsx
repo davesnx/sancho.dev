@@ -179,9 +179,7 @@ export default ({ data }) => {
           title={post.frontmatter.title}
           href={window.location.href}
         />
-        <Spacer top={2} />
-        <Hr />
-        <Spacer bottom={12} />
+        <Spacer bottom={10} />
       </Page>
     </>
   );
