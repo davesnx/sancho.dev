@@ -179,15 +179,9 @@ export default ({ data }) => {
           title={post.frontmatter.title}
           href={window.location.href}
         />
-        <Spacer top={2} bottom={2}>
-          <Hr />
-        </Spacer>
-        <Spacer bottom={12}>
-          <Row distribute="between">
-            <Small align="center">Made in Barcelona</Small>
-            <Small align="center" weight={500}>{new Date().getFullYear()}</Small>
-          </Row>
-        </Spacer>
+        <Spacer top={2} />
+        <Hr />
+        <Spacer bottom={12} />
       </Page>
     </>
   );
