@@ -17,7 +17,6 @@ import Twitter from "./../svgs/twitter";
 import { ListItem, OrderList, UnorderList } from "../components/list";
 import { H1, H2, H3, H4, H5, H6 } from "../components/heading";
 import colors from "../colors";
-import font from "../fonts";
 
 const PaddedH1 = styled(H1)`
   margin-top: 5.5rem;
@@ -101,10 +100,6 @@ const Blockquote = styled.blockquote`
   & > code {
     background-color: rgba(0, 0, 0, 0.1) !important;
   }
-`;
-
-const Small = styled(Text)`
-  font-size: ${font.fontSizeN1};
 `;
 
 const TwitterShare = ({ title, href }) => {

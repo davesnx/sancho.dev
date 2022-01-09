@@ -13,17 +13,13 @@ const About = () => {
     <Page title="About">
       <Text>
         Hi <Emoji name="hand">👋</Emoji>,
-        I'm David Sancho, a Software engineer from Barcelona coding in{" "}
+        I'm David Sancho, a Software engineer based on Barcelona coding in{" "}
         <Link to="http://reasonml.github.io/">Reason</Link> and{" "}
         <Link to="https://ocaml.org/">OCaml</Link>.
       </Text>
       <Spacer top={2} />
       <Text>
-        Working on{" "}
-        <Link to="https://github.com/davesnx/styled-ppx">
-          davesnx/styled-ppx
-        </Link>
-        .
+        Currently working at <Link to="http://ahrefs.com">ahrefs</Link>. Building <Link to="https://styled-ppx.vercel.app">styled-ppx</Link>.
       </Text>
       <Spacer top={2} />
       <Text>
