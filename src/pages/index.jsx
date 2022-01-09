@@ -12,15 +12,14 @@ export default () => {
   return (
     <Page title="David Sancho">
       <Text align="left">
-        Hey! I'm a Software engineer, trying to make cute software with{" "}
+        Hey! I'm a developer based in Barcelona. Trying to make cute software with{" "}
         <Link to="http://reasonml.github.io/">Reason</Link> and{" "}
-        <Link to="https://ocaml.org/">OCaml</Link>. </Text>
-      <Text>and a streamer, I co-host a show about ML languages called <Link to="https://www.twitch.tv/emelletv">EmelleTV</Link></Text>.
+        <Link to="https://ocaml.org/">OCaml</Link> and co-host <Link to="https://www.twitch.tv/emelletv">EmelleTV</Link> a stream show about those languages. </Text>
       <Spacer top={2} />
-      <Text>Amateur triathlete mostly doing Olympic and Half (70.3) distances.</Text>
+      <Text>I consider myself an amateur triathlete focused in Olympic and Half Ironman distances.</Text>
       <Spacer top={2} />
-      <Text>You can read more about me in my <Navigate to="/about">/about</Navigate> page, or contact me on any social media</Text>
-      <Spacer top={2} />
+      <Text>You can read more about me in the <Navigate to="/about">/about</Navigate> page.</Text>
+      <Spacer top={4} />
       <SocialMedia />
     </Page>
   );

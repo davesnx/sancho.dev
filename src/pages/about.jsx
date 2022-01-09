@@ -10,16 +10,10 @@ import { Emoji } from "../theme";
 
 const About = () => {
   return (
-    <Page title="About">
+    <Page title="About me">
       <Text>
         Hi <Emoji name="hand">👋</Emoji>,
-        I'm David Sancho, a Software engineer based on Barcelona coding in{" "}
-        <Link to="http://reasonml.github.io/">Reason</Link> and{" "}
-        <Link to="https://ocaml.org/">OCaml</Link>.
-      </Text>
-      <Spacer top={2} />
-      <Text>
-        Currently working at <Link to="http://ahrefs.com">ahrefs</Link>. Building <Link to="https://styled-ppx.vercel.app">styled-ppx</Link>.
+        I'm David Sancho, a developer based on Barcelona currently working at <Link to="http://ahrefs.com">ahrefs</Link> as a Software Engineer. Building <Link to="https://styled-ppx.vercel.app">styled-ppx</Link>, fully typed styled components for Reason/OCaml and ReScript.
       </Text>
       <Spacer top={2} />
       <Text>
@@ -32,20 +26,26 @@ const About = () => {
       <Text>
         Passionate in <strong>functional programming</strong>,{" "}
         <strong>design</strong>, <strong>scalability</strong>,{" "}
-        <strong>people</strong> and <strong>startups</strong>. Even with my
+        <strong>people</strong> and <strong>startups</strong>, but lately about <strong>compilers</strong>. Even with my
         limited english, I'm trying to write about those in this{" "}
         <Navigate underline to="/blog">blog</Navigate>.
       </Text>
       <Spacer top={2} />
       <Text>
-        Aside from the computer, I love endurance sports and I'm doing Olympic
-        and Half (70.3) triathlon distances since a few years ago.
+        I love endurance sports, specifically triathlon. I'm focused in Olympic
+        and Half-Ironman distances.
       </Text>
       <Spacer top={2} />
       <Text>
-        You can reach on{" "}
-        <Link to="https://twitter.com/davesnx">twitter.com/davesnx</Link> or
-        email me at <strong>"dsnxmoreno at gmail dot com"</strong>.
+      I'm grateful for what Open Source gave me and most of my code open as well, hosted on <Link to="https://github.com/davesnx">github.com/davesnx</Link>, hope you can find it useful too.
+      </Text>
+      <Spacer top={2} />
+      <Text>
+      Follow my fast thoughts on <Link to="https://github.com/davesnx">Twitter</Link>.
+      </Text>
+      <Spacer top={2} />
+      <Text>
+      Feel free to contact me, Bye!
       </Text>
     </Page>
   );
