@@ -107,9 +107,10 @@ const TwitterShare = ({ title, href }) => {
   return (
     <div>
       <Row align="center" distribute="top" gap={1}>
-        <Link to={urlToShare}>
+        <Text>If you like it enough, consider to </Text> <Link to={urlToShare}>
+
           <Text tiny weight={500} color={colors.paleBlue}>
-            Share on Twitter
+            share it on Twitter
           </Text>
           <Spacer left={1} />
           <Icon svg={Twitter} size={20} color={colors.paleBlue} />

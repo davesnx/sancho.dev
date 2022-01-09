@@ -47,6 +47,7 @@ const About = () => {
       <Text>
       Feel free to contact me, Bye!
       </Text>
+      <Spacer bottom={16} />
     </Page>
   );
 };
