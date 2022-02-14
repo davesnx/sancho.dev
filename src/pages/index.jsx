@@ -10,11 +10,11 @@ import SocialMedia from "../components/social-media";
 
 export default () => {
   return (
-    <Page title="David Sancho">
+    <Page title="Hello! I'm David Sancho">
       <Text align="left">
-        Hey! I'm a developer based in Barcelona. Trying to make cute software with{" "}
+        I'm a Software Engineer based in Barcelona. Trying to make cute software with{" "}
         <Link to="http://reasonml.github.io/">Reason</Link> and{" "}
-        <Link to="https://ocaml.org/">OCaml</Link> and co-host <Link to="https://www.twitch.tv/emelletv">EmelleTV</Link> a stream show about those languages. </Text>
+        <Link to="https://ocaml.org/">OCaml</Link>. I co-host <Link to="https://www.twitch.tv/emelletv">EmelleTV</Link> a stream show about those languages. </Text>
       <Spacer top={2} />
       <Text>I consider myself an amateur triathlete focused in Olympic and Half Ironman distances.</Text>
       <Spacer top={2} />

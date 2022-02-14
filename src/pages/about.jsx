@@ -13,14 +13,14 @@ const About = () => {
     <Page title="About me">
       <Text>
         Hi <Emoji name="hand">👋</Emoji>,
-        I'm David Sancho, a developer based on Barcelona currently working at <Link to="http://ahrefs.com">ahrefs</Link> as a Software Engineer. Building <Link to="https://styled-ppx.vercel.app">styled-ppx</Link>, fully typed styled components for Reason/OCaml and ReScript.
+        I'm David Sancho, a developer based on Barcelona currently working at <Link to="http://ahrefs.com">ahrefs</Link> as a Software Engineer. Building <Link to="https://styled-ppx.vercel.app">styled-ppx</Link>, styled components for Reason/OCaml and ReScript with typed CSS.
       </Text>
       <Spacer top={2} />
       <Text>
         Previously worked at <Link to="https://draftbit.com">Draftbit</Link>{" "}
         helping people create React Native apps visually, and at{" "}
         <Link to="https://www.typeform.com">Typeform</Link> as Frontend engineer
-        on the Renderer Team <i>(aka the form experience)</i>.
+        on the Renderer Team <i>(also known as "form experience")</i>.
       </Text>
       <Spacer top={2} />
       <Text>
@@ -32,12 +32,12 @@ const About = () => {
       </Text>
       <Spacer top={2} />
       <Text>
-        I love endurance sports, specifically triathlon. I'm focused in Olympic
+        I love endurance sports, specifically triathlon and ski. I'm focused on Olympic
         and Half-Ironman distances.
       </Text>
       <Spacer top={2} />
       <Text>
-      I'm grateful for what Open Source gave me and most of my code open as well, hosted on <Link to="https://github.com/davesnx">github.com/davesnx</Link>, hope you can find it useful too.
+      I'm grateful for what Open Source gave me and that's why most of my code is open as well, hosted at <Link to="https://github.com/davesnx">github.com/davesnx</Link>.
       </Text>
       <Spacer top={2} />
       <Text>
