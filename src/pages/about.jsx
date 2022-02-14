@@ -13,7 +13,7 @@ const About = () => {
     <Page title="About me">
       <Text>
         Hi <Emoji name="hand">👋</Emoji>,
-        I'm David Sancho, a developer based on Barcelona currently working at <Link to="http://ahrefs.com">ahrefs</Link> as a Software Engineer. Building <Link to="https://styled-ppx.vercel.app">styled-ppx</Link>, styled components for Reason/OCaml and ReScript with typed CSS.
+        I'm David Sancho, a developer based on Barcelona currently working at <Link to="http://ahrefs.com">ahrefs</Link> as a Software engineer. Building <Link to="https://styled-ppx.vercel.app">styled-ppx</Link>, styled components for Reason/OCaml and ReScript with typed CSS.
       </Text>
       <Spacer top={2} />
       <Text>
