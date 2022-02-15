@@ -10,14 +10,14 @@ const A = styled.a`
   line-height: inherit;
   transition: color 0.15s ease;
 
-  text-decoration: underline;
-  text-decoration-color: ${colors.paleBlue};
-  text-decoration-thickness: 1.5px;
-  text-underline-offset: 1.5px;
+  text-decoration: none;
 
   &:hover {
     color: ${colors.blue};
+    text-decoration: underline;
     text-decoration-color: ${colors.blue};
+    text-decoration-thickness: 1.5px;
+    text-underline-offset: 1.5px;
   }
 
   cursor: pointer;

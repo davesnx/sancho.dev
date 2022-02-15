@@ -9,19 +9,19 @@ const Navigate = styled(Link)`
   font-size: inherit;
   transition: color 0.15s ease;
 
-  text-decoration: ${props => props.underline ? "underline" : "none"};
-  text-decoration-color: ${colors.paleBlue};
-  text-decoration-thickness: 1.5px;
-  text-underline-offset: 1.5px;
-
-  &:hover {
-    color: ${colors.blue};
-    text-decoration-color: ${colors.blue};
-  }
-
   cursor: pointer;
   overflow-wrap: break-word;
   word-wrap: break-word;
+
+  text-decoration: none;
+
+  &:hover {
+    color: ${colors.blue};
+    text-decoration: ${props => props.underline ? "underline" : "none"};
+    text-decoration-thickness: 1.5px;
+    text-underline-offset: 1.5px;
+    text-decoration-color: ${colors.blue};
+  }
 `;
 
 export default Navigate;
