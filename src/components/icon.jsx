@@ -4,10 +4,9 @@ import styled from "styled-components";
 import colors from "../colors";
 
 const Logo = styled.div`
-  width: ${props => (props.size ? `${props.size}px` : "40px")};
-  height: ${props => (props.size ? `${props.size}px` : "40px")};
+  display: flex;
   padding: ${props => (props.padded ? "8px" : "0px")};
-  border-radius: 4px;
+  border-radius: 6px;
   cursor: pointer;
   transition: all 100ms ease-in;
 
@@ -17,7 +16,7 @@ const Logo = styled.div`
 `;
 
 const Icon = ({ svg: Svg, size, color = colors.black, bg, padded }) => (
-  <Logo padded={padded} size={size} color={bg}>
+  <Logo padded={padded} color={bg}>
     <Svg size={size} fill={color}></Svg>
   </Logo>
 );

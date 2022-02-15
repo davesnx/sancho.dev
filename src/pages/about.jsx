@@ -13,7 +13,7 @@ const About = () => {
     <Page title="About me">
       <Text>
         Hi <Emoji name="hand">👋</Emoji>,
-        I'm David Sancho, a developer based on Barcelona currently working at <Link to="http://ahrefs.com">ahrefs</Link> as a Software engineer. Building <Link to="https://styled-ppx.vercel.app">styled-ppx</Link>, styled components for Reason/OCaml and ReScript with typed CSS.
+        My name is David Sancho and I'm a developer based on Barcelona currently working remotely at <Link to="http://ahrefs.com">ahrefs</Link> as a Software engineer, building <Link to="https://styled-ppx.vercel.app">styled-ppx</Link> (styled components for Reason/OCaml and ReScript with typed CSS).
       </Text>
       <Spacer top={2} />
       <Text>
@@ -24,9 +24,9 @@ const About = () => {
       </Text>
       <Spacer top={2} />
       <Text>
-        Passionate in <strong>functional programming</strong>,{" "}
-        <strong>design</strong>, <strong>scalability</strong>,{" "}
-        <strong>people</strong> and <strong>startups</strong>, but lately about <strong>compilers</strong>. Even with my
+        Passionate in functional programming,
+        design, scalability,
+        people and startups, but lately about compilers. Even with my
         limited english, I'm trying to write about those in this{" "}
         <Navigate underline to="/blog">blog</Navigate>.
       </Text>
@@ -41,11 +41,7 @@ const About = () => {
       </Text>
       <Spacer top={2} />
       <Text>
-      Follow my fast thoughts on <Link to="https://github.com/davesnx">Twitter</Link>.
-      </Text>
-      <Spacer top={2} />
-      <Text>
-      Feel free to contact me, Bye!
+      If you want to know more, follow my fast thoughts on <Link to="https://github.com/davesnx">Twitter</Link>.
       </Text>
       <Spacer bottom={16} />
     </Page>

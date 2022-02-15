@@ -10,8 +10,13 @@ const Navigate = styled(Link)`
   transition: color 0.15s ease;
 
   text-decoration: ${props => props.underline ? "underline" : "none"};
+  text-decoration-color: ${colors.paleBlue};
+  text-decoration-thickness: 1.5px;
+  text-underline-offset: 1.5px;
+
   &:hover {
     color: ${colors.blue};
+    text-decoration-color: ${colors.blue};
   }
 
   cursor: pointer;

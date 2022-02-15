@@ -1,5 +1,4 @@
 import React from "react";
-import { graphql } from "gatsby";
 
 import Page from "../components/page";
 import { Link } from "../components/link";
@@ -10,15 +9,17 @@ import SocialMedia from "../components/social-media";
 
 export default () => {
   return (
-    <Page title="Hey! I'm David Sancho">
-      <Text align="left">Software engineer based in Barcelona. </Text>
-      <Spacer top={2} />
-      <Text>
+    <Page title="David Sancho">
+      <Text align="left">I'm a Barcelona based software engineer.
         Trying to make cute software with{" "}
         <Link to="http://reasonml.github.io/">Reason</Link> and{" "}
         <Link to="https://ocaml.org/">OCaml</Link>. I co-host{" "}
         <Link to="https://www.twitch.tv/emelletv">EmelleTV</Link> a stream show
         about those languages.{" "}
+      </Text>
+      <Spacer top={2} />
+      <Text>
+        Currently I work at <Link to="https://ahrefs.com/">Ahrefs</Link>, building <Link to="https://styled-ppx.vercel.app">styled-ppx</Link>.
       </Text>
       <Spacer top={2} />
       <Text>
@@ -29,20 +30,10 @@ export default () => {
       <Spacer top={2} />
       <Text>
         You can read more about me in the{" "}
-        <Navigate to="/about">/about</Navigate> page.
+        <Navigate underline to="/about">about</Navigate> page.
       </Text>
       <Spacer top={4} />
       <SocialMedia />
     </Page>
   );
 };
-
-export const query = graphql`
-  query {
-    site {
-      siteMetadata {
-        title
-      }
-    }
-  }
-`;
