@@ -14,8 +14,8 @@ export default () => {
         Trying to make cute software with{" "}
         <Link to="http://reasonml.github.io/">Reason</Link> and{" "}
         <Link to="https://ocaml.org/">OCaml</Link>. I co-host{" "}
-        <Link to="https://www.twitch.tv/emelletv">EmelleTV</Link> a stream show
-        about those languages.{" "}
+        <Link to="https://www.twitch.tv/emelletv">EmelleTV</Link> a streaming show
+        about these languages.
       </Text>
       <Spacer top={2} />
       <Text>
