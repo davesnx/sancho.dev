@@ -19,13 +19,12 @@ export default () => {
       </Text>
       <Spacer top={2} />
       <Text>
-        Currently I work at <Link to="https://ahrefs.com/">Ahrefs</Link>, building <Link to="https://styled-ppx.vercel.app">styled-ppx</Link>.
+        I currently work at <Link to="https://ahrefs.com/">Ahrefs</Link>, building <Link to="https://styled-ppx.vercel.app">styled-ppx</Link>.
       </Text>
       <Spacer top={2} />
       <Text>
-        In my spare time, I train as an amateur triathlete focused in Olympic
-        and Half Ironman distances and creating/maintaing a bunch of Open Source
-        projects
+        In my spare time, I train as an amateur triathlete focusing on Olympic
+        and Half Ironman distances and create/maintaiš a bunch of Open Source projects
       </Text>
       <Spacer top={2} />
       <Text>
