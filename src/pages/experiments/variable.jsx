@@ -80,9 +80,8 @@ export default () => {
             {isMobile
               ? "Tap into the name to see the "
               : "Move the mouse in the y axis to see the "}
-            <Link to="https://en.wikipedia.org/wiki/Chromatic_aberration">
-              Variable font weight effect
-            </Link>
+            <Link to="https://v-fonts.com">Variable font weight</Link>
+            effect
           </Text>
         </Spacer>
       </Container>
