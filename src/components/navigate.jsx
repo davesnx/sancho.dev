@@ -4,7 +4,7 @@ import styled from "styled-components";
 import colors from "../colors";
 
 const Navigate = styled(Link)`
-  color: ${colors.paleBlue};
+  color: ${colors.blue};
   font-weight: 500;
   font-size: inherit;
   transition: color 0.15s ease;

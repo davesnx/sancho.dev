@@ -4,7 +4,7 @@ import styled from "styled-components";
 import colors from "../colors";
 
 const A = styled.a`
-  color: ${colors.paleBlue};
+  color: ${colors.blue};
   font-weight: 500;
   font-size: inherit;
   line-height: inherit;

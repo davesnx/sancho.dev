@@ -109,11 +109,11 @@ const TwitterShare = ({ title, href }) => {
       <RowResponsive>
         <Text>If you like it enough, consider to </Text> <Link to={urlToShare}>
 
-          <Text tiny weight={500} color={colors.paleBlue}>
+          <Text tiny weight={500} color={colors.blue}>
             share it on Twitter
           </Text>
           <Spacer left={1} />
-          <Icon svg={Twitter} size={20} color={colors.paleBlue} />
+          <Icon svg={Twitter} size={20} color={colors.blue} />
         </Link>
       </RowResponsive>
     </div>

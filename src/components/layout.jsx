@@ -17,7 +17,6 @@ const Navigate = styled(NavigateLink)`
 `;
 
 const Root = styled.div`
-  min-width: 100vw;
   min-height: 100vh;
   background-color: ${props => props.backgroundColor};
 `;
@@ -41,7 +40,7 @@ const Logo = styled(Navigate)`
   margin: 0;
   text-decoration: none;
 
-  color: ${colors.paleBlue};
+  color: ${colors.blue};
   transition: color 0.15s ease;
 
   &:hover {
