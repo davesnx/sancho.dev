@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 
 import { unit, px } from "../utils/unit";
+import constants from "../constants";
 import colors from "../colors";
 
 const StackAlignMap = {
@@ -88,5 +89,24 @@ export const StackWithDivider = styled(Stack)`
     padding-bottom: 40px;
     opacity: 0.3;
     border-bottom: 1px dotted ${colors.grey};
+  }
+`;
+
+export const RowResponsive = styled.div`
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  align-items: center;
+  justify-content: space-between;
+
+  @media (max-width: ${constants.desktop.width}) {
+    flex-direction: column;
+    height: auto;
+    align-items: center;
+    justify-content: space-between;
+
+    & > :not(:last-child) {
+      margin-bottom: ${props => px(unit(props.gap || 2))};
+    }
   }
 `;

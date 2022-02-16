@@ -26,7 +26,7 @@ export const ResponsiveSpacer = styled.div`
   ${props => props.desktopLeft && `margin-left: ${rem(props.desktopLeft)}`};
   ${props => props.desktopRight && `margin-right: ${rem(props.desktopRight)}`};
 
-  @media (max-width: ${constants.width}) {
+  @media (max-width: ${constants.desktop.width}) {
     ${props => props.mobileTop && `margin-top: ${rem(props.mobileTop)}`};
     ${props =>
       props.mobileBottom && `margin-bottom: ${rem(props.mobileBottom)}`};

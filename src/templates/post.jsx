@@ -8,7 +8,7 @@ import { window } from "browser-monads";
 
 import Page from "../components/page";
 import Spacer from "../components/spacer";
-import { Row } from "../components/taco";
+import { RowResponsive } from "../components/taco";
 import Text from "../components/text";
 import { Link } from "../components/link";
 import Icon from "../components/icon";
@@ -106,7 +106,7 @@ const TwitterShare = ({ title, href }) => {
   const urlToShare = `http://www.twitter.com/share?url=${href}&text=${title}: `;
   return (
     <div>
-      <Row align="center" distribute="top" gap={1}>
+      <RowResponsive>
         <Text>If you like it enough, consider to </Text> <Link to={urlToShare}>
 
           <Text tiny weight={500} color={colors.paleBlue}>
@@ -115,7 +115,7 @@ const TwitterShare = ({ title, href }) => {
           <Spacer left={1} />
           <Icon svg={Twitter} size={20} color={colors.paleBlue} />
         </Link>
-      </Row>
+      </RowResponsive>
     </div>
   );
 };

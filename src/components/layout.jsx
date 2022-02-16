@@ -8,7 +8,7 @@ import font from "../fonts";
 import Main from "./../components/main";
 import NavigateLink from "./../components/navigate";
 import { ResponsiveSpacer } from "./../components/spacer";
-import { Row } from "./../components/taco";
+import { Row, RowResponsive } from "./../components/taco";
 
 const Navigate = styled(NavigateLink)`
   color: currentColor;
@@ -60,24 +60,6 @@ const COLOR_TYPE = {
   },
 };
 
-const DistributeResponsive = styled.div`
-  display: flex;
-  flex-direction: row;
-  width: 100%;
-  align-items: center;
-  justify-content: space-between;
-
-  @media (max-width: ${constants.width}) {
-    flex-direction: column;
-    height: auto;
-    align-items: center;
-    justify-content: space-between;
-
-    & > :not(:last-child) {
-      margin-bottom: 16px;
-    }
-  }
-`;
 
 const ThemeToggle = () => {
   return <div/>
@@ -91,7 +73,7 @@ export default ({ children, pathname, kind = colors.white }) => {
       <SiteMetadata pathname={pathname} />
       <Main>
         <header>
-          <DistributeResponsive>
+          <RowResponsive>
             <Logo to="/">@davesnx</Logo>
             <Row gap={3}>
               <MenuItem color={color}>
@@ -108,12 +90,9 @@ export default ({ children, pathname, kind = colors.white }) => {
               </MenuItem>
               {/* <MenuItem color={color}>
                 <Navigate to="/projects">projects</Navigate>
-              </MenuItem>
-              <MenuItem color={color}>
-                <Navigate to="/experiments">experiments</Navigate>
               </MenuItem> */}
             </Row>
-          </DistributeResponsive>
+          </RowResponsive>
         </header>
       </Main>
       <ResponsiveSpacer mobileTop={3} desktopTop={6}>
