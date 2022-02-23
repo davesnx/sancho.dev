@@ -24,7 +24,7 @@ export default () => {
       <Spacer top={2} />
       <Text>
         In my spare time, I train as an amateur triathlete focusing on Olympic
-        and Half Ironman distances and create/maintaiš a bunch of Open Source projects
+        and Half Ironman distances and create/maintain a bunch of Open Source projects.
       </Text>
       <Spacer top={2} />
       <Text>
