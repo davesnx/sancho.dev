@@ -2,11 +2,11 @@ import React from "react";
 import styled, { css } from "styled-components";
 import { Link as GatsbyLink } from "gatsby";
 
-import colors from "../colors";
+import { colors } from "../theme";
 import fonts from "../fonts";
 
 const Anchor = css`
-  color: ${props => props.color || colors.base};
+  color: ${props => props.color || colors.body};
   font-family: ${fonts.sans};
   font-weight: 500;
   font-size: inherit;
@@ -19,7 +19,7 @@ const Anchor = css`
   text-decoration-color: currentColor;
 
   &:hover {
-    color: ${colors.high};
+    color: ${colors.primary};
   }
 
   cursor: pointer;

@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 
 import SiteMetadata from "./site-metadata";
-import colors from "../colors";
+import { colors } from "../theme";
 import font from "../fonts";
 import Main from "./../components/main";
 import { NavigateButton } from "./../components/link";
@@ -11,7 +11,7 @@ import { Row, RowResponsive } from "./../components/taco";
 
 const Root = styled.div`
   min-height: 100vh;
-  background-color: ${props => props.backgroundColor};
+  background-color: ${colors.contrast};
 `;
 
 const MenuItem = styled.p`
@@ -24,7 +24,7 @@ const MenuItem = styled.p`
   color: ${props => props.color};
 
   &:hover {
-    color: ${colors.high};
+    color: ${colors.primary};
   }
 `;
 
@@ -36,11 +36,11 @@ const Logo = styled.p`
   margin: 0;
   text-decoration: none;
 
-  color: ${colors.high};
+  color: ${colors.primary};
   transition: color 0.15s ease;
 
   &:hover {
-    color: ${colors.high};
+    color: ${colors.primary};
   }
 `;
 

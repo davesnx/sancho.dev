@@ -10,7 +10,7 @@ import { Stack, Row } from "./taco";
 import { ButtonLink } from "./link";
 import Text from "./text";
 import { H3 } from "./heading";
-import colors from "../colors";
+import { colors } from "../theme";
 
 const GithubIcon = ({ href }) => (
   <Icon padded size={38} href={href} svg={Github} bg="rgba(24, 23, 23, 0.1)" />

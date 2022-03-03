@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 
 import Layout from "../../components/layout";
-import colors from "../../colors";
+import { colors } from "../../theme";
 import Spacer from "../../components/spacer";
 import { TextLink } from "../../components/link";
 import Text from "../../components/text";
@@ -21,7 +21,7 @@ export const Character = styled.span.attrs(props => ({
   display: flex;
   justify-content: center;
   align-items: center;
-  color: ${colors.contrast};
+  color: ${colors.background};
   transition: all 200ms ease-out;
 
   & + & {
@@ -72,11 +72,11 @@ export default () => {
   const mouse = useMousePosition();
   const isMobile = useIsMobile();
   return (
-    <Layout kind={colors.base}>
+    <Layout kind={colors.body}>
       <Container>
         <Squared x={mouse.x} text="David Sancho" />
         <Spacer top={4}>
-          <Text align="center" color={colors.contrast}>
+          <Text align="center" color={colors.background}>
             {isMobile
               ? "Tap into the name to see the "
               : "Move the mouse in the y axis to see the "}

@@ -2,7 +2,7 @@ import React from "react";
 import { Helmet } from "react-helmet";
 import { graphql, useStaticQuery } from "gatsby";
 
-import colors from "../colors";
+import { colors } from "../theme";
 
 const SiteMetadata = () => {
   const {
@@ -31,7 +31,7 @@ const SiteMetadata = () => {
         name="viewport"
         content="width=device-width, initial-scale=1, shrink-to-fit=no"
       />
-      <meta name="theme-color" content={colors.base} />
+      <meta name="theme-color" content={colors.body} />
       <meta
         name="ahrefs-site-verification"
         content="bd6c5b649f70973df5dea834d5ed90214fd6acec11974bfdd1d44b2e24a03009"
@@ -78,7 +78,7 @@ const SiteMetadata = () => {
         name="msapplication-TileImage"
         content={`${siteUrl}/favicon/mstile-144x144.png`}
       />
-      <meta name="msapplication-TileColor" content={colors.base} />
+      <meta name="msapplication-TileColor" content={colors.body} />
 
       {/* OpenGraph tags */}
       <meta property="og:locale" content="en" />

@@ -1,11 +1,22 @@
-import { createGlobalStyle } from "styled-components";
-
 import prism from "./prism";
-import colors from "../colors";
-import font from "../fonts";
+import font from "./fonts";
+import { make, lightRoot, darkRoot } from "./theme"
 
-const GlobalStyles = createGlobalStyle`
-  ${prism};
+const GlobalStyles = `
+  :root {
+    ${lightRoot};
+    ${darkRoot};
+  };
+
+  @media (prefers-color-scheme: dark) {
+    ${make("dark")}
+  };
+
+  @media (prefers-color-scheme: light) {
+    ${make("light")}
+  };
+
+  ${prism}
 
   html,
   body,

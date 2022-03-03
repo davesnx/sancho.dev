@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 
-import colors from "../colors";
+import { colors } from "../theme";
 import { TextLink, NavigateText } from "../components/link";
 import Spacer from "../components/spacer";
 import { Row } from "../components/taco";
@@ -61,28 +61,28 @@ export default () => {
           <TextLink
             underlined
             href={"https://twitter.com/davesnx"}
-            color="rgba(29, 161, 242, 0.6)"
+            color={colors.twitter}
           >
             {"Twitter"}
           </TextLink>
           <TextLink
             underlined
             href="https://github.com/davesnx"
-            color="rgba(24, 23, 23, 0.6)"
+            color={colors.github}
           >
             {"Github"}
           </TextLink>
           <TextLink
             underlined
             href="https://t.me/davesnx"
-            color="rgba(114, 137, 218, 0.6)"
+            color={colors.telegram}
           >
             {"Telegram"}
           </TextLink>
           <TextLink
             underlined
             href="https://www.strava.com/athletes/davesnx"
-            color="rgba(252, 76, 2, 0.6)"
+            color={colors.strava}
           >
             {"Strava"}
           </TextLink>

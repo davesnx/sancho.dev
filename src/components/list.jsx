@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 import { styles } from "./text";
-import colors from "../colors";
+import { colors } from "../theme";
 
 export const ListItem = styled.li`
   ${styles};
@@ -17,25 +17,25 @@ export const ListItem = styled.li`
 
   &::marker {
     opacity: 0.4;
-    color: ${colors.base};
+    color: ${colors.body};
   }
 `;
 
 export const OrderList = styled.ol`
   margin: 24px 0px;
   padding: 0px;
-  color: ${colors.base};
+  color: ${colors.body};
 `;
 
 export const UnorderList = styled.ul`
   margin: 24px 0px;
   padding: 0px;
-  color: ${colors.base};
+  color: ${colors.body};
 `;
 
 export const VisualList = styled.ul`
   margin: 8px 0px;
   padding: 0;
-  color: ${colors.base};
+  color: ${colors.body};
   list-style: none;
 `;

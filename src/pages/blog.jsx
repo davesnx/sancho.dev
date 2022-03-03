@@ -4,7 +4,7 @@ import styled from "styled-components";
 import { Link as Navigate, graphql } from "gatsby";
 
 import font from "../fonts";
-import colors from "../colors";
+import { colors } from "../theme";
 import Text from "../components/text";
 import Page from "../components/page";
 import Spacer from "../components/spacer";

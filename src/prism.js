@@ -1,6 +1,5 @@
-import { css } from "styled-components";
-
-import colors from "../colors";
+import { colors } from "./theme";
+import fonts from "./fonts";
 
 const background = "#E2E9EE";
 const black = "#4c4c5c";
@@ -12,10 +11,10 @@ const red = "#ef6b73";
 const grey = "#aabfc9";
 const strongblue = "#4c575d";
 
-export default css`
+export default `
   code[class*="language-"],
   pre[class*="language-"] {
-    font-family: "SF Mono", "Fira Code", monospace;
+    font-family: ${fonts.mono};
     font-size: 16px;
     font-weight: 500;
     line-height: 1.5em;
@@ -109,7 +108,7 @@ export default css`
   }
 
   .token.class-name {
-    color: ${colors.high};
+    color: ${colors.primary};
   }
 
   .token.comment {
@@ -153,7 +152,7 @@ export default css`
   }
 
   .token.keyword {
-    color: ${colors.high};
+    color: ${colors.primary};
   }
 
   .token.number {
@@ -185,11 +184,11 @@ export default css`
   }
 
   .token.regex {
-    color: ${colors.high};
+    color: ${colors.primary};
   }
 
   .token.selector {
-    color: ${colors.high};
+    color: ${colors.primary};
   }
 
   .token.string {
@@ -201,7 +200,7 @@ export default css`
   }
 
   .token.tag {
-    color: ${colors.high};
+    color: ${colors.primary};
   }
 
   .token.unit {
@@ -213,6 +212,6 @@ export default css`
   }
 
   .token.variable {
-    color: ${colors.high};
+    color: ${colors.primary};
   }
 `;

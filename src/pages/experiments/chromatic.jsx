@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { window } from "browser-monads";
 
-import colors from "../../colors";
+import { colors } from "../../theme";
 import font from "../../fonts";
 import Layout from "../../components/layout";
 import Overlap from "../../components/overlap";
@@ -112,7 +112,7 @@ export default () => {
   const isMobile = useIsMobile();
 
   return (
-    <Layout kind={colors.base}>
+    <Layout kind={colors.body}>
       <RelativeSpacer top={8}>
         <Container>
           <ChromaticText mouse={mouse} orientation={orientation}>
@@ -121,7 +121,7 @@ export default () => {
             </Name>
           </ChromaticText>
           <Spacer top={4}>
-            <Text align="center" color={colors.contrast}>
+            <Text align="center" color={colors.background}>
               {isMobile
                 ? "Incline the phone to see the "
                 : "Move the mouse across the screen to see the "}

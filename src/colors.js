@@ -1,22 +1,28 @@
-export const R = "#FF0000";
-export const paleR = "#FF211B";
-export const G = "#00FF00";
-export const paleG = "#17E620";
-export const B = "#0000FF";
-export const paleB = "#003AEC";
+const r = "#FF211B";
+const g = "#17E620";
+const b = "#003AEC";
 
-const light = {
-  base: "#233044",
+export const lightValues = {
+  body: "#233044",
   contrast: "#FAFAFA",
   subtle: "#AEB2B9",
-  blue: "#4299e8",
+  primary: "#4299e8",
+  twitter: "rgba(29, 161, 242, 1)",
+  github: "rgba(24, 23, 23, 1)",
+  telegram: "rgba(114, 137, 218, 1)",
+  strava: "rgba(252, 76, 2, 1)",
+  r, g, b
 };
 
-const dark = {
-  base: "rgb(164 173 187)",
+export const darkValues = {
+  body: "rgb(164 173 187)",
   contrast: "rgb(29 29 29)",
   subtle: "#54585d",
-  high: "#3a80bf",
+  primary: "#3a80bf",
+  twitter: "rgba(29, 161, 242, 1)",
+  github: "rgba(24, 23, 23, 1)",
+  telegram: "rgba(114, 137, 218, 1)",
+  strava: "rgba(252, 76, 2, 1)",
+  r, g, b
 };
 
-export default light

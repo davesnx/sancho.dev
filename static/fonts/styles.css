@@ -24,14 +24,14 @@
 /* Coding */
 
 @font-face {
-  font-family: 'SFMono';
+  font-family: 'SF Mono';
   src: url("./SFMono-Medium.otf");
   font-weight: 500;
   font-style: normal;
 }
 
 @font-face {
-  font-family: 'SFMono';
+  font-family: 'SF Mono';
   src: url("./SFMono-Bold.otf");
   font-weight: 700;
   font-style: normal;

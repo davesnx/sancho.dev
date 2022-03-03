@@ -2,7 +2,7 @@ import React from "react";
 import styled, { css } from "styled-components";
 
 import font from "../fonts";
-import colors from "../colors";
+import { colors } from "../theme";
 
 export const styles = css`
   font-weight: ${props => (props.weight ? props.weight : 200)};
@@ -20,7 +20,7 @@ const Text = styled.p`
 `;
 
 export default ({ children, ...rest }) => {
-  const color = rest.color || colors.base;
+  const color = rest.color || colors.body;
   return (
     <Text {...rest} color={color}>
       {children}

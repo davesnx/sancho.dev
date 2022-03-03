@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 
-import colors from "../colors";
+import { colors } from "../theme";
 
 const Logo = styled.div`
   display: flex;
@@ -15,7 +15,7 @@ const Logo = styled.div`
   }
 `;
 
-const Icon = ({ svg: Svg, size, color = colors.base, bg, padded }) => (
+const Icon = ({ svg: Svg, size, color = colors.body, bg, padded }) => (
   <Logo padded={padded} color={bg}>
     <Svg size={size} fill={color}></Svg>
   </Logo>

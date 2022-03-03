@@ -16,7 +16,7 @@ import Icon from "../components/icon";
 import Twitter from "./../svgs/twitter";
 import { ListItem, OrderList, UnorderList } from "../components/list";
 import { H1, H2, H3, H4, H5, H6 } from "../components/heading";
-import colors from "../colors";
+import { colors } from "../theme";
 
 const PaddedH1 = styled(H1)`
   margin-top: 5.5rem;
@@ -119,11 +119,11 @@ const TwitterShare = ({ title, href }) => {
       <RowResponsive>
         <Text>If you like it enough, consider to </Text>{" "}
         <TextLink to={urlToShare}>
-          <Text tiny weight={500} color={colors.high}>
+          <Text tiny weight={500} color={colors.primary}>
             share it on Twitter
           </Text>
           <Spacer left={1} />
-          <Icon svg={Twitter} size={20} color={colors.high} />
+          <Icon svg={Twitter} size={20} color={colors.primary} />
         </TextLink>
       </RowResponsive>
     </div>

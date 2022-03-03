@@ -7,7 +7,7 @@ import { useSpring, animated } from "react-spring";
 import Page from "../components/page";
 import Spacer from "../components/spacer";
 import Overlap from "../components/overlap";
-import colors from "../colors";
+import { colors } from "../theme";
 import font from "../fonts";
 import { Character } from "../pages/experiments/variable";
 
@@ -74,8 +74,8 @@ const ButtonWrapper = styled(Navigate)`
   border-style: solid;
   padding: 0.8rem 1.2rem;
   border-radius: 4px;
-  background-color: ${colors.contrast};
-  color: ${colors.base};
+  background-color: ${colors.background};
+  color: ${colors.body};
   font-family: '${font.sans}';
 
   user-select: none;
@@ -99,7 +99,7 @@ const OverlapWrapper = styled.div`
   justify-content: center;
   align-items: center;
 
-  background: ${colors.base};
+  background: ${colors.body};
   border-radius: 4px;
 `;
 
