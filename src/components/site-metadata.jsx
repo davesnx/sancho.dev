@@ -31,7 +31,7 @@ const SiteMetadata = () => {
         name="viewport"
         content="width=device-width, initial-scale=1, shrink-to-fit=no"
       />
-      <meta name="theme-color" content={colors.black} />
+      <meta name="theme-color" content={colors.base} />
       <meta
         name="ahrefs-site-verification"
         content="bd6c5b649f70973df5dea834d5ed90214fd6acec11974bfdd1d44b2e24a03009"
@@ -78,7 +78,7 @@ const SiteMetadata = () => {
         name="msapplication-TileImage"
         content={`${siteUrl}/favicon/mstile-144x144.png`}
       />
-      <meta name="msapplication-TileColor" content={colors.black} />
+      <meta name="msapplication-TileColor" content={colors.base} />
 
       {/* OpenGraph tags */}
       <meta property="og:locale" content="en" />

@@ -20,7 +20,7 @@ const Text = styled.p`
 `;
 
 export default ({ children, ...rest }) => {
-  const color = rest.color || colors.black;
+  const color = rest.color || colors.base;
   return (
     <Text {...rest} color={color}>
       {children}

@@ -6,7 +6,7 @@ import colors from "../colors";
 import fonts from "../fonts";
 
 const Anchor = css`
-  color: ${props => props.color || colors.black};
+  color: ${props => props.color || colors.base};
   font-family: ${fonts.sans};
   font-weight: 500;
   font-size: inherit;
@@ -19,7 +19,7 @@ const Anchor = css`
   text-decoration-color: currentColor;
 
   &:hover {
-    color: ${colors.blue};
+    color: ${colors.high};
   }
 
   cursor: pointer;

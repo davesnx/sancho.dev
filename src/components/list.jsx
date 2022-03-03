@@ -17,25 +17,25 @@ export const ListItem = styled.li`
 
   &::marker {
     opacity: 0.4;
-    color: ${colors.black};
+    color: ${colors.base};
   }
 `;
 
 export const OrderList = styled.ol`
   margin: 24px 0px;
   padding: 0px;
-  color: ${colors.black};
+  color: ${colors.base};
 `;
 
 export const UnorderList = styled.ul`
   margin: 24px 0px;
   padding: 0px;
-  color: ${colors.black};
+  color: ${colors.base};
 `;
 
 export const VisualList = styled.ul`
   margin: 8px 0px;
   padding: 0;
-  color: ${colors.black};
+  color: ${colors.base};
   list-style: none;
 `;

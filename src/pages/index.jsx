@@ -10,7 +10,7 @@ import fonts from "../fonts";
 
 const Minimal = styled.div`
   min-height: 100vh;
-  background-color: ${colors.white};
+  background-color: ${colors.contrast};
 `;
 
 const Body = styled.main`

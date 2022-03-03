@@ -1,35 +1,22 @@
-const R = "#FF0000";
-const G = "#00FF00";
-const B = "#0000FF";
+export const R = "#FF0000";
+export const paleR = "#FF211B";
+export const G = "#00FF00";
+export const paleG = "#17E620";
+export const B = "#0000FF";
+export const paleB = "#003AEC";
 
-const white = {
-  black: "#233044", /* base */
-  white: "#FAFAFA", /* contrast */
-  lightGrey: "#AEB2B9", /* subtle */
-  blue: "#4299e8", /* highlight */
-  R: "#FF211B",
-  G: "#17E620",
-  B: "#003AEC",
-  raw: {
-    R,
-    G,
-    B,
-  },
+const light = {
+  base: "#233044",
+  contrast: "#FAFAFA",
+  subtle: "#AEB2B9",
+  blue: "#4299e8",
 };
 
 const dark = {
-  black: "rgb(164 173 187)",
-  white: "rgb(29 29 29)",
-  lightGrey: "#54585d",
-  blue: "#3a80bf",
-  R: "#FF211B",
-  G: "#17E620",
-  B: "#003AEC",
-  raw: {
-    R,
-    G,
-    B,
-  },
+  base: "rgb(164 173 187)",
+  contrast: "rgb(29 29 29)",
+  subtle: "#54585d",
+  high: "#3a80bf",
 };
 
-export default white
+export default light

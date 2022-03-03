@@ -3,7 +3,6 @@ import styled from "styled-components";
 
 import SiteMetadata from "./site-metadata";
 import colors from "../colors";
-/* import constants from "../constants"; */
 import font from "../fonts";
 import Main from "./../components/main";
 import { NavigateButton } from "./../components/link";
@@ -25,7 +24,7 @@ const MenuItem = styled.p`
   color: ${props => props.color};
 
   &:hover {
-    color: ${colors.blue};
+    color: ${colors.high};
   }
 `;
 
@@ -37,30 +36,17 @@ const Logo = styled.p`
   margin: 0;
   text-decoration: none;
 
-  color: ${colors.blue};
+  color: ${colors.high};
   transition: color 0.15s ease;
 
   &:hover {
-    color: ${colors.blue};
+    color: ${colors.high};
   }
 `;
 
-const COLOR_TYPE = {
-  [colors.white]: {
-    backgroundColor: colors.white,
-    color: colors.black,
-  },
-  [colors.black]: {
-    backgroundColor: colors.black,
-    color: colors.white,
-  },
-};
-
-export default ({ children, pathname, kind = colors.white }) => {
-  const { backgroundColor, color } = COLOR_TYPE[kind];
-
+export default ({ children, pathname }) => {
   return (
-    <Root backgroundColor={backgroundColor}>
+    <Root>
       <SiteMetadata pathname={pathname} />
       <Main>
         <header>
@@ -70,15 +56,15 @@ export default ({ children, pathname, kind = colors.white }) => {
             </NavigateButton>
             <Row gap={3}>
               <NavigateButton to="/blog">
-                <MenuItem color={color}>blog</MenuItem>
+                <MenuItem>blog</MenuItem>
               </NavigateButton>
 
               <NavigateButton to="/talks">
-                <MenuItem color={color}>talks</MenuItem>
+                <MenuItem>talks</MenuItem>
               </NavigateButton>
 
               <NavigateButton to="/experiments">
-                <MenuItem color={color}>experiments</MenuItem>
+                <MenuItem>experiments</MenuItem>
               </NavigateButton>
             </Row>
           </RowResponsive>

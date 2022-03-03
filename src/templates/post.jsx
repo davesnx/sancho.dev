@@ -60,7 +60,7 @@ const Content = styled(Text)`
 const Line = {
   horitzontal: css`
     opacity: 0.4;
-    backgroundColor: ${colors.lightGrey};
+    backgroundColor: ${colors.subtle};
     width: 100%;
     height: 2px;
   `,
@@ -68,7 +68,7 @@ const Line = {
     opacity: 0.4;
     width: 2px;
     height: 100%;
-    backgroundColor: ${colors.lightGrey};
+    backgroundColor: ${colors.subtle};
   `
 }
 
@@ -119,11 +119,11 @@ const TwitterShare = ({ title, href }) => {
       <RowResponsive>
         <Text>If you like it enough, consider to </Text>{" "}
         <TextLink to={urlToShare}>
-          <Text tiny weight={500} color={colors.blue}>
+          <Text tiny weight={500} color={colors.high}>
             share it on Twitter
           </Text>
           <Spacer left={1} />
-          <Icon svg={Twitter} size={20} color={colors.blue} />
+          <Icon svg={Twitter} size={20} color={colors.high} />
         </TextLink>
       </RowResponsive>
     </div>

@@ -31,7 +31,7 @@ export default css`
     padding: 1.25rem 32px;
     background: ${background};
     border-radius: 4px;
-    border: 1px solid ${colors.lightGrey};
+    border: 1px solid ${colors.subtle};
   }
 
   code[class*="language-"],
@@ -109,7 +109,7 @@ export default css`
   }
 
   .token.class-name {
-    color: ${colors.blue};
+    color: ${colors.high};
   }
 
   .token.comment {
@@ -153,7 +153,7 @@ export default css`
   }
 
   .token.keyword {
-    color: ${colors.blue};
+    color: ${colors.high};
   }
 
   .token.number {
@@ -185,11 +185,11 @@ export default css`
   }
 
   .token.regex {
-    color: ${colors.blue};
+    color: ${colors.high};
   }
 
   .token.selector {
-    color: ${colors.blue};
+    color: ${colors.high};
   }
 
   .token.string {
@@ -201,7 +201,7 @@ export default css`
   }
 
   .token.tag {
-    color: ${colors.blue};
+    color: ${colors.high};
   }
 
   .token.unit {
@@ -213,6 +213,6 @@ export default css`
   }
 
   .token.variable {
-    color: ${colors.blue};
+    color: ${colors.high};
   }
 `;

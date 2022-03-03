@@ -112,7 +112,7 @@ export default () => {
   const isMobile = useIsMobile();
 
   return (
-    <Layout kind={colors.black}>
+    <Layout kind={colors.base}>
       <RelativeSpacer top={8}>
         <Container>
           <ChromaticText mouse={mouse} orientation={orientation}>
@@ -121,7 +121,7 @@ export default () => {
             </Name>
           </ChromaticText>
           <Spacer top={4}>
-            <Text align="center" color={colors.white}>
+            <Text align="center" color={colors.contrast}>
               {isMobile
                 ? "Incline the phone to see the "
                 : "Move the mouse across the screen to see the "}

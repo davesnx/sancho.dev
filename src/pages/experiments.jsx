@@ -74,8 +74,8 @@ const ButtonWrapper = styled(Navigate)`
   border-style: solid;
   padding: 0.8rem 1.2rem;
   border-radius: 4px;
-  background-color: ${colors.white};
-  color: ${colors.black};
+  background-color: ${colors.contrast};
+  color: ${colors.base};
   font-family: '${font.sans}';
 
   user-select: none;
@@ -99,7 +99,7 @@ const OverlapWrapper = styled.div`
   justify-content: center;
   align-items: center;
 
-  background: ${colors.black};
+  background: ${colors.base};
   border-radius: 4px;
 `;
 

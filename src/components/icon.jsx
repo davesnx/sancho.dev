@@ -15,7 +15,7 @@ const Logo = styled.div`
   }
 `;
 
-const Icon = ({ svg: Svg, size, color = colors.black, bg, padded }) => (
+const Icon = ({ svg: Svg, size, color = colors.base, bg, padded }) => (
   <Logo padded={padded} color={bg}>
     <Svg size={size} fill={color}></Svg>
   </Logo>

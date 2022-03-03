@@ -47,7 +47,7 @@ export const Item = ({ meta, title, description, kind, link }) => {
     <Row fullWidth align="center" distribute="between" gap={2}>
       <ButtonLink to={link}>
         <div>
-          <Text weight={500} color={colors.lightGrey} size={font.fontSizeN1}>{meta.toUpperCase()}</Text>
+          <Text weight={500} color={colors.subtle} size={font.fontSizeN1}>{meta.toUpperCase()}</Text>
           <Stack align="left" gap={0}>
             <H3>{title}</H3>
             <Text>{description}</Text>
