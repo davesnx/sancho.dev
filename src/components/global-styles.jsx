@@ -3,11 +3,9 @@ import { createGlobalStyle } from "styled-components";
 import prism from "./prism";
 import colors from "../colors";
 import font from "../fonts";
-import { theme } from "../theme"
 
 const GlobalStyles = createGlobalStyle`
   ${prism};
-  ${theme};
 
   html,
   body,

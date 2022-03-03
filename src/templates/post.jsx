@@ -57,10 +57,20 @@ const Content = styled(Text)`
   }
 `;
 
-const Line = css`
-  opacity: 0.4;
-  border: 1px solid ${colors.fadedBlack};
-`;
+const Line = {
+  horitzontal: css`
+    opacity: 0.4;
+    backgroundColor: ${colors.lightGrey};
+    width: 100%;
+    height: 2px;
+  `,
+  vertical: css`
+    opacity: 0.4;
+    width: 2px;
+    height: 100%;
+    backgroundColor: ${colors.lightGrey};
+  `
+}
 
 const Hr = styled.hr`
   border-top-width: 1px;
@@ -68,7 +78,7 @@ const Hr = styled.hr`
   margin-top: 3em;
   margin-bottom: 3em;
 
-  ${Line}
+  ${Line["horitzontal"]}
 `;
 
 const Image = styled.img`
@@ -82,13 +92,13 @@ const Blockquote = styled.blockquote`
   padding: 0px;
 
   margin-left: 24px;
+
   &:before {
     content: "";
     position: absolute;
     margin-left: -24px;
 
-    height: 100%;
-    ${Line}
+    ${Line["vertical"]}
   }
 
   & p {
@@ -141,29 +151,27 @@ export default ({ data }) => {
         <meta name="twitter:image" content={post.frontmatter.imghero} />
       </Helmet>
       <Page title={post.frontmatter.title}>
-        <Spacer bottom={2}>
-          <MDXProvider
-            components={{
-              h1: PaddedH1,
-              h2: PaddedH2,
-              h3: PaddedH3,
-              h4: PaddedH4,
-              h5: PaddedH5,
-              h6: PaddedH6,
-              p: Content,
-              a: TextLink,
-              li: ListItem,
-              ol: OrderList,
-              ul: UnorderList,
-              hr: Hr,
-              blockquote: Blockquote,
-              img: Image,
-            }}
-          >
-            <MDXRenderer>{post.body}</MDXRenderer>
-          </MDXProvider>
-        </Spacer>
-        <Spacer top={2} bottom={2}>
+        <MDXProvider
+          components={{
+            h1: PaddedH1,
+            h2: PaddedH2,
+            h3: PaddedH3,
+            h4: PaddedH4,
+            h5: PaddedH5,
+            h6: PaddedH6,
+            p: Content,
+            a: TextLink,
+            li: ListItem,
+            ol: OrderList,
+            ul: UnorderList,
+            hr: Hr,
+            blockquote: Blockquote,
+            img: Image,
+          }}
+        >
+          <MDXRenderer>{post.body}</MDXRenderer>
+        </MDXProvider>
+        <Spacer top={4} bottom={2}>
           <Hr />
         </Spacer>
         <Text>

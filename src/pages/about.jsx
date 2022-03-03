@@ -1,18 +1,17 @@
 import React from "react";
-import { graphql } from "gatsby";
 
 import Page from "../components/page";
 import Spacer from "../components/spacer";
 import Text from "../components/text";
 import { TextLink, NavigateText } from "../components/link";
-import { Emoji } from "../theme";
+import { Emoji } from "../components/emoji";
 
 const About = () => {
   return (
     <Page title="About me">
       <Text>
         Hi <Emoji name="hand">👋</Emoji>,
-        My name is David Sancho and I'm a developer based on Barcelona currently working remotely at <TextLink to="http://ahrefs.com">ahrefs</TextLink> as a Software engineer, building <TextLink to="https://styled-ppx.vercel.app">styled-ppx</TextLink> (styled components for Reason/OCaml and ReScript with typed CSS).
+        My name is David Sancho and I'm a developer based on Barcelona currently working remotely at <TextLink to="http://ahrefs.com">Ahrefs</TextLink> as a Software engineer, building <TextLink to="https://styled-ppx.vercel.app">styled-ppx</TextLink> (styled components for Reason/OCaml and ReScript with typed CSS).
       </Text>
       <Spacer top={2} />
       <Text>
@@ -46,15 +45,5 @@ const About = () => {
     </Page>
   );
 };
-
-export const query = graphql`
-  query {
-    site {
-      siteMetadata {
-        title
-      }
-    }
-  }
-`;
 
 export default About;

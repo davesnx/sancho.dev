@@ -31,7 +31,7 @@ export default css`
     padding: 1.25rem 32px;
     background: ${background};
     border-radius: 4px;
-    border: 1px solid ${colors.fadedBlack};
+    border: 1px solid ${colors.lightGrey};
   }
 
   code[class*="language-"],

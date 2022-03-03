@@ -6,7 +6,7 @@ import colors from "../colors";
 import fonts from "../fonts";
 
 const Anchor = css`
-  color: ${props => props.color || colors.blue};
+  color: ${props => props.color || colors.black};
   font-family: ${fonts.sans};
   font-weight: 500;
   font-size: inherit;
@@ -15,22 +15,11 @@ const Anchor = css`
 
   text-decoration-thickness: 1.5px;
   text-underline-offset: 1.5px;
-
-  ${props =>
-    props.underlined
-      ? `
-        text-decoration: underline;
-        text-decoration-color: ${props => props.color || colors.blue};
-      `
-      : `text-decoration: none;`
-  }
+  text-decoration: underline;
+  text-decoration-color: currentColor;
 
   &:hover {
-    color: ${props => props.color || colors.blue};
-    text-decoration: underline;
-    text-decoration-color: ${props => props.color || colors.blue};
-    text-decoration-thickness: 1.5px;
-    text-underline-offset: 1.5px;
+    color: ${colors.blue};
   }
 
   cursor: pointer;

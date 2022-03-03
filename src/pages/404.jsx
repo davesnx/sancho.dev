@@ -4,7 +4,7 @@ import font from "../fonts";
 import Text from "../components/text";
 import Page from "../components/page";
 import Spacer from "../components/spacer";
-import { TextLink, Navigate } from "../components/link";
+import { TextLink, NavigateText } from "../components/link";
 
 export default () => (
   <Page title="Page not found">
@@ -14,7 +14,7 @@ export default () => (
     </Text>
     <Spacer top={4} />
     <Text size={font.fontSizeN1}>
-      Go back to <Navigate to="https://sancho.dev">home</Navigate>.
+      Go back to <NavigateText to="https://sancho.dev">home</NavigateText>.
     </Text>
   </Page>
 );
