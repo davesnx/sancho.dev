@@ -4,8 +4,7 @@ import { graphql } from "gatsby";
 import Page from "../components/page";
 import Spacer from "../components/spacer";
 import Text from "../components/text";
-import { Link } from "../components/link";
-import Navigate from "../components/navigate";
+import { TextLink, NavigateText } from "../components/link";
 import { Emoji } from "../theme";
 
 const About = () => {
@@ -13,13 +12,13 @@ const About = () => {
     <Page title="About me">
       <Text>
         Hi <Emoji name="hand">👋</Emoji>,
-        My name is David Sancho and I'm a developer based on Barcelona currently working remotely at <Link to="http://ahrefs.com">ahrefs</Link> as a Software engineer, building <Link to="https://styled-ppx.vercel.app">styled-ppx</Link> (styled components for Reason/OCaml and ReScript with typed CSS).
+        My name is David Sancho and I'm a developer based on Barcelona currently working remotely at <TextLink to="http://ahrefs.com">ahrefs</TextLink> as a Software engineer, building <TextLink to="https://styled-ppx.vercel.app">styled-ppx</TextLink> (styled components for Reason/OCaml and ReScript with typed CSS).
       </Text>
       <Spacer top={2} />
       <Text>
-        Previously worked at <Link to="https://draftbit.com">Draftbit</Link>{" "}
+        Previously worked at <TextLink to="https://draftbit.com">Draftbit</TextLink>{" "}
         helping people create React Native apps visually, and at{" "}
-        <Link to="https://www.typeform.com">Typeform</Link> as Frontend engineer
+        <TextLink to="https://www.typeform.com">Typeform</TextLink> as Frontend engineer
         on the Renderer Team <i>(also known as "form experience")</i>.
       </Text>
       <Spacer top={2} />
@@ -28,7 +27,7 @@ const About = () => {
         design, scalability,
         people and startups, but lately about compilers. Even with my
         limited english, I'm trying to write about those in this{" "}
-        <Navigate underline to="/blog">blog</Navigate>.
+        <NavigateText underline to="/blog">blog</NavigateText>.
       </Text>
       <Spacer top={2} />
       <Text>
@@ -37,11 +36,11 @@ const About = () => {
       </Text>
       <Spacer top={2} />
       <Text>
-      I'm grateful for what Open Source gave me and that's why most of my code is open as well, hosted at <Link to="https://github.com/davesnx">github.com/davesnx</Link>.
+      I'm grateful for what Open Source gave me and that's why most of my code is open as well, hosted at <TextLink to="https://github.com/davesnx">github.com/davesnx</TextLink>.
       </Text>
       <Spacer top={2} />
       <Text>
-      If you want to know more, follow my fast thoughts on <Link to="https://github.com/davesnx">Twitter</Link>.
+      If you want to know more, follow my fast thoughts on <TextLink to="https://github.com/davesnx">Twitter</TextLink>.
       </Text>
       <Spacer bottom={16} />
     </Page>

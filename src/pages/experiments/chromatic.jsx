@@ -8,7 +8,7 @@ import Layout from "../../components/layout";
 import Overlap from "../../components/overlap";
 import Text from "../../components/text";
 import Spacer from "../../components/spacer";
-import { Link } from "../../components/link";
+import { TextLink } from "../../components/link";
 import { RelativeSpacer } from "../../components/spacer";
 import useDeviceOrientation from "../../utils/device-orientation";
 import useMousePosition from "../../utils/mouse-position";
@@ -125,13 +125,9 @@ export default () => {
               {isMobile
                 ? "Incline the phone to see the "
                 : "Move the mouse across the screen to see the "}
-              <Link
-                target="_blank"
-                rel="noopener noreferer"
-                href="https://en.wikipedia.org/wiki/Chromatic_aberration"
-              >
+              <TextLink to="https://en.wikipedia.org/wiki/Chromatic_aberration">
                 Chromatic Distortion effect
-              </Link>
+              </TextLink>
             </Text>
           </Spacer>
         </Container>

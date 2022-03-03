@@ -4,7 +4,7 @@ import styled from "styled-components";
 import Layout from "../../components/layout";
 import colors from "../../colors";
 import Spacer from "../../components/spacer";
-import { Link } from "../../components/link";
+import { TextLink } from "../../components/link";
 import Text from "../../components/text";
 import useMousePosition from "../../utils/mouse-position";
 import { useIsMobile } from "../../utils/media-query";
@@ -80,7 +80,7 @@ export default () => {
             {isMobile
               ? "Tap into the name to see the "
               : "Move the mouse in the y axis to see the "}
-            <Link to="https://v-fonts.com">Variable font weight</Link>{" "}
+            <TextLink to="https://v-fonts.com">Variable font weight</TextLink>{" "}
             effect
           </Text>
         </Spacer>

@@ -1,21 +1,34 @@
 import React from "react";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
+import { Link as GatsbyLink } from "gatsby";
 
 import colors from "../colors";
+import fonts from "../fonts";
 
-const A = styled.a`
-  color: ${colors.blue};
+const Anchor = css`
+  color: ${props => props.color || colors.blue};
+  font-family: ${fonts.sans};
   font-weight: 500;
   font-size: inherit;
   line-height: inherit;
   transition: color 0.15s ease;
 
-  text-decoration: none;
+  text-decoration-thickness: 1.5px;
+  text-underline-offset: 1.5px;
+
+  ${props =>
+    props.underlined
+      ? `
+        text-decoration: underline;
+        text-decoration-color: ${props => props.color || colors.blue};
+      `
+      : `text-decoration: none;`
+  }
 
   &:hover {
-    color: ${colors.blue};
+    color: ${props => props.color || colors.blue};
     text-decoration: underline;
-    text-decoration-color: ${colors.blue};
+    text-decoration-color: ${props => props.color || colors.blue};
     text-decoration-thickness: 1.5px;
     text-underline-offset: 1.5px;
   }
@@ -26,13 +39,17 @@ const A = styled.a`
   display: inherit;
 `;
 
+const StyledA = styled.a`
+  ${Anchor}
+`;
+
 const UnstyledA = styled.a`
   color: currentColor;
 `;
 
-export const Link = ({ to, ...rest }) => {
+export const TextLink = ({ to, ...rest }) => {
   return (
-    <A
+    <StyledA
       target="_blank"
       rel="noreferrer noopener"
       {...rest}
@@ -41,10 +58,17 @@ export const Link = ({ to, ...rest }) => {
   );
 };
 
-export const UnstyledLink = ({ to, ...rest }) => {
+export const ButtonLink = ({ to, ...rest }) => {
   return (
     <UnstyledA target="_blank" rel="noreferrer noopener" {...rest} href={to} />
   );
 };
 
-export default Link;
+
+export const NavigateButton = styled(GatsbyLink)`
+  text-decoration: none;
+`;
+
+export const NavigateText = styled(NavigateButton)`
+  ${Anchor}
+`;

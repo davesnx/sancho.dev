@@ -10,7 +10,7 @@ import Page from "../components/page";
 import Spacer from "../components/spacer";
 import { RowResponsive } from "../components/taco";
 import Text from "../components/text";
-import { Link } from "../components/link";
+import { TextLink } from "../components/link";
 import Icon from "../components/icon";
 
 import Twitter from "./../svgs/twitter";
@@ -107,14 +107,14 @@ const TwitterShare = ({ title, href }) => {
   return (
     <div>
       <RowResponsive>
-        <Text>If you like it enough, consider to </Text> <Link to={urlToShare}>
-
+        <Text>If you like it enough, consider to </Text>{" "}
+        <TextLink to={urlToShare}>
           <Text tiny weight={500} color={colors.blue}>
             share it on Twitter
           </Text>
           <Spacer left={1} />
           <Icon svg={Twitter} size={20} color={colors.blue} />
-        </Link>
+        </TextLink>
       </RowResponsive>
     </div>
   );
@@ -151,7 +151,7 @@ export default ({ data }) => {
               h5: PaddedH5,
               h6: PaddedH6,
               p: Content,
-              a: Link,
+              a: TextLink,
               li: ListItem,
               ol: OrderList,
               ul: UnorderList,

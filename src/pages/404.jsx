@@ -1,26 +1,20 @@
 import React from "react";
-import styled from "styled-components";
 
 import font from "../fonts";
 import Text from "../components/text";
 import Page from "../components/page";
 import Spacer from "../components/spacer";
-import Navigate from "../components/navigate";
-import { Link } from "../components/link";
-
-const Small = styled(Text)`
-  font-size: ${font.fontSizeN1};
-`;
+import { TextLink, Navigate } from "../components/link";
 
 export default () => (
   <Page title="Page not found">
     <Text weight={600}>
       If it sounds like it shoud, <br /> please open an issue in{" "}
-      <Link to="https://github.com/davesnx/sancho.dev">the repo</Link>.
+      <TextLink to="https://github.com/davesnx/sancho.dev">the repo</TextLink>.
     </Text>
     <Spacer top={4} />
-    <Small>
+    <Text size={font.fontSizeN1}>
       Go back to <Navigate to="https://sancho.dev">home</Navigate>.
-    </Small>
+    </Text>
   </Page>
 );

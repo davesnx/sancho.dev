@@ -7,7 +7,7 @@ import Github from "./../svgs/github";
 import Web from "./../svgs/web";
 import YouTube from "./../svgs/youtube";
 import { Stack, Row } from "./taco";
-import { UnstyledLink } from "./link";
+import { ButtonLink } from "./link";
 import Text from "./text";
 import { H3 } from "./heading";
 import colors from "../colors";
@@ -45,7 +45,7 @@ export const Item = ({ meta, title, description, kind, link }) => {
 
   return (
     <Row fullWidth align="center" distribute="between" gap={2}>
-      <UnstyledLink to={link}>
+      <ButtonLink to={link}>
         <div>
           <Text weight={500} color={colors.lightGrey} size={font.fontSizeN1}>{meta.toUpperCase()}</Text>
           <Stack align="left" gap={0}>
@@ -53,7 +53,7 @@ export const Item = ({ meta, title, description, kind, link }) => {
             <Text>{description}</Text>
           </Stack>
         </div>
-      </UnstyledLink>
+      </ButtonLink>
       <NotShrink>
         <Icon href={link} />
       </NotShrink>
