@@ -11,6 +11,7 @@ specifiers:
   gatsby-plugin-manifest: ^2.4.9
   gatsby-plugin-mdx: ^1.1.7
   gatsby-plugin-page-creator: ^2.3.7
+  gatsby-plugin-pnpm: ^1.2.10
   gatsby-plugin-preact: ^4.5.0
   gatsby-plugin-react-helmet: ^3.0.12
   gatsby-plugin-sharp: ^2.5.4
@@ -52,6 +53,7 @@ dependencies:
   gatsby-plugin-manifest: 2.12.1_gatsby@2.32.13
   gatsby-plugin-mdx: 1.10.1_20907dfa5e7456b3e10ff58769a7061d
   gatsby-plugin-page-creator: 2.10.2_gatsby@2.32.13
+  gatsby-plugin-pnpm: 1.2.10_gatsby@2.32.13
   gatsby-plugin-preact: 4.7.0_a87196f9d9a378478688a7f0a73ac325
   gatsby-plugin-react-helmet: 3.10.0_b14dca7208dc79b16be6b69b30351fe3
   gatsby-plugin-sharp: 2.14.4_gatsby@2.32.13
@@ -6626,7 +6628,7 @@ packages:
   /axios/0.21.4_debug@3.2.7:
     resolution: {integrity: sha512-ut5vewkiu8jjGBdqpM44XxjuCjq9LAKeHVmoVfHVzy8eHgxxq8SbAVQNovDA8mVi05kP0Ea/n/UzcSHcTJQfNg==}
     dependencies:
-      follow-redirects: 1.14.9_debug@4.3.3
+      follow-redirects: 1.14.9_debug@3.2.7
     transitivePeerDependencies:
       - debug
     dev: false
@@ -12452,6 +12454,16 @@ packages:
     transitivePeerDependencies:
       - encoding
       - supports-color
+    dev: false
+
+  /gatsby-plugin-pnpm/1.2.10_gatsby@2.32.13:
+    resolution: {integrity: sha512-29xjIakNEUY42OBb3wI9Thmawr5EcUUOB3dB8nE51yr/TfKQFCREk+HAOATQHTNedG3VZhgU4wVjl2V3wgOXJA==}
+    peerDependencies:
+      gatsby: ~2.x.x || ~3.x.x || ~4.x.x
+    dependencies:
+      gatsby: 2.32.13_react-dom@16.8.3+react@16.8.3
+      lodash.get: 4.4.2
+      lodash.uniq: 4.5.0
     dev: false
 
   /gatsby-plugin-preact/4.7.0_a87196f9d9a378478688a7f0a73ac325:
