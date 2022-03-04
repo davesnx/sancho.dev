@@ -15,23 +15,16 @@ jobs:
         with:
           node-version: 16.x
 
-      - name: Cache pnpm modules
-        uses: actions/cache@v2
+      - uses: actions/cache@v2
         with:
-          path: ~/.pnpm-store
-          key: ${{ runner.os }}-${{ hashFiles('**/pnpm-lock.yaml') }}
-          restore-keys: |
-            ${{ runner.os }}-
-
-      - uses: pnpm/action-setup@v2.1.0
-        with:
-          version: 6.0.2
+          path: '**/node_modules'
+          key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
 
       - name: Install
-        run: pnpm install --prefer-offline
+        run: yarn install --prefer-offline
 
       - name: Build
-        run: pnpm build
+        run: yarn build
 
       - name: Deploy to prod
         if: ${{ github.event_name != 'pull_request' }}
