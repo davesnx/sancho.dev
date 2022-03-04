@@ -26,12 +26,6 @@ module.exports = {
       options: { name: `src`, path: `${__dirname}/src/` },
     },
     {
-      resolve: `gatsby-plugin-google-analytics`,
-      options: {
-        trackingId: "UA-45029133-1",
-      },
-    },
-    {
       resolve: `gatsby-plugin-splitbee`,
       options: {
         includeInDevelopment: false,
