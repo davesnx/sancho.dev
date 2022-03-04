@@ -1,15 +1,14 @@
 import { colors } from "./theme";
 import fonts from "./fonts";
 
-const background = "#E2E9EE";
-const black = "#4c4c5c";
-const orange = "#DC6439";
-const yellow = "#e28200";
-const purple = "#9e4eb4";
-const green = "#28b3ba";
-const red = "#ef6b73";
-const grey = "#aabfc9";
-const strongblue = "#4c575d";
+const black = colors.prismBlack;
+const orange = colors.prismOrange;
+const yellow = colors.prismYellow;
+const purple = colors.prismPurple;
+const green = colors.prismGreen;
+const red = colors.prismRed;
+const grey = colors.prismGrey;
+const strongblue = colors.prismStrongblue;
 
 export default `
   code[class*="language-"],
@@ -28,14 +27,14 @@ export default `
     margin: 0;
     margin-bottom: 2rem;
     padding: 1.25rem 32px;
-    background: ${background};
+    background-color: ${colors.contrast};
     border-radius: 4px;
     border: 1px solid ${colors.subtle};
   }
 
   code[class*="language-"],
   pre[class*="language-"] {
-    background: ${background};
+    background-color: ${colors.contrast};
     text-align: left;
     white-space: pre;
     word-spacing: normal;
@@ -213,5 +212,13 @@ export default `
 
   .token.variable {
     color: ${colors.primary};
+  }
+
+  .token.parameter {
+    color: ${colors.primary};
+  }
+
+  .token.plain-text {
+    color: ${colors.body};
   }
 `;

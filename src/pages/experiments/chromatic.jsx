@@ -65,14 +65,14 @@ const ChromaticText = ({ children, mouse, orientation }) => {
 
   return (
     <Overlap ref={ref}>
-      <Layer blur={pita / 2} color={colors.G}>
+      <Layer blur={pita / 2} color={colors.g}>
         {children}
       </Layer>
       <Layer
         translateY={translateY}
         translateX={translateX}
         blur={pita}
-        color={colors.R}
+        color={colors.r}
       >
         {children}
       </Layer>
@@ -80,7 +80,7 @@ const ChromaticText = ({ children, mouse, orientation }) => {
         translateY={-translateY}
         translateX={-translateX}
         blur={pita}
-        color={colors.B}
+        color={colors.b}
       >
         {children}
       </Layer>
@@ -112,7 +112,7 @@ export default () => {
   const isMobile = useIsMobile();
 
   return (
-    <Layout kind={colors.body}>
+    <Layout>
       <RelativeSpacer top={8}>
         <Container>
           <ChromaticText mouse={mouse} orientation={orientation}>
@@ -121,7 +121,7 @@ export default () => {
             </Name>
           </ChromaticText>
           <Spacer top={4}>
-            <Text align="center" color={colors.background}>
+            <Text align="center" color={colors.body}>
               {isMobile
                 ? "Incline the phone to see the "
                 : "Move the mouse across the screen to see the "}

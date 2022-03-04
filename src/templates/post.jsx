@@ -8,7 +8,6 @@ import { window } from "browser-monads";
 
 import Page from "../components/page";
 import Spacer from "../components/spacer";
-import { RowResponsive } from "../components/taco";
 import Text from "../components/text";
 import { TextLink } from "../components/link";
 import Icon from "../components/icon";
@@ -112,21 +111,27 @@ const Blockquote = styled.blockquote`
   }
 `;
 
+const Inline = styled.div`
+  display: inline-flex;
+`;
+
 const TwitterShare = ({ title, href }) => {
   const urlToShare = `http://www.twitter.com/share?url=${href}&text=${title}: `;
   return (
-    <div>
-      <RowResponsive>
-        <Text>If you like it enough, consider to </Text>{" "}
-        <TextLink to={urlToShare}>
-          <Text tiny weight={500} color={colors.primary}>
-            share it on Twitter
-          </Text>
-          <Spacer left={1} />
-          <Icon svg={Twitter} size={20} color={colors.primary} />
-        </TextLink>
-      </RowResponsive>
-    </div>
+    <span>
+      <Text>If you like it enough, consider to </Text>{" "}
+      <span>
+      <TextLink color={colors.twitter} to={urlToShare}>
+        <Inline>
+        <Text tiny weight={500} color={colors.primary}>
+          share it on Twitter
+        </Text>
+        <Spacer left={1} />
+        <Icon svg={Twitter} size={20} color={colors.primary} />
+        </Inline>
+      </TextLink>
+      </span>
+    </span>
   );
 };
 

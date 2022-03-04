@@ -74,7 +74,7 @@ const ButtonWrapper = styled(Navigate)`
   border-style: solid;
   padding: 0.8rem 1.2rem;
   border-radius: 4px;
-  background-color: ${colors.background};
+  background-color: ${colors.contrast};
   color: ${colors.body};
   font-family: '${font.sans}';
 
@@ -99,7 +99,7 @@ const OverlapWrapper = styled.div`
   justify-content: center;
   align-items: center;
 
-  background: ${colors.body};
+  background: ${colors.contrast};
   border-radius: 4px;
 `;
 
@@ -119,13 +119,13 @@ const ChromaticButton = ({ to }) => {
       <OverlapWrapper>
         <Overlap>
           <Swing translateY={-1 * derivation} translateX={0}>
-            <Circle color={colors.G} />
+            <Circle color={colors.g} />
           </Swing>
           <Swing translateY={derivation} translateX={-1 * derivation}>
-            <Circle color={colors.R} />
+            <Circle color={colors.r} />
           </Swing>
           <Swing translateY={derivation} translateX={derivation}>
-            <Circle color={colors.B} />
+            <Circle color={colors.b} />
           </Swing>
         </Overlap>
       </OverlapWrapper>

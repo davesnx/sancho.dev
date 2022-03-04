@@ -21,7 +21,7 @@ const MenuItem = styled.p`
   text-transform: uppercase;
   display: inline-flex;
   letter-spacing: 1.5px;
-  color: ${props => props.color};
+  color: ${colors.body};
 
   &:hover {
     color: ${colors.primary};

@@ -5,6 +5,7 @@ const g = "#17E620";
 const b = "#003AEC";
 
 const lightValues = {
+  r, g, b,
   body: "#233044",
   contrast: "#FAFAFA",
   subtle: "#AEB2B9",
@@ -13,10 +14,18 @@ const lightValues = {
   github: "rgba(24, 23, 23, 1)",
   telegram: "rgba(114, 137, 218, 1)",
   strava: "rgba(252, 76, 2, 1)",
-  r, g, b
+  prismBlack: "#4c4c5c",
+  prismOrange: "#DC6439",
+  prismYellow: "#e28200",
+  prismPurple: "#9e4eb4",
+  prismGreen: "#28b3ba",
+  prismRed: "#ef6b73",
+  prismGrey: "#aabfc9",
+  prismStrongblue: "#4c575d",
 };
 
 const darkValues = {
+  r, g, b,
   body: "rgb(164 173 187)",
   contrast: "rgb(29 29 29)",
   subtle: "#54585d",
@@ -25,7 +34,14 @@ const darkValues = {
   github: "rgba(164, 173, 187, 1)",
   telegram: "rgba(114, 137, 218, 1)",
   strava: "rgba(252, 76, 2, 1)",
-  r, g, b
+  prismBlack: "#4c4c5c",
+  prismOrange: "#DC6439",
+  prismYellow: "#e28200",
+  prismPurple: "#9e4eb4",
+  prismGreen: "#28b3ba",
+  prismRed: "#ef6b73",
+  prismGrey: "#aabfc9",
+  prismStrongblue: "#4c575d",
 };
 
 export let KEY = "__sancho-www-theme";

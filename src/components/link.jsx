@@ -16,9 +16,10 @@ const Anchor = css`
   text-decoration-thickness: 1.5px;
   text-underline-offset: 1.5px;
   text-decoration: underline;
-  text-decoration-color: currentColor;
+  text-decoration-color: ${props => props.color || colors.body};
 
   &:hover {
+    text-decoration-color: ${colors.primary};
     color: ${colors.primary};
   }
 
@@ -34,6 +35,7 @@ const StyledA = styled.a`
 
 const UnstyledA = styled.a`
   color: currentColor;
+  text-decoration: none;
 `;
 
 export const TextLink = ({ to, ...rest }) => {

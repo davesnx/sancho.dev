@@ -21,7 +21,7 @@ export const Character = styled.span.attrs(props => ({
   display: flex;
   justify-content: center;
   align-items: center;
-  color: ${colors.background};
+  color: ${colors.body};
   transition: all 200ms ease-out;
 
   & + & {
@@ -72,11 +72,11 @@ export default () => {
   const mouse = useMousePosition();
   const isMobile = useIsMobile();
   return (
-    <Layout kind={colors.body}>
+    <Layout>
       <Container>
         <Squared x={mouse.x} text="David Sancho" />
         <Spacer top={4}>
-          <Text align="center" color={colors.background}>
+          <Text align="center" color={colors.body}>
             {isMobile
               ? "Tap into the name to see the "
               : "Move the mouse in the y axis to see the "}

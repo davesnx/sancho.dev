@@ -35,6 +35,7 @@ jobs:
           npx netlify deploy --site $SITE_ID --auth $AUTH_TOKEN --prod --dir=public
 
       - name: Deploy preview
+        if: ${{ github.event_name == 'pull_request' }}
         env:
           SITE_ID: ${{ secrets.SITE_ID }}
           AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
