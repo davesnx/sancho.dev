@@ -55,7 +55,6 @@ export const ButtonLink = ({ to, ...rest }) => {
   );
 };
 
-
 export const NavigateButton = styled(GatsbyLink)`
   text-decoration: none;
 `;

@@ -44,10 +44,12 @@ export default () => {
         <Spacer top={2} />
         <Text size={fonts.fontSize1}>
           In my spare time, I train as an amateur triathlete focusing on Olympic
-          and Half Ironman distances, maintain a bunch of Open Source
-          projects, and write my thoughts on my <NavigateText underline to="/blog">
+          and Half Ironman distances, maintain a bunch of Open Source projects,
+          and write my thoughts on my{" "}
+          <NavigateText underline to="/blog">
             blog
-          </NavigateText>{". "}
+          </NavigateText>
+          {". "}
         </Text>
         <Spacer top={2} />
         <Text size={fonts.fontSize1}>
@@ -55,7 +57,8 @@ export default () => {
           <NavigateText underline to="/about">
             about
           </NavigateText>{" "}
-          page.</Text>
+          page.
+        </Text>
         <Spacer top={3} />
         <Row gap={2} distribute="left">
           <TextLink

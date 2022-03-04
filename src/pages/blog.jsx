@@ -43,7 +43,9 @@ export default ({ data }) => {
       <Page title="Thoughts">
         {data.allMdx.edges.map(({ node }) => (
           <Spacer bottom={3} key={node.id}>
-            <Text weight={500} color={colors.subtle} size={font.fontSizeN1}>{node.frontmatter.date.toUpperCase()}</Text>
+            <Text weight={500} color={colors.subtle} size={font.fontSizeN1}>
+              {node.frontmatter.date.toUpperCase()}
+            </Text>
             <BlogLink to={node.fields.slug} isMobile={isMobile}>
               <H3> {node.frontmatter.title}</H3>
             </BlogLink>

@@ -32,7 +32,7 @@ export default () => (
       size={20}
       svg={Strava}
       href="https://www.strava.com/athletes/davesnx"
-      bg={colors.20}
+      bg={colors.strava}
     />
   </Row>
 );

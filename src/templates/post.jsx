@@ -59,7 +59,7 @@ const Content = styled(Text)`
 const Line = {
   horitzontal: css`
     opacity: 0.4;
-    backgroundColor: ${colors.subtle};
+    backgroundcolor: ${colors.subtle};
     width: 100%;
     height: 2px;
   `,
@@ -67,9 +67,9 @@ const Line = {
     opacity: 0.4;
     width: 2px;
     height: 100%;
-    backgroundColor: ${colors.subtle};
-  `
-}
+    backgroundcolor: ${colors.subtle};
+  `,
+};
 
 const Hr = styled.hr`
   border-top-width: 1px;
@@ -121,15 +121,15 @@ const TwitterShare = ({ title, href }) => {
     <span>
       <Text>If you like it enough, consider to </Text>{" "}
       <span>
-      <TextLink color={colors.twitter} to={urlToShare}>
-        <Inline>
-        <Text tiny weight={500} color={colors.primary}>
-          share it on Twitter
-        </Text>
-        <Spacer left={1} />
-        <Icon svg={Twitter} size={20} color={colors.primary} />
-        </Inline>
-      </TextLink>
+        <TextLink color={colors.twitter} to={urlToShare}>
+          <Inline>
+            <Text tiny weight={500} color={colors.primary}>
+              share it on Twitter
+            </Text>
+            <Spacer left={1} />
+            <Icon svg={Twitter} size={20} color={colors.primary} />
+          </Inline>
+        </TextLink>
       </span>
     </span>
   );
