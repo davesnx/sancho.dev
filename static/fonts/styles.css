@@ -14,13 +14,6 @@
   font-style: normal;
 }
 
-@font-face {
-  font-family: 'Silka';
-  src: url("./silka-bold.ttf");
-  font-weight: 700;
-  font-style: normal;
-}
-
 /* Coding */
 
 @font-face {
