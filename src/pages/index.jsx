@@ -20,10 +20,11 @@ const Body = styled.main`
   max-width: ${constants.desktop.width};
   padding-left: 32px;
   padding-right: 32px;
-  padding-top: 3rem;
+  padding-top: 6rem;
   margin: 0 auto;
 
   @media (max-width: ${constants.mobile.width}) {
+    padding-top: 3rem;
     padding-left: 16px;
     padding-right: 16px;
   }
