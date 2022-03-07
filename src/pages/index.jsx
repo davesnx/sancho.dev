@@ -7,6 +7,8 @@ import Spacer from "../components/spacer";
 import { Row } from "../components/taco";
 import Text from "../components/text";
 import fonts from "../fonts";
+import constants from "../constants";
+import { useIsMobile } from "../utils/media-query";
 
 const Minimal = styled.div`
   min-height: 100vh;
@@ -14,20 +16,28 @@ const Minimal = styled.div`
 `;
 
 const Body = styled.main`
-  max-width: 736px;
-  padding-top: 6rem;
-  padding-left: 4rem;
-  padding-right: 4rem;
+  width: 100%;
+  max-width: ${constants.desktop.width};
+  padding-left: 32px;
+  padding-right: 32px;
+  padding-top: 3rem;
+  margin: 0 auto;
+
+  @media (max-width: ${constants.mobile.width}) {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
 `;
 
 let Pages = () => {
+  let isMobile = useIsMobile();
   return (
     <Minimal>
       <Body>
         <Text size={fonts.fontSize2} weight={400} align="left">
           David Sancho
         </Text>
-        <Spacer top={4} />
+        <Spacer top={isMobile ? 2 : 4} />
         <Text size={fonts.fontSize1} align="left">
           I'm a Barcelona based software engineer. Trying to make cute software
           with <TextLink to="http://reasonml.github.io/">Reason</TextLink> and{" "}
