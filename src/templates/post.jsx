@@ -135,7 +135,7 @@ const TwitterShare = ({ title, href }) => {
   );
 };
 
-export default ({ data }) => {
+let Post = ({ data }) => {
   const post = data.mdx;
   const url = post.fields.slug
     ? `${data.site.siteMetadata.siteUrl}${post.fields.slug}`
@@ -193,6 +193,8 @@ export default ({ data }) => {
     </>
   );
 };
+
+export default Post
 
 export const query = graphql`
   query($slug: String!) {

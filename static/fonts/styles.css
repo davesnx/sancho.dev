@@ -5,6 +5,7 @@
   src: url("./silka-regular.ttf");
   font-weight: 200;
   font-style: normal;
+  font-display: block;
 }
 
 @font-face {
@@ -12,6 +13,7 @@
   src: url("./silka-semibold.ttf");
   font-weight: 500;
   font-style: normal;
+  font-display: block;
 }
 
 /* Coding */
@@ -21,6 +23,7 @@
   src: url("./SFMono-Medium.otf");
   font-weight: 500;
   font-style: normal;
+  font-display: swap;
 }
 
 @font-face {
@@ -28,6 +31,7 @@
   src: url("./SFMono-Bold.otf");
   font-weight: 700;
   font-style: normal;
+  font-display: swap;
 }
 
 /* Experiment */
@@ -36,4 +40,5 @@
   font-family: 'Inter';
   src: url("./Inter.otf");
   font-style: normal;
+  font-display: swap;
 }

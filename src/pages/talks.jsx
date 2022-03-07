@@ -4,7 +4,7 @@ import Page from "../components/page";
 import { Item, Kind } from "../components/item";
 import { Stack } from "../components/taco";
 
-const Talks = () => (
+let Talks = () => (
   <Page title="Talks">
     <Stack gap={5}>
       <Item

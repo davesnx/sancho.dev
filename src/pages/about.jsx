@@ -6,7 +6,7 @@ import Text from "../components/text";
 import { TextLink, NavigateText } from "../components/link";
 import { Emoji } from "../components/emoji";
 
-const About = () => {
+let About = () => {
   return (
     <Page title="About me">
       <Text>

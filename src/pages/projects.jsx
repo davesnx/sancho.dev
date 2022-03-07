@@ -7,7 +7,7 @@ import Text from "../components/text";
 import { Item, Kind } from "../components/item";
 import { Stack } from "../components/taco";
 
-const Projects = () => (
+let Projects = () => (
   <Page title="Projects">
     <Text>
       I'm a very creative person and have a mind full of ideas, some of them

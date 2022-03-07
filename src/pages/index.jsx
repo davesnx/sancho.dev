@@ -20,7 +20,7 @@ const Body = styled.main`
   padding-right: 4rem;
 `;
 
-export default () => {
+let Pages = () => {
   return (
     <Minimal>
       <Body>
@@ -94,3 +94,5 @@ export default () => {
     </Minimal>
   );
 };
+
+export default Pages

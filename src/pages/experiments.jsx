@@ -7,9 +7,9 @@ import { useSpring, animated } from "react-spring";
 import Page from "../components/page";
 import Spacer from "../components/spacer";
 import Overlap from "../components/overlap";
+import { Character } from "../components/character";
 import { colors } from "../theme";
 import font from "../fonts";
-import { Character } from "../pages/experiments/variable";
 
 function useHover() {
   const [value, setValue] = React.useState(false);
@@ -162,7 +162,7 @@ const Grid = styled.div`
   grid-gap: 16px;
 `;
 
-export default ({ data }) => {
+let Experiments = ({ data }) => {
   const {
     site: {
       siteMetadata: { siteUrl, description, title },
@@ -197,3 +197,5 @@ export const query = graphql`
     }
   }
 `;
+
+export default Experiments

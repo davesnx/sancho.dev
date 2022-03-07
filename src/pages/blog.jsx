@@ -22,7 +22,7 @@ const BlogLink = styled(Navigate)`
   align-items: ${props => (props.isMobile ? "left" : "center")};
 `;
 
-export default ({ data }) => {
+let Blog = ({ data }) => {
   const {
     site: {
       siteMetadata: { siteUrl, description, title },
@@ -83,3 +83,5 @@ export const query = graphql`
     }
   }
 `;
+
+export default Blog

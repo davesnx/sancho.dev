@@ -6,7 +6,7 @@ import Page from "../components/page";
 import Spacer from "../components/spacer";
 import { TextLink, NavigateText } from "../components/link";
 
-export default () => (
+let Error = () => (
   <Page title="Page not found">
     <Text weight={600}>
       If it sounds like it shoud, <br /> please open an issue in{" "}
@@ -18,3 +18,5 @@ export default () => (
     </Text>
   </Page>
 );
+
+export default Error

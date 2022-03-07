@@ -106,7 +106,7 @@ const Container = styled.div`
   cursor: crosshair;
 `;
 
-export default () => {
+let Chromatic = () => {
   const mouse = useMousePosition();
   const orientation = useDeviceOrientation();
   const isMobile = useIsMobile();
@@ -135,3 +135,5 @@ export default () => {
     </Layout>
   );
 };
+
+export default Chromatic

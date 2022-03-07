@@ -14,16 +14,18 @@ export const styles = css`
   display: inline-block;
 `;
 
-const Text = styled.p`
+const P = styled.p`
   ${styles};
   text-align: ${props => props.align}};
 `;
 
-export default ({ children, ...rest }) => {
+let Text = ({ children, ...rest }) => {
   const color = rest.color || colors.body;
   return (
-    <Text {...rest} color={color}>
+    <P {...rest} color={color}>
       {children}
-    </Text>
+    </P>
   );
 };
+
+export default Text

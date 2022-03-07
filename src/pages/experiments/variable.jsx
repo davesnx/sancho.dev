@@ -6,28 +6,9 @@ import { colors } from "../../theme";
 import Spacer from "../../components/spacer";
 import { TextLink } from "../../components/link";
 import Text from "../../components/text";
+import { Character } from "../../components/character";
 import useMousePosition from "../../utils/mouse-position";
 import { useIsMobile } from "../../utils/media-query";
-
-export const Character = styled.span.attrs(props => ({
-  style: {
-    fontVariationSettings: `"wght" ${props.wght}`,
-  },
-}))`
-  width: ${props => (props.isMobile ? "25px" : "75px")};
-  font-size: ${props => (props.isMobile ? "25px" : "50px")};
-  text-transform: uppercase;
-  font-family: "Inter";
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  color: ${colors.body};
-  transition: all 200ms ease-out;
-
-  & + & {
-    border-left: none;
-  }
-`;
 
 const Row = styled.div`
   display: flex;
@@ -68,7 +49,7 @@ const Container = styled.div`
   cursor: ew-resize;
 `;
 
-export default () => {
+let Variable = () => {
   const mouse = useMousePosition();
   const isMobile = useIsMobile();
   return (
@@ -88,3 +69,5 @@ export default () => {
     </Layout>
   );
 };
+
+export default Variable
