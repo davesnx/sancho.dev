@@ -21,9 +21,10 @@ const Body = styled.main`
   padding-left: 32px;
   padding-right: 32px;
   padding-top: 6rem;
-  margin: 0 auto;
+  margin-left: 32px;
 
   @media (max-width: ${constants.mobile.width}) {
+    margin-left: 0px;
     padding-top: 3rem;
     padding-left: 16px;
     padding-right: 16px;
@@ -58,9 +59,8 @@ let Pages = () => {
           and Half Ironman distances, maintain a bunch of Open Source projects,
           and write my thoughts on my{" "}
           <NavigateText underline to="/blog">
-            blog
+            blog{". "}
           </NavigateText>
-          {". "}
         </Text>
         <Spacer top={2} />
         <Text size={fonts.fontSize1}>
