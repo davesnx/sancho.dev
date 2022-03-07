@@ -4,9 +4,11 @@ import { colors, KEY as THEME_KEY, make } from "./src/theme";
 import GlobalStyle from "./src/global-styles";
 import SilkaRegular from "./static/fonts/silka-regular.ttf";
 import SilkaSemibold from "./static/fonts/silka-semibold.ttf";
+import fontStyles from "./static/fonts/styles.css"
 
 export const onRenderBody = ({ setHeadComponents }) => {
   setHeadComponents([
+    <link rel="stylesheet" href={fontStyles} as="style" />,
     <link
       rel="preload"
       as="font"
