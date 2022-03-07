@@ -2,14 +2,14 @@
 
 @font-face {
   font-family: 'Silka';
-  src: url("./silka-regular.ttf");
+  src: local('silka-regular'), url("./silka-regular.ttf") format("ttf");
   font-weight: 200;
   font-style: normal;
 }
 
 @font-face {
   font-family: 'Silka';
-  src: url("./silka-semibold.ttf");
+  src: local('silka-semibold'), url("./silka-semibold.ttf") format("ttf");
   font-weight: 500;
   font-style: normal;
 }
@@ -18,14 +18,14 @@
 
 @font-face {
   font-family: 'SF Mono';
-  src: url("./SFMono-Medium.otf");
+  src: local('SF Mono'), url("./SFMono-Medium.otf");
   font-weight: 500;
   font-style: normal;
 }
 
 @font-face {
   font-family: 'SF Mono';
-  src: url("./SFMono-Bold.otf");
+  src: local('SF Mono'), url("./SFMono-Bold.otf");
   font-weight: 700;
   font-style: normal;
 }
