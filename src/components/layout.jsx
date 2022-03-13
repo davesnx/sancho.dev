@@ -51,7 +51,7 @@ export default ({ children, pathname }) => {
       <Main>
         <header>
           <RowResponsive>
-            <NavigateButton to="/about">
+            <NavigateButton to="/">
               <Logo>@davesnx</Logo>
             </NavigateButton>
             <Row gap={3}>
@@ -61,6 +61,10 @@ export default ({ children, pathname }) => {
 
               <NavigateButton to="/talks">
                 <MenuItem>talks</MenuItem>
+              </NavigateButton>
+
+              <NavigateButton to="/about">
+                <MenuItem>about</MenuItem>
               </NavigateButton>
 
               <NavigateButton to="/experiments">

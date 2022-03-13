@@ -4,38 +4,16 @@ import styled from "styled-components";
 import { colors } from "../theme";
 import { TextLink, NavigateText } from "../components/link";
 import Spacer from "../components/spacer";
+import Page from "../components/page";
 import { Row } from "../components/taco";
 import Text from "../components/text";
 import fonts from "../fonts";
-import constants from "../constants";
 import { useIsMobile } from "../utils/media-query";
-
-const Minimal = styled.div`
-  min-height: 100vh;
-  background-color: ${colors.contrast};
-`;
-
-const Body = styled.main`
-  width: 100%;
-  max-width: ${constants.desktop.width};
-  padding-left: 32px;
-  padding-right: 32px;
-  padding-top: 6rem;
-  margin-left: 32px;
-
-  @media (max-width: ${constants.mobile.width}) {
-    margin-left: 0px;
-    padding-top: 3rem;
-    padding-left: 16px;
-    padding-right: 16px;
-  }
-`;
 
 let Pages = () => {
   let isMobile = useIsMobile();
   return (
-    <Minimal>
-      <Body>
+    <Page>
         <Text size={fonts.fontSize2} weight={400} align="left">
           David Sancho
         </Text>
@@ -101,8 +79,7 @@ let Pages = () => {
             {"Strava"}
           </TextLink>
         </Row>
-      </Body>
-    </Minimal>
+    </Page>
   );
 };
 
