@@ -1,5 +1,4 @@
 import React from "react";
-import styled from "styled-components";
 
 import { colors } from "../theme";
 import { TextLink, NavigateText } from "../components/link";
