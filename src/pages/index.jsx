@@ -12,11 +12,7 @@ import { useIsMobile } from "../utils/media-query";
 let Pages = () => {
   let isMobile = useIsMobile();
   return (
-    <Page>
-      <Text size={fonts.fontSize5} weight={400} align="left">
-        David Sancho
-      </Text>
-      <Spacer top={isMobile ? 2 : 4} />
+    <Page title={"David Sancho"}>
       <Text size={fonts.fontSize1} align="left">
         I'm a Barcelona based software engineer. Trying to make cute software
         with <TextLink to="http://reasonml.github.io/">Reason</TextLink> and{" "}
