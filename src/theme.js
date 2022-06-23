@@ -26,7 +26,7 @@ const lightValues = {
 
 const darkValues = {
   r, g, b,
-  body: "rgb(164 173 187)",
+  body: "rgb(206 208 210)",
   contrast: "rgb(29 29 29)",
   subtle: "#54585d",
   primary: "#3a80bf",

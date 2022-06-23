@@ -7,10 +7,8 @@ import Page from "../components/page";
 import { Row } from "../components/taco";
 import Text from "../components/text";
 import fonts from "../fonts";
-import { useIsMobile } from "../utils/media-query";
 
 let Pages = () => {
-  let isMobile = useIsMobile();
   return (
     <Page title={"David Sancho"}>
       <Text size={fonts.fontSize1} align="left">
