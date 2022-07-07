@@ -7,8 +7,22 @@ import SilkaSemibold from "./static/fonts/silka-semibold.ttf";
 
 export const onRenderBody = ({ setHeadComponents }) => {
   setHeadComponents([
-    <link key="regular" href={SilkaRegular} rel='preload' as="font" type="font/ttf" crossOrigin="anonymous" />,
-    <link key="semibold" href={SilkaSemibold} rel='preload' as="font" type="font/ttf" crossOrigin="anonymous" />,
+    <link
+      key="regular"
+      href={SilkaRegular}
+      rel="preload"
+      as="font"
+      type="font/ttf"
+      crossOrigin="anonymous"
+    />,
+    <link
+      key="semibold"
+      href={SilkaSemibold}
+      rel="preload"
+      as="font"
+      type="font/ttf"
+      crossOrigin="anonymous"
+    />,
     <style key="global-styles" charSet="utf-8" type="text/css">
       {GlobalStyle}
     </style>,
@@ -42,6 +56,8 @@ export const onRenderBody = ({ setHeadComponents }) => {
     var theme = localStorageValue || systemPreference;
 
     localStorage.setItem('${THEME_KEY}', theme);
+    var htmlElement = Array.from(document.getElementsByTagName("html"))[0];
+    htmlElement.style.cssText += "color-scheme: " + theme;
     var css = makeTheme(theme);
     overriteRoot(css);
   })();

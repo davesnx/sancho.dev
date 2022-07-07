@@ -5,7 +5,9 @@ const g = "#17E620";
 const b = "#003AEC";
 
 const lightValues = {
-  r, g, b,
+  r,
+  g,
+  b,
   body: "#233044",
   contrast: "#FAFAFA",
   subtle: "#AEB2B9",
@@ -25,7 +27,9 @@ const lightValues = {
 };
 
 const darkValues = {
-  r, g, b,
+  r,
+  g,
+  b,
   body: "rgb(206 208 210)",
   contrast: "rgb(29 29 29)",
   subtle: "#54585d",
@@ -69,9 +73,11 @@ export let make = theme => {
     `var(--c-${theme}-${key})`,
   ]);
 
-  return makeRoot(mappings.map(([colorName, themeName]) => {
-    return `${colorName}: ${themeName};`
-  }).join(" "))
+  return makeRoot(
+    mappings
+      .map(([colorName, themeName]) => `${colorName}: ${themeName};`)
+      .join(" ")
+  );
 };
 
 export let colors = Object.fromEntries(
