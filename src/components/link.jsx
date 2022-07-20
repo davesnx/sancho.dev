@@ -2,6 +2,7 @@ import React from "react";
 import styled, { css } from "styled-components";
 import { Link as GatsbyLink } from "gatsby";
 
+import { transparent, xxtransparent } from "../colors"
 import { colors } from "../theme";
 import fonts from "../fonts";
 
@@ -16,11 +17,10 @@ const Anchor = css`
   text-decoration-thickness: 1.5px;
   text-underline-offset: 1.5px;
   text-decoration: underline;
-  text-decoration-color: ${props => props.color || colors.body};
+  text-decoration-color: ${props => xxtransparent(props.color || colors.body)};
 
   &:hover {
-    text-decoration-color: ${colors.primary};
-    color: ${colors.primary};
+    text-decoration-color: ${props => transparent(props.color || colors.body)};
   }
 
   cursor: pointer;

@@ -1,28 +1,20 @@
-const r = "#FF211B";
-const g = "#17E620";
-const b = "#003AEC";
+import Color from 'color'
 
-export const lightValues = {
-  body: "#233044",
-  contrast: "#FAFAFA",
-  subtle: "#AEB2B9",
-  primary: "#4299e8",
-  twitter: "rgba(29, 161, 242, 1)",
-  github: "rgba(24, 23, 23, 1)",
-  telegram: "rgba(114, 137, 218, 1)",
-  strava: "rgba(252, 76, 2, 1)",
-  r, g, b
-};
+const alphaToColor = (color, alpha) => {
+  return Color(color)
+    .alpha(alpha)
+    .rgb()
+    .toString()
+}
 
-export const darkValues = {
-  body: "rgb(164 173 187)",
-  contrast: "rgb(29 29 29)",
-  subtle: "#54585d",
-  primary: "#3a80bf",
-  twitter: "rgba(29, 161, 242, 1)",
-  github: "rgba(24, 23, 23, 1)",
-  telegram: "rgba(114, 137, 218, 1)",
-  strava: "rgba(252, 76, 2, 1)",
-  r, g, b
-};
+const getValue = variable => {
+  console.log(variable);
+  const variableName = variable.replace("var(", "").replace(")", "");
+  return getComputedStyle(document.documentElement).getPropertyValue(variableName).trim();
+}
+
+export const transparent = color => alphaToColor(getValue(color), 0.8)
+export const xtransparent = color => alphaToColor(getValue(color), 0.6)
+export const xxtransparent = color => alphaToColor(getValue(color), 0.3)
+export const xxxtransparent = color => alphaToColor(getValue(color), 0.1)
 

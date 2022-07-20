@@ -10,6 +10,7 @@
     "@mdx-js/react": "^1.5.8",
     "babel-plugin-styled-components": "^1.10.7",
     "browser-monads": "^1.0.0",
+    "color": "^3.2.1",
     "gatsby": "^2.20.22",
     "gatsby-plugin-feed-mdx": "^1.0.1",
     "gatsby-plugin-global-styles": "^1.0.17",
