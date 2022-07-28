@@ -165,7 +165,7 @@ let Post = ({ data }) => {
             h5: PaddedH5,
             h6: PaddedH6,
             p: Content,
-            a: TextLink,
+            a: ({ href, ...rest }) => <TextLink to={href} {...rest} />,
             li: ListItem,
             ol: OrderList,
             ul: UnorderList,

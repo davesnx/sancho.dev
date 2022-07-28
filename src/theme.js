@@ -1,13 +1,20 @@
 /* This file can't have any dependency, we inject it outside of the app and react. During SSR. */
 
-const r = "#FF211B";
-const g = "#17E620";
-const b = "#003AEC";
+const values = {
+  prismBlack: "#4c4c5c",
+  prismOrange: "#DC6439",
+  prismYellow: "#e28200",
+  prismPurple: "#9e4eb4",
+  prismGreen: "#28b3ba",
+  prismRed: "#ef6b73",
+  prismGrey: "#aabfc9",
+  prismStrongblue: "#4c575d",
+  r: "#FF211B",
+  g: "#17E620",
+  b: "#003AEC",
+}
 
 const lightValues = {
-  r,
-  g,
-  b,
   body: "#233044",
   contrast: "#FAFAFA",
   subtle: "#AEB2B9",
@@ -16,20 +23,9 @@ const lightValues = {
   github: "rgba(24, 23, 23, 1)",
   telegram: "rgba(114, 137, 218, 1)",
   strava: "rgba(252, 76, 2, 1)",
-  prismBlack: "#4c4c5c",
-  prismOrange: "#DC6439",
-  prismYellow: "#e28200",
-  prismPurple: "#9e4eb4",
-  prismGreen: "#28b3ba",
-  prismRed: "#ef6b73",
-  prismGrey: "#aabfc9",
-  prismStrongblue: "#4c575d",
 };
 
 const darkValues = {
-  r,
-  g,
-  b,
   body: "rgb(206 208 210)",
   contrast: "rgb(29 29 29)",
   subtle: "#54585d",
@@ -38,15 +34,10 @@ const darkValues = {
   github: "rgba(164, 173, 187, 1)",
   telegram: "rgba(114, 137, 218, 1)",
   strava: "rgba(252, 76, 2, 1)",
-  prismBlack: "#4c4c5c",
-  prismOrange: "#DC6439",
-  prismYellow: "#e28200",
-  prismPurple: "#9e4eb4",
-  prismGreen: "#28b3ba",
-  prismRed: "#ef6b73",
-  prismGrey: "#aabfc9",
-  prismStrongblue: "#4c575d",
 };
+
+const lightTheme = Object.assign({}, lightValues, values);
+const darkTheme = Object.assign({}, darkValues, values);
 
 export let KEY = "__sancho-www-theme";
 
@@ -61,10 +52,10 @@ let objectToCSSVariable = (prefix, obj) => {
     .join(" ");
 };
 
-export let lightRoot = objectToCSSVariable("light", lightValues);
-export let darkRoot = objectToCSSVariable("dark", darkValues);
+export let lightRoot = objectToCSSVariable("light", lightTheme);
+export let darkRoot = objectToCSSVariable("dark", darkTheme);
 
-export let colorKeys = Object.keys(lightValues);
+export let colorKeys = Object.keys(lightTheme);
 
 export let make = theme => {
   let makeRoot = str => `:root { ${str} }`;
@@ -81,7 +72,7 @@ export let make = theme => {
 };
 
 export let colors = Object.fromEntries(
-  Object.entries(lightValues).map(([key, _value]) => [
+  Object.entries(lightTheme).map(([key, _value]) => [
     key,
     variable(variableName(key)),
   ])
