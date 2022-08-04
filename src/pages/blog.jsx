@@ -8,7 +8,7 @@ import { colors } from "../theme";
 import Text from "../components/text";
 import Page from "../components/page";
 import Spacer from "../components/spacer";
-import { H3 } from "../components/heading";
+import { H1, H3 } from "../components/heading";
 import { useIsMobile } from "../utils/media-query";
 
 const BlogLink = styled(Navigate)`
@@ -40,9 +40,9 @@ let Blog = ({ data }) => {
         <meta property="og:type" content="website" />
       </Helmet>
 
-      <Page title="Thoughts">
+      <Page title={<H1>Thoughts</H1>}>
         {data.allMdx.edges.map(({ node }) => (
-          <Spacer bottom={3} key={node.id}>
+          <Spacer bottom={4} key={node.id}>
             <Text weight={300} color={colors.subtle} size={font.fontSizeN1}>
               {node.frontmatter.date}
             </Text>

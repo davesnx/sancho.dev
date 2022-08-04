@@ -5,10 +5,11 @@ import Spacer from "../components/spacer";
 import Text from "../components/text";
 import { TextLink, NavigateText } from "../components/link";
 import { Emoji } from "../components/emoji";
+import { H1 } from "../components/heading";
 
 let About = () => {
   return (
-    <Page title="About me">
+    <Page title={<H1>About me</H1>}>
       <Text>
         Hi <Emoji name="hand">👋</Emoji>, My name is David Sancho and I'm a
         developer based on Barcelona currently working remotely at{" "}

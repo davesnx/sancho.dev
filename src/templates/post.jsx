@@ -11,11 +11,11 @@ import Spacer from "../components/spacer";
 import Text from "../components/text";
 import { TextLink } from "../components/link";
 import Icon from "../components/icon";
-
 import Twitter from "./../svgs/twitter";
 import { ListItem, OrderList, UnorderList } from "../components/list";
 import { H1, H2, H3, H4, H5, H6 } from "../components/heading";
 import { colors } from "../theme";
+import font from "../fonts";
 
 const PaddedH1 = styled(H1)`
   margin-top: 5.5rem;
@@ -155,7 +155,14 @@ let Post = ({ data }) => {
         <meta name="twitter:description" content={post.frontmatter.subtitle} />
         <meta name="twitter:image" content={post.frontmatter.imghero} />
       </Helmet>
-      <Page title={post.frontmatter.title}>
+      <Page title={
+        <Spacer>
+          <H1>{post.frontmatter.title}</H1>
+          <Text weight={300} color={colors.subtle} size={font.fontSizeN1}>
+            {post.frontmatter.date}
+          </Text>
+        </Spacer>
+      }>
         <MDXProvider
           components={{
             h1: PaddedH1,

@@ -8,19 +8,19 @@ tags:
   - "Components"
 ---
 
-or your "UI Framework" or component system, call it whatever you prefer. What I meant is Tailwind isn't component-driven, which they claim to be, and you might struggle making a Design system with it.
+or your UI Framework or component system, call it whatever you prefer. Tailwind isn't component-driven, which they claim to be, and you might struggle making a Design system with it, let me explain it in this post.
 
-Recently I read a lot of opinions about Tailwind ([mxstbr's thoughts](https://mxstbr.com/thoughts/tailwind), [jaredcwhite's opinion](https://dev.to/jaredcwhite/why-tailwind-isn-t-for-me-5c90), [Tailwind versus BEM](https://thoughtbot.com/blog/tailwind-versus-bem)) and nevertheless I agree with most of the points there I got a different perspective.
+Recently I read a lot of opinions about Tailwind ([mxstbr's thoughts](https://mxstbr.com/thoughts/tailwind), [jaredcwhite's opinion](https://dev.to/jaredcwhite/why-tailwind-isn-t-for-me-5c90), [Tailwind versus BEM](https://thoughtbot.com/blog/tailwind-versus-bem)) and nevertheless I agree with most of the points there, I got a different perspective.
 
-I will try to explain which are the drawbacks to make a Design system in Tailwind, focusing in the technical part of the components. Here I'm assuming that the reader is familiar with Design systems. Otherwise, can read more about in [here](https://www.invisionapp.com/inside-design/guide-to-design-systems/) or [here](https://uxdesign.cc/everything-you-need-to-know-about-design-systems-54b109851969).
+I will try to explain the drawbacks to make a Design system with Tailwind, with focus on the technical part of the components. I'm assuming that the reader is familiar with Design systems, React and basic programming. Otherwise, can read more about in [here](https://www.invisionapp.com/inside-design/guide-to-design-systems/) or [here](https://uxdesign.cc/everything-you-need-to-know-about-design-systems-54b109851969).
 
 ### A little bit about my experience
 
-Currently I'm working at Draftbit, and our frontend is build on top of ReasonReact uses Tailwind, it's about ~500 components and the main page, called the `builder` looks like this:
+At the time of writing I'm working at Draftbit and our frontend is build on top of [ReasonReact](https://reasonml.github.io/reason-react) using Tailwind. It's about ~500 components and the main page, called the `builder` looks like this:
 
 ![screenshot-draftbit-builder](/images/draftbit-builder.png)
 
-We have a design system on top of Tailwind (we might Open Source it at some point) and I contributed in a few Design Systems in my career, I even write my own.
+Aside from Draftbit's design system I contributed in a few Design Systems in my career, I even write my own.
 
 I'm obsessed with the conjunction of design with functional programming and how those enable writing modular UIs.
 
@@ -28,21 +28,19 @@ But now, let's talk about Tailwind.
 
 ### First, the good parts
 
-The reason why I think Tailwind is amazing have nothing to do with their utility classes. Those utility classes have been around the Frontend community for a long time - [tachyons](http://tachyons.io/) has been created around 2016. Even some people found them pleasant to use I personally prefer to write directly CSS.
+The reason why I think Tailwind is amazing have nothing to do with the patter of utility classes. This pattern have been around the Frontend community for a long time - [tachyons](http://tachyons.io/) has been created around 2016. Even some people found them pleasant to use I personally prefer to write directly CSS.
 
 The reasons why I think Tailwind shines are:
 
-- **Theme with strong defaults, beautiful and scalar.** The config generates all the values needed to produce a scaled system based on all those tokens. For example, spacing. The defaultConfig will generate spacing based on a scale from 0 to 96 that goes from 0px until 24rems. [defaultConfig](https://github.com/tailwindlabs/tailwindcss/blob/master/stubs/defaultConfig.stub.js#L7)
-- **Extendability,** being able to extend those values in the config brings the possibility to represent any design and being propagated to the right CSS properties. Ex, spacing would generate the values for margin, padding, width, min-height, min-height, etc.
-- **Just CSS.** It's not an abstraction, or coupled to any framework. ****Anyone can use it with minimal setup: all IDE would have support for it, all frontend framework can use it, there's ton of build tools to optimise their performance and long etcetera.
+- **Theme with strong defaults, beautiful and scalar** The config generates all the values needed to produce a scaled system based on all those tokens. For example, spacing. The defaultConfig will generate spacing based on a scale from 0 to 96 that goes from 0px until 24rems. [defaultConfig](https://github.com/tailwindlabs/tailwindcss/blob/master/stubs/defaultConfig.stub.js#L7)
+- **Extendability** being able to extend those values in the config brings the possibility to represent any design and being propagated to the right CSS properties. Ex, spacing would generate the values for margin, padding, width, min-height, min-height, etc.
+- **Just CSS** It's not an abstraction, or coupled to any framework. It can be used with minimal setup. All IDE would have support for it, all frontend/fullstack frameworks can integrate easily, there's ton of build tools to optimise performance, because it's just The Platform makes the adopation easier and future-proof.
 
 ### How is used in React
 
-I use as example React since I'm familiar with it, but I believe everything in this post applies to any component-based UI libraries.
+I use React as example, but it's similar to other component-based UI libraries. In particular, React uses JSX via Babel (or any transpiler) which to transform JSX to function calls and eventually will endup as DOM Elements.
 
-React uses JSX via Babel or any transpiler to transform JSX  to function calls, and some props/attributes renames on the process, such as `classNames` to `class`(since it's a reserved keyword in JavaScript).
-
-`className` is used to apply CSS classes to React Elements, which at the end will be DOM Elements.
+During this transformation `className` gets renamed to `class` (since it's a reserved keyword in JavaScript)  which applies CSS classes to elements.
 
 This is the defacto method to use Tailwind with React, you will often will see:
 
@@ -54,9 +52,11 @@ This is the defacto method to use Tailwind with React, you will often will see:
 
 ![Editor-with-classNames](/images/classnames.png)
 
-### Hard **to maintain**
+### Hard to maintain
 
-It's error prone to remove one of the `classNames` from the list, is a similar situation when you want to remove an unused CSS class in an [append only stylesheet](https://css-tricks.com/oh-no-stylesheet-grows-grows-grows-append-stylesheet-problem). They can collide and override with other properties. There're a lot of tools to solve that particular issue, such as linters or editor plugins.
+It's error prone to remove one of the `classNames` from the list, is a similar situation when you want to remove an unused CSS class in an [append only stylesheet](https://css-tricks.com/oh-no-stylesheet-grows-grows-grows-append-stylesheet-problem). They can collide and override with other properties.
+
+There're a lot of tools to solve that particular issue, such as linters or editor plugins. But it's still a problem.
 
 Aside from hard to remove, it's hard to change. Adding those classes might seem simple and fast while creating those components, but it will slow you down when modify or refactor them: when your component is made by nested elements with many Tailwind utilities you aren't capable to safely refactor your structure.
 

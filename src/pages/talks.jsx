@@ -3,9 +3,10 @@ import React from "react";
 import Page from "../components/page";
 import { Item, Kind } from "../components/item";
 import { Stack } from "../components/taco";
+import { H1 } from "../components/heading";
 
 let Talks = () => (
-  <Page title="Talks">
+  <Page title={<H1>Talks</H1>}>
     <Stack gap={5}>
       <Item
         title="The needed introduction to make a ppx"

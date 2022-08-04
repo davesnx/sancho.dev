@@ -6,9 +6,10 @@ import Spacer from "../components/spacer";
 import Text from "../components/text";
 import { Item, Kind } from "../components/item";
 import { Stack } from "../components/taco";
+import { H1 } from "../components/heading";
 
 let Projects = () => (
-  <Page title="Projects">
+  <Page title={<H1>Projects</H1>}>
     <Text>
       I'm a very creative person and have a mind full of ideas, some of them
       gets materialized into code and eventually shared it as Open Source,

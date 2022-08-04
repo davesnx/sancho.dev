@@ -6,11 +6,12 @@ import Spacer from "../components/spacer";
 import Page from "../components/page";
 import { Row } from "../components/taco";
 import Text from "../components/text";
+import { H1 } from "../components/heading";
 import fonts from "../fonts";
 
 let Pages = () => {
   return (
-    <Page title={"David Sancho"}>
+    <Page title={<H1>David Sancho</H1>}>
       <Text size={fonts.fontSize1} align="left">
         I'm a Barcelona based software engineer. Trying to make cute software
         with <TextLink to="http://reasonml.github.io/">Reason</TextLink> and{" "}

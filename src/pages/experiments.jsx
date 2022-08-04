@@ -10,6 +10,7 @@ import Overlap from "../components/overlap";
 import { Character } from "../components/character";
 import { colors } from "../theme";
 import font from "../fonts";
+import { H1 } from "../components/heading";
 
 function useHover() {
   const [value, setValue] = React.useState(false);
@@ -178,7 +179,7 @@ let Experiments = ({ data }) => {
         <meta property="og:type" content="website" />
       </Helmet>
 
-      <Page title="Experiments">
+      <Page title={<H1>Experiments</H1>}>
         <Grid>
           <ChromaticButton to="/experiments/chromatic" />
           <VariableButton to="/experiments/variable" />
