@@ -47,6 +47,7 @@ const GlobalStyles = css`
   * {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    -webkit-overflow-scrolling: touch;
 
     line-height: 1.4;
     box-sizing: border-box;
