@@ -12,6 +12,7 @@ import { Row, RowResponsive } from "./../components/taco";
 const Root = styled.div`
   min-height: 100vh;
   background-color: ${colors.contrast};
+  padding-bottom: 3rem;
 `;
 
 const MenuItem = styled.p`

@@ -27,6 +27,6 @@ export default {
   fontSize6: calc(fontSize_6),
   globalFontSize,
   globalLineHeight,
-  mono: "'SF Mono', 'Fira Code', monospace",
+  mono: `SF Mono, Fira Code, monospace`,
   sans: "Silka",
 };

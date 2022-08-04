@@ -8,7 +8,6 @@ const values = {
   prismGreen: "#28b3ba",
   prismRed: "#ef6b73",
   prismGrey: "#aabfc9",
-  prismStrongblue: "#4c575d",
   r: "#FF211B",
   g: "#17E620",
   b: "#003AEC",
@@ -23,6 +22,7 @@ const lightValues = {
   github: "rgba(24, 23, 23, 1)",
   telegram: "rgba(114, 137, 218, 1)",
   strava: "rgba(252, 76, 2, 1)",
+  prismStrongblue: "#4c575d",
 };
 
 const darkValues = {
@@ -34,6 +34,7 @@ const darkValues = {
   github: "rgba(164, 173, 187, 1)",
   telegram: "rgba(114, 137, 218, 1)",
   strava: "rgba(252, 76, 2, 1)",
+  prismStrongblue: "#aabfc9",
 };
 
 const lightTheme = Object.assign({}, lightValues, values);

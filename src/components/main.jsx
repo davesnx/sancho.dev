@@ -6,9 +6,8 @@ export default styled.main`
   max-width: ${constants.desktop.width};
   padding: 32px;
   margin: 0 auto;
-  margin-bottom: 64px;
 
   @media (max-width: ${constants.mobile.width}) {
-    padding: 16px;
+    padding: 24px;
   }
 `;
