@@ -1,4 +1,4 @@
 export default {
-  desktop: { width: "900px" },
-  mobile: { width: "600px" },
+  desktop: { width: 1024 },
+  mobile: { width: 639 },
 };

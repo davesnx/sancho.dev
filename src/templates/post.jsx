@@ -9,7 +9,8 @@ import { window } from "browser-monads";
 import Page from "../components/page";
 import Spacer from "../components/spacer";
 import Text from "../components/text";
-import { TextLink } from "../components/link";
+import { NavigateText, TextLink } from "../components/link";
+import { Stack } from "../components/taco";
 import Icon from "../components/icon";
 import Twitter from "./../svgs/twitter";
 import { ListItem, OrderList, UnorderList } from "../components/list";
@@ -156,12 +157,15 @@ let Post = ({ data }) => {
         <meta name="twitter:image" content={post.frontmatter.imghero} />
       </Helmet>
       <Page title={
-        <Spacer>
+        <Stack align="left" gap={1}>
+          <Spacer bottom={3}>
+            <NavigateText to="/blog">Back</NavigateText>
+          </Spacer>
           <H1>{post.frontmatter.title}</H1>
           <Text weight={300} color={colors.subtle} size={font.fontSizeN1}>
             {post.frontmatter.date}
           </Text>
-        </Spacer>
+        </Stack>
       }>
         <MDXProvider
           components={{

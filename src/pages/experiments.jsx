@@ -73,7 +73,8 @@ const ButtonWrapper = styled(Navigate)`
 
   border-width: 2px;
   border-style: solid;
-  padding: 0.8rem 1.2rem;
+  padding: 1rem 1.5rem;
+  justify-content: space-evenly;
   border-radius: 4px;
   background-color: ${colors.contrast};
   color: ${colors.body};

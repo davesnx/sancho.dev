@@ -16,6 +16,7 @@ const values = {
 const lightValues = {
   body: "#233044",
   contrast: "#FAFAFA",
+  overlay: "#FFF",
   subtle: "#AEB2B9",
   primary: "#4299e8",
   twitter: "rgba(29, 161, 242, 1)",
@@ -27,7 +28,8 @@ const lightValues = {
 
 const darkValues = {
   body: "rgb(206 208 210)",
-  contrast: "rgb(29 29 29)",
+  contrast: "rgb(29, 29, 29)",
+  overlay: "#111",
   subtle: "#54585d",
   primary: "#3a80bf",
   twitter: "rgba(29, 161, 242, 1)",
