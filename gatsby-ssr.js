@@ -2,8 +2,8 @@ import React from "react";
 
 import { colors, KEY as THEME_KEY, make } from "./src/theme";
 import GlobalStyle from "./src/global-styles";
-import SilkaRegular from "./static/fonts/silka-regular.ttf";
-import SilkaSemibold from "./static/fonts/silka-semibold.ttf";
+import SilkaRegular from "./static/fonts/silka-regular-webfont.woff2";
+import SilkaSemibold from "./static/fonts/silka-semibold-webfont.woff2";
 import SFMonoMedium from "./static/fonts/SFMono-Medium.otf";
 import SFMonoBold from "./static/fonts/SFMono-Bold.otf";
 
@@ -14,7 +14,7 @@ export const onRenderBody = ({ setHeadComponents }) => {
       href={SilkaRegular}
       rel="preload"
       as="font"
-      type="font/ttf"
+      type="font/woff2"
       crossOrigin="anonymous"
     />,
     <link
@@ -22,7 +22,7 @@ export const onRenderBody = ({ setHeadComponents }) => {
       href={SilkaSemibold}
       rel="preload"
       as="font"
-      type="font/ttf"
+      type="font/woff2"
       crossOrigin="anonymous"
     />,
     <link
