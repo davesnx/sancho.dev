@@ -4,8 +4,8 @@ const increment = "1.25";
 const lineHeightFixed = "0.45rem";
 const lineHeightRelative = "1rem";
 
-const fontSize_N1 = `1rem`;
-const fontSize_0 = `1rem + 0.15vw`;
+const fontSize_N1 = `0.8rem`;
+const fontSize_0 = `0.7rem + 0.13vw`;
 const fontSize_1 = `(${fontSize_0}) * ${increment}`;
 const fontSize_2 = `(${fontSize_1}) * ${increment}`;
 const fontSize_3 = `(${fontSize_2}) * ${increment}`;
