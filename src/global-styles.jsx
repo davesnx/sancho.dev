@@ -99,7 +99,6 @@ const GlobalStyles = css`
     border-radius: 2px;
     padding: 4px 6px;
     color: ${black};
-    font-weight: 700;
   }
 
   .language-css > code,
