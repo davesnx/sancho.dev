@@ -33,9 +33,8 @@ const MenuItem = styled(NavigateButton)`
 
 const Logo = styled.p`
   font-weight: 500;
-  font-size: ${font.fontSize0};
+  font-size: ${font.fontSize1};
   font-family: ${font.sans};
-  line-height: 1.7;
   margin: 0;
   text-decoration: none;
 
