@@ -1,6 +1,6 @@
 import React from "react";
 import styled, { keyframes } from "styled-components";
-import { useSpring, animated, config } from "react-spring";
+import { useSpring, animated } from "react-spring";
 
 import SiteMetadata from "./site-metadata";
 import { colors } from "../theme";
@@ -66,8 +66,7 @@ const MobileMenu = styled.div`
 let fadeIn = keyframes`{
   from { opacity: 0; }
   to { opacity: 1; }
-}
-`;
+}`;
 
 const MobileMenuOverlay = styled.div`
   position: fixed;
@@ -97,24 +96,50 @@ const MobileMenuPopup = styled(animated.div)`
   background-color: ${colors.contrast};
   border-radius: 12px;
   transition: ease 300ms;
-  padding: 2rem 0;
+  padding: 1rem 0;
 `;
 
 const Icon = styled.span`
   width: 30px;
   height: 30px;
   display: grid;
+  align-items: center;
 `;
 
 const Bar = styled.span`
   width: 100%;
-  height: 4px;
+  height: 3px;
   background-color: ${colors.primary};
   display: block;
-`
+`;
 
 const Header = styled.header`
   padding-top: 24px;
+`;
+
+const Hambuger = ({ onClick }) => {
+  return (
+    <Icon
+      aria-label="menu"
+      role="button"
+      tabindex="0"
+      aria-controls="w-nav-overlay-0"
+      aria-haspopup="menu"
+      aria-expanded="true"
+      onClick={onClick}
+    >
+      <Bar />
+      <Bar />
+    </Icon>
+  );
+};
+
+const MobileMenuItem = styled(MenuItem)`
+  padding: 20px 0;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
 
 export default ({ children, pathname }) => {
@@ -122,10 +147,10 @@ export default ({ children, pathname }) => {
   let open = () => setIsOpen(true);
   let close = () => setIsOpen(false);
 
-  const { xy, scale, opacity } = useSpring({
-    xy: isOpen ? [0, 0] : [0, 0], scale: isOpen ? 1 : 0.8,
+  const { scale, opacity } = useSpring({
+    scale: isOpen ? 1 : 0.8,
     opacity: isOpen ? 1 : 0.5,
-    config: { tension: 40, friction: 10, duration: 200 },
+    config: { tension: 30, friction: 10, duration: 100 },
   });
 
   return (
@@ -152,36 +177,31 @@ export default ({ children, pathname }) => {
                   <MobileMenuPopup
                     style={{
                       transform: scale.interpolate(s => `scale(${s})`),
-                      opacity: opacity.interpolate(o => o)
+                      opacity: opacity.interpolate(o => o),
                     }}
                   >
-                      <Stack gap={5}>
-                        <MenuItem onClick={close} to="/blog">blog</MenuItem>
-                        <MenuItem onClick={close} to="/talks">talks</MenuItem>
-                        <MenuItem onClick={close} to="/about">about</MenuItem>
-                        <MenuItem onClick={close} to="/experiments">experiments</MenuItem>
-                      </Stack>
+                    <Stack gap={0}>
+                      <MobileMenuItem onClick={close} to="/">
+                        home
+                      </MobileMenuItem>
+                      <MobileMenuItem onClick={close} to="/blog">
+                        blog
+                      </MobileMenuItem>
+                      <MobileMenuItem onClick={close} to="/talks">
+                        talks
+                      </MobileMenuItem>
+                      <MobileMenuItem onClick={close} to="/about">
+                        about
+                      </MobileMenuItem>
+                      <MobileMenuItem onClick={close} to="/experiments">
+                        experiments
+                      </MobileMenuItem>
+                    </Stack>
                   </MobileMenuPopup>
-                  <Icon
-                    aria-label="menu"
-                    role="button"
-                    tabindex="0"
-                    aria-controls="w-nav-overlay-0"
-                    aria-haspopup="menu"
-                    aria-expanded="true"
-                    onClick={open}
-                  ><Bar /><Bar /></Icon>
+                  <Hambuger onClick={open} />
                 </>
               ) : (
-                <Icon
-                  aria-label="menu"
-                  role="button"
-                  tabindex="0"
-                  aria-controls="w-nav-overlay-0"
-                  aria-haspopup="menu"
-                  aria-expanded="true"
-                  onClick={open}
-                ><Bar /><Bar /></Icon>
+                <Hambuger onClick={open} />
               )}
             </MobileMenu>
           </Row>
