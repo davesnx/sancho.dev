@@ -20,7 +20,7 @@ const Root = styled.div`
 const MenuItem = styled(NavigateButton)`
   font-size: ${font.fontSize0};
   font-family: ${font.sans};
-  font-weight: bold;
+  font-weight: 500;
   text-transform: uppercase;
   display: inline-flex;
   letter-spacing: 1.5px;
@@ -32,7 +32,7 @@ const MenuItem = styled(NavigateButton)`
 `;
 
 const Logo = styled.p`
-  font-weight: bold;
+  font-weight: 500;
   font-size: ${font.fontSize0};
   font-family: ${font.sans};
   line-height: 1.7;

@@ -9,6 +9,7 @@ const Heading = css`
 
   display: ${props => (props.inline ? "inline-block" : "block")};
   font-family: '${fonts.sans}';
+  font-weight: 500;
 `;
 
 export const H1 = styled.h1`

@@ -4,11 +4,13 @@ import { colors, KEY as THEME_KEY, make } from "./src/theme";
 import GlobalStyle from "./src/global-styles";
 import SilkaRegular from "./static/fonts/silka-regular.ttf";
 import SilkaSemibold from "./static/fonts/silka-semibold.ttf";
+import SFMonoMedium from "./static/fonts/SFMono-Medium.otf";
+import SFMonoBold from "./static/fonts/SFMono-Bold.otf";
 
 export const onRenderBody = ({ setHeadComponents }) => {
   setHeadComponents([
     <link
-      key="regular"
+      key="silka-regular"
       href={SilkaRegular}
       rel="preload"
       as="font"
@@ -16,11 +18,27 @@ export const onRenderBody = ({ setHeadComponents }) => {
       crossOrigin="anonymous"
     />,
     <link
-      key="semibold"
+      key="silka-semibold"
       href={SilkaSemibold}
       rel="preload"
       as="font"
       type="font/ttf"
+      crossOrigin="anonymous"
+    />,
+    <link
+      key="sfmono-bold"
+      href={SFMonoBold}
+      rel="preload"
+      as="font"
+      type="font/otf"
+      crossOrigin="anonymous"
+    />,
+    <link
+      key="sfmono-medium"
+      href={SFMonoMedium}
+      rel="preload"
+      as="font"
+      type="font/otf"
       crossOrigin="anonymous"
     />,
     <style key="global-styles" charSet="utf-8" type="text/css">

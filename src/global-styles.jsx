@@ -69,7 +69,7 @@ const GlobalStyles = css`
   code, pre {
     font-family: ${fonts.mono};
     font-size: 16px;
-    font-weight: 500;
+    font-weight: 700;
     line-height: 1.5em;
     background-color: ${colors.contrast};
     text-align: left;
@@ -99,7 +99,7 @@ const GlobalStyles = css`
     border-radius: 2px;
     padding: 4px 6px;
     color: ${black};
-    font-weight: 600;
+    font-weight: 700;
   }
 
   .language-css > code,

@@ -43,7 +43,7 @@ let Blog = ({ data }) => {
       <Page title={<H1>Thoughts</H1>}>
         {data.allMdx.edges.map(({ node }) => (
           <Spacer bottom={4} key={node.id}>
-            <Text weight={300} color={colors.subtle} size={font.fontSizeN1}>
+            <Text weight={400} color={colors.subtle} size={font.fontSizeN1}>
               {node.frontmatter.date}
             </Text>
             <BlogLink to={node.fields.slug} isMobile={isMobile}>

@@ -162,7 +162,7 @@ let Post = ({ data }) => {
             <NavigateText to="/blog">Back</NavigateText>
           </Spacer>
           <H1>{post.frontmatter.title}</H1>
-          <Text weight={300} color={colors.subtle} size={font.fontSizeN1}>
+          <Text weight={400} color={colors.subtle} size={font.fontSizeN1}>
             {post.frontmatter.date}
           </Text>
         </Stack>
