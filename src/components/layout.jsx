@@ -1,11 +1,12 @@
 import React from "react";
-import styled, { keyframes } from "styled-components";
+import styled from "@emotion/styled";
+import { keyframes } from "@emotion/react";
 import { useSpring, animated } from "react-spring";
+import { rgb } from "../theme/color";
 
-import SiteMetadata from "./site-metadata";
-import { colors } from "../theme";
-import constants from "../constants";
-import font from "../fonts";
+import { colors } from "../theme/theme";
+import constants from "../theme/constants";
+import font from "../theme/fonts";
 import Main from "./../components/main";
 import { NavigateButton } from "./../components/link";
 import { ResponsiveSpacer } from "./../components/spacer";
@@ -13,7 +14,7 @@ import { Row, Stack } from "./../components/taco";
 
 const Root = styled.div`
   min-height: 100vh;
-  background-color: ${colors.contrast};
+  background-color: ${rgb(colors.contrast)};
   padding-bottom: 3rem;
 `;
 
@@ -24,10 +25,10 @@ const MenuItem = styled(NavigateButton)`
   text-transform: uppercase;
   display: inline-flex;
   letter-spacing: 1.5px;
-  color: ${colors.body};
+  color: ${rgb(colors.body)};
 
   &:hover {
-    color: ${colors.primary};
+    color: ${rgb(colors.primary)};
   }
 `;
 
@@ -38,11 +39,11 @@ const Logo = styled.p`
   margin: 0;
   text-decoration: none;
 
-  color: ${colors.primary};
+  color: ${rgb(colors.primary)};
   transition: color 0.15s ease;
 
   &:hover {
-    color: ${colors.primary};
+    color: ${rgb(colors.primary)};
   }
 `;
 
@@ -73,7 +74,7 @@ const MobileMenuOverlay = styled.div`
   bottom: 0;
   left: 0;
   right: 0;
-  background-color: ${colors.overlay};
+  background-color: ${rgb(colors.overlay)};
   filter: blur(4px);
   opacity: 0.9;
   display: flex;
@@ -92,7 +93,7 @@ const MobileMenuPopup = styled(animated.div)`
   padding: 0;
   margin: 10%;
   margin-top: 20%;
-  background-color: ${colors.contrast};
+  background-color: ${rgb(colors.contrast)};
   border-radius: 12px;
   transition: ease 300ms;
   padding: 1rem 0;
@@ -108,7 +109,7 @@ const Icon = styled.span`
 const Bar = styled.span`
   width: 100%;
   height: 3px;
-  background-color: ${colors.primary};
+  background-color: ${rgb(colors.primary)};
   display: block;
 `;
 
@@ -141,7 +142,7 @@ const MobileMenuItem = styled(MenuItem)`
   align-items: center;
 `;
 
-export default ({ children, pathname }) => {
+export default function Layout({ children, pathname }) {
   const [isOpen, setIsOpen] = React.useState(false);
   let open = () => setIsOpen(true);
   let close = () => setIsOpen(false);
@@ -154,19 +155,17 @@ export default ({ children, pathname }) => {
 
   return (
     <Root>
-      <SiteMetadata pathname={pathname} />
       <Main>
         <Header>
           <Row distribute="between">
-            <NavigateButton to="/">
+            <NavigateButton href="/">
               <Logo>@davesnx</Logo>
             </NavigateButton>
             <DesktopMenu key="desktop">
               <Row gap={4}>
-                <MenuItem to="/blog">blog</MenuItem>
-                <MenuItem to="/talks">talks</MenuItem>
-                <MenuItem to="/about">about</MenuItem>
-                <MenuItem to="/experiments">experiments</MenuItem>
+                <MenuItem href="/blog">blog</MenuItem>
+                <MenuItem href="/talks">talks</MenuItem>
+                <MenuItem href="/about">about</MenuItem>
               </Row>
             </DesktopMenu>
             <MobileMenu key="mobile">
@@ -175,25 +174,22 @@ export default ({ children, pathname }) => {
                   <MobileMenuOverlay onClick={close} />
                   <MobileMenuPopup
                     style={{
-                      transform: scale.interpolate(s => `scale(${s})`),
-                      opacity: opacity.interpolate(o => o),
+                      transform: scale.interpolate((s) => `scale(${s})`),
+                      opacity: opacity.interpolate((o) => o),
                     }}
                   >
                     <Stack gap={0}>
-                      <MobileMenuItem onClick={close} to="/">
+                      <MobileMenuItem onClick={close} href="/">
                         home
                       </MobileMenuItem>
-                      <MobileMenuItem onClick={close} to="/blog">
+                      <MobileMenuItem onClick={close} href="/blog">
                         blog
                       </MobileMenuItem>
-                      <MobileMenuItem onClick={close} to="/talks">
+                      <MobileMenuItem onClick={close} href="/talks">
                         talks
                       </MobileMenuItem>
-                      <MobileMenuItem onClick={close} to="/about">
+                      <MobileMenuItem onClick={close} href="/about">
                         about
-                      </MobileMenuItem>
-                      <MobileMenuItem onClick={close} to="/experiments">
-                        experiments
                       </MobileMenuItem>
                     </Stack>
                   </MobileMenuPopup>
@@ -211,4 +207,4 @@ export default ({ children, pathname }) => {
       </ResponsiveSpacer>
     </Root>
   );
-};
+}

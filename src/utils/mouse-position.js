@@ -6,7 +6,7 @@ const useWindowMousePosition = () => {
     y: null,
   });
 
-  const handleMouseMove = e => {
+  const handleMouseMove = (e) => {
     setWindowMousePosition({
       x: e.pageX,
       y: e.pageY,

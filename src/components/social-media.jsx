@@ -8,7 +8,7 @@ import Strava from "./../svgs/strava";
 import Telegram from "./../svgs/telegram";
 import { colors } from "./../theme";
 
-export default () => (
+const SocialMedia = () => (
   <Row gap={2} distribute="left">
     <LinkIcon
       svg={Twitter}
@@ -36,3 +36,5 @@ export default () => (
     />
   </Row>
 );
+
+export default SocialMedia;
