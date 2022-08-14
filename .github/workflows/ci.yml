@@ -26,13 +26,16 @@ jobs:
       - name: Build
         run: npm run build --no-lint
 
+      - name: Export
+        run: npm run export
+
       - name: Deploy to prod
         if: ${{ github.event_name != 'pull_request' }}
         env:
           SITE_ID: ${{ secrets.SITE_ID }}
           AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
         run:
-          npx netlify deploy --site $SITE_ID --auth $AUTH_TOKEN --prod --dir=public
+          npx netlify deploy --site $SITE_ID --auth $AUTH_TOKEN --prod --dir=out
 
       - name: Deploy preview
         if: ${{ github.event_name == 'pull_request' }}
@@ -40,4 +43,4 @@ jobs:
           SITE_ID: ${{ secrets.SITE_ID }}
           AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
         run:
-          npx netlify deploy --site $SITE_ID --auth $AUTH_TOKEN --dir=public
+          npx netlify deploy --site $SITE_ID --auth $AUTH_TOKEN --dir=out
