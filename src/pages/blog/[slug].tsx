@@ -7,8 +7,8 @@ import { parseISO, format } from "date-fns";
 import { getMDXComponent } from "mdx-bundler/client";
 import { GetStaticProps, InferGetStaticPropsType } from "next";
 
-import { Frontmatter } from "@lib/frontmatter";
-import { getAllFrontmatter, getMdxBySlug } from "@lib/mdx";
+import { Frontmatter } from "../../lib/frontmatter";
+import { getAllFrontmatter, getMdxBySlug } from "../../lib/mdx";
 
 import { H1, H2, H3, H4, H5, H6 } from "../../components/heading";
 import Icon from "../../components/icon";
@@ -144,32 +144,24 @@ const TwitterShare = ({ title, href }) => {
   );
 };
 
-export const getStaticPaths = () => {
+/* export const getStaticPaths = () => {
   let frontmatters = getAllFrontmatter();
 
+  console.log(frontmatters.map(({ slug }: Frontmatter) => ({ params: { slug } })))
   return {
-    paths: frontmatters.map(({ slug }: Frontmatter) => ({ params: { slug } })),
+    paths: frontmatters.map(({ slug }: Frontmatter) => ({ params: { slug: "blog/" + slug } })),
     fallback: false,
   };
-};
+}; */
 
 export const getStaticProps: GetStaticProps = async (context) => {
   if (context.params?.slug && !Array.isArray(context.params?.slug)) {
     let { frontmatter, code } = await getMdxBySlug(context.params.slug);
 
-    let relatedPosts = frontmatter.relatedIds
-      ? await Promise.all(
-          frontmatter.relatedIds.map(async (id) => {
-            return (await getMdxBySlug(id)).frontmatter;
-          })
-        )
-      : null;
-
     return {
       props: {
         frontmatter,
         code,
-        relatedPosts,
       },
     };
   }
@@ -178,7 +170,6 @@ export const getStaticProps: GetStaticProps = async (context) => {
     props: {
       frontmatter: null,
       code: null,
-      relatedPosts: [],
     },
   };
 };

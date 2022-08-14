@@ -3,8 +3,8 @@ import React from "react";
 import { parseISO, format } from "date-fns";
 import { GetStaticProps } from "next";
 
-import { Frontmatter } from "@lib/frontmatter";
-import { getAllFrontmatter } from "@lib/mdx";
+import { Frontmatter } from "../../lib/frontmatter";
+import { getAllFrontmatter } from "../../lib/mdx";
 import MetaData from "src/components/site-metadata";
 
 import { H1, H3 } from "../../components/heading";

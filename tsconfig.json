@@ -6,11 +6,6 @@
       "esnext"
     ],
     "baseUrl": ".",
-    "paths": {
-      "@lib/*": [
-        "src/lib/*"
-      ],
-    },
     "module": "esnext",
     "moduleResolution": "node",
     "resolveJsonModule": true,
