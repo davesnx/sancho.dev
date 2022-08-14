@@ -3,5 +3,5 @@ pre-push:
   commands:
     linter:
       run: npm run lint
-    ts:
-      run: npm run ts
+    build:
+      run: npm run build
