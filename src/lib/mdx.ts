@@ -34,7 +34,6 @@ export const getAllFrontmatter = () => {
   });
 };
 const codeHighlightOptions = {
-  // Use one of Shiki's packaged themes
   theme: {
     dark: JSON.parse(
       fs.readFileSync(
