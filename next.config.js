@@ -1,27 +1,19 @@
-/* eslint-disable */
-const withBundleAnalyzer = require("@next/bundle-analyzer")({
-  enabled: process.env.ANALYZE === "true",
-});
-
 const withPlugins = require("next-compose-plugins");
 const withOptimizedImages = require("next-optimized-images");
 
 /**
  * @type {import('next').NextConfig}
  */
-const nextConfig = withPlugins(
-  [withOptimizedImages],
-  {
-    typescript: {
-      // Dangerously allow production builds to successfully complete even if
-      // your project has type errors.
-      ignoreBuildErrors: true,
-    },
-    compiler: {
-      emotion: true,
-    },
-    reactStrictMode: false,
-  }
-);
 
-module.exports = nextConfig
+const nextConfig = {
+  typescript: {
+  // Dangerously allow production builds to successfully complete even if your project has type errors.
+    ignoreBuildErrors: true,
+  },
+  compiler: {
+    emotion: true,
+  },
+  reactStrictMode: false,
+};
+
+module.exports = nextConfig;
