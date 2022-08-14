@@ -1,0 +1,7 @@
+pre-push:
+  parallel: true
+  commands:
+    linter:
+      run: npm run lint
+    ts:
+      run: npm run ts

@@ -8,7 +8,7 @@ function useDeviceOrientation() {
     gamma: null,
   });
 
-  const handle = event => {
+  const handle = (event) => {
     setDeviceOrientation({
       absolute: event.absolute,
       alpha: event.alpha,

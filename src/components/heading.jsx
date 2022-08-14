@@ -1,14 +1,14 @@
-import styled, { css } from "styled-components";
+import { css } from "@emotion/react";
+import styled from "@emotion/styled";
 
-import fonts from "../fonts";
-import { colors } from "../theme";
+import fonts from "../theme/fonts";
+import { colors } from "../theme/theme";
+import { rgb } from "../theme/color";
 
 const Heading = css`
   margin: 0;
   padding: 0;
-
-  display: ${props => (props.inline ? "inline-block" : "block")};
-  font-family: '${fonts.sans}';
+  font-family: "${fonts.sans}";
   font-weight: 500;
 `;
 
@@ -17,7 +17,7 @@ export const H1 = styled.h1`
 
   font-size: ${fonts.fontSize5};
   letter-spacing: 0.8px;
-  color: ${colors.body};
+  color: ${rgb(colors.body)};
 `;
 
 export const H2 = styled.h2`
@@ -25,7 +25,7 @@ export const H2 = styled.h2`
 
   font-size: ${fonts.fontSize4};
   letter-spacing: 0.7px;
-  color: ${colors.body};
+  color: ${rgb(colors.body)};
 `;
 
 export const H3 = styled.h3`
@@ -33,7 +33,7 @@ export const H3 = styled.h3`
 
   font-size: ${fonts.fontSize3};
   letter-spacing: 0.6px;
-  color: ${colors.body};
+  color: ${rgb(colors.body)};
 `;
 
 export const H4 = styled.h4`
@@ -41,7 +41,7 @@ export const H4 = styled.h4`
 
   font-size: ${fonts.fontSize2};
   letter-spacing: 0.5px;
-  color: ${colors.body};
+  color: ${rgb(colors.body)};
 `;
 
 export const H5 = styled.h5`
@@ -49,7 +49,7 @@ export const H5 = styled.h5`
 
   font-size: ${fonts.fontSize1};
   letter-spacing: 0.5px;
-  color: ${colors.body};
+  color: ${rgb(colors.body)};
 `;
 
 export const H6 = styled.h6`
@@ -57,5 +57,5 @@ export const H6 = styled.h6`
 
   font-size: ${fonts.fontSize0};
   letter-spacing: 0.4px;
-  color: ${colors.body};
+  color: ${rgb(colors.body)};
 `;

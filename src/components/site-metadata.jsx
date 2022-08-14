@@ -1,101 +1,109 @@
 import React from "react";
-import { Helmet } from "react-helmet";
-import { graphql, useStaticQuery } from "gatsby";
+import Head from "next/head";
 
-import { colors } from "../theme";
+const config = {
+  siteUrl: `https://sancho.dev`,
+  title: `David Sancho`,
+  twitter: `@davesnx`,
+  description:
+    "Software Engineer. Making cute software with ReasonML and OCaml" +
+    "Passionate in design, functional programming, scalability, people and business.",
+};
 
-const SiteMetadata = () => {
-  const {
-    site: {
-      siteMetadata: { siteUrl, title, twitter },
+/* const postImage = `https://api.metaimg.net/v1/render?design=profile&avatar=https%3A%2F%2Fpbs.twimg.com%2Fprofile_images%2F1508834887079505934%2FDpjXkZ54_400x400.jpg&name=David+Sancho&handler=%40davesnx&description=${config.description}&backgroundColor=FFFFFF&textColor=000000`; */
+
+const MetaData = ({
+  title: subtitle,
+  description = config.description,
+  url = config.siteUrl,
+  schemaType = "website",
+  createdAt = new Date().toISOString(),
+}) => {
+  const title = subtitle + " | sancho.dev";
+  const image = `https://api.metaimg.net/v1/render?design=simple&align=left&image=https%3A%2F%2Fimages.unsplash.com%2Fphoto-1576618148400-f54bed99fcfd&title=${title}&description=${description}&textColor=000000&backgroundColor=FFFFFF"`;
+  const metaTags = [
+    { name: "twitter:card", content: "summary_large_image" },
+    { name: "twitter:site", content: config.twitter },
+    { name: "twitter:title", content: title },
+    { name: "twitter:description", content: description },
+    { name: "twitter:creator", content: config.twitter },
+    { name: "twitter:image:src", content: image },
+    { name: "twitter:card", content: "summary_large_image" },
+    { name: "og:title", content: title },
+    { name: "og:type", content: schemaType },
+    { name: "og:url", content: url },
+    { name: "og:image", content: image },
+    { name: "og:description", content: description },
+    { name: "og:site_name", content: config.title },
+    { name: "og:published_time", content: createdAt },
+  ];
+
+  const favicons = [
+    {
+      rel: "apple-touch-icon",
+      href: "/favicon/apple-touch-icon.png",
+      sizes: "180x180",
     },
-  } = useStaticQuery(graphql`
-    query SiteMetadata {
-      site {
-        siteMetadata {
-          siteUrl
-          title
-          twitter
-        }
-      }
-    }
-  `);
+    {
+      rel: "icon",
+      type: "image/png",
+      href: "/favicon/favicon-512x512.png",
+      sizes: "512x512",
+    },
+    {
+      rel: "icon",
+      type: "image/png",
+      href: "/favicon/favicon-192x192.png",
+      sizes: "192x192",
+    },
+    {
+      rel: "icon",
+      type: "image/png",
+      href: "/favicon/favicon-160x160.png",
+      sizes: "160x160",
+    },
+    {
+      rel: "icon",
+      type: "image/png",
+      href: "/favicon/favicon-32x32.png",
+      sizes: "32x32",
+    },
+    {
+      rel: "icon",
+      type: "image/png",
+      href: "/favicon/favicon-16x16.png",
+      sizes: "16x16",
+    },
+  ];
 
   return (
-    <Helmet defaultTitle={title} titleTemplate={`%s | ${title}`}>
-      <html lang="en" />
-      <meta charSet="utf-8" />
-
-      <meta charset="utf-8" />
-      <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    <Head>
+      <title>{title}</title>
+      <meta name="description" content={description} />
+      <meta itemProp="name" content={title} />
+      <meta itemProp="description" content={description} />
+      <meta itemProp="image" content={image} />
+      <link rel="manifest" href="/favicon/site.webmanifest" />
+      {favicons.map((favicon) => (
+        <link key={favicon.href} {...favicon} />
+      ))}
+      {metaTags.map(({ name, content }) => (
+        <meta key={name} name={name} content={content} />
+      ))}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "http://schema.org",
+            "@type": schemaType,
+            name: title,
+            about: description,
+            url: url,
+          }),
+        }}
       />
-      <meta name="theme-color" content={colors.body} />
-      <meta
-        name="ahrefs-site-verification"
-        content="bd6c5b649f70973df5dea834d5ed90214fd6acec11974bfdd1d44b2e24a03009"
-      />
-
-      <link rel="manifest" href={`${siteUrl}/manifest.json`} />
-      <link rel="shortcut icon" href={`${siteUrl}/favicon/favicon.ico`} />
-      <link
-        rel="apple-touch-icon"
-        sizes="57x57"
-        href={`${siteUrl}/favicon/apple-touch-icon`}
-      />
-      <link
-        rel="icon"
-        type="image/png"
-        href={`${siteUrl}/favicon/favicon-512x512.png`}
-        sizes="512x512"
-      />
-      <link
-        rel="icon"
-        type="image/png"
-        href={`${siteUrl}/favicon/favicon-192x192.png`}
-        sizes="192x192"
-      />
-      <link
-        rel="icon"
-        type="image/png"
-        href={`${siteUrl}/favicon/favicon-160x160.png`}
-        sizes="160x160"
-      />
-      <link
-        rel="icon"
-        type="image/png"
-        href={`${siteUrl}/favicon/favicon-16x16.png`}
-        sizes="16x16"
-      />
-      <link
-        rel="icon"
-        type="image/png"
-        href={`${siteUrl}/favicon/favicon-32x32.png`}
-        sizes="32x32"
-      />
-      <meta
-        name="msapplication-TileImage"
-        content={`${siteUrl}/favicon/mstile-144x144.png`}
-      />
-      <meta name="msapplication-TileColor" content={colors.body} />
-
-      {/* OpenGraph tags */}
-      <meta property="og:locale" content="en" />
-      <meta property="og:site_name" content={title} />
-      <meta
-        property="og:image"
-        content={`${siteUrl}/android-chrome-512x512.png`}
-      />
-      <meta property="og:image:width" content="512" />
-      <meta property="og:image:height" content="512" />
-
-      {/* Twitter Card tags */}
-      <meta name="twitter:site" content={title} />
-      <meta name="twitter:creator" content={twitter} />
-      <meta name="twitter:card" content="summary" />
-    </Helmet>
+    </Head>
   );
 };
 
-export default SiteMetadata;
+export default MetaData;

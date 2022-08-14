@@ -1,0 +1,44 @@
+/* Content */
+
+@font-face {
+  font-family: "Silka";
+  src: url("/fonts/silka-regular-webfont.woff2") format("woff2");
+  font-weight: 200;
+  font-style: normal;
+  font-display: block;
+}
+
+@font-face {
+  font-family: "Silka";
+  src: url("/fonts/silka-semibold-webfont.woff2") format("woff2");
+  font-weight: 500;
+  font-style: normal;
+  font-display: block;
+}
+
+/* Coding */
+
+@font-face {
+  font-family: "SF Mono";
+  src: url("/fonts/SFMono-Medium.otf") format("otf");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "SF Mono";
+  src: url("/fonts/SFMono-Bold.otf") format("otf");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Experiment */
+
+@font-face {
+  font-family: "Inter";
+  src: url("/fonts/Inter.otf");
+  font-style: normal;
+  font-display: swap;
+}
