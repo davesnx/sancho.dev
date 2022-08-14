@@ -44,7 +44,7 @@
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",
-    "scripts/sitemap.js",
+    "src/pages/sitemap.js",
     "src/components/icon.jsx"
   ]
 }

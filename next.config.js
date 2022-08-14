@@ -1,6 +1,3 @@
-const withPlugins = require("next-compose-plugins");
-const withOptimizedImages = require("next-optimized-images");
-
 /**
  * @type {import('next').NextConfig}
  */
@@ -13,7 +10,8 @@ const nextConfig = {
   compiler: {
     emotion: true,
   },
-  reactStrictMode: false,
+  reactStrictMode: true,
+  staticPageGenerationTimeout: 15000
 };
 
 module.exports = nextConfig;

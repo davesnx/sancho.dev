@@ -14,7 +14,8 @@ import type { Frontmatter } from "./frontmatter";
 import rehypeHighlightCode from "./rehype-highlight-code";
 import rehypeMetaAttribute from "./rehype-meta-attribute";
 
-const ROOT_PATH = process.cwd();
+const ROOT_PATH = __dirname;
+const cwd = process.cwd();
 export const DATA_PATH = path.join(ROOT_PATH, "src", "content", "posts");
 
 export const getAllFrontmatter = () => {
@@ -37,13 +38,13 @@ const codeHighlightOptions = {
   theme: {
     dark: JSON.parse(
       fs.readFileSync(
-        require.resolve("./code-highlight/themes/ayu-mirage.json"),
+        path.join(cwd, "src", "lib", "./code-highlight/themes/ayu-mirage.json"),
         "utf-8"
       )
     ),
     light: JSON.parse(
       fs.readFileSync(
-        require.resolve("./code-highlight/themes/ayu-light.json"),
+        path.join(cwd, "src", "lib", "./code-highlight/themes/ayu-light.json"),
         "utf-8"
       )
     ),
