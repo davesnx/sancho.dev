@@ -89,4 +89,4 @@ build/
 # Local Netlify folder
 .netlify
 
-public/*
+out
