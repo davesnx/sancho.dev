@@ -22,7 +22,6 @@ export const getStaticProps: GetStaticProps = async () => {
       ? Number(new Date(b.publishedAt)) - Number(new Date(a.publishedAt))
       : 0
   );
-  console.log(frontmatters)
   return { props: { frontmatters: sortedFrontmatters } };
 };
 

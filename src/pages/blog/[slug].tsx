@@ -147,7 +147,6 @@ const TwitterShare = ({ title, href }) => {
 export const getStaticPaths: GetStaticPaths = () => {
   let frontmatters = getAllFrontmatter();
   const paths = frontmatters.map(({ slug }: Frontmatter) => ({ params: { slug } }));
-  console.log(paths);
 
   return {
     paths,
