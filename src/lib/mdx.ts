@@ -14,9 +14,8 @@ import type { Frontmatter } from "./frontmatter";
 import rehypeHighlightCode from "./rehype-highlight-code";
 import rehypeMetaAttribute from "./rehype-meta-attribute";
 
-const ROOT_PATH = __dirname;
 const cwd = process.cwd();
-export const DATA_PATH = path.join(ROOT_PATH, "src", "content", "posts");
+const DATA_PATH = path.join(cwd, "src", "content", "posts");
 
 export const getAllFrontmatter = () => {
   let paths = glob.sync(`${path.join(DATA_PATH)}/*.mdx`);
