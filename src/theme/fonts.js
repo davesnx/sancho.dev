@@ -16,7 +16,7 @@ const fontSize_6 = `(${fontSize_5}) * ${increment}`;
 const globalFontSize = calc(fontSize_0);
 const globalLineHeight = `calc(${lineHeightFixed} + ${lineHeightRelative})`;
 
-export default {
+const fonts = {
   fontSizeN1: fontSize_N1,
   fontSize0: calc(fontSize_0),
   fontSize1: calc(fontSize_1),
@@ -30,3 +30,5 @@ export default {
   mono: `SF Mono, Fira Code, monospace`,
   sans: "Silka",
 };
+
+export default fonts

@@ -83,7 +83,7 @@ const MetaData = ({
       <meta itemProp="name" content={title} />
       <meta itemProp="description" content={description} />
       <meta itemProp="image" content={image} />
-      <link rel="manifest" href="/favicon/site.webmanifest" />
+      {/* <link rel="manifest" href="/favicon/site.webmanifest" /> */}
       {favicons.map((favicon) => (
         <link key={favicon.href} {...favicon} />
       ))}

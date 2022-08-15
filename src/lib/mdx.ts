@@ -10,18 +10,16 @@ import rehypePrettyCode from "rehype-pretty-code";
 import rehypeSlug from "rehype-slug";
 import { getHighlighter, BUNDLED_LANGUAGES } from "shiki";
 
-import type { Frontmatter } from "@lib/frontmatter";
-import rehypeHighlightCode from "@lib/rehype-highlight-code";
-import rehypeMetaAttribute from "@lib/rehype-meta-attribute";
+import type { Frontmatter } from "./frontmatter";
+import rehypeHighlightCode from "./rehype-highlight-code";
+import rehypeMetaAttribute from "./rehype-meta-attribute";
 
-const ROOT_PATH = process.cwd();
+const ROOT_PATH = __dirname;
+const cwd = process.cwd();
 export const DATA_PATH = path.join(ROOT_PATH, "src", "content", "posts");
 
-// the front matter and content of all mdx files based on `docsPaths`
 export const getAllFrontmatter = () => {
-  let PATH = path.join(DATA_PATH);
-  let paths = glob.sync(`${PATH}/**/*.mdx`);
-
+  let paths = glob.sync(`${path.join(DATA_PATH)}/*.mdx`);
   return paths.map((filePath: string) => {
     let source = fs.readFileSync(path.join(filePath), "utf8");
     let { data, content } = matter(source);
@@ -36,17 +34,16 @@ export const getAllFrontmatter = () => {
   });
 };
 const codeHighlightOptions = {
-  // Use one of Shiki's packaged themes
   theme: {
     dark: JSON.parse(
       fs.readFileSync(
-        require.resolve("./code-highlight/themes/ayu-mirage.json"),
+        path.join(cwd, "src", "lib", "./code-highlight/themes/ayu-mirage.json"),
         "utf-8"
       )
     ),
     light: JSON.parse(
       fs.readFileSync(
-        require.resolve("./code-highlight/themes/ayu-light.json"),
+        path.join(cwd, "src", "lib", "./code-highlight/themes/ayu-light.json"),
         "utf-8"
       )
     ),

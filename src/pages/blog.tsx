@@ -1,19 +1,19 @@
 import React from "react";
 
 import { parseISO, format } from "date-fns";
-import { GetStaticProps } from "next";
+import { GetStaticProps, NextPage } from "next";
 
-import { Frontmatter } from "@lib/frontmatter";
-import { getAllFrontmatter } from "@lib/mdx";
-import MetaData from "src/components/site-metadata";
+import { Frontmatter } from "../lib/frontmatter";
+import { getAllFrontmatter } from "../lib/mdx";
+import MetaData from "../components/site-metadata";
 
-import { H1, H3 } from "../../components/heading";
-import { NavigateButton } from "../../components/link";
-import Page from "../../components/page";
-import Spacer from "../../components/spacer";
-import Text from "../../components/text";
-import font from "../../theme/fonts";
-import { colors } from "../../theme/theme";
+import { H1, H3 } from "../components/heading";
+import { NavigateButton } from "../components/link";
+import Page from "../components/page";
+import Spacer from "../components/spacer";
+import Text from "../components/text";
+import font from "../theme/fonts";
+import { colors } from "../theme/theme";
 
 export const getStaticProps: GetStaticProps = async () => {
   let frontmatters = getAllFrontmatter();
@@ -22,10 +22,11 @@ export const getStaticProps: GetStaticProps = async () => {
       ? Number(new Date(b.publishedAt)) - Number(new Date(a.publishedAt))
       : 0
   );
+  console.log(frontmatters)
   return { props: { frontmatters: sortedFrontmatters } };
 };
 
-let Blog = ({ frontmatters }: { frontmatters: Array<Frontmatter> }) => {
+let Blog = ({ frontmatters }: { frontmatters: Array<Frontmatter> }): NextPage => {
   return (
     <>
       <MetaData title="Thoughts" />

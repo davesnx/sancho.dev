@@ -37,7 +37,6 @@ class MyDocument extends Document {
             type="font/otf"
             crossOrigin="anonymous"
           />
-          {/* <link rel="manifest" href="/fonts/favicons/site.webmanifest" /> */}
         </Head>
         <body>
           <Main />
