@@ -19,7 +19,7 @@ let Home = () => {
       />
       <Page title={<H1>David Sancho</H1>}>
         <Text size={fonts.fontSize1} align="left">
-          <span>{`I'm a Barcelona based software engineer. Trying to make cute software
+          <span>{`I'm a Software Engineer based in Barcelona, these days, trying to make cute software
         with `}</span>
           <TextLink href="http://reasonml.github.io/">Reason</TextLink>
           <span>{` and `}</span>
@@ -30,7 +30,7 @@ let Home = () => {
         </Text>
         <Spacer top={2} />
         <Text size={fonts.fontSize1}>
-          {`I currently work at `}
+          {`Currently working at `}
           <TextLink href="https://ahrefs.com/">Ahrefs</TextLink>
           {`, building `}
           <TextLink href="https://styled-ppx.vercel.app">styled-ppx</TextLink>.
@@ -39,7 +39,7 @@ let Home = () => {
         <Text size={fonts.fontSize1}>
           {`In my spare time, I train as an amateur triathlete focusing on Olympic
         and Half Ironman distances, maintain a bunch of Open Source projects,
-        and write my thoughts on my `}
+        and write some thoughts on my `}
           <NavigateText underline href="/blog">
             blog{". "}
           </NavigateText>
