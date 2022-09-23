@@ -31,4 +31,4 @@ const fonts = {
   sans: "Silka",
 };
 
-export default fonts
+export default fonts;
