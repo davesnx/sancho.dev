@@ -23,6 +23,7 @@ import Text from "../../components/text";
 import { rgb } from "../../theme/color";
 import font from "../../theme/fonts";
 import { colors } from "../../theme/theme";
+import breakpoints from "../../theme/constants";
 
 const PaddedH1 = styled(H1)`
   margin-top: 5rem;
@@ -87,12 +88,30 @@ const Hr = styled.hr`
   ${Line["horitzontal"]}
 `;
 
-const Image = styled.img`
+const Img = styled.img`
   width: 100%;
   border-radius: 4px;
-  margin-top: 1.5rem;
-  margin-bottom: 1.5rem;
+  margin: 0;
 `;
+
+const Oversized = styled.span`
+  display: block;
+  margin: 3rem -40px;
+
+  @media screen and (max-width: ${breakpoints.mobile.width}px) {
+    margin: 3rem 0;
+  }
+`
+
+const Pre = (props: any) => <Oversized><pre {...props} /></Oversized>;
+
+const Image = (props: any) => {
+  return (
+    <Oversized>
+      <Img {...props} />
+    </Oversized>
+  );
+}
 
 const Blockquote = styled.blockquote`
   margin: 32px;
@@ -216,6 +235,7 @@ let Post = ({
             hr: Hr,
             blockquote: Blockquote,
             img: Image,
+            pre: Pre,
           }}
         />
 

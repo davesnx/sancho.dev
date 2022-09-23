@@ -2,6 +2,7 @@ import fonts from "./fonts";
 import { make, lightRoot, darkRoot, colors } from "./theme";
 import { css } from "@emotion/react";
 import { rgb } from "./color";
+import breakpoints from "./constants";
 
 const GlobalStyles = css`
   :root {
@@ -63,9 +64,9 @@ const GlobalStyles = css`
   pre {
     overflow: auto;
     position: relative;
-    padding: 1.25rem 1rem;
-    margin: 1rem 0;
+    padding: 2.25rem;
     border-radius: 3px;
+    margin: 0;
   }
 
   pre > code {
