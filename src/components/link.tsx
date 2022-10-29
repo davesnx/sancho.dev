@@ -38,28 +38,27 @@ const Anchor = (props: AnchorProps) => css`
   }
 `;
 
-const StyledA = styled.span`
+const StyledA = styled.a`
   ${(props: AnchorProps) => Anchor(props)}
 `;
 
 export const TextLink = ({ href, ...rest }) => {
   let color = rest.color || colors.body;
-  let [underlineColor, underlineHoverColor] = [color, color];
-  /* const [underlineColor, underlineHoverColor] = useUnderlineColors(color); */
 
   return (
-    <NextLink href={href}>
+    <NextLink href={href} shallow legacyBehavior>
       <StyledA
         {...rest}
+        href={href}
         color={color}
-        underlineColor={underlineColor}
-        underlineHoverColor={underlineHoverColor}
+        underlineColor={color}
+        underlineHoverColor={color}
       />
     </NextLink>
   );
 };
 
-const UnstyledA = styled.span`
+const UnstyledA = styled.a`
   color: currentColor;
   text-decoration: none;
   cursor: pointer;
@@ -67,8 +66,8 @@ const UnstyledA = styled.span`
 
 export const ButtonLink = ({ href, ...rest }) => {
   return (
-    <NextLink href={href}>
-      <UnstyledA {...rest} />
+    <NextLink href={href} shallow legacyBehavior>
+      <UnstyledA href={href} {...rest} />
     </NextLink>
   );
 };

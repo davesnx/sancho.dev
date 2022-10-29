@@ -144,7 +144,7 @@ const Inline = styled.div`
 `;
 
 const TwitterShare = ({ title, href }) => {
-  let urlToShare = `http://www.twitter.com/share?url=${href}&text=${title}: `;
+  let urlToShare = `http://www.twitter.com/share?url=${href}&text=${encodeURIComponent(title)}: `;
   return (
     <span>
       <Spacer right={0.5} inline={true}>
@@ -228,7 +228,9 @@ let Post = ({
             h5: PaddedH5,
             h6: PaddedH6,
             p: Content,
-            a: ({ href, ...rest }) => <TextLink href={href} {...rest} />,
+            a: ({ href, ...rest }) => {
+              return <TextLink href={href} {...rest} />
+            },
             li: ListItem,
             ol: OrderList,
             ul: UnorderList,
