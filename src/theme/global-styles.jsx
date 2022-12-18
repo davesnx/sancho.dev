@@ -45,6 +45,7 @@ const GlobalStyles = css`
     box-sizing: border-box;
   }
 
+  pre,
   code {
     font-family: ${fonts.mono};
     font-size: 16px;
@@ -60,21 +61,13 @@ const GlobalStyles = css`
   }
 
   pre {
-    background: ${rgb(colors.codeBackground)};
-  }
-
-  code > pre {
-    margin: 0;
     display: grid;
-    background: ${rgb(colors.contrastCodeBackground)};
-  }
-
-  pre {
     overflow: auto;
     position: relative;
     padding: 2.25rem;
     border-radius: 3px;
     margin: 0;
+    background: ${rgb(colors.codeBackground)};
   }
 
   :not(pre) > code {
@@ -83,6 +76,7 @@ const GlobalStyles = css`
     padding: 3px 6px;
     margin: 0px 2px;
     color: ${rgb(colors.body)};
+    background: ${rgb(colors.contrastCodeBackground)};
   }
 
   html[data-theme="dark"] pre[data-theme="light"],
