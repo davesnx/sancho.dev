@@ -156,7 +156,7 @@ const TwitterShare = ({ title, href }) => {
             share it on Twitter
           </Text>
           <Spacer left={0.5} />
-          <Icon svg={Twitter} size={20} color={colors.primary} />
+          <Icon svg={Twitter} size={20} color={`rgb(${colors.primary})`} />
         </Inline>
       </TextLink>
     </span>
