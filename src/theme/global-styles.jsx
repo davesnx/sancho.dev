@@ -45,8 +45,7 @@ const GlobalStyles = css`
     box-sizing: border-box;
   }
 
-  code,
-  pre {
+  code {
     font-family: ${fonts.mono};
     font-size: 16px;
     font-weight: 500;
@@ -58,7 +57,16 @@ const GlobalStyles = css`
     word-wrap: normal;
     tab-size: 4;
     hyphens: none;
+  }
+
+  pre {
     background: ${rgb(colors.codeBackground)};
+  }
+
+  code > pre {
+    margin: 0;
+    display: grid;
+    background: ${rgb(colors.contrastCodeBackground)};
   }
 
   pre {
@@ -67,11 +75,6 @@ const GlobalStyles = css`
     padding: 2.25rem;
     border-radius: 3px;
     margin: 0;
-  }
-
-  pre > code {
-    margin: 0;
-    display: grid;
   }
 
   :not(pre) > code {
