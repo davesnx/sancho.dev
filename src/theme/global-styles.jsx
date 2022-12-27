@@ -88,6 +88,10 @@ const GlobalStyles = css`
   html[data-theme="light"] code[data-theme="dark"] {
     display: none;
   }
+
+  p {
+    margin: 0;
+  }
 `;
 
 export default GlobalStyles;

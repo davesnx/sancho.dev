@@ -55,8 +55,13 @@ const PaddedH6 = styled(H6)`
   margin-bottom: 1rem;
 `;
 
-const Content = styled(Text)`
-  margin-bottom: 24px;
+const Content = styled.p`
+  font-family: ${font.sans};
+  line-height: 1.7;
+  color: ${rgb(colors.body)};
+  font-size: ${font.fontSize1};
+  font-weight: 200;
+  margin-bottom: 1rem;
   display: block;
 
   a {

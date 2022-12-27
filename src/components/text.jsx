@@ -12,7 +12,6 @@ export const styles = (props) => css`
   font-family: ${font.sans};
   line-height: 1.7;
   color: ${rgb(props.color)};
-  margin: 0;
   display: inline-block;
 `;
 
