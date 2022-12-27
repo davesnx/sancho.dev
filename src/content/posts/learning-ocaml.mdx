@@ -1,0 +1,309 @@
+---
+title: "Learning OCaml in 2023"
+publishedAt: "2022-12-31"
+tags:
+  - "OCaml"
+---
+
+If you’re new to OCaml you may find the ecosystem confusing. There are a few reasons for this:
+
+- OCaml has been born in academia and historically been focused in type-theory and functional programming
+- The community has a fame of being small
+- It was created long time ago and it carries some of the old-fashion methods from the past
+- It's a functional programming language, which it might be different paradigm than the one you're used to
+- Really well suited to create a programming language but got into more general purpose programming
+
+## Why should you listen to me?
+
+I’m not a teacher, I don’t have 10+ years of experience in OCaml, I don’t have a PhD and more terribly I didn’t finish my Computer Science degree.
+<br />
+<br />
+But often it’s very useful to learn from someone who is one step above you, and not someone how’s 10 steps above you.
+<br />
+<br />
+I worked professionally in OCaml and ReasonML (a dialect of OCaml) for almost 3 years (and counting) and have been creating and maintaining some useful projects meanwhile. Some of them are:
+
+- [styled-ppx](https://github.com/davesnx/styled-ppx): Typed styled components for ReScript
+- [query-json](https://github.com/davesnx/query-json): Faster, simpler and more portable implementation of `jq` in Reason
+- [server-reason-react](https://github.com/ml-in-barcelona/server-reason-react): Server rendering Reason React components natively
+- [jsoo-react](https://github.com/ml-in-barcelona/jsoo-react): js_of_ocaml bindings for ReactJS. Based on ReasonReact
+- [jsoo-css](https://github.com/ml-in-barcelona/jsoo-css): CSS Typed functional interface in jsoo, bindings to inline styles and emotion
+- [reason](https://github.com/reasonml/reason): Simple, fast & type safe code that leverages the JavaScript & OCaml ecosystems
+
+## How to look at the OCaml ecosystem
+
+The OCaml ecosystem seems overwhelming because it’s always explained in abstract terms, minimum explanations and probably the wrong order.
+
+- [Basics of the language](#learning-the-basics-of-the-language)
+- [Standard lib replacements](#learning-about-standard-library-replacements)
+- [opam: package manager](#learning-opam)
+- [dune: build system](#learning-dune)
+- [Configure editor](#configure-editor)
+- [Memory managment](#learning-about-memory-management)
+- [deriving/ppx](#learning-about-ppx)
+- [Compilation modes](#learning-about-compilation-modes-native-byte-js)
+
+Additionally, there are a few topics that are often mentioned as "more advanced". The topics below are interesting, but they're difficult to understand, are far less popular than the above topics and **aren't required for most apps** but they can became immensely helpful when some specific problem appears.
+
+- [Functors](#learning-functors)
+- [GADTs](#learning-gadts)
+{/* - [open/closed polyvariants](#learning-open-polyvariants) */}
+{/* polymorphic https://v2.ocaml.org/releases/4.07/htmlman/polymorphism.html */}
+{/* local modules */}
+
+---
+
+## Learning the basics of the language
+[https://ocaml.org/docs/up-and-running](https://ocaml.org/docs/up-and-running)
+<br />
+<br />
+Similarly on the [first-hour](https://ocaml.org/docs/first-hour) from the OCaml docs, here's a quick overview of the core of the language to get you up and running.
+
+### Types
+
+OCaml is a statically typed functional programming language. Unless other languages, OCaml has inference which means it's not necessary to specify the type of every variable/argument/return value.
+
+```ocaml
+let fn x = x + 1
+(* fn: int -> int *)
+```
+
+Note: `fn` is a function that takes an `int` and returns an `int`, any other type will make the compiler angry. The compiler will infer the type as `int` since the `+` operator is just for ints. To sum floats, the operator is `+.`.
+<br />
+<br />
+The most important built-in types are records, tuples and variants.
+
+- `records` are used to define a data structure with a fixed set of fields. They are used to hold values together and define a domain model.
+
+```ocaml
+  type person = { first_name : string; surname : string; age : int; }
+```
+
+- `tuples` are a type with a fixed set of values, without specify their names. They're often used to assosiacte values without creating a more formal data structure (like a record).
+
+```ocaml
+  let t = (1, "one", '1') in
+  (*      int * string * char *)
+```
+
+- `variants` are used to define a sum type (also known as ADTs). They can be used to represent a value that can be one of a few different kindš.
+
+```ocaml
+  type color =
+    | Red
+    | Green
+    | Blue
+    | Yellow
+    | RGB of int * int * int
+```
+
+### Pattern match
+
+Pattern matching is the greatest feature of OCaml, it allows to match a value against a pattern and execute code on each branch. Works amazingly well with variants but also great with records, tuples and lists.
+
+```ocaml
+match color with
+| Red -> "red"
+| Green -> "green"
+| Blue -> "blue"
+| RGB (r, g, b) -> "rgb(" ^ string_of_int r ^ "," ^ string_of_int g ^ "," ^ string_of_int b ^ ")"
+```
+
+The compiler enforces that you pattern matching defines all possible cases. If I forgot a case, such as `| Yellow` the compiler will say:
+
+```sh
+Warning number 8
+
+You forgot to handle a possible case here, for example:
+**Yellow**
+```
+
+Pattern match it will be one of your most (ab)used features of OCaml and can be combined with almost any feature of the language and became very advance topic. Here's a more extensive example: [Mathematical expressions](https://ocaml.org/docs/data-types#example-mathematical-expressions)
+
+### Balance of styles
+
+OCaml has the right balance between Functional language and imperative styles. Allows you to write code in both, it's often preferred to stick to functional and ocassionaly opt-out to imperative.
+<br />
+<br />
+By default, all values are immutable. `List.map` will return a new list, instead of mutating the original one.
+
+```ocaml
+let data = [1, 2, 3] in
+let data_plus_one = List.map (fun x => x + 1) data in
+(* `data_plus_one` is a new list and `data` is still available in scope *)
+```
+
+But it's possible to mutate values using `ref` and `mutable` keyword (inside records). Extense explanation [here](https://cs3110.github.io/textbook/chapters/mut/refs.html)
+<br />
+<br />
+Similarly on the above, you can debug values by printing to the stdout with `print_endline` or [`Printf`](https://v2.ocaml.org/api/Printf.html). The `Printf` module comes with a lot of useful functions to format your output, and similarly to C with the printing notation: `%s` for strings, `%d` for integers, `%f` for floats, etc.
+
+```ocaml
+print_endline "Hello world";
+(* Hello world *)
+```
+
+### Modules
+
+Modules are the way to organize your code in OCaml. Each file is an implicit module that uses the name of the file. You can create modules inside with `module Whatever = { ... }`.
+
+> Note: All modules need to start by an uppercase letter.
+<br />
+<br />
+You will find modules often have a `type t` which representes the "main" type of the module. For example, the `List` module has a `type t` which is `'a list` (a list of any type).
+<br />
+<br />
+Modules can import other modules using `include` makes all functions/types from the included module available in the current module.
+<br />
+<br />
+You can `open` modules as well, removing the need to prefix all values/functions/types by the module.
+
+{/* ### Syntax */}
+{/* Syntax matters */}
+{/* Explain ; being a function */}
+{/* Explain ;; being a eval */}
+{/* Explain in being a scope */}
+{/* Mention ReasonML */}
+
+## Learning opam
+[https://opam.ocaml.org/](https://opam.ocaml.org/)
+<br />
+<br />
+`opam` is the OCaml's package manager. Read [this post](https://khady.info/opam-npm.html) to feel familiar with the basics. It can create a "switch" (a set of packages for each project attached to a version of the compiler). Download packages and install
+
+## Learning dune
+[https://dune.readthedocs.io/en/stable/overview.html](https://dune.readthedocs.io/en/stable/overview.html)
+<br />
+<br />
+
+Dune is the most common build system for OCaml projects. It's power comes from the fact that the user can define a build system in a declarative way and `dune` takes care of most low-level details of OCaml compilations, creation of libraries/executables.
+<br />
+<br />
+I recommend creating a dummy project following this guide: [Building a Hello World Program From Scratch](https://dune.readthedocs.io/en/stable/quick-start.html#building-a-hello-world-program-from-scratch) and try to understand the `dune` file and how modules are organized.
+
+## Configure Editor
+[https://github.com/ocaml/ocaml-lsp](https://github.com/ocaml/ocaml-lsp)
+<br />
+<br />
+Merlin and ocaml-lsp-server (OCaml's Language Server Protocol) are the tools to enhance editors (like Visual Studio Code, Vim, or Emacs) by providing many useful features such as "jump to definition", "type on hover", "refactor symbol", "autocomplete", "expand switch statement", "create an interface file from an implementation", etc...
+<br />
+<br />
+Setup your preferred IDE by following [this](http://ocamlverse.net/content/editor_setup.html).
+
+## Learning about standard library replacements
+
+In addition to the OCaml standard library, there are several popular third-party libraries that are widely used in the OCaml community. Some of these libraries provide alternative implementations of certain features, while others offer additional functionality that is not available.
+
+- Base: [janestreet/base](https://github.com/janestreet/base)
+- Core: [janestreet/core](https://github.com/janestreet/core)
+- Containers: [c-cube/ocaml-containers](https://github.com/c-cube/ocaml-containers)
+- devkit: [ahrefs/devkit](https://github.com/ahrefs/devkit)
+
+Even thought most of these might be handy, I recommend to start with the Standard library and explore what's missing and try to reach for one of these when the time comes. Knowing that they exist and they are used in some online materials is good enough to move forward.
+
+## Learning about memory management
+
+OCaml provides a garbage collector so that you don't need to explicitly allocate and free memory as in C/C++. The OCaml garbage collector is a modern hybrid generational/incremental collector which outperforms hand-allocation in most cases.
+
+{/* Add a resource */}
+
+## Learning about ppx
+[https://ocaml.org/docs/metaprogramming](https://ocaml.org/docs/metaprogramming)
+<br />
+<br />
+What are these `[@deriving yojson]`, `[@react.component]`, `[%...]`, `[@@ ...]`, `let%lwt` annotations?
+Those annotations are called `ppx` or **p**re**p**rocessing e**x**tension and they do a lot of stuff for you. They are used to generate code, either by extending the language or by generating boilerplate code.
+<br />
+<br />
+This is often called meta-programmig and it's a very powerful tool and also very easy to abuse it. In the official documentation there's an extensive explanation of [Preprocessors in OCaml](https://ocaml.org/docs/metaprogramming).
+
+## Learning about Compilation modes: native, byte, js
+
+One of the strengths of OCaml is that it can be compiled to run on a wide variety of platforms: native code, bytecode and JavaScript.
+<br />
+<br />
+OCaml by itself comprises two compilers:
+<br />
+<br />
+One generates bytecode which is then interpreted by a C program. This compiler runs quickly, generates compact code with moderate memory requirements, and is portable to essentially any 32 or 64 bit Unix platform. Performance of generated programs is quite good for a bytecoded implementation. This compiler can be used either as a standalone, batch-oriented compiler that produces standalone programs, or as an interactive, toplevel-based system.
+<br />
+<br />
+The other compiler generates high-performance native code for a number of processors. Compilation takes longer and generates bigger code, but the generated programs deliver excellent performance, while retaining the moderate memory requirements of the bytecode compiler.
+<br />
+<br />
+There are also two compilers that target JavaScript: js_of_ocaml and Melange.
+<br />
+<br />
+[js_of_ocaml](https://github.com/ocsigen/js_of_ocaml) tries to work closely with the OCaml ecosystem of libraries, allowing to compile to JavaScript any OCaml library.
+<br />
+<br />
+[Melange](https://github.com/melange-re/melange) integrates closer with the JavaScript/npm ecosystems.
+
+## Learning Functors
+[https://dev.realworldocaml.org/functors.html](https://dev.realworldocaml.org/functors.html)
+<br />
+<br />
+Functors are a way to parameterize modules over other modules. They are used in modules from the Standard Library such as `Map` and `Set`.
+
+```ocaml
+module Map_with_strings = Map.Make(String)
+(*                                 ^^^^^^ `String` is a module *)
+(* `Map.Make` can have access to all the interface from String and
+any module with the same interfaced can be passed *)
+module Map_with_ints = Map.Make(Int)
+```
+
+Here's a simple implementation of the `Map` functor:
+
+```ocaml
+module Map = struct
+  (* The module type this functor recieves *)
+  module type OrderedType = sig
+    type t
+    val compare : t -> t -> int
+  end
+
+  (* The interface from the module created *)
+  module type S = sig
+    type key
+    type 'a t
+    val empty : 'a t
+    val add : key -> 'a -> 'a t -> 'a t
+    val find : key -> 'a t -> 'a
+  end
+
+  (* The implementation of the functor itself *)
+  module Make (Ord : OrderedType) : S with type key = Ord.t = struct
+    type key = Ord.t
+    type 'a t = (key * 'a) list
+    let empty = []
+    let add k v m = (k, v) :: m
+    let rec find k m =
+    match m with
+    | [] -> raise Not_found
+    | (k', v) :: m' -> if Ord.compare k k' = 0 then v else find k m'
+  end
+end
+```
+
+An specific [example of a Functor by thekerneltrip](https://www.thekerneltrip.com/ocaml/ocaml-functor-example/)
+
+## Learning GADTs
+
+[https://v2.ocaml.org/manual/gadts-tutorial.html](https://v2.ocaml.org/manual/gadts-tutorial.html)
+
+GADTs are a way to add type information to constructors and "capture" their type. They are a method of polymorphic
+
+
+---
+
+## References
+
+- Cornell University CS3110 [Playlist](https://www.youtube.com/playlist?list=PLre5AT9JnKShBOPeuiD9b-I4XROIJhkIU) and [Book](https://cs3110.github.io/textbook/cover.html)
+- [Real-world OCaml Book](https://dev.realworldocaml.org)
+- [MOOC: Introduction to Functional Programming in OCaml](https://www.fun-mooc.fr/en/courses/introduction-functional-programming-ocaml)
+- [What I wish I knew when learning OCaml](https://baturin.org/docs/ocaml-faq)
+
+---
+
+Based on [https://github.com/petehunt/react-howto](https://github.com/petehunt/react-howto) and [https://github.com/petehunt/webpack-howto](https://github.com/petehunt/webpack-howto)
