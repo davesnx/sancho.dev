@@ -246,6 +246,7 @@ module Map = struct
   module type S = sig
     type key
     type 'a t
+
     val empty : 'a t
     val add : key -> 'a -> 'a t -> 'a t
     val find : key -> 'a t -> 'a
@@ -255,12 +256,13 @@ module Map = struct
   module Make (Ord : OrderedType) : S with type key = Ord.t = struct
     type key = Ord.t
     type 'a t = (key * 'a) list
+
     let empty = []
-    let add k v m = (k, v) :: m
-    let rec find k m =
-    match m with
-    | [] -> raise Not_found
-    | (k', v) :: m' -> if Ord.compare k k' = 0 then v else find k m'
+    let add key value map = (key, value) :: map
+    let rec find key map =
+      match map with
+      | [] -> raise Not_found
+      | (current_key, value) :: rest -> if Ord.compare key current_key = 0 then value else find k rest
   end
 end
 ```
