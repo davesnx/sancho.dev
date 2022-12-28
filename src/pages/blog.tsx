@@ -25,7 +25,7 @@ export const getStaticProps: GetStaticProps = async () => {
   return { props: { frontmatters: sortedFrontmatters } };
 };
 
-let Blog = ({ frontmatters }: { frontmatters: Array<Frontmatter> }): NextPage => {
+let Blog = ({ frontmatters }: { frontmatters: Array<Frontmatter> }) => {
   return (
     <>
       <MetaData title="Thoughts" />

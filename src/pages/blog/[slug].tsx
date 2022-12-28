@@ -71,16 +71,16 @@ const Content = styled.p`
 
 const Line = {
   horitzontal: css`
-    opacity: 0.4;
     background-color: ${rgb(colors.subtle)};
+    opacity: 0.4;
     width: 100%;
     height: 2px;
   `,
   vertical: css`
+    background-color: ${rgb(colors.subtle)};
     opacity: 0.4;
     width: 2px;
     height: 100%;
-    background-color: ${rgb(colors.subtle)};
   `,
 };
 
@@ -148,7 +148,7 @@ const Inline = styled.div`
   display: inline-flex;
 `;
 
-const TwitterShare = ({ title, href }) => {
+const TwitterShare = ({ title, href }: { title: string, href: string}) => {
   let urlToShare = `http://www.twitter.com/share?url=${href}&text=${encodeURIComponent(title)}: `;
   return (
     <span>
@@ -233,9 +233,7 @@ let Post = ({
             h5: PaddedH5,
             h6: PaddedH6,
             p: Content,
-            a: ({ href, ...rest }) => {
-              return <TextLink href={href} {...rest} />
-            },
+            a: TextLink,
             li: ListItem,
             ol: OrderList,
             ul: UnorderList,

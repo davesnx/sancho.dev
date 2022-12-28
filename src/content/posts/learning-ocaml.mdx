@@ -37,7 +37,6 @@ The OCaml ecosystem seems overwhelming because it’s always explained in abstra
 - [opam: package manager](#learning-opam)
 - [dune: build system](#learning-dune)
 - [Configure editor](#configure-editor)
-- [Memory managment](#learning-about-memory-management)
 - [deriving/ppx](#learning-about-ppx)
 - [Compilation modes](#learning-about-compilation-modes-native-byte-js)
 
@@ -45,6 +44,7 @@ Additionally, there are a few topics that are often mentioned as "more advanced"
 
 - [Functors](#learning-functors)
 - [GADTs](#learning-gadts)
+- [Memory managment](#learning-about-memory-management)
 {/* - [open/closed polyvariants](#learning-open-polyvariants) */}
 {/* polymorphic https://v2.ocaml.org/releases/4.07/htmlman/polymorphism.html */}
 {/* local modules */}
@@ -187,12 +187,6 @@ In addition to the OCaml standard library, there are several popular third-party
 
 Even thought most of these might be handy, I recommend to start with the Standard library and explore what's missing and try to reach for one of these when the time comes. Knowing that they exist and they are used in some online materials is good enough to move forward.
 
-## Learning about memory management
-
-OCaml provides a garbage collector so that you don't need to explicitly allocate and free memory as in C/C++. The OCaml garbage collector is a modern hybrid generational/incremental collector which outperforms hand-allocation in most cases.
-
-{/* Add a resource */}
-
 ## Learning about ppx
 [https://ocaml.org/docs/metaprogramming](https://ocaml.org/docs/metaprogramming)
 
@@ -224,10 +218,18 @@ Functors are a way to parameterize modules over other modules. They are used in 
 
 ```ocaml
 module Map_with_strings = Map.Make(String)
-(*                                 ^^^^^^ `String` is a module *)
-(* `Map.Make` can have access to all the interface from String and
-any module with the same interfaced can be passed *)
-module Map_with_ints = Map.Make(Int)
+(*                                 ^^^^^^ `String` is a module
+  `Map.Make` can have access to all the interface from String and
+any module with the same interfaced can be passed:
+
+  type t = 'a
+  val compare : t -> t -> int
+
+*)
+
+module Custom_map = Map.Make(struct type t = int let compare a b = a > b end)
+(*                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                             Here's the module without a name *)
 ```
 
 Here's a simple implementation of the `Map` functor:
@@ -265,12 +267,17 @@ end
 
 An specific [example of a Functor by thekerneltrip](https://www.thekerneltrip.com/ocaml/ocaml-functor-example/)
 
+## Learning about memory management
+
+OCaml provides a garbage collector so that you don't need to explicitly allocate and free memory as in C/C++. The OCaml garbage collector is a modern hybrid generational/incremental collector which outperforms hand-allocation in most cases.
+
+{/* Add a resource */}
+
 ## Learning GADTs
 
 [https://v2.ocaml.org/manual/gadts-tutorial.html](https://v2.ocaml.org/manual/gadts-tutorial.html)
 
 GADTs are a way to add type information to constructors and "capture" their type. They are a method of polymorphic
-
 
 ---
 

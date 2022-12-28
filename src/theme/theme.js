@@ -42,7 +42,6 @@ const darkTheme = Object.assign({}, darkValues, values);
 export let KEY = "__sancho-www-theme";
 
 let declaration = (theme, key, value) => `--c-${theme}-${key}: ${value};`;
-
 let variable = (str) => `var(${str})`;
 let variableName = (key) => `--c-${key}`;
 
@@ -55,11 +54,9 @@ let objectToCSSVariable = (prefix, obj) => {
 export let lightRoot = objectToCSSVariable("light", lightTheme);
 export let darkRoot = objectToCSSVariable("dark", darkTheme);
 
-export let colorKeys = Object.keys(lightTheme);
-
 export let make = (theme) => {
   let makeRoot = (str) => `:root { ${str} }`;
-  const mappings = colorKeys.map((key) => [
+  const mappings = Object.keys(lightTheme).map((key) => [
     `--c-${key}`,
     `var(--c-${theme}-${key})`,
   ]);
