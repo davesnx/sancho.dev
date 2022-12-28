@@ -20,7 +20,7 @@ const MetaData = ({
   createdAt = new Date().toISOString(),
 }) => {
   const title = subtitle + " | sancho.dev";
-  const image = `https://api.metaimg.net/v1/render?design=simple&align=left&image=https%3A%2F%2Fimages.unsplash.com%2Fphoto-1576618148400-f54bed99fcfd&title=${title}&description=${description}&textColor=000000&backgroundColor=FFFFFF"`;
+  const image = `https://api.metaimg.net/v1/render?design=simple&align=left&image=https://avatars.githubusercontent.com/u/3763599&title=${title}&description=${description}&textColor=000000&backgroundColor=FFFFFF`;
   const metaTags = [
     { name: "twitter:card", content: "summary_large_image" },
     { name: "twitter:site", content: config.twitter },
