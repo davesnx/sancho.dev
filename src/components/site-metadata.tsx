@@ -6,11 +6,8 @@ const config = {
   title: `David Sancho`,
   twitter: `@davesnx`,
   description:
-    "Software Engineer. Making cute software with ReasonML and OCaml" +
-    "Passionate in design, functional programming, scalability, people and business.",
+    "Software engineer into ReasonML and OCaml. Working on styled-ppx and UI stuff at Ahrefs. Co-host at emelle.tv",
 };
-
-/* const postImage = `https://api.metaimg.net/v1/render?design=profile&avatar=https%3A%2F%2Fpbs.twimg.com%2Fprofile_images%2F1508834887079505934%2FDpjXkZ54_400x400.jpg&name=David+Sancho&handler=%40davesnx&description=${config.description}&backgroundColor=FFFFFF&textColor=000000`; */
 
 const MetaData = ({
   title: subtitle,
@@ -18,10 +15,16 @@ const MetaData = ({
   url = config.siteUrl,
   schemaType = "website",
   createdAt = new Date().toISOString(),
+}: {
+  title: string,
+  description: string,
+  url: string,
+  schemaType: string,
+  createdAt: string,
 }) => {
   const title = subtitle + " | sancho.dev";
-  const image = `https://api.metaimg.net/v1/render?design=simple&align=left&image=https://avatars.githubusercontent.com/u/3763599&title=${title}&description=${description}&textColor=000000&backgroundColor=FFFFFF`;
-  const metaTags = [
+  const image = `https://api.metaimg.net/v1/render?design=profile&avatar=https://avatars.githubusercontent.com/u/3763599?v=4&name=David+Sancho&handler=%40davesnx&description=Software+engineer.+Currently+working+at+Ahrefs+remotely+on+UI+stuff+and+building+styled-ppx.+Previously+%40draftbit+%40Typeform.+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++Co-host+at+https%3A%2F%2Femelle.tv&backgroundColor=191919&textColor=ced0d2`;
+  const metaTags: Array<{ name: string, content: string }> = [
     { name: "twitter:card", content: "summary_large_image" },
     { name: "twitter:site", content: config.twitter },
     { name: "twitter:title", content: title },

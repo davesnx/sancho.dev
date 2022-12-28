@@ -13,10 +13,7 @@ import { colors } from "../theme/theme";
 let Home = () => {
   return (
     <>
-      <MetaData
-        title="Home"
-        description="A blog about web development, design and tech."
-      />
+      <MetaData title="Home" />
       <Page title={<H1>David Sancho</H1>}>
         <Text size={fonts.fontSize1} align="left">
           <span>{`I'm a Software Engineer based in Barcelona, these days, trying to make cute software

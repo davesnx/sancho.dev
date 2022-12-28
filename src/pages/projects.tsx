@@ -10,7 +10,7 @@ import Text from "../components/text";
 
 let Projects = () => (
   <>
-    <MetaData title={"Projects"} />
+    <MetaData title="Projects" />
     <Page title={<H1>Projects</H1>}>
       <Text>
         I&apos;m a very creative person and have a mind full of ideas, some of them

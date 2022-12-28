@@ -210,6 +210,7 @@ let Post = ({
         title={frontmatter.title}
         description={frontmatter.description}
         schemaType="article"
+        createdAt={frontmatter.publishedAt}
       />
       <Page
         title={
