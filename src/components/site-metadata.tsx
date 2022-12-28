@@ -9,20 +9,29 @@ const config = {
     "Software engineer into ReasonML and OCaml. Working on styled-ppx and UI stuff at Ahrefs. Co-host at emelle.tv",
 };
 
-const MetaData = ({
-  title: subtitle,
-  description = config.description,
-  url = config.siteUrl,
-  schemaType = "website",
-  createdAt = new Date().toISOString(),
-}: {
+type RequiredProps = {
   title: string,
-  description: string,
-  url: string,
-  schemaType: string,
-  createdAt: string,
-}) => {
+};
+
+const defaultProps = {
+  description: config.description,
+  url: config.siteUrl,
+  schemaType: "website",
+  createdAt: new Date().toISOString(),
+};
+
+type Props = RequiredProps & {
+  [key in keyof typeof defaultProps]?: typeof defaultProps[key];
+};
+
+const MetaData = (props: Props) => {
+  const subtitle = props.title || "";
   const title = subtitle + " | sancho.dev";
+  const description = props.description || defaultProps.description;
+  const schemaType = props.schemaType || defaultProps.schemaType;
+  const createdAt = props.createdAt || defaultProps.createdAt;
+  const url = props.url || defaultProps.url;
+
   const image = `https://api.metaimg.net/v1/render?design=profile&avatar=https://avatars.githubusercontent.com/u/3763599?v=4&name=David+Sancho&handler=%40davesnx&description=Software+engineer.+Currently+working+at+Ahrefs+remotely+on+UI+stuff+and+building+styled-ppx.+Previously+%40draftbit+%40Typeform.+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++Co-host+at+https%3A%2F%2Femelle.tv&backgroundColor=191919&textColor=ced0d2`;
   const metaTags: Array<{ name: string, content: string }> = [
     { name: "twitter:card", content: "summary_large_image" },
