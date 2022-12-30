@@ -1,4 +1,5 @@
 import React from "react";
+import styled from "@emotion/styled";
 
 import { H1 } from "../components/heading";
 import { TextLink, NavigateText } from "../components/link";
@@ -9,12 +10,39 @@ import { Row } from "../components/taco";
 import Text from "../components/text";
 import fonts from "../theme/fonts";
 import { colors } from "../theme/theme";
+import constants from "../theme/constants";
+import { unit, px } from "../utils/unit";
+
+const Avatar = styled.img`
+  width: 160px;
+  height: auto;
+  border-radius: ${unit(1)}px;
+`;
+
+const ColumnReverse = styled.div`
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  align-items: flex-start;
+  justify-content: space-between;
+
+  gap: ${(props: { gap: number }) => px(unit((props.gap / 2) || 2))};
+
+  @media (max-width: ${constants.mobile.width}px) {
+    flex-direction: column-reverse;
+    height: auto;
+  }
+`;
+
 
 let Home = () => {
   return (
     <>
       <MetaData title="Home" />
-      <Page title={<H1>David Sancho</H1>}>
+      <Page>
+      <Spacer bottom={3}><H1>David Sancho</H1></Spacer>
+      <ColumnReverse gap={8}>
+        <div>
         <Text size={fonts.fontSize1} align="left">
           <span>{`I'm a Software Engineer based in Barcelona, these days, trying to make cute software
         with `}</span>
@@ -49,6 +77,9 @@ let Home = () => {
           </NavigateText>{" "}
           {` page.`}
         </Text>
+        </div>
+        <Avatar src={"/images/face.jpeg"} />
+        </ColumnReverse>
         <Spacer top={3} />
         <Row gap={2} distribute="left">
           <TextLink

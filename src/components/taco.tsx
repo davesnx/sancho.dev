@@ -1,6 +1,5 @@
 import styled from "@emotion/styled";
 
-import constants from "../theme/constants";
 import { unit, px } from "../utils/unit";
 
 const StackAlignMap = {
@@ -86,27 +85,4 @@ export const Align = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-`;
-
-type PropsRowResponsive = {
-  gap: number;
-};
-
-export const RowResponsive = styled.div`
-  display: flex;
-  flex-direction: row;
-  width: 100%;
-  align-items: center;
-  justify-content: space-between;
-
-  @media (max-width: ${constants.desktop.width}) {
-    flex-direction: column;
-    height: auto;
-    align-items: center;
-    justify-content: space-between;
-
-    & > :not(:last-child) {
-      margin-bottom: ${(props: PropsRowResponsive) => px(unit(props.gap || 2))};
-    }
-  }
 `;

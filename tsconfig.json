@@ -45,6 +45,7 @@
     "**/*.ts",
     "**/*.tsx",
     "src/pages/sitemap.js",
-    "src/components/icon.jsx"
+    "src/components/icon.jsx",
+    "src/components/page.jsx"
   ]
 }

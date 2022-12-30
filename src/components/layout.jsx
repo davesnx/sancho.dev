@@ -142,7 +142,7 @@ const MobileMenuItem = styled(MenuItem)`
   align-items: center;
 `;
 
-export default function Layout({ children, pathname }) {
+export default function Layout({ children }) {
   const [isOpen, setIsOpen] = React.useState(false);
   let open = () => setIsOpen(true);
   let close = () => setIsOpen(false);
