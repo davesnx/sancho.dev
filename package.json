@@ -11,7 +11,8 @@
     "build-prod": "run-s clean build export",
     "clean": "rimraf .next out",
     "lint": "next lint",
-    "ts": "tsc --noEmit --pretty --jsx react-jsx"
+    "ts": "tsc --noEmit --pretty --jsx react-jsx",
+    "format": "prettier --write 'src'"
   },
   "dependencies": {
     "@emotion/react": "^11.10.0",

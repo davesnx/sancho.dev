@@ -108,7 +108,7 @@ let applyMultilineFix = function (ast) {
   return hast.children;
 };
 
-function rehypeHighlightLine (ast, lines) {
+function rehypeHighlightLine(ast, lines) {
   let formattedAst = applyMultilineFix(ast);
   let numbered = lineNumberify(formattedAst).nodes;
 

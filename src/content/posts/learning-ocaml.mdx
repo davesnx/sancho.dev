@@ -45,13 +45,14 @@ Additionally, there are a few topics that are often mentioned as "more advanced"
 - [Functors](#learning-functors)
 - [GADTs](#learning-gadts)
 - [Memory managment](#learning-about-memory-management)
-{/* - [open/closed polyvariants](#learning-open-polyvariants) */}
-{/* polymorphic https://v2.ocaml.org/releases/4.07/htmlman/polymorphism.html */}
-{/* local modules */}
+  {/_ - [open/closed polyvariants](#learning-open-polyvariants) _/}
+  {/_ polymorphic https://v2.ocaml.org/releases/4.07/htmlman/polymorphism.html _/}
+  {/_ local modules _/}
 
 ---
 
 ## Learning the basics of the language
+
 [ocaml.org/docs/up-and-running](https://ocaml.org/docs/up-and-running)
 
 Similarly on the [first-hour](https://ocaml.org/docs/first-hour) from the OCaml docs, here's a quick overview of the core of the language to get you up and running.
@@ -149,27 +150,29 @@ Modules can import other modules using `include` makes all functions/types from 
 
 You can `open` modules as well, removing the need to prefix all values/functions/types by the module.
 
-{/* ### Syntax */}
-{/* Syntax matters */}
-{/* Explain ; being a function */}
-{/* Explain ;; being a eval */}
-{/* Explain in being a scope */}
-{/* Mention ReasonML */}
+{/_ ### Syntax _/}
+{/_ Syntax matters _/}
+{/_ Explain ; being a function _/}
+{/_ Explain ;; being a eval _/}
+{/_ Explain in being a scope _/}
+{/_ Mention ReasonML _/}
 
 ## Learning opam
+
 [opam.ocaml.org/](https://opam.ocaml.org/)
 
 `opam` is the OCaml's package manager. Read [this post](https://khady.info/opam-npm.html) to feel familiar with the basics. It can create a "switch" (a set of packages for each project attached to a version of the compiler). Download packages and install
 
 ## Learning dune
-[dune.readthedocs.io/en/stable/overview.html](https://dune.readthedocs.io/en/stable/overview.html)
 
+[dune.readthedocs.io/en/stable/overview.html](https://dune.readthedocs.io/en/stable/overview.html)
 
 Dune is the most common build system for OCaml projects. It's power comes from the fact that the user can define a build system in a declarative way and `dune` takes care of most low-level details of OCaml compilations, creation of libraries/executables.
 
 I recommend creating a dummy project following this guide: [Building a Hello World Program From Scratch](https://dune.readthedocs.io/en/stable/quick-start.html#building-a-hello-world-program-from-scratch) and try to understand the `dune` file and how modules are organized.
 
 ## Configure Editor
+
 [github.com/ocaml/ocaml-lsp](https://github.com/ocaml/ocaml-lsp)
 
 Merlin and ocaml-lsp-server (OCaml's Language Server Protocol) are the tools to enhance editors (like Visual Studio Code, Vim, or Emacs) by providing many useful features such as "jump to definition", "type on hover", "refactor symbol", "autocomplete", "expand switch statement", "create an interface file from an implementation", etc...
@@ -188,6 +191,7 @@ In addition to the OCaml standard library, there are several popular third-party
 Even thought most of these might be handy, I recommend to start with the Standard library and explore what's missing and try to reach for one of these when the time comes. Knowing that they exist and they are used in some online materials is good enough to move forward.
 
 ## Learning about ppx
+
 [ocaml.org/docs/metaprogramming](https://ocaml.org/docs/metaprogramming)
 
 What are these `[@deriving yojson]`, `[@react.component]`, `[%...]`, `[@@ ...]`, `let%lwt` annotations?
@@ -212,6 +216,7 @@ There are also two compilers that target JavaScript: js_of_ocaml and Melange.
 [Melange](https://github.com/melange-re/melange) integrates closer with the JavaScript/npm ecosystems.
 
 ## Learning Functors
+
 [dev.realworldocaml.org/functors.html](https://dev.realworldocaml.org/functors.html)
 
 Functors are a way to parameterize modules over other modules. They are used in modules from the Standard Library such as `Map` and `Set`.
@@ -273,7 +278,7 @@ An specific [example of a Functor](https://www.thekerneltrip.com/ocaml/ocaml-fun
 
 OCaml provides a garbage collector so that you don't need to explicitly allocate and free memory as in C/C++. The OCaml garbage collector is a modern hybrid generational/incremental collector which outperforms hand-allocation in most cases.
 
-{/* Add a resource */}
+{/_ Add a resource _/}
 
 ## Learning GADTs
 

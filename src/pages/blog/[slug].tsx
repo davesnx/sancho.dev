@@ -107,9 +107,13 @@ const Oversized = styled.span`
   @media screen and (max-width: ${breakpoints.mobile.width}px) {
     margin: 3rem 0;
   }
-`
+`;
 
-const Pre = (props: any) => <Oversized><pre {...props} /></Oversized>;
+const Pre = (props: any) => (
+  <Oversized>
+    <pre {...props} />
+  </Oversized>
+);
 
 const Image = (props: any) => {
   return (
@@ -117,7 +121,7 @@ const Image = (props: any) => {
       <Img {...props} />
     </Oversized>
   );
-}
+};
 
 const Blockquote = styled.blockquote`
   margin: 32px;
@@ -149,8 +153,9 @@ const Inline = styled.div`
   display: inline-flex;
 `;
 
-const TwitterShare = ({ title, href }: { title: string, href: string}) => {
-  let urlToShare = `http://www.twitter.com/share?url=${href}&text=${encodeURIComponent(title)}: `;
+const TwitterShare = ({ title, href }: { title: string; href: string }) => {
+  let text = encodeURIComponent(title);
+  let urlToShare = `http://www.twitter.com/share?url=${href}&text=${text}`;
   return (
     <span>
       <Spacer right={0.5} inline={true}>
@@ -171,11 +176,13 @@ const TwitterShare = ({ title, href }: { title: string, href: string}) => {
 
 export const getStaticPaths: GetStaticPaths = () => {
   let frontmatters = getAllFrontmatter();
-  const paths = frontmatters.map(({ slug }: Frontmatter) => ({ params: { slug } }));
+  const paths = frontmatters.map(({ slug }: Frontmatter) => ({
+    params: { slug },
+  }));
 
   return {
     paths,
-    fallback: false
+    fallback: false,
   };
 };
 

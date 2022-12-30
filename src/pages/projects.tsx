@@ -13,9 +13,9 @@ let Projects = () => (
     <MetaData title="Projects" />
     <Page title={<H1>Projects</H1>}>
       <Text>
-        I&apos;m a very creative person and have a mind full of ideas, some of them
-        gets materialized into code and eventually shared it as Open Source,
-        here&apos;s a list of them
+        I&apos;m a very creative person and have a mind full of ideas, some of
+        them gets materialized into code and eventually shared it as Open
+        Source, here&apos;s a list of them
       </Text>
       <Spacer top={4} />
       <Stack gap={5}>

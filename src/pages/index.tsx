@@ -26,7 +26,7 @@ const ColumnReverse = styled.div`
   align-items: flex-start;
   justify-content: space-between;
 
-  gap: ${(props: { gap: number }) => px(unit((props.gap / 2) || 2))};
+  gap: ${(props: { gap: number }) => px(unit(props.gap / 2 || 2))};
 
   @media (max-width: ${constants.mobile.width}px) {
     flex-direction: column-reverse;
@@ -34,51 +34,57 @@ const ColumnReverse = styled.div`
   }
 `;
 
-
-let Home = () => {
+const Home = () => {
   return (
     <>
       <MetaData title="Home" />
       <Page>
-      <Spacer bottom={3}><H1>David Sancho</H1></Spacer>
-      <ColumnReverse gap={8}>
-        <div>
-        <Text size={fonts.fontSize1} align="left">
-          <span>{`I'm a Software Engineer based in Barcelona, these days, trying to make cute software
+        <Spacer bottom={3}>
+          <H1>David Sancho</H1>
+        </Spacer>
+        <ColumnReverse gap={8}>
+          <div>
+            <Text size={fonts.fontSize1} align="left">
+              <span>{`I'm a Software Engineer based in Barcelona, these days, trying to make cute software
         with `}</span>
-          <TextLink href="http://reasonml.github.io/">Reason</TextLink>
-          <span>{` and `}</span>
-          <TextLink href="https://ocaml.org/">OCaml</TextLink>
-          <span>{`. I co-host `}</span>
-          <TextLink href="https://www.twitch.tv/emelletv">EmelleTV</TextLink>
-          <span>{` a talk show about these languages.`}</span>
-        </Text>
-        <Spacer top={2} />
-        <Text size={fonts.fontSize1}>
-          {`Currently working at `}
-          <TextLink href="https://ahrefs.com/">Ahrefs</TextLink>
-          {`, building `}
-          <TextLink href="https://styled-ppx.vercel.app">styled-ppx</TextLink>.
-        </Text>
-        <Spacer top={2} />
-        <Text size={fonts.fontSize1}>
-          {`In my spare time, I train as an amateur triathlete focusing on Olympic
+              <TextLink href="http://reasonml.github.io/">Reason</TextLink>
+              <span>{` and `}</span>
+              <TextLink href="https://ocaml.org/">OCaml</TextLink>
+              <span>{`. I co-host `}</span>
+              <TextLink href="https://www.twitch.tv/emelletv">
+                EmelleTV
+              </TextLink>
+              <span>{` a talk show about these languages.`}</span>
+            </Text>
+            <Spacer top={2} />
+            <Text size={fonts.fontSize1}>
+              {`Currently working at `}
+              <TextLink href="https://ahrefs.com/">Ahrefs</TextLink>
+              {`, building `}
+              <TextLink href="https://styled-ppx.vercel.app">
+                styled-ppx
+              </TextLink>
+              .
+            </Text>
+            <Spacer top={2} />
+            <Text size={fonts.fontSize1}>
+              {`In my spare time, I train as an amateur triathlete focusing on Olympic
         and Half Ironman distances, maintain a bunch of Open Source projects,
         and write some thoughts on my `}
-          <NavigateText underline href="/blog">
-            blog{". "}
-          </NavigateText>
-        </Text>
-        <Spacer top={2} />
-        <Text size={fonts.fontSize1}>
-          {`You can read more about me in the `}
-          <NavigateText underline href="/about">
-            about
-          </NavigateText>{" "}
-          {` page.`}
-        </Text>
-        </div>
-        <Avatar src={"/images/face.jpeg"} />
+              <NavigateText underline href="/blog">
+                blog{". "}
+              </NavigateText>
+            </Text>
+            <Spacer top={2} />
+            <Text size={fonts.fontSize1}>
+              {`You can read more about me in the `}
+              <NavigateText underline href="/about">
+                about
+              </NavigateText>{" "}
+              {` page.`}
+            </Text>
+          </div>
+          <Avatar src={"/images/face.jpeg"} />
         </ColumnReverse>
         <Spacer top={3} />
         <Row gap={2} distribute="left">
