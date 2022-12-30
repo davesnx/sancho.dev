@@ -52,7 +52,7 @@ Additionally, there are a few topics that are often mentioned as "more advanced"
 ---
 
 ## Learning the basics of the language
-[https://ocaml.org/docs/up-and-running](https://ocaml.org/docs/up-and-running)
+[ocaml.org/docs/up-and-running](https://ocaml.org/docs/up-and-running)
 
 Similarly on the [first-hour](https://ocaml.org/docs/first-hour) from the OCaml docs, here's a quick overview of the core of the language to get you up and running.
 
@@ -82,7 +82,7 @@ The most important built-in types are records, tuples and variants.
   (*      int * string * char *)
 ```
 
-- `variants` are used to define a sum type (also known as ADTs). They can be used to represent a value that can be one of a few different kindš.
+- `variants` are used to define a sum type (also known as ADTs: Algebraic Data Types). They can be used to represent a value that can be one of a few different kindš.
 
 ```ocaml
   type color =
@@ -157,12 +157,12 @@ You can `open` modules as well, removing the need to prefix all values/functions
 {/* Mention ReasonML */}
 
 ## Learning opam
-[https://opam.ocaml.org/](https://opam.ocaml.org/)
+[opam.ocaml.org/](https://opam.ocaml.org/)
 
 `opam` is the OCaml's package manager. Read [this post](https://khady.info/opam-npm.html) to feel familiar with the basics. It can create a "switch" (a set of packages for each project attached to a version of the compiler). Download packages and install
 
 ## Learning dune
-[https://dune.readthedocs.io/en/stable/overview.html](https://dune.readthedocs.io/en/stable/overview.html)
+[dune.readthedocs.io/en/stable/overview.html](https://dune.readthedocs.io/en/stable/overview.html)
 
 
 Dune is the most common build system for OCaml projects. It's power comes from the fact that the user can define a build system in a declarative way and `dune` takes care of most low-level details of OCaml compilations, creation of libraries/executables.
@@ -170,7 +170,7 @@ Dune is the most common build system for OCaml projects. It's power comes from t
 I recommend creating a dummy project following this guide: [Building a Hello World Program From Scratch](https://dune.readthedocs.io/en/stable/quick-start.html#building-a-hello-world-program-from-scratch) and try to understand the `dune` file and how modules are organized.
 
 ## Configure Editor
-[https://github.com/ocaml/ocaml-lsp](https://github.com/ocaml/ocaml-lsp)
+[github.com/ocaml/ocaml-lsp](https://github.com/ocaml/ocaml-lsp)
 
 Merlin and ocaml-lsp-server (OCaml's Language Server Protocol) are the tools to enhance editors (like Visual Studio Code, Vim, or Emacs) by providing many useful features such as "jump to definition", "type on hover", "refactor symbol", "autocomplete", "expand switch statement", "create an interface file from an implementation", etc...
 
@@ -188,7 +188,7 @@ In addition to the OCaml standard library, there are several popular third-party
 Even thought most of these might be handy, I recommend to start with the Standard library and explore what's missing and try to reach for one of these when the time comes. Knowing that they exist and they are used in some online materials is good enough to move forward.
 
 ## Learning about ppx
-[https://ocaml.org/docs/metaprogramming](https://ocaml.org/docs/metaprogramming)
+[ocaml.org/docs/metaprogramming](https://ocaml.org/docs/metaprogramming)
 
 What are these `[@deriving yojson]`, `[@react.component]`, `[%...]`, `[@@ ...]`, `let%lwt` annotations?
 Those annotations are called `ppx` or **p**re**p**rocessing e**x**tension and they do a lot of stuff for you. They are used to generate code, either by extending the language or by generating boilerplate code.
@@ -212,7 +212,7 @@ There are also two compilers that target JavaScript: js_of_ocaml and Melange.
 [Melange](https://github.com/melange-re/melange) integrates closer with the JavaScript/npm ecosystems.
 
 ## Learning Functors
-[https://dev.realworldocaml.org/functors.html](https://dev.realworldocaml.org/functors.html)
+[dev.realworldocaml.org/functors.html](https://dev.realworldocaml.org/functors.html)
 
 Functors are a way to parameterize modules over other modules. They are used in modules from the Standard Library such as `Map` and `Set`.
 
@@ -277,9 +277,13 @@ OCaml provides a garbage collector so that you don't need to explicitly allocate
 
 ## Learning GADTs
 
-[https://v2.ocaml.org/manual/gadts-tutorial.html](https://v2.ocaml.org/manual/gadts-tutorial.html)
+[ocaml.org/manual/gadts-tutorial.html](https://v2.ocaml.org/manual/gadts-tutorial.html)
 
-GADTs are a way to add type information to constructors and "capture" their type. They are a method of polymorphic
+GADTs (Generalized Algebraic Datatypes) are a different kind of variants (ADTs). They enable a few use cases for the typechcker that are not possible with normal variants to express polymorphism (in the sense of a function being able to return different types depending on the input).
+
+It's very sophisticated and it's not something you'll need to use often, but it's good to know, for example the [Printf implementation](https://github.com/ocaml/ocaml/blob/trunk/stdlib/camlinternalFormatBasics.ml) or
+
+The best resource I read to understand the basics though is [blog.mads-hartmann.com/ocaml/2015/01/05/gadt-ocaml.html](https://blog.mads-hartmann.com/ocaml/2015/01/05/gadt-ocaml.html).
 
 ---
 
