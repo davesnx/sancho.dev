@@ -8,8 +8,7 @@ import { colors } from "../theme/theme";
 import constants from "../theme/constants";
 import font from "../theme/fonts";
 import Main from "./../components/main";
-import Text from "./../components/text";
-import { NavigateButton, TextLink } from "./../components/link";
+import { NavigateButton } from "./../components/link";
 import { ResponsiveSpacer } from "./../components/spacer";
 import { Row, Stack } from "./../components/taco";
 

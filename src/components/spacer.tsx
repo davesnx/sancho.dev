@@ -28,7 +28,7 @@ export const RelativeSpacer = styled.div`
   ${(props: Props) => props.inline && "display: inline-block"};
 `;
 
-type ResponsiveSpacer = {
+type ResponsiveSpacerT = {
   desktopTop?: number;
   desktopBottom?: number;
   desktopLeft?: number;
@@ -40,21 +40,23 @@ type ResponsiveSpacer = {
 };
 
 export const ResponsiveSpacer = styled.div`
-  ${(props: ResponsiveSpacer) =>
+  ${(props: ResponsiveSpacerT) =>
     props.desktopTop && `margin-top: ${rem(props.desktopTop)}`};
-  ${(props: ResponsiveSpacer) =>
+  ${(props: ResponsiveSpacerT) =>
     props.desktopBottom && `margin-bottom: ${rem(props.desktopBottom)}`};
-  ${(props: ResponsiveSpacer) =>
+  ${(props: ResponsiveSpacerT) =>
     props.desktopLeft && `margin-left: ${rem(props.desktopLeft)}`};
-  ${(props: ResponsiveSpacer) =>
+  ${(props: ResponsiveSpacerT) =>
     props.desktopRight && `margin-right: ${rem(props.desktopRight)}`};
 
   @media screen and (max-width: ${constants.mobile.width}px) {
-    ${(props) => props.mobileTop && `margin-top: ${rem(props.mobileTop)}`};
-    ${(props) =>
+    ${(props: ResponsiveSpacerT) =>
+      props.mobileTop && `margin-top: ${rem(props.mobileTop)}`};
+    ${(props: ResponsiveSpacerT) =>
       props.mobileBottom && `margin-bottom: ${rem(props.mobileBottom)}`};
-    ${(props) => props.mobileLeft && `margin-left: ${rem(props.mobileLeft)}`};
-    ${(props) =>
+    ${(props: ResponsiveSpacerT) =>
+      props.mobileLeft && `margin-left: ${rem(props.mobileLeft)}`};
+    ${(props: ResponsiveSpacerT) =>
       props.mobileRight && `margin-right: ${rem(props.mobileRight)}`};
   }
 `;

@@ -1,7 +1,7 @@
 import React from "react";
 
 import { parseISO, format } from "date-fns";
-import { GetStaticProps, NextPage } from "next";
+import { GetStaticProps } from "next";
 
 import { Frontmatter } from "../lib/frontmatter";
 import { getAllFrontmatter } from "../lib/mdx";

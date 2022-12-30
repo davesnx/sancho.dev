@@ -2,7 +2,6 @@ import fonts from "./fonts";
 import { make, lightRoot, darkRoot, colors } from "./theme";
 import { css } from "@emotion/react";
 import { rgb } from "./color";
-import breakpoints from "./constants";
 
 const GlobalStyles = css`
   :root {

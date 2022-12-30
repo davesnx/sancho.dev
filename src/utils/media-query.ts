@@ -8,7 +8,7 @@ import {
 
 import constants from "../theme/constants";
 
-export type Effect = (effect: EffectCallback, deps?: DependencyList) => void;
+export type Effect = (_effect: EffectCallback, _deps?: DependencyList) => void;
 export type MediaQueryObject = { [key: string]: string | number | boolean };
 
 const QUERY_COMBINATOR = " and ";
