@@ -227,7 +227,7 @@ any module with the same interfaced can be passed:
 
 *)
 
-module Custom_map = Map.Make(struct type t = int let compare a b = a > b end)
+module Custom_map = Map.Make(struct type t = int let compare a b = a - b end)
 (*                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
                              Here's the module without a name *)
 ```
