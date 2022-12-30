@@ -51,7 +51,7 @@ let Home = () => {
           <TextLink href="https://ocaml.org/">OCaml</TextLink>
           <span>{`. I co-host `}</span>
           <TextLink href="https://www.twitch.tv/emelletv">EmelleTV</TextLink>
-          <span>{` a streaming show talking about these languages.`}</span>
+          <span>{` a talk show about these languages.`}</span>
         </Text>
         <Spacer top={2} />
         <Text size={fonts.fontSize1}>
