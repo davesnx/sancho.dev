@@ -64,16 +64,10 @@ const Home = () => {
               <TextLink href="https://styled-ppx.vercel.app">
                 styled-ppx
               </TextLink>
-              .
-            </Text>
-            <Spacer top={2} />
-            <Text size={fonts.fontSize1}>
-              {`In my spare time, I train as an amateur triathlete focusing on Olympic
-        and Half Ironman distances, maintain a bunch of Open Source projects,
-        and write some thoughts on my `}
-              <NavigateText underline href="/blog">
-                blog{". "}
-              </NavigateText>
+              . and{" "}
+              <TextLink href="https://github.com/ml-in-barcelona/server-reason-react">
+                server-reason-react
+              </TextLink>
             </Text>
             <Spacer top={2} />
             <Text size={fonts.fontSize1}>
