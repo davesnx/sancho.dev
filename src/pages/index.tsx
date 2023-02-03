@@ -60,14 +60,7 @@ const Home = () => {
             <Text size={fonts.fontSize1}>
               {`Currently working at `}
               <TextLink href="https://ahrefs.com/">Ahrefs</TextLink>
-              {`, building `}
-              <TextLink href="https://styled-ppx.vercel.app">
-                styled-ppx
-              </TextLink>
-              . and{" "}
-              <TextLink href="https://github.com/ml-in-barcelona/server-reason-react">
-                server-reason-react
-              </TextLink>
+              {`, building User Interfaces and Tools.`}
             </Text>
             <Spacer top={2} />
             <Text size={fonts.fontSize1}>

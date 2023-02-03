@@ -7,15 +7,15 @@ import Page from "../components/page";
 import MetaData from "../components/site-metadata";
 import Spacer from "../components/spacer";
 import Text from "../components/text";
-import font from "../theme/fonts";
 
+/*import font from "../theme/fonts";
 const Heading = ({ children }: string) => (
   <Spacer top={2} bottom={1}>
     <Text size={font.fontSize2} weight="500">
       {children}
     </Text>
   </Spacer>
-);
+); */
 
 let About = () => {
   return (
