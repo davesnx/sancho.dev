@@ -45,26 +45,26 @@ const Home = () => {
         <ColumnReverse gap={8}>
           <div>
             <Text size={fonts.fontSize1} align="left">
-              <span>{`I'm a Software Engineer based in Barcelona, these days, trying to make cute software
+              <span>{`I'm a Software Engineer based in Barcelona, making cute software
         with `}</span>
               <TextLink href="http://reasonml.github.io/">Reason</TextLink>
               <span>{` and `}</span>
               <TextLink href="https://ocaml.org/">OCaml</TextLink>
               <span>{`. I co-host `}</span>
               <TextLink href="https://www.twitch.tv/emelletv">
-                EmelleTV
+                emelle.tv
               </TextLink>
               <span>{` a talk show about these languages.`}</span>
             </Text>
             <Spacer top={2} />
             <Text size={fonts.fontSize1}>
-              {`Currently working at `}
+              {`I am currently working at `}
               <TextLink href="https://ahrefs.com/">Ahrefs</TextLink>
-              {`, building User Interfaces and Tools.`}
+              {`, building user interfaces and tools.`}
             </Text>
             <Spacer top={2} />
             <Text size={fonts.fontSize1}>
-              {`You can read more about me in the `}
+              {`You can read more about me on the `}
               <NavigateText underline href="/about">
                 about
               </NavigateText>{" "}
