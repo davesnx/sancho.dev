@@ -258,7 +258,7 @@ let Post = ({
         </Spacer>
         <Text>
           <strong>Thanks for reaching the end.</strong> Let me know if you have
-          any feedback, correction or question. Always happy to chat.
+          any feedback, corrections or questions. Always happy to chat.
         </Text>
         <Spacer top={2} />
         <TwitterShare title={frontmatter.title} href={window.location.href} />
