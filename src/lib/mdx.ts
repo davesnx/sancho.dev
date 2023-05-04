@@ -8,6 +8,7 @@ import readingTime from "reading-time";
 import rehypeAutolinkHeadings from "rehype-autolink-headings";
 import rehypePrettyCode from "rehype-pretty-code";
 import rehypeSlug from "rehype-slug";
+import remarkGfm from "remark-gfm";
 import { getHighlighter, BUNDLED_LANGUAGES } from "shiki";
 
 import type { Frontmatter } from "./frontmatter";
@@ -102,7 +103,7 @@ export const getMdxBySlug = async (slug: string) => {
     mdxOptions: (options) => {
       return {
         ...options,
-        remarkPlugins: [...(options.remarkPlugins ?? [])],
+        remarkPlugins: [...(options.remarkPlugins ?? []), remarkGfm],
         rehypePlugins: [
           ...(options.rehypePlugins ?? []),
           [rehypePrettyCode, codeHighlightOptions],

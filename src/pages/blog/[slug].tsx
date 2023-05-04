@@ -20,7 +20,7 @@ import Spacer from "../../components/spacer";
 import Twitter from "../../components/svgs/twitter";
 import { Stack } from "../../components/taco";
 import Text from "../../components/text";
-import { rgb } from "../../theme/color";
+import { rgb, rgba } from "../../theme/color";
 import font from "../../theme/fonts";
 import { colors } from "../../theme/theme";
 import breakpoints from "../../theme/constants";
@@ -58,7 +58,7 @@ const PaddedH6 = styled(H6)`
 const Content = styled.p`
   font-family: ${font.sans};
   line-height: 1.7;
-  color: ${rgb(colors.body)};
+  color: ${rgba(colors.body, 0.9)};
   font-size: ${font.fontSize1};
   font-weight: 200;
   margin-bottom: 1rem;
@@ -114,6 +114,66 @@ const Pre = (props: any) => (
     <pre {...props} />
   </Oversized>
 );
+
+const Table = styled.table`
+  border-collapse: separate;
+  border-spacing: 0 0;
+  width: 100%;
+  margin: 32px 0;
+  font-family: "${font.sans}";
+  line-height: 1.7142857;
+  margin-bottom: 2em;
+  margin-top: 2em;
+  table-layout: auto;
+  text-align: left;
+
+  td {
+    border-color: ${rgba(colors.body, 0.3)};
+    border-style: solid;
+    border-bottom-width: 1px;
+    border-top-width: 0px;
+    border-left-width: 1px;
+    border-right-width: 0px;
+    padding: 0.75rem;
+  }
+
+  thead {
+    border-bottom-width: 1px;
+    border-style: solid;
+  }
+
+  th {
+    background-color: ${rgba(colors.body, 0.1)};
+    border-color: ${rgba(colors.body, 0.3)};
+    border-bottom-width: 1px;
+    border-left-width: 1px;
+    border-top-width: 1px;
+    border-right-width: 0;
+    border-style: solid;
+    padding: 0.75rem;
+    vertical-align: bottom;
+  }
+
+  td:last-child {
+    border-color: ${rgba(colors.body, 0.3)};
+    border-right-width: 1px;
+  }
+
+  th:first-of-type {
+    border-top-left-radius: 0.375rem;
+  }
+  th:last-child {
+    border-right-width: 1px;
+    border-style: solid;
+    border-top-right-radius: 0.375rem;
+  }
+  tr:last-child td:first-of-type {
+    border-bottom-left-radius: 0.375rem;
+  }
+  tr:last-child td:last-child {
+    border-bottom-right-radius: 0.375rem;
+  }
+`;
 
 const Image = (props: any) => {
   return (
@@ -250,6 +310,7 @@ let Post = ({
             blockquote: Blockquote,
             img: Image,
             pre: Pre,
+            table: Table,
           }}
         />
 
