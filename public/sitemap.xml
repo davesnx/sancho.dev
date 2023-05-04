@@ -9,5 +9,10 @@
   <url><loc>https://sancho.dev/blog/cross-compile-query-json</loc></url>
   <url><loc>https://sancho.dev/blog/hello</loc></url>
   <url><loc>https://sancho.dev/blog/learning-ocaml</loc></url>
+  <url
+    ><loc
+      >https://sancho.dev/blog/server-side-rendering-react-in-ocaml</loc
+    ></url
+  >
   <url><loc>https://sancho.dev/blog/tailwind-and-design-systems</loc></url>
 </urlset>
