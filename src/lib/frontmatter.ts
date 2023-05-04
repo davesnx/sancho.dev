@@ -7,4 +7,5 @@ export type Frontmatter = {
   readingTime?: { text: string; minutes: number; time: number; words: number };
   poster?: string;
   slug: string;
+  isDraft?: boolean;
 };

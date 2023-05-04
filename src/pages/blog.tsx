@@ -30,18 +30,22 @@ let Blog = ({ frontmatters }: { frontmatters: Array<Frontmatter> }) => {
     <>
       <MetaData title="Thoughts" />
       <Page title={<H1>Thoughts</H1>}>
-        {frontmatters.map((frontmatter: Frontmatter) => (
-          <Spacer bottom={4} key={frontmatter.title}>
-            {frontmatter.publishedAt ? (
-              <Text weight={400} color={colors.subtle} size={font.fontSizeN1}>
-                {format(parseISO(frontmatter.publishedAt), "MMMM yyyy")}
-              </Text>
-            ) : null}
-            <NavigateButton href={"/blog/" + frontmatter.slug}>
-              <H3> {frontmatter.title}</H3>
-            </NavigateButton>
-          </Spacer>
-        ))}
+        {frontmatters
+          .filter((frontmatters: Frontmatter) => {
+            return frontmatters.isDraft !== true;
+          })
+          .map((frontmatter: Frontmatter) => (
+            <Spacer bottom={4} key={frontmatter.title}>
+              {frontmatter.publishedAt ? (
+                <Text weight={400} color={colors.subtle} size={font.fontSizeN1}>
+                  {format(parseISO(frontmatter.publishedAt), "MMMM yyyy")}
+                </Text>
+              ) : null}
+              <NavigateButton href={"/blog/" + frontmatter.slug}>
+                <H3> {frontmatter.title}</H3>
+              </NavigateButton>
+            </Spacer>
+          ))}
       </Page>
     </>
   );
