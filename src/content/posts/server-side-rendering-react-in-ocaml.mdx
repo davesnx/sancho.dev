@@ -30,17 +30,17 @@ I often refer to Reason/OCaml interchangeably since they are the same for me, Re
 
 ## Ahrefs.com
 
-I work at Ahrefs, as a Software engineer on their tooling. Maintaining their design system, working on styled-ppx, helping with Melange and now working on server-reason-react.
+I work at Ahrefs, as a Software engineer on their tooling. Maintaining their design system, working on styled-ppx, helping with [Melange](https://github.com/melange-re/melange) and now working on server-reason-react.
 
-Ahrefs is a comprehensive SEO toolset that provides data-driven insights and competitive analysis for digital marketers and businesses. With one of the best crawlers of the internet, and we recently launched a search engine called [Yep.com](http://yep.com/).
+Ahrefs is a comprehensive SEO toolset that provides data-driven insights and competitive analysis for digital marketers and businesses. With one of the best crawlers of the internet, and we recently launched a search engine called [Yep.com](https://yep.com/about).
 
 It'ss written mainly in OCaml and Reason (there’s a bit of Rust and C++/D) with a monorepo with more than 1M lines between Reason and OCaml. We value type-safety, maintainability and performance.
 
-The frontend parts of Ahrefs are the dashboard (admin.ahrefs.com), the public website (ahrefs.com), a tiny website called wordcount ([https://wordcount.com](https://wordcount.com/)) and ([Yep.com](http://Yep.com)).
+The frontend parts of Ahrefs are the dashboard (app.ahrefs.com), the public website (ahrefs.com), a tiny website called [wordcount.com](https://wordcount.com/) and [Yep.com](http://Yep.com).
 
 ## The problem
 
-One of the initial problems with our main React application (admin.ahrefs.com) was the client-side rendering.
+One of the initial problems with our main React application (app.ahrefs.com) was the client-side rendering.
 
 The canonical example of this problem happens on the Header. We had to load a bunch of contextual data such as user, permissions, billing, tokens and theme. Running all of those requests on the client creates a request waterfall and often our users use more than one tool at the same time, where navigating between those is not an optimal experience. Navigation would be slow, “flashing” the header (and the entire app) while mounting each page each time can be annoying and a waste of the same requests.
 
@@ -193,9 +193,11 @@ I got a little deep into some of the details about how it works for the curious 
 
 ### Same code for frontend and backend
 
-The same code gets compiled to Native and JavaScript (thanks entirely to Melange). As far as I know, it can’t be done in other native languages such as Rust or Go.
+The same code gets compiled to Native and JavaScript (thanks entirely to [Melange](https://github.com/melange-re/melange)). As far as I know, it can’t be done in other native languages such as Rust or Go.
 
-It enables full-stack applications written in Reason. It’s not a matter of one-language-to-roll-them-all, but rather simplicity.
+![](/images/server-reason-react-graph.png)
+
+It enables full-stack applications written in Reason. It’s not a matter of one-language-to-rule-them-all, but rather simplicity.
 
 Simplicity on data types, one learning experience, one toolchain, one set of rules, etc. Even thought sharing code has some detractors (and with good reasons) once you face the troubles of maintaining big pieces of code between stacks, you appreciate a single language after-all.
 
