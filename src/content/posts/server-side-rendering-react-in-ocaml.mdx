@@ -117,7 +117,7 @@ To make sure this ReactDOM can represent all kinds of nodes in React: components
 
 ```ocaml
 type node =
-  | Lower_case of Lower_case_element.t
+  | Lower_case of lower_case_element
   | Upper_case of (unit -> node)
   | Empty
   | Text of string
@@ -130,21 +130,25 @@ type node =
 
 They match with what React internally uses with [Symbols](https://github.com/facebook/react/blob/fa4314841e7fdeef6e6bc5a7722fe74dc8e9fd89/packages/shared/ReactSymbols.js#L14)
 
-The rendering to string phase, it walks down the tree and generate specific HTML representation of each node, taking into account a few details such as serialize all DOM attributes (including inline styles), the HTML encoding and a few React particularities.
+The actual string generation is a simple walking down the react component tree and generate specific HTML representation of each node, taking into account a few details such as serialize DOM attributes, process inline styles, encode HTML and a few React particularities (such as `dangerouslySetInnerHTML` or hydration hacks).
 
 ```ocaml
-(* Pseudo-real implementation of renderToString to ilustrate the mapping *)
+(* A pseudo implementation of renderToString to ilustrate the mapping between
+components and HTML representation.
 
-let renderToString node =
+  Note: `++` is a string concatenation operator *)
+
+let render_to_string node =
+  (* ... *)
   match node with
     (* ... *)
-    | List list -> List.iter render_to_string_inner list
-    | Upper_case_component component -> render_to_string_inner (component ())
-    | Lower_case_element { tag; attributes; _ } when Html.is_self_closing_tag tag ->
-        "<" ++ tag ++ (attributes_to_string tag attributes) ++ " />"
-    | Lower_case_element { tag; attributes; children } ->
+    | List list -> List.iter render_to_string list
+    | Upper_case component -> render_to_string (component ())
+    | Lower_case { tag; attributes; _ } when Html.is_self_closing_tag tag ->
+        "<" ++ tag ++ (attributes_to_string tag attributes) ++ "/>"
+    | Lower_case { tag; attributes; children } ->
         "<" ++ tag ++ (attributes_to_string tag attributes) ++ ">" ++
-        (List.iter render_to_string_inner children) ++
+        (List.iter render_to_string children) ++
         "</" ++ tag ++ ">"
     | Text text -> Html.encode text
     | DangerouslyInnerHtml inner_html -> inner_html
@@ -156,8 +160,7 @@ With all of this solved, the rest of React such as hooks, portals or any other A
 
 One difference from my implementation is about doing a single pass on the React tree, while React.js does multiple passes, but it’s on them to change it: [https://github.com/facebook/react/issues/25318](https://github.com/facebook/react/issues/25318)
 
-> All internals from React like the reconcilier, VDOM diffing, and Suspense logic don’t play a role in the server.
->
+With all of this done, we can return those strings as HTTP responses, and we have a server-side rendering solution working!
 
 ## Benchmark
 
@@ -177,9 +180,9 @@ We compared the performance of three stacks in terms of latency, requests per se
 | Bun | 10.3k | 24.32ms | 17.5MB |
 | server-reason-react (OCaml) | 64.8k | 6.21ms | 155MB |
 
-It shows a approximate x7 improvement over Node and x3.5 over Bun.
+It shows an approximate improvement of x7 over Node and x3.5 over Bun.
 
-All tests are run on my **MacBook Pro (13-inch, M1, 2020)**, and the benchmark data comes from a demo repository: [https://github.com/ml-in-barcelona/fullstack-reason-react-demo/tree/main/benchmark](https://github.com/ml-in-barcelona/fullstack-reason-react-demo/tree/main/benchmark)
+All tests are run on my **MacBook Pro (13-inch, M1, 2020)**, and the benchmark data comes from a demo repository: [https://github.com/ml-in-barcelona/fullstack-reason-react-demo/tree/main/benchmark](https://github.com/ml-in-barcelona/fullstack-reason-react-demo/tree/main/benchmark).
 
 ## Status
 
