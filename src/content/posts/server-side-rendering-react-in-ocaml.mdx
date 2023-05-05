@@ -46,17 +46,16 @@ The canonical example of this problem happens on the Header. We had to load a bu
 
 To address those issues, we implemented server-side rendering for the static parts: a “shell” app and injecting the data as regular `scripts` with serialized JSON. We used [Tyxml](https://github.com/ocsigen/tyxml), a library that generates HTML from OCaml, for creating these static templates.
 
-It improved the user experience by a lot, but quickly encountered a new problem: having two separate implementations of the same components. The client version, written in React and the server version, written with Tyxml.
+It improved the user experience by a lot, since the HTML served contains the static part of the app, so the browser can cache it locally. But, we quickly encountered a new problem: having two separate implementations of the same component. The client version, written in React and the server version, written with Tyxml.
 
 - Not easy to share implementations or even styles between the two
 - Keeping both versions in sync with different data-requirements is too much hustle: Ensuring the server version of the component functioned correctly without data and the client one mounts on top with the interaction.
 
 The resulting tech was difficult to maintain, deterring developers from making significant changes. While this solution was adequate for some time, we sought a more scalable approach for our other frontends.
 
-> To address some of those problems, Javi experimented to mix Tyxml and ReasonReact together and published the experiment in his blog: [https://www.javierchavarri.com/react-server-side-rendering-with-ocaml](https://www.javierchavarri.com/react-server-side-rendering-with-ocaml/)
->
+> To address some of those problems, Javi experimented to mix Tyxml and ReasonReact and published the experiment in his blog: [javierchavarri.com/react-server-side-rendering-with-ocaml](https://www.javierchavarri.com/react-server-side-rendering-with-ocaml)
 
-In addition to server-side rendering (for each request), we needed a different strategy for our static pages, such as Server-Side Generation (what Next.js calls Incremental Static Regeneration) which means running the rendering at build-time and populate state on each request.
+In addition to server-side rendering (rendering in each request), we needed a different strategy for our static pages, such as Server-Side Generation (what Next.js calls Incremental Static Regeneration). Running a rendering step at build-time and populate state on each request.
 
 Ultimately, our goal was to use the same client components from our design system in these server templates.
 
