@@ -101,7 +101,7 @@ How hard it would be?
 
 The Reason parser comes with the JSX transformation out of the box, so JSX expressions are compiled down to function calls. No need to use babel, esbuild or vite in Reason.
 
-![A Reason React component describing a simple Counter](/images/counter-reason-jsx.png)
+![A-Reason-React-component-describing-a-simple-Counter](/images/counter-reason-jsx.png)
 
 `reason-react` are a set of bindings to the JavaScript version of React. So, a tiny layer for the type-system to tell the Reason code the right interface of those hooks, createElement calls, and any React API, similar on what [`.d.ts` modules](https://www.typescriptlang.org/docs/handbook/declaration-files/templates/module-d-ts.html) are in TypeScript or [FFI in Rust](https://doc.rust-lang.org/nomicon/ffi.html).
 
@@ -138,20 +138,20 @@ components and HTML representation.
 
   Note: `++` is a string concatenation operator *)
 
-let render_to_string node =
+let rec render_to_string node =
   (* ... *)
   match node with
     (* ... *)
-    | List list -> List.iter render_to_string list
-    | Upper_case component -> render_to_string (component ())
     | Lower_case { tag; attributes; _ } when Html.is_self_closing_tag tag ->
         "<" ++ tag ++ (attributes_to_string tag attributes) ++ "/>"
     | Lower_case { tag; attributes; children } ->
         "<" ++ tag ++ (attributes_to_string tag attributes) ++ ">" ++
         (List.iter render_to_string children) ++
         "</" ++ tag ++ ">"
+    | Upper_case component -> render_to_string (component ())
     | Text text -> Html.encode text
     | DangerouslyInnerHtml inner_html -> inner_html
+    | List list -> List.iter render_to_string list
 ```
 
 To be sure it supports full render and hydration the same way as React does, I migrated all tests from the [ReactDOM's server test suite](https://github.com/facebook/react/tree/main/packages/react-dom/src/__tests__).
@@ -198,7 +198,7 @@ I got a little deep into some of the details about how it works for the curious 
 
 The same code gets compiled to Native and JavaScript (thanks entirely to [Melange](https://github.com/melange-re/melange)). As far as I know, it can’t be done in other native languages such as Rust or Go.
 
-![](/images/server-reason-react-graph.png)
+![server-reason-react-graph-tldraw](/images/server-reason-react-graph.png)
 
 It enables full-stack applications written in Reason. It’s not a matter of one-language-to-rule-them-all, but rather simplicity.
 
