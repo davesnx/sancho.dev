@@ -20,21 +20,21 @@ The first piece of context to follow this post is to introduce Reason and OCaml 
 
 ## Clarity about Reason and OCaml
 
-[Reason](https://reasonml.github.io/) is a language built on top of [OCaml](https://ocaml.org), they share the compiler, the type-checker, and most tooling around. It was created by Jordan Walke to allow JavaScript developers to enjoy OCaml. Back in the days (when TypeScript was not popular) many members from the JavaScript community were interested in Reason.
+[Reason](https://reasonml.github.io/) is a language built on top of [OCaml](https://ocaml.org), they share the compiler, the type-checker, and most tooling around. It was created by Jordan Walke to allow JavaScript developers to enjoy OCaml. Back in the days (when TypeScript was not as popular) many members from the JavaScript community were interested in Reason.
 
 OCaml is a type-safe and robust language that empowers a functional style with powerful inference. It provides a unique balance of performance, maintainability, and reliability.
 
 Despite being a niche programming language, OCaml has made an impact on modern programming languages and language tooling. The first versions of Rust were implemented in OCaml and Meta’s Flow JavaScript type checker as well, also used as the basis for ReScript an offshoot programming language which offers compiled statically typed code into JavaScript. Nowadays, OCaml is a solid option for a general programming language backed by trade firms, blockchains and SaaS companies.
 
-I often refer to Reason/OCaml interchangeably since they are the same for me, Reason is still a different syntax that should feel familiar to JavaScript developers, but the “engine” is the same as OCaml.
+I often refer to Reason/OCaml interchangeably since they are the same for me. Reason has a different syntax that should feel familiar to JavaScript developers, but the “engine” is the same as OCaml.
 
 ## Ahrefs.com
 
-I work at Ahrefs, as a Software engineer on their tooling. Maintaining their design system, working on styled-ppx, helping with [Melange](https://github.com/melange-re/melange) and now working on server-reason-react.
+At Ahrefs, I'm a Software engineer working on tooling. I work on maintaining the design system, styled-ppx, helping with [Melange](https://github.com/melange-re/melange) and now on server-reason-react.
 
-Ahrefs is a comprehensive SEO toolset that provides data-driven insights and competitive analysis for digital marketers and businesses. With one of the best crawlers of the internet, and we recently launched a search engine called [Yep.com](https://yep.com/about).
+Ahrefs is a comprehensive SEO toolset that provides data-driven insights and competitive analysis for digital marketers and businesses. With one of the best crawlers of the internet, we recently launched a search engine called [Yep.com](https://yep.com/about) with the goal of providing a better revenu-sharing model.
 
-It'ss written mainly in OCaml and Reason (there’s a bit of Rust and C++/D) with a monorepo with more than 1M lines between Reason and OCaml. We value type-safety, maintainability and performance.
+It's written mainly in OCaml and Reason (there’s a bit of Rust and C++/D) with a monorepo containing more than 1M lines of code. We value type-safety, maintainability and performance.
 
 The frontend parts of Ahrefs are the dashboard (app.ahrefs.com), the public website (ahrefs.com), a tiny website called [wordcount.com](https://wordcount.com/) and [Yep.com](http://Yep.com).
 
@@ -129,7 +129,7 @@ type node =
 
 They match with what React internally uses with [Symbols](https://github.com/facebook/react/blob/fa4314841e7fdeef6e6bc5a7722fe74dc8e9fd89/packages/shared/ReactSymbols.js#L14)
 
-The actual string generation is a simple walking down the react component tree and generate specific HTML representation of each node, taking into account a few details such as serialize DOM attributes, process inline styles, encode HTML and a few React particularities (such as `dangerouslySetInnerHTML` or hydration hacks).
+The actual string generation is done by traversing the component tree to generate specific HTML representation of each node. In each "node" takes into account a few details such as serialize DOM attributes, process inline styles, encode HTML and a few React particularities (such as `dangerouslySetInnerHTML` or hydration hacks).
 
 ```ocaml
 (* A pseudo implementation of renderToString to ilustrate the mapping between
@@ -155,7 +155,7 @@ let rec render_to_string node =
 
 To be sure it supports full render and hydration the same way as React does, I migrated all tests from the [ReactDOM's server test suite](https://github.com/facebook/react/tree/main/packages/react-dom/src/__tests__).
 
-With all of this solved, the rest of React such as hooks, portals or any other APIs, aren’t a big deal on the server. Actually, they are very dumb. Most hooks do nothing: useEffect don’t run. useState is only setting the initial value, all setStates are ignored. useCallback creates the function once (and probably never called). useMemo runs and gets the value.
+With all of this solved, on the server rest rest of React such as hooks, portals or any other APIs were trivial in comparision. Most hooks do nothing: useEffect don’t run. useState is only setting the initial value, all setStates are ignored. useCallback creates the function once (and probably never called). useMemo runs and gets the value.
 
 One difference from my implementation is about doing a single pass on the React tree, while React.js does multiple passes, but it’s on them to change it: [https://github.com/facebook/react/issues/25318](https://github.com/facebook/react/issues/25318)
 
@@ -167,7 +167,7 @@ The main question I got while I was implementing this was about performance.
 
 The theory said that a compiled language (OCaml) should over-perform an interpreted one (JavaScript in node), even when v8 (the engine that node runs on top) is working tirelessly to optimise it. There have been many benchmarks to prove it, but does it holds true here?
 
-I was curious too, but, as explained above it wasn’t the main driver for server-reason-react to born. In fact the implementation isn’t very optimised, and not even profiled. It does try to minimise allocations and CPU cycles but there hasn’t been any performance work so far.
+I was curious too, but, as explained above it was not the impetus for server-reason-react creation. In fact the implementation isn’t very optimised, and not even profiled. It does try to minimise allocations and CPU cycles but there hasn’t been any performance work so far.
 
 I made a small micro-benchmark before pushing to production to ensure there wasn’t any regression and prove how much gain are we talking about (against a Node and bun solutions):
 
@@ -185,7 +185,7 @@ All tests are run on my **MacBook Pro (13-inch, M1, 2020)**, and the benchmark d
 
 ## Status
 
-It’s deployed to all users at [app.ahrefs.com](http://app.ahrefs.com) since February and planning to use it for all frontends. It’s not ready for consumption, thought. The lack of documentation, the shape of the libraries and some missing APIs makes it hard to use and I don’t recommend relying on it.
+It’s deployed to all users at [app.ahrefs.com](http://app.ahrefs.com) since February and planning to use it for all frontends. Althought, it’s not ready for consumption. The lack of documentation, the shape of the libraries and some missing APIs makes it hard to use and I don’t recommend relying on it.
 
 Even with all of this, if you are still interested feel free to contact me in [Discord](https://discord.com/users/122441959414431745) or [Twitter](https://www.twitter.com/davesnx).
 
@@ -195,39 +195,39 @@ I got a little deep into some of the details about how it works for the curious 
 
 ### Same code for frontend and backend
 
-The same code gets compiled to Native and JavaScript (thanks entirely to [Melange](https://github.com/melange-re/melange)). As far as I know, it can’t be done in other native languages such as Rust or Go.
+The same code gets compiled to Native and JavaScript (thanks entirely to [Melange](https://github.com/melange-re/melange)). As far as I know, it can’t be done in other native languages such as Rust or Go, there are many of similar solutions but they don't cross-compile the same code.
 
 ![server-reason-react-graph-tldraw](/images/server-reason-react-graph.png)
 
-It enables full-stack applications written in Reason. It’s not a matter of one-language-to-rule-them-all, but rather simplicity.
+It enables full-stack applications written in Reason. It’s not a matter of "one language to rule them all", but rather simplicity.
 
-Simplicity on data types, one learning experience, one toolchain, one set of rules, etc. Even thought sharing code has some detractors (and with good reasons) once you face the troubles of maintaining big pieces of code between stacks, you appreciate a single language after-all.
+Simplicity on shared data types, one learning experience, one toolchain, one set of rules, etc. Even thought sharing code has some detractors (and with good reasons) once you face the troubles of maintaining big pieces of code between stacks, you appreciate a single language after-all.
 
 ### Performance is much better
 
-Performance is critical for any SSR solution, not only the rendering engine itself but the platform you are running as well. Not only the number of requests per second it supports or the memory footprint. Many things come to play with performance, but another annoyance is the slow start. The slow start of a Node application is a barrier for current solutions. Often solved by changing the architecture of your application and going to the Edge, or a blocker to run SSR in development.
+Performance is critical for any SSR solution, not only the rendering engine itself but the platform you are running as well. Not only the number of requests per second it supports or the memory footprint. Among many performance issues, one that stands out is the slow start. The slow start of a Node application is a barrier for current solutions. Often this problems is addressed by changing the architecture of your application by utilizing Edge computing, or a blocker to run SSR in development.
 
-As a small example, if the server is fast enough it can be to boot for each request and tear down when the session finishes. It’s currently possible in some OCaml-based frameworks. While it's unimaginable to do that with Node.
+Here is an example of a performance benefit from OCaml. Some OCaml-based frameworks are fast enough that it can boot for each request and tear down when the session finishes. On the other hand, this is much more challenging to do with Node.
 
 Maybe with a more performant approach we can solve some of [the problems from SSR](https://github.com/theninthsky/client-side-rendering#ssr-disadvantages)
 
-### Allows to explore further exploration with React and OCaml effects
-
-Creates the base for implementing Server components, which are a deal breaker for server-reason-react. Allowing to only run components on the server and stream the output representation of it, and don’t execute, neither load that component might change radically how we write our backends.
+### Allows further exploration of effects of React and OCaml
 
 React has been influenced by OCaml and some functional programming concepts from the start. Such as immutability, purity and eventually algebraic effects.
 
-Since recently OCaml has released their awaited v5 with Multicore and Effects, this enables the possibility to explore some of the React’s concepts to be written in OCaml.
+Creates the base implementation for Server components, which are a deal breaker for server-reason-react. Allowing to only run components on the server and stream the output representation of it, without the client-side penalty of executing the JavaScript code, can change radically how we write our backends.
 
-## Why would you not use it
+Recently OCaml 5.0 was released with the highly anticipated features Multicore and Effects. These new features enable the possibility of exploring some of React’s concepts to be written in OCaml.
 
-There are many reasons why I wouldn’t recommend jump on it, some of the most important ones are:
+## Why you should not use it
+
+Here are main reasons why I would not adopt server-reason-react today:
 
 - It’s an entire new ecosystem: new language, new package manager, new trade-offs.
 - The learning curve might be big. The tradeoffs made by OCaml do not match with some by JavaScript (or node). Probably not as big as learning how to deal with a borrow checker 😛
-- Not everyone needs this. At Ahrefs it made a lot of sense, but this might not be your use-case.
+- Not everyone needs this. At Ahrefs it made a lot of sense, but this it may not for you.
 - It is still very experimental
-- Requires to lift the ecosystem to work on the server
+- Requires to lift the ecosystem to work on the server, so all client-side libraries need to be ported to OCaml when needed or stub.
 - Smaller community, but growing
 
 ## Final thoughts
