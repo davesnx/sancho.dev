@@ -121,6 +121,7 @@ const Table = styled.table`
   width: 100%;
   margin: 32px 0;
   font-family: "${font.sans}";
+  color: ${rgba(colors.body, 0.9)};
   line-height: 1.7142857;
   margin-bottom: 2em;
   margin-top: 2em;
