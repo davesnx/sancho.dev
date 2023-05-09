@@ -3,7 +3,7 @@
  */
 
 const nextConfig = {
-  compress: true,
+  compress: false,
   swcMinify: true,
   typescript: {
     // Dangerously allow production builds to successfully complete even if your project has type errors.
