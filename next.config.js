@@ -3,7 +3,6 @@
  */
 
 const nextConfig = {
-  assetPrefix: ".",
   compress: true,
   swcMinify: true,
   typescript: {
