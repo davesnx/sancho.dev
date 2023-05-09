@@ -3,7 +3,6 @@
  */
 
 const nextConfig = {
-  assetPrefix: ".",
   compress: false,
   typescript: {
     // Dangerously allow production builds to successfully complete even if your project has type errors.
