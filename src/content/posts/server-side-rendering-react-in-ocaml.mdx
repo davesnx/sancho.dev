@@ -154,7 +154,7 @@ let rec render_to_string node =
 
 To be sure it supports full render and hydration the same way as React does, I migrated all tests from the [ReactDOM's server test suite](https://github.com/facebook/react/tree/main/packages/react-dom/src/__tests__).
 
-With all of this solved, on the server rest rest of React such as hooks, portals or any other APIs were trivial in comparision. Most hooks do nothing: useEffect don’t run. useState is only setting the initial value, all setStates are ignored. useCallback creates the function once (and probably never called). useMemo runs and gets the value.
+With all of this solved, on the server rest of React such as hooks, portals or any other APIs were trivial in comparision. Most hooks do nothing: useEffect don’t run. useState is only setting the initial value, all setStates are ignored. useCallback creates the function once (and probably never called). useMemo runs and gets the value.
 
 One difference from my implementation is about doing a single pass on the React tree, while React.js does multiple passes, but it’s on them to change it: [https://github.com/facebook/react/issues/25318](https://github.com/facebook/react/issues/25318)
 
