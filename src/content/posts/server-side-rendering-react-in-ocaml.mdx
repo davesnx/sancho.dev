@@ -78,7 +78,7 @@ The other solution is to serve the application by Node and using OCaml as API.
 
 Placing node in front is a very common architecture that works wonderful in some teams, but there are still some drawbacks when using Node in the backend for Ahrefs.
 
-Most of our API consist of fetching from different data storages and shuffle this data to serve it. Some of those problems make it non ideal for us:
+Most of our API consists of fetching from different data storages and shuffle this data to serve it. Some of those problems make it non ideal for us:
 
 - Single-threaded nature: Node.js is inherently single-threaded, which can lead to performance issues when dealing with high-concurrency or CPU-intensive tasks.
 - Node.js isn’t the best player at memory consumption. SSR applications can be memory-intensive, potentially causing resource constraints in production environments.
