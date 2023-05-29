@@ -48,11 +48,11 @@ To address those issues, we implemented server-side rendering for the static par
 It improved the user experience by a lot, since the HTML served contains the static part of the app, so the browser can cache it locally. But, we quickly encountered a new problem: having two separate implementations of the same component. The client version, written in React and the server version, written with Tyxml.
 
 - Not easy to share implementations or even styles between the two
-- Keeping both versions in sync with different data-requirements is too much hustle: Ensuring the server version of the component functioned correctly without data and the client one mounts on top with the interaction.
+- Keeping both versions in sync with different data-requirements is too much hustle: Ensuring the server version of the component functioned correctly without data and the client one mounts on top with the interaction
 
 The resulting tech was difficult to maintain, deterring developers from making significant changes. While this solution was adequate for some time, we sought a more scalable approach for our other frontends.
 
-> To address some of those problems, Javi experimented to mix Tyxml and ReasonReact and published the experiment in his blog: [javierchavarri.com/react-server-side-rendering-with-ocaml](https://www.javierchavarri.com/react-server-side-rendering-with-ocaml)
+> To address some of those problems, Javi (one of my coworkers) experimented to mix Tyxml and ReasonReact and published the experiment in his blog: [javierchavarri.com/react-server-side-rendering-with-ocaml](https://www.javierchavarri.com/react-server-side-rendering-with-ocaml)
 
 In addition to server-side rendering (rendering in each request), we needed a different strategy for our static pages, such as Server-Side Generation (what Next.js calls Incremental Static Regeneration). Running a rendering step at build-time and populate state on each request.
 
@@ -69,8 +69,8 @@ Running the pre-rendering step during the build and serving them via our backend
 This solution couples the build process (running in CI) with the runtime (the production and staging servers). Increased the complexity on how we were serving those static files, and how those static files became polluted with data (also known as hydration).
 
 - Templates could be unsafe to hydrate and error prone
-- Needed to generate templates for each language (currently 17) and upload them on CI.
-- Running the pre-rendering on CI made a weird combination, pre-rendering required to couple our OCaml backend with HTML files and be aware of purging the cache.
+- Needed to generate templates for each language (currently 17) and upload them on CI
+- Running the pre-rendering on CI made a weird combination, pre-rendering required to couple our OCaml backend with HTML files and be aware of purging the cache
 
 ### Running Node with SSR on production
 
@@ -87,7 +87,7 @@ Most of our API consists of fetching from different data storages and shuffle th
 - Might lead to some duplication of logic —e.g. authentication— on both our Backend and Node.
 - Switching a request from the server to the client (or the other way around) can be challenging, potentially leading to increased complexity and maintenance efforts.
 
-After talking with Javi about his explorations on Tyxml and ReasonReact, an idea appeared: wouldn’t be very hard to use the *exact same code* from the client in the server, if we re-implement or stub some stuff.
+After discussing with my coworkers and specially Javi with his explorations on Tyxml and ReasonReact, an idea appeared: it might be possible to use the *exact same code* from the client in the server, if we re-implement or stub some stuff here and there.
 
 We could have the same approach on how the JavaScript ecosystem do, running the exact same React components on the server but with the twist of running native code on the server while compiled JavaScript on the client.
 
@@ -109,9 +109,9 @@ The repository lives here [https://github.com/reasonml/reason-react](https://git
 
 `server-reason-react` is a re-implementation of ReactDOMServer (`react-dom/server`) and some parts of React itself to generate markup from a React component but written in OCaml.
 
-More precisely `ReactDOM.renderToString and ReactDOM.renderToStaticMarkup`
+More precisely `ReactDOM.renderToString` and `ReactDOM.renderToStaticMarkup`
 
-To make sure this ReactDOM can represent all kinds of nodes in React: components, elements, Fragments, Providers, Consumers, There’s a `node` variant:
+To make sure this ReactDOM can represent all kinds of nodes in React: components, elements, Fragments, Providers, Consumers. Here's the `node` variant type that represents all of them:
 
 ```ocaml
 type node =
@@ -126,7 +126,7 @@ type node =
   | Consumer of (unit -> node list)
 ```
 
-They match with what React internally uses with [Symbols](https://github.com/facebook/react/blob/fa4314841e7fdeef6e6bc5a7722fe74dc8e9fd89/packages/shared/ReactSymbols.js#L14)
+It's a [variant type (aka union or ADT)](https://dev.realworldocaml.org/variants.html) and it matches with what React internally uses with [Symbols](https://github.com/facebook/react/blob/fa4314841e7fdeef6e6bc5a7722fe74dc8e9fd89/packages/shared/ReactSymbols.js#L14).
 
 The actual string generation is done by traversing the component tree to generate specific HTML representation of each node. In each "node" takes into account a few details such as serialize DOM attributes, process inline styles, encode HTML and a few React particularities (such as `dangerouslySetInnerHTML` or hydration hacks).
 
@@ -176,11 +176,13 @@ We compared the performance of three stacks in terms of latency, requests per se
 | --- | --- | --- | --- |
 | Node.js (with Express) | 7.2k | 30.98ms | 8.25MB |
 | Bun | 10.3k | 24.32ms | 17.5MB |
-| server-reason-react (OCaml) | 64.8k | 6.21ms | 155MB |
+| server-reason-react (with OCaml) | 64.8k | 6.21ms | 155MB |
 
 It shows an approximate improvement of x10 over Node and x6 over Bun.
 
-All tests are run on my **MacBook Pro (13-inch, M1, 2020)**, and the benchmark data comes from a demo repository: [https://github.com/ml-in-barcelona/fullstack-reason-react-demo/tree/main/benchmark](https://github.com/ml-in-barcelona/fullstack-reason-react-demo/tree/main/benchmark).
+All tests are run on local under my **MacBook Pro (13-inch, M1, 2020)**, and the benchmark data comes from a demo repository: [https://github.com/ml-in-barcelona/fullstack-reason-react-demo/tree/main/benchmark](https://github.com/ml-in-barcelona/fullstack-reason-react-demo/tree/main/benchmark).
+
+Even thought the benchmark is not very scientific and it can lie in terms of micro-benchmarking it shows the potential of this approach and validates the theory.
 
 ## Status
 
@@ -224,11 +226,11 @@ Recently OCaml 5.0 was released with the highly anticipated features Multicore a
 
 Here are main reasons why I would not adopt server-reason-react today:
 
-- It’s an entire new ecosystem: new language, new package manager, new trade-offs.
+- It’s an entire new ecosystem: new language, new package manager, new trade-offs
 - The learning curve might be big. The tradeoffs made by OCaml do not match with some by JavaScript (or node). Probably not as big as learning how to deal with a borrow checker 😛
 - Not everyone needs this. At Ahrefs it made a lot of sense, but this it may not for you.
 - It is still very experimental
-- Requires to lift the ecosystem to work on the server, so all client-side libraries need to be ported to OCaml when needed or stub.
+- Requires to lift the ecosystem to work on the server, so all client-side libraries need to be ported to OCaml when needed or stub
 - Smaller community, but growing
 
 ## Final thoughts
