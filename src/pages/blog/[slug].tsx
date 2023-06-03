@@ -283,15 +283,17 @@ let Post = ({
       />
       <Page
         title={
-          <Stack align="left" gap={1}>
-            <Spacer bottom={3}>
-              <NavigateText href="/blog">Back</NavigateText>
-            </Spacer>
-            <H1>{frontmatter.title}</H1>
-            <Text weight={400} color={colors.subtle} size={font.fontSizeN1}>
-              {format(parseISO(frontmatter.publishedAt), "MMMM yyyy")}
-            </Text>
-          </Stack>
+          <Spacer bottom={10}>
+            <Stack align="left" gap={1}>
+              <Spacer bottom={3}>
+                <NavigateText href="/blog">Back</NavigateText>
+              </Spacer>
+              <H1>{frontmatter.title}</H1>
+              <Text weight={400} color={colors.subtle} size={font.fontSizeN1}>
+                {format(parseISO(frontmatter.publishedAt), "MMMM yyyy")}
+              </Text>
+            </Stack>
+          </Spacer>
         }
       >
         <Component
