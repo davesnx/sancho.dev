@@ -120,10 +120,10 @@ type node =
   | Empty
   | Text of string
   | InnerHtml of string
-  | Fragment of node list
+  | Fragment of node array
   | List of node array
-  | Provider of (unit -> node) list
-  | Consumer of (unit -> node list)
+  | Provider of (node array)
+  | Consumer of (node array)
 ```
 
 It's a [variant type (aka union or ADT)](https://dev.realworldocaml.org/variants.html) and it matches with what React internally uses with [Symbols](https://github.com/facebook/react/blob/fa4314841e7fdeef6e6bc5a7722fe74dc8e9fd89/packages/shared/ReactSymbols.js#L14).
