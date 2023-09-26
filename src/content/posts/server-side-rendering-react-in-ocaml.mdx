@@ -114,19 +114,18 @@ More precisely `ReactDOM.renderToString` and `ReactDOM.renderToStaticMarkup`
 To make sure this ReactDOM can represent all kinds of nodes in React: components, elements, Fragments, Providers, Consumers. Here's the `node` variant type that represents all of them:
 
 ```ocaml
-type node =
-  | Lower_case of lower_case_element
-  | Upper_case of (unit -> node)
+type rec node =
   | Empty
   | Text of string
-  | InnerHtml of string
-  | Fragment of node array
+  | Lower_case of lower_case_element
+  | Upper_case of (unit -> node)
   | List of node array
-  | Provider of (node array)
-  | Consumer of (node array)
+  | Fragment of node
+  | Provider of node
+  | Consumer of node
 ```
 
-It's a [variant type (aka union or ADT)](https://dev.realworldocaml.org/variants.html) and it matches with what React internally uses with [Symbols](https://github.com/facebook/react/blob/fa4314841e7fdeef6e6bc5a7722fe74dc8e9fd89/packages/shared/ReactSymbols.js#L14).
+It's a [variant type (aka union or ADT)](https://dev.realworldocaml.org/variants.html) and it matches with what React internally uses with [Symbols](https://github.com/facebook/react/blob/fa4314841e7fdeef6e6bc5a7722fe74dc8e9fd89/packages/shared/ReactSymbols.js#L14). It's a recursive type (`rec`) since it references itself.
 
 The actual string generation is done by traversing the component tree to generate specific HTML representation of each node. In each "node" takes into account a few details such as serialize DOM attributes, process inline styles, encode HTML and a few React particularities (such as `dangerouslySetInnerHTML` or hydration hacks).
 
@@ -148,8 +147,7 @@ let rec render_to_string node =
         "</" ++ tag ++ ">"
     | Upper_case component -> render_to_string (component ())
     | Text text -> Html.encode text
-    | DangerouslyInnerHtml inner_html -> inner_html
-    | List list -> List.iter render_to_string list
+    | List list -> Array.iter render_to_string list
 ```
 
 To be sure it supports full render and hydration the same way as React does, I migrated all tests from the [ReactDOM's server test suite](https://github.com/facebook/react/tree/main/packages/react-dom/src/__tests__).
