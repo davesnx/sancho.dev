@@ -113,41 +113,45 @@ More precisely `ReactDOM.renderToString` and `ReactDOM.renderToStaticMarkup`
 
 To make sure this ReactDOM can represent all kinds of nodes in React: components, elements, Fragments, Providers, Consumers. Here's the `node` variant type that represents all of them:
 
-```ocaml
-type rec node =
+```reason
+type element =
   | Empty
-  | Text of string
-  | Lower_case of lower_case_element
-  | Upper_case of (unit -> node)
-  | List of node array
-  | Fragment of node
-  | Provider of node
-  | Consumer of node
+  | Text(string)
+  | List(array(element))
+  | Fragment(element)
+  | Html_element(string, attributes, list(element))
+  | Component(unit => element)
+  | Provider(element)
+  | Consumer(element)
+  | Suspense({ children: element, fallback: element })
 ```
 
 It's a [variant type (aka union or ADT)](https://dev.realworldocaml.org/variants.html) and it matches with what React internally uses with [Symbols](https://github.com/facebook/react/blob/fa4314841e7fdeef6e6bc5a7722fe74dc8e9fd89/packages/shared/ReactSymbols.js#L14). It's a recursive type (`rec`) since it references itself.
 
 The actual string generation is done by traversing the component tree to generate specific HTML representation of each node. In each "node" takes into account a few details such as serialize DOM attributes, process inline styles, encode HTML and a few React particularities (such as `dangerouslySetInnerHTML` or hydration hacks).
 
-```ocaml
-(* A pseudo implementation of renderToString to ilustrate the mapping between
+```reason
+/* A pseudo implementation of renderToString to ilustrate the mapping between
 components and HTML representation.
 
-  Note: `++` is a string concatenation operator *)
+  Note: `++` is a string concatenation operator */
 
-let rec render_to_string node =
+let rec render_to_string = node =>
   (* ... *)
-  match node with
+  switch (node) {
     (* ... *)
-    | Lower_case { tag; attributes; _ } when Html.is_self_closing_tag tag ->
-        "<" ++ tag ++ (attributes_to_string tag attributes) ++ "/>"
-    | Lower_case { tag; attributes; children } ->
-        "<" ++ tag ++ (attributes_to_string tag attributes) ++ ">" ++
-        (List.iter render_to_string children) ++
+    | Html_element({ tag, attributes, _ }) when Html.is_self_closing_tag(tag) =>
+        "<" ++ tag ++ attributes_to_string(tag, attributes) ++ "/>"
+    | Html_element({ tag, attributes, children }) =>
+        "<" ++ tag ++ attributes_to_string(tag, attributes) ++ ">" ++
+        List.iter(render_to_string, children) ++
         "</" ++ tag ++ ">"
-    | Upper_case component -> render_to_string (component ())
-    | Text text -> Html.encode text
-    | List list -> Array.iter render_to_string list
+    | Component(component) => render_to_string(component())
+    | Text(text) => Html.encode(text)
+    | List(list) => Array.iter(render_to_string, list)
+    | Consumer(element) | Provider(element) => render_element(element)
+    | Suspense({ children: _, fallback }) => render_element(fallback)
+  }
 ```
 
 To be sure it supports full render and hydration the same way as React does, I migrated all tests from the [ReactDOM's server test suite](https://github.com/facebook/react/tree/main/packages/react-dom/src/__tests__).
