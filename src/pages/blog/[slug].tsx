@@ -18,7 +18,7 @@ import Page from "../../components/page";
 import MetaData from "../../components/site-metadata";
 import Spacer from "../../components/spacer";
 import Twitter from "../../components/svgs/twitter";
-import { Stack } from "../../components/taco";
+import { Stack, Row } from "../../components/taco";
 import Text from "../../components/text";
 import { rgb, rgba } from "../../theme/color";
 import font from "../../theme/fonts";
@@ -235,6 +235,26 @@ const TwitterShare = ({ title, href }: { title: string; href: string }) => {
   );
 };
 
+const BackIcon = () => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    className="icon icon-tabler icon-tabler-arrow-left"
+    width="14"
+    height="14"
+    viewBox="0 0 24 24"
+    strokeWidth="2"
+    stroke="currentColor"
+    fill="none"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+  >
+    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+    <path d="M5 12l14 0"></path>
+    <path d="M5 12l6 6"></path>
+    <path d="M5 12l6 -6"></path>
+  </svg>
+);
+
 export const getStaticPaths: GetStaticPaths = () => {
   let frontmatters = getAllFrontmatter();
   const paths = frontmatters.map(({ slug }: Frontmatter) => ({
@@ -286,7 +306,10 @@ let Post = ({
           <Spacer bottom={10}>
             <Stack align="left" gap={1}>
               <Spacer bottom={3}>
-                <NavigateText href="/blog">Back</NavigateText>
+                <Row align="center" gap={0.5}>
+                  <BackIcon />
+                  <NavigateText href="/blog">Back</NavigateText>
+                </Row>
               </Spacer>
               <H1>{frontmatter.title}</H1>
               <Text weight={400} color={colors.subtle} size={font.fontSizeN1}>
