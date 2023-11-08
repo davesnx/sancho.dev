@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "@emotion/styled";
 
-import { H1 } from "../components/heading";
+import { H2 } from "../components/heading";
 import { TextLink, NavigateText } from "../components/link";
 import Page from "../components/page";
 import MetaData from "../components/site-metadata";
@@ -40,7 +40,7 @@ const Home = () => {
       <MetaData title="Home" />
       <Page>
         <Spacer bottom={3}>
-          <H1>David Sancho</H1>
+          <H2>David Sancho</H2>
         </Spacer>
         <ColumnReverse gap={8}>
           <div>

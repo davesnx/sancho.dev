@@ -10,6 +10,7 @@ const Heading = css`
   padding: 0;
   font-family: "${fonts.sans}";
   font-weight: 500;
+  line-height: 1.6;
 `;
 
 export const H1 = styled.h1`
