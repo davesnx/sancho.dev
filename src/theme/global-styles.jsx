@@ -39,17 +39,15 @@ const GlobalStyles = css`
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     -webkit-overflow-scrolling: touch;
-
-    line-height: 1.4;
     box-sizing: border-box;
   }
 
   pre,
   code {
     font-family: ${fonts.mono};
-    font-size: 16px;
-    font-weight: 500;
-    line-height: 1.5em;
+    font-size: 15px;
+    font-weight: 400;
+    line-height: 1.6em;
     text-align: left;
     white-space: pre;
     word-spacing: normal;
