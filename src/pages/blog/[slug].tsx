@@ -306,10 +306,11 @@ let Post = ({
           <Spacer bottom={6}>
             <Stack align="left" gap={1}>
               <Spacer bottom={3}>
-                  <NavigateText color={colors.subtle} href="/blog">
-                    <Row align="center" gap={0.5}>
+                <NavigateText color={colors.subtle} href="/blog">
+                  <Row align="center" gap={0.5}>
                     <BackIcon /> <span>{"Blog"}</span>
-                    </Row></NavigateText>
+                  </Row>
+                </NavigateText>
               </Spacer>
               <H1>{frontmatter.title}</H1>
               <Text weight={400} color={colors.subtle} size={font.fontSizeN1}>
