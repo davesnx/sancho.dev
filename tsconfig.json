@@ -1,6 +1,10 @@
 {
   "compilerOptions": {
-    "lib": ["dom", "dom.iterable", "esnext"],
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
     "baseUrl": ".",
     "module": "esnext",
     "moduleResolution": "node",
@@ -32,13 +36,17 @@
     "isolatedModules": true,
     "incremental": true
   },
-  "exclude": ["./out/**/*", "./node_modules/**/*"],
+  "exclude": [
+    "./out/**/*",
+    "./node_modules/**/*"
+  ],
   "include": [
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",
     "src/pages/sitemap.js",
     "src/components/icon.jsx",
-    "src/components/page.jsx"
+    "src/components/page.jsx",
+    "src/components/layout.jsx"
   ]
 }

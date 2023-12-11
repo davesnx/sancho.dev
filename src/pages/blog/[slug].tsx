@@ -350,26 +350,9 @@ let Post = ({
         </Text>
         <Spacer top={2} />
         <TwitterShare title={frontmatter.title} href={window.location.href} />
-        <Spacer bottom={5} />
-        <Footer>
-          <Text weight={400} color={colors.subtle} size={font.fontSizeN1}>
-            {`© ${new Date().getFullYear()} David Sancho`}
-          </Text>
-          <TextLink
-            color={colors.subtle}
-            href="https://github.com/davesnx/sancho.dev"
-          >{`Source`}</TextLink>
-        </Footer>
       </Page>
     </>
   );
 };
-
-const Footer = styled.footer`
-  display: inline-flex;
-  align-items: center;
-  justify-content: space-between;
-  width: 100%;
-`;
 
 export default Post;

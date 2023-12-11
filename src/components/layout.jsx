@@ -10,12 +10,15 @@ import font from "../theme/fonts";
 import Main from "./../components/main";
 import { NavigateButton } from "./../components/link";
 import { ResponsiveSpacer } from "./../components/spacer";
+import Text from "../components/text";
+import { TextLink } from "../components/link";
 import { Row, Stack } from "./../components/taco";
 
 const Root = styled.div`
   min-height: 100vh;
   background-color: ${rgb(colors.contrast)};
-  padding-bottom: 3rem;
+  display: flex;
+  flex-direction: column;
 `;
 
 const MenuItem = styled(NavigateButton)`
@@ -152,6 +155,18 @@ const House = () => {
   );
 };
 
+const Footer = styled.footer`
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  opacity: 0.4;
+`;
+
+const Children = styled.div`
+  flex: 1;
+`;
+
 export default function Layout({ children }) {
   const [isOpen, setIsOpen] = React.useState(false);
   let open = () => setIsOpen(true);
@@ -216,9 +231,33 @@ export default function Layout({ children }) {
           </Row>
         </Header>
       </Main>
-      <ResponsiveSpacer mobileTop={2} desktopTop={6}>
-        {children}
-      </ResponsiveSpacer>
+      <Children>
+        <ResponsiveSpacer mobileTop={2} desktopTop={6}>
+          {children}
+        </ResponsiveSpacer>
+      </Children>
+      <Main>
+        <Footer>
+          <Row gap={1}>
+            <Text weight={400} color={colors.body} size={font.fontSizeN1}>
+              {`David Sancho`}
+            </Text>
+            <Text weight={800} color={colors.subtle} size={font.fontSize4}>
+              {`·`}
+            </Text>
+            <Text weight={400} size={font.fontSizeN1}>
+              <TextLink
+                color={colors.body}
+                href="https://github.com/davesnx/sancho.dev"
+              >{` @davesnx`}</TextLink>
+            </Text>
+          </Row>
+          <TextLink
+            color={colors.body}
+            href="https://github.com/davesnx/sancho.dev"
+          >{`Source`}</TextLink>
+        </Footer>
+      </Main>
     </Root>
   );
 }

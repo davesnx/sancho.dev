@@ -14,7 +14,7 @@ let Work = () => (
     <MetaData title="Work" />
     <Page title={<H1>Work</H1>}>
       <Spacer top={3} />
-      <Text>{`I author (or maintain) a few open-source projects:`}</Text>
+      <Text>{`I author, maintain or co-maintain a few open-source projects`}</Text>
       <Spacer top={3} />
       <Stack gap={3} align="left">
         <Text>
@@ -106,7 +106,7 @@ let Work = () => (
             <TextLink href="https://ahrefs.com">Ahrefs</TextLink>
           </Text>
           <Text wieght={400}>{" (2021 - now)"}</Text>
-          <Text>{"Design system, tooling and Open Source."}</Text>
+          <Text>{"Design system, tooling and Open Source"}</Text>
         </Stack>
         <Stack gap={1} align="left">
           <Text size={font.fontSize2}>
@@ -130,7 +130,7 @@ let Work = () => (
           </Text>
           <Text wieght={400}>{" (2013)"}</Text>
           <Text>
-            {"Web development"}
+            {"Internal backend tools"}
             {/* Backend systems with PHP with Laravel, MySQL and Apache */}
           </Text>
         </Stack>
