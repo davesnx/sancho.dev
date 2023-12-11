@@ -29,18 +29,15 @@ let About = () => {
               {`Hi! I'm a Software Engineer from Barcelona currently working remotely at `}
               <TextLink href="http://ahrefs.com">{"Ahrefs"}</TextLink>
               {`. Mainly on tooling `}
-              <TextLink href="https://melange.re">{"Melange"}</TextLink>
-              {", "}
-              <TextLink href="https://reasonml.github.io/">{"Reason"}</TextLink>
-              {", "}
+              <TextLink href="https://melange.re">{"Melange"}</TextLink>{" "}
+              <TextLink href="https://reasonml.github.io/">{"Reason"}</TextLink>{" "}
               <TextLink href="https://reasonml.github.io/reason-react/">
                 {"reason-react"}
-              </TextLink>
-              {", "}
+              </TextLink>{" "}
               <TextLink href="https://styled-ppx.vercel.app">
                 {"styled-ppx"}
               </TextLink>
-              {", and "}
+              {" and "}
               <TextLink href="https://github.com/ml-in-barcelona/server-reason-react">
                 {"server-reason-react"}
               </TextLink>
