@@ -28,8 +28,8 @@ export const getStaticProps: GetStaticProps = async () => {
 let Blog = ({ frontmatters }: { frontmatters: Array<Frontmatter> }) => {
   return (
     <>
-      <MetaData title="Thoughts" />
-      <Page title={<H1>Thoughts</H1>}>
+      <MetaData title="Blog" />
+      <Page title={<H1>Blog</H1>}>
         {frontmatters
           .filter((frontmatters: Frontmatter) => {
             return frontmatters.isDraft !== true;

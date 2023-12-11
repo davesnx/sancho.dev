@@ -174,6 +174,7 @@ export default function Layout({ children }) {
             <DesktopMenu key="desktop">
               <Row gap={4}>
                 <MenuItem href="/blog">blog</MenuItem>
+                <MenuItem href="/work">work</MenuItem>
                 <MenuItem href="/talks">talks</MenuItem>
                 <MenuItem href="/about">about</MenuItem>
               </Row>
@@ -194,6 +195,9 @@ export default function Layout({ children }) {
                       </MobileMenuItem>
                       <MobileMenuItem onClick={close} href="/blog">
                         blog
+                      </MobileMenuItem>
+                      <MobileMenuItem onClick={close} href="/work">
+                        work
                       </MobileMenuItem>
                       <MobileMenuItem onClick={close} href="/talks">
                         talks

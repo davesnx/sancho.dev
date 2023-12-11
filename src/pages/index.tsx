@@ -6,9 +6,9 @@ import { TextLink, NavigateText } from "../components/link";
 import Page from "../components/page";
 import MetaData from "../components/site-metadata";
 import Spacer from "../components/spacer";
-import { Row } from "../components/taco";
 import Text from "../components/text";
 import fonts from "../theme/fonts";
+import { Row } from "../components/taco";
 import { colors } from "../theme/theme";
 import constants from "../theme/constants";
 import { unit, px } from "../utils/unit";
@@ -38,10 +38,7 @@ const Home = () => {
   return (
     <>
       <MetaData title="Home" />
-      <Page>
-        <Spacer bottom={3}>
-          <H2>David Sancho</H2>
-        </Spacer>
+      <Page title={<H2>David Sancho</H2>}>
         <ColumnReverse gap={8}>
           <div>
             <Text size={fonts.fontSize1} align="left">
@@ -73,7 +70,6 @@ const Home = () => {
           </div>
           <Avatar src={"/images/face.jpeg"} />
         </ColumnReverse>
-        <Spacer top={3} />
         <Row gap={2} distribute="left">
           <TextLink
             underlined
