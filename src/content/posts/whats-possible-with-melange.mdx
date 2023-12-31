@@ -53,16 +53,17 @@ A quality of life improvement is allowing to use the same editor to write both M
 
 ## Dune is a great build tool
 
-Dune is the defacto build tool for OCaml development these days. In grosso modo, it’s a wrapper to all OCaml tooling such as Batch compiler (ocamlc), Native compiler (ocamlopt) Library manager (ocamlfind), etc... It abstracts away from those low level tools for users to be in a higher level to define their libraries, executables, testing suites, documentation and other pieces needed to develop a full application.
+Dune is the defacto build tool for OCaml development these days. In grosso modo, it’s a wrapper to all OCaml tooling such as the Batch compiler (ocamlc), the Native compiler (ocamlopt), also the Library manager (ocamlfind), etc... It abstracts away from those low level tools for users to be in a higher level to define their libraries, executables, testing suites, documentation and other pieces needed to develop a full application.
 
 - Dune allows to rebuild your project smartly, only the libraries that change
-- Which means, It would only compile your opam dependencies only once
+- Which means, It would only compile your opam dependencies only once (from the same switch)
 - Dune wouldn’t build the code where the interface didn’t change
 - Dune also builds parallely as much as possible
+- Integrates with the rest of the OCaml ecosystem, for example ppxlib or menhir.
 
 It also has been expanded to support other platforms than just native OCaml programs such as [js_of_ocaml](https://github.com/ocsigen/js_of_ocaml), [coq](https://coq.inria.fr/), [binding to C](https://michael.bacarella.com/2022/02/19/dune-ctypes/) [unikernels with MirageOS](https://mirage.io/) and now Melange.
 
-[ ] White a small final paragraph as summary/extra
+Most the features that I give credit to Melange, it's thanks to dune. Will try to list the ones I appreciate the most.
 
 ## Dune gives control to organize your libraries as you wish
 
@@ -124,6 +125,8 @@ Some parts of this are still on the design phase, but some more documentation ha
 [How to organise the universal code](https://ml-in-barcelona.github.io/server-reason-react/local/server-reason-react/code-structure.html) &
 [Make sure your code is universal](https://ml-in-barcelona.github.io/server-reason-react/local/server-reason-react/universal-code.html).
 
+![Example of a react component rendered with both reason-react and server-reason-react](/images/server-reason-react-graph.png)
+
 ## Preprocessing via ppx becomes better and faster
 
 ReScript doesn’t recommend the usage of ppx's and has been looking to replace them since the split. His claims are valid: they are a blackbox, are limited, slows the compilation and are hard to implement right.
@@ -155,19 +158,22 @@ Those are massive improvements and gives the possibility to create a new way of 
 
 ## Learning a new tool
 
-- [ ]  Rewrite this *** and mention the downsides of a new tool/environment
+The dune integration brings power to users, but with a cost of learning a new tool, **dune**. Even being powerful, it’s also has a few rough edges, and the learning about those might be noticeable.
 
-The dune integration brings power to users, but with a cost of learning a new tool, **dune**. Being powerful, it’s also a bit  but isn’t perfect as any tool is, and the learning curve might be noticeable.
+The initial blocker might be their syntax, which is very lisp-y. Hopefully your editor can support colorized parentesis to overcome it.
 
-The initial blocker might be their syntax, which is very lisp-y
+```clojure
+(library
+ (name url)
+ (wrapped false)
+ (libraries uri js))
+```
 
-- [ ]  Link to the issue/discussion where they explain the syntax wasn’t mean to be public
+It’s mainained by [Jane Street](https://www.janestreet.com/), [Tarides](https://tarides.com/), [OCamlPro](https://ocamlpro.com) where they improve it frequently and they are [open for feedback and feature requests](https://discuss.ocaml.org/t/dune-wish-list-for-2023/11083).
 
-After working with it almost 4 months I’m convinced that it’s a big improvement over previous status.
+After working with it almost 10 months I’m convinced that it’s a big improvement over previous status.
 
-It’s mainained by x, y, z where they improve it frequently and they are open for feedback and feature requests (Links to ocaml forum).
-
-To learn more about dune, I recommend → Link to facebook’s intern guy on dune guide
+To learn more about dune specifically, I recommend → [A handy guide to Dune](https://mukulrathi.com/ocaml-tooling-dune/)
 
 ## Different package manager: opam
 
