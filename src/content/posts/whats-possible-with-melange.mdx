@@ -1,14 +1,12 @@
 ---
 title: "What's possible with Melange"
-publishedAt: "2023-12-18"
+publishedAt: "2024-01-05"
 tags:
   - "Melange"
   - "dune"
   - "OCaml"
   - "Reason"
 ---
-
-## Introduction
 
 [Melange](https://melange.re) is a backend for the OCaml compiler that emits readable, modular and highly performant JavaScript code. It’s integrated with all OCaml-related tooling such as opam to install packages and dune as a build system.
 
@@ -20,7 +18,7 @@ Melange started as a fork of BuckleScript but focusing in OCaml compatibility wh
 
 ## Works with the latest versions of OCaml
 
-One blocker for some OCaml developers to adopt ReScript is that the version of the OCaml compiler is stuck on 4.06, a few versions behind the latest (5.1) OCaml.
+One blocker for some OCaml developers to adopt ReScript is that the version of the OCaml typechecker is stuck on 4.06, a few versions behind the latest (5.1) OCaml.
 
 This was an issue in our backend as well, since some packages needed to be compatible with 4.06 and 5.1, and a lot has changed:
 
@@ -48,21 +46,21 @@ A quality of life improvement is allowing to use the same editor to write both M
 
 ## Dune is a great build tool
 
-Dune is the defacto build tool for OCaml development these days. In grosso modo, it’s a wrapper to all OCaml tooling such as the Batch compiler (ocamlc), the Native compiler (ocamlopt), also the Library manager (ocamlfind), etc... It abstracts away from those low level tools for users to be in a higher level to define their libraries, executables, testing suites, documentation and other pieces needed to develop a full application.
+Dune is the defacto build tool for OCaml development these days. In grosso modo, it’s a wrapper to all OCaml tooling such as the Batch compiler (ocamlc), the Native compiler (ocamlopt), also a library manager, etc... It abstracts away those low level tools for users to be in a higher level to define their libraries, executables, testing suites, documentation and other pieces needed to develop a full application.
 
 - Dune allows to rebuild your project smartly, only the libraries that change
 - Which means, it would only compile your opam dependencies once (from the same switch)
-- Dune wouldn’t build the code where the interface didn’t change
-- Dune also builds parallely as much as possible
+- Dune wouldn’t rebuild dependent code where an interface didn’t change
+- Dune also builds in parallel as much as possible
 - Integrates with the rest of the OCaml ecosystem, for example ppxlib or menhir.
 
 It also has been expanded to support other platforms than just native OCaml programs such as [js_of_ocaml](https://github.com/ocsigen/js_of_ocaml), [coq](https://coq.inria.fr/), [to binding C libraries](https://michael.bacarella.com/2022/02/19/dune-ctypes/), [unikernels with MirageOS](https://mirage.io/) and now Melange.
 
-Most the features that I give credit to Melange, it's thanks to dune. Will try to list the ones I appreciate the most.
+Dune deserves most of the credit for the features I'm attributing to Melange. Will try to list the ones I appreciate the most.
 
 ## Dune gives control to organize your libraries as you wish
 
-The [library stanza](https://dune.readthedocs.io/en/stable/dune-files.html#library) is useful to split your application into smaller modules and create a better organisation of your codebase. Those libraries can be defined with their own set of dependencies and ppx’s. This is extremely useful for any application older than 1 month and almost a necessity for a monorepo or big application.
+The [library stanza](https://dune.readthedocs.io/en/stable/dune-files.html#library) is useful to split your application into smaller pieces and create a better organisation of your codebase. Those libraries can be defined with their own set of dependencies and ppx’s. This is extremely useful for any application older than 1 month and almost a necessity for a monorepo or big application.
 
 Previously, with ReScript you had one big namespace where all module names were required to be unique, all dependencies and ppx's were applied to the entire codebase. There are some ways to define libraries and define namespaces but they are rarely used since are buggy and broken.
 
@@ -98,7 +96,7 @@ KeWidgetPlaceholder.re  KeWidgetPlaceholder_Css.re      KeWidgetPreloader_Css.re
 
 The unique namespace works great for small applications, but when your codebase is big it becomes quite challenging to manage and not lose your hair. Aside, all dependencies/ppx's were applied to the entire monorepo, which made no-sense and caused issues all around.
 
-Since Melange, each app can drop the prefix and started to modularise each sub-application with logical boundaries instead, making sure each set of dependencies and ppx's are set correctly.
+Since Melange, each app can drop the prefix and started to modularise each sub-application with logical boundaries instead, making sure each set of dependencies and ppx's are correctly scoped.
 
 ## Enables universal code
 
@@ -107,7 +105,7 @@ When I say “universal code” I refer to code that’s able to compile to both
 - Type-safe data across client/server
 - Universal routing with type-safe routes, links and parameters
 - Re-use the same validation logic
-- Server rendering via server-reason-react
+- [Server rendering via server-reason-react](blog/server-side-rendering-react-in-ocaml)
 - RPC (Remote Procedure Call) approach
 
 This has been one of the promises by Reason (and BuckleScript) since the beginning and it never materialised. I have seen some forms of this, but BuckleScript and dune never played well together.
@@ -116,7 +114,7 @@ Now dune supports a new `melange` mode available for libraries, alongside with `
 
 Given a library without any system dependency (C bindings, unix module, etc) you are able to use it to emit JavaScript and run as an executable.
 
-Some parts of this are still on the design phase, but some more documentation has been written in the server-reason-react documentation:
+Some parts of this are still in the design phase, but some more documentation has been written in the server-reason-react documentation:
 [How to organise the universal code](https://ml-in-barcelona.github.io/server-reason-react/local/server-reason-react/code-structure.html) &
 [Make sure your code is universal](https://ml-in-barcelona.github.io/server-reason-react/local/server-reason-react/universal-code.html).
 
@@ -124,9 +122,9 @@ Some parts of this are still on the design phase, but some more documentation ha
 
 ## Preprocessing via ppx becomes better and faster
 
-ReScript doesn’t recommend the usage of ppx's and has been looking to replace them since the split. His claims are valid: they are a blackbox, are limited, slows the compilation and are hard to implement right.
+ReScript doesn’t recommend the usage of ppx's and has been looking to replace them since the split. Their reasoning is valid: they are a blackbox, are limited, slows the compilation and are hard to implement right.
 
-On the Melange side, the approach is the oppositve. Empower ppx’s via [ppxlib](https://github.com/ocaml-ppx/ppxlib) and dune, which they integrate smoothly. [ppxlib](https://github.com/ocaml-ppx/ppxlib) is the framework to create high quality preprocessors, it also integrates perfectly with dune via `(preprocess ...)` and also:
+On the Melange side, the approach is the opposite. Empower ppx’s via [ppxlib](https://github.com/ocaml-ppx/ppxlib) and dune, which they integrate smoothly. [ppxlib](https://github.com/ocaml-ppx/ppxlib) is the framework to create high quality preprocessors, it also integrates perfectly with dune via `(preprocess ...)` and also:
 
 - **Ppx runs faster**. No need to serialise/deserialise the AST on each ppx call, neither run a binary.
 - Ppx are smarter. Dune has a few methods to make ppx run in a single pass, and ppxlib allows to create context free transformations. Making sure rewrites don’t do unnecessary work.
@@ -137,15 +135,15 @@ On the Melange side, the approach is the oppositve. Empower ppx’s via [ppxlib]
 
 ## Different configs for development and production
 
-Seems basic to showcase this, but previously in BuckleScript you can’t setup different config for production and development. That’s not the case for dune, where you are able to have different [profiles]() and set everything you need differently. Warnings, instrumentation and some libraries are the most common to load differently.
+Seems basic to showcase this, but previously in BuckleScript you can’t setup different config for production and development. That’s not the case for dune, where you are able to have different [profiles](https://dune.readthedocs.io/en/stable/dune-files.html#profile) and set everything you need differently. Warnings, instrumentation and some libraries are the most common to load differently.
 
 Previously we had a script that generates the config by certain parameter and accomplish such a basic functionality.
 
 ## Integration with documentation tooling (odoc)
 
-The other benefit of integrating with the OCaml platform is the documentation tooling is available. It’s called [**odoc**](https://github.com/ocaml/odoc) and it will generate a documentation website from your interface files, with navigation, cross-linking and many necessities
+The other benefit of integrating with the OCaml platform is the documentation tooling is available. It’s called [**odoc**](https://github.com/ocaml/odoc) and it will generate a documentation website from your interface files, with navigation, cross-linking and other utilities.
 
-The other cool thing is that eventually can be published under ocaml.org, for example [ocaml.org/p/melange-json](https://ocaml.org/p/melange-json/latest).
+The other cool thing is that it can eventually be published under ocaml.org, for example [ocaml.org/p/melange-json](https://ocaml.org/p/melange-json/latest).
 
 ## Downsides
 
@@ -178,7 +176,7 @@ Again, a new tool. It has a few key differences from **npm** based on a safer mo
 
 - **Safer**. The premise of opam is to ensure that after a successful installation, the project will compile correctly.
 - **More strict**. You only can have on single version of a dependency on your project
-- **but slower**. Since it downloads and builds all dependencies from source, the installation takes much longer than npm since does a bunch of more work.
+- **but slower**. Since it downloads and builds all dependencies from source, the installation takes much longer than npm since it does a bunch of more work.
 
 ## Most advances from ReScript won’t be available
 
