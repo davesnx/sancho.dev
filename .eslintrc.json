@@ -3,7 +3,10 @@
   "parser": "@typescript-eslint/parser",
   "plugins": [
     "@typescript-eslint",
-    "prettier"
+    "prettier",
+    "prefer-let",
+    "import",
+    "unused-imports"
   ],
   "extends": [
     "next",
@@ -19,5 +22,8 @@
         "argsIgnorePattern": "^_"
       }
     ]
+  },
+  "globals": {
+    "globalThis": false
   }
 }
