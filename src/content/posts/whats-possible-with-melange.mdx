@@ -51,7 +51,7 @@ A quality of life improvement is allowing to use the same editor to write both M
 Dune is the defacto build tool for OCaml development these days. In grosso modo, it’s a wrapper to all OCaml tooling such as the Batch compiler (ocamlc), the Native compiler (ocamlopt), also the Library manager (ocamlfind), etc... It abstracts away from those low level tools for users to be in a higher level to define their libraries, executables, testing suites, documentation and other pieces needed to develop a full application.
 
 - Dune allows to rebuild your project smartly, only the libraries that change
-- Which means, It would only compile your opam dependencies only once (from the same switch)
+- Which means, it would only compile your opam dependencies once (from the same switch)
 - Dune wouldn’t build the code where the interface didn’t change
 - Dune also builds parallely as much as possible
 - Integrates with the rest of the OCaml ecosystem, for example ppxlib or menhir.
