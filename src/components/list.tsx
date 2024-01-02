@@ -12,13 +12,17 @@ export const ListItem = styled.li`
   padding-left: 0.5em;
   display: list-item;
 
+  ::marker {
+    opacity: 0.4;
+    color: ${rgb(colors.body)};
+  }
+
   & > * {
     display: inline-block;
   }
 
-  &::marker {
-    opacity: 0.4;
-    color: ${rgb(colors.body)};
+  & > a {
+    display: inline-block;
   }
 `;
 

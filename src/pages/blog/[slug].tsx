@@ -1,8 +1,8 @@
 import React from "react";
 
+import { useRouter } from "next/router";
 import { css } from "@emotion/react";
 import styled from "@emotion/styled";
-import { window } from "browser-monads-ts";
 import { parseISO, format } from "date-fns";
 import { getMDXComponent } from "mdx-bundler/client";
 import { GetStaticPaths, GetStaticProps, InferGetStaticPropsType } from "next";
@@ -215,8 +215,10 @@ const Inline = styled.div`
 `;
 
 const TwitterShare = ({ title, href }: { title: string; href: string }) => {
+  let { asPath } = useRouter();
   let text = encodeURIComponent(title);
-  let urlToShare = `http://www.twitter.com/share?url=${href}&text=${text}`;
+  let url = href + asPath;
+  let urlToShare = `http://www.twitter.com/share?url=${url}&text=${text}`;
   return (
     <span>
       <Spacer right={0.5} inline={true}>
@@ -349,7 +351,10 @@ let Post = ({
           any feedback, corrections or questions. Always happy to chat.
         </Text>
         <Spacer top={2} />
-        <TwitterShare title={frontmatter.title} href={window.location.href} />
+        <TwitterShare
+          title={frontmatter.title}
+          href={globalThis?.window?.location?.origin || "http://localhost:3005"}
+        />
       </Page>
     </>
   );

@@ -1,0 +1,202 @@
+---
+title: "What's possible with Melange"
+publishedAt: "2024-01-03"
+tags:
+  - "Melange"
+  - "dune"
+  - "OCaml"
+  - "Reason"
+---
+
+[Melange](https://melange.re) is a backend for the OCaml compiler that emits readable, modular and highly performant JavaScript code. It’s integrated with all OCaml-related tooling such as opam to install packages and dune as a build system.
+
+This blog post provides an overview of what's possible to do with Melange and dune that wasn't possible with a previous toolchain (ReScript v9).
+
+This blog post isn't a direct comparison between Melange v2 and ReScript v9 (also know as BuckleScript) compilers, it wouldn’t be fair since ReScript v9 is not the latest version and their goals were not designed to solve any of the problems Melange solves.
+
+Melange started as a fork of BuckleScript but focusing in OCaml compatibility while ReScript continued the integration with JavaScript ecosystem.
+
+## Works with the latest versions of OCaml
+
+One blocker for some OCaml developers to adopt ReScript is that the version of the OCaml typechecker is stuck on 4.06, a few versions behind the latest (5.1) OCaml.
+
+This was an issue in our backend as well, since some packages needed to be compatible with 4.06 and 5.1, and a lot has changed:
+
+- Improvements in type-checking (GADTs, local modules, type variables)
+- [Binding operators (let*, let+, and*, let.async, let.opt, etc…)](https://v2.ocaml.org/releases/4.11/htmlman/bindingops.html)
+- [A new quoted extension syntax](https://github.com/ocaml/ocaml/pull/8820)
+- [Support for macOS/arm64](https://github.com/ocaml/ocaml/pull/9699)
+- Improved error messages
+- [Many](https://ocaml.org/releases/4.09.1) [many](https://ocaml.org/releases/4.10.1) [bug](https://ocaml.org/releases/4.11.0) [fixes](https://ocaml.org/releases/4.12.0)
+- [Tail modulo cons (TMC) optimisation](https://v2.ocaml.org/manual/tail_mod_cons.html)
+
+Side note: A few features of those years of OCaml development don't apply to Melange. In fact, OCaml 5 introduced long-awaited `multicore` features. Currently multicore isn’t a feature supported by Melange since it can’t benefit extensively, due to the nature of JavaScript being single threaded.
+
+## Editor integration
+
+Using the latest versions of the OCaml compiler allows to use the OCaml LSP Server from the OCaml Platform. It's mature, well maintained and has better support for editor features such as autocompletion, refactoring, type lenses, documentation lookup, debugging of the transformed ppx output and an ast explorer.
+
+![Screenshot of VSCode with OCaml LSP](/images/melange-editor.png)
+
+One of my favourite features are type lenses.
+
+The previous story of the LSP in BuckleScript/Reason was a tragedy. The editor integration was limited, buggy and even when ReScript started their editor integration was lacking the basics. Worth mentioning, further versions of ReScript has improved this massively but still very far from the OCaml LSP.
+
+A quality of life improvement is allowing to use the same editor to write both Melange and OCaml code, removing the need to switch between different editors when working with both targets.
+
+## Dune is a great build tool
+
+Dune is the defacto build tool for OCaml development these days. In grosso modo, it’s a wrapper to all OCaml tooling such as the Batch compiler (ocamlc), the Native compiler (ocamlopt), also a library manager, etc... It abstracts away those low level tools for users to be in a higher level to define their libraries, executables, testing suites, documentation and other pieces needed to develop a full application.
+
+- Dune allows to rebuild your project smartly, only the libraries that change
+- Which means, it would only compile your opam dependencies once (from the same switch)
+- Dune wouldn’t rebuild dependent code where an interface didn’t change
+- Dune also builds in parallel as much as possible
+- Integrates with the rest of the OCaml ecosystem, for example ppxlib or menhir.
+
+It also has been expanded to support other platforms than just native OCaml programs such as [js_of_ocaml](https://github.com/ocsigen/js_of_ocaml), [coq](https://coq.inria.fr/), [to binding C libraries](https://michael.bacarella.com/2022/02/19/dune-ctypes/), [unikernels with MirageOS](https://mirage.io/) and now Melange.
+
+Dune deserves most of the credit for the features I'm attributing to Melange. Will try to list the ones I appreciate the most.
+
+## Dune gives control to organize your libraries as you wish
+
+The [library stanza](https://dune.readthedocs.io/en/stable/dune-files.html#library) is useful to split your application into smaller pieces and create a better organisation of your codebase. Those libraries can be defined with their own set of dependencies and ppx’s. This is extremely useful for any application older than 1 month and almost a necessity for a monorepo or big application.
+
+Previously, with ReScript you had one big namespace where all module names were required to be unique, all dependencies and ppx's were applied to the entire codebase. There are some ways to define libraries and define namespaces but they are rarely used since are buggy and broken.
+
+As an anecdote, in the ahrefs monorepo we had a bunch of sub-applications that are separated by boundary (Keywords Explorer, Site Audit, etc…) but since it needed to share the unique global namespace, it forced us to prefix all files by an acronym. So, all files from Keyword Explorer would be prefixed with `Ke`, Header becomes `KeHeader`, Table becomes `KeTable`, and so on… to avoid collisions.
+
+```
+$ ls frontend/packages/keywords-explorer/components/
+
+KeAddKlistEntry.re      KeAddToKlist.re                 KeAdHistoryTable_Css.re     KeAiInput_Css.re
+KeAiInput.re            KeAiSuggestionsSelect_Css.re    KeAiSuggestionsSelect.re    KeApiExample.re
+KeClicksVolume.re       KeClicksVolumeChart.re          KeClustersBanner.re         KeClustersTreemap_Css.re
+KeClustersTreemap.re    KeCountryVolume_Css.re          KeCountryVolume.re          KeDetailedAdHistory_Css.re
+KeDetailedAdHistory.re  KeDetailedAdHistoryChart.re     KeDetailedAdsHistories.re   KeDetailedAdsHistoriesByGroups.re
+KeEntry_Css.re          KeEntry.re                      KeEntryCounter_Css.re       KeEntryCounter.re
+KeEntrySearchEngines.re KeEntryTextarea_Css.re          KeEntryTextarea.re          KeErrorPlaceholder.re
+KeFilterInput.re        KeGlobalVolume_Css.re           KeGlobalVolume.re           KeHeader_Css.re
+KeHeader.re             KeHistory_Css.re                KeHistory.re                KeHorizontalBarChart_Css.re
+KeHorizontalBarChart.re KeIdeasOverview.re              KeIdeasOverviews.re         KeInnerModal_Css.re
+KeInnerModal.re         KeInnerModalFooter_Css.re       KeInnerModalFooter.re       KeKeywordDifficulty_Css.re
+KeKeywordDifficulty.re  KeKlists.re                     KeLegendItem_Css.re         KeLegendItem.re
+KeListContent.re        KeMainPreloader_Css.re          KeMainPreloader.re          KeMissingKeywords_Css.re
+KeMissingKeywords.re    KeMissingKeywordsAlert.re       KeNotAvailableChart.re      KeNotification_Css.re
+KeNotification.re       KeOverviewChartTooltip.re       KeOverviewUpdateStatus.re   KeParentTopic.re
+KePlainWidget.re        KePreloader_Css.re              KePreloader.re              KeRowsPerReportLimitAlert_Css.re
+KeSearchBar_Css.re      KeSearchBar.re                  KeSearchVolume.re           KeSearchVolumeChart.re
+KeSearchVolumeGoogle.re KeSerpFeatures.re               KeSerpOverview_Css.re       KeSerpOverview.re
+KeSideMenu_Css.re       KeSideMenu.re                   KeSideMenuKlists.re         KeTablePagination_Css.re
+KeTablePagination.re    KeTrafficTable.re               KeTrafficTableRow_Css.re    KeTrafficTableRow.re
+KeUpdateButton.re       KeWidget_Css.re                 KeWidget.re                 KeWidgetChartCaption.re
+KeWidgetContent_Css.re  KeWidgetContent.re              KeWidgetHeader_Css.re       KeWidgetHeader.re
+KeWidgetPlaceholder.re  KeWidgetPlaceholder_Css.re      KeWidgetPreloader_Css.re    KeWidgetPreloader.re
+```
+
+The unique namespace works great for small applications, but when your codebase is big it becomes quite challenging to manage and not lose your hair. Aside, all dependencies/ppx's were applied to the entire monorepo, which made no-sense and caused issues all around.
+
+Since Melange, each app can drop the prefix and started to modularise each sub-application with logical boundaries instead, making sure each set of dependencies and ppx's are correctly scoped.
+
+## Enables universal code
+
+When I say “universal code” I refer to code that’s able to compile to both native and JavaScript. It’s useful for fullstack Reason development and a variety of use-cases, such as:
+
+- Type-safe data across client/server
+- Universal routing with type-safe routes, links and parameters
+- Re-use the same validation logic
+- [Server rendering via server-reason-react](blog/server-side-rendering-react-in-ocaml)
+- RPC (Remote Procedure Call) approach
+
+This has been one of the promises by Reason (and BuckleScript) since the beginning and it never materialised. I have seen some forms of this, but BuckleScript and dune never played well together.
+
+Now dune supports a new `melange` mode available for libraries, alongside with `native` mode, enabling universal code.
+
+Given a library without any system dependency (C bindings, unix module, etc) you are able to use it to emit JavaScript and run as an executable.
+
+Some parts of this are still in the design phase, but some more documentation has been written in the server-reason-react documentation:
+[How to organise the universal code](https://ml-in-barcelona.github.io/server-reason-react/local/server-reason-react/code-structure.html) &
+[Make sure your code is universal](https://ml-in-barcelona.github.io/server-reason-react/local/server-reason-react/universal-code.html).
+
+![Example of a react component rendered with both reason-react and server-reason-react](/images/server-reason-react-graph.png)
+
+## Preprocessing via ppx becomes better and faster
+
+ReScript doesn’t recommend the usage of ppx's and has been looking to replace them since the split. Their reasoning is valid: they are a blackbox, are limited, slows the compilation and are hard to implement right.
+
+On the Melange side, the approach is the opposite. Empower ppx’s via [ppxlib](https://github.com/ocaml-ppx/ppxlib) and dune, which they integrate smoothly. [ppxlib](https://github.com/ocaml-ppx/ppxlib) is the framework to create high quality preprocessors, it also integrates perfectly with dune via `(preprocess ...)` and also:
+
+- **Ppx runs faster**. No need to serialise/deserialise the AST on each ppx call, neither run a binary.
+- Ppx are smarter. Dune has a few methods to make ppx run in a single pass, and ppxlib allows to create context free transformations. Making sure rewrites don’t do unnecessary work.
+- No need to distribute pre-built binaries. ppx's are dune libraries, and no need to have GitHub actions to create per-distribution artifacts.
+- This gives us compatibility with more distributions such as M1, M2, any linux distro and even Windows.
+- Access to all [ppx's from opam](https://ocaml.org/packages/search?q=ppx_), such as [ppx_enumerate](https://ocaml.org/p/ppx_enumerate/latest), [ppx_log](https://ocaml.org/p/ppx_log/latest), [ppx_expect](https://ocaml.org/p/ppx_expect/latest), [ppx_inline_test](https://ocaml.org/p/ppx_inline_test/latest), [ppx_blob](https://ocaml.org/p/ppx_blob/latest), [ppx_fields_conv](https://ocaml.org/p/ppx_fields_conv/latest), [ppx_yojson_conv](https://ocaml.org/p/ppx_yojson_conv/latest), [ppx_deriving_rpc](https://ocaml.org/p/ppx_deriving_rpc/latest).
+<sup>Some of this ppx's still need to support melange, and aren't available out of the box</sup>
+
+## Different configs for development and production
+
+Seems basic to showcase this, but previously in BuckleScript you can’t setup different config for production and development. That’s not the case for dune, where you are able to have different [profiles](https://dune.readthedocs.io/en/stable/dune-files.html#profile) and set everything you need differently. Warnings, instrumentation and some libraries are the most common to load differently.
+
+Previously we had a script that generates the config by certain parameter and accomplish such a basic functionality.
+
+## Integration with documentation tooling (odoc)
+
+The other benefit of integrating with the OCaml platform is the documentation tooling is available. It’s called [**odoc**](https://github.com/ocaml/odoc) and it will generate a documentation website from your interface files, with navigation, cross-linking and other utilities.
+
+The other cool thing is that it can eventually be published under ocaml.org, for example [ocaml.org/p/melange-json](https://ocaml.org/p/melange-json/latest).
+
+## Downsides
+
+Those are massive improvements and gives the possibility to create a new way of working with Reason, currently at Ahrefs we have been exploring many ways of pushing this environment forward. With that being said, there are a few downsides from the lenses of ReScript.
+
+## Learning a new tool
+
+The dune integration brings power to users, but with a cost of learning a new tool, **dune**. Even being powerful, it’s also has a few rough edges, and the learning about those might be noticeable.
+
+The initial blocker might be their syntax, which is very lisp-y. Hopefully your editor can support colorized parentesis to overcome it.
+
+```clojure
+(library
+ (name url)
+ (wrapped false)
+ (libraries uri js))
+```
+
+It’s mainained by [Jane Street](https://www.janestreet.com/), [Tarides](https://tarides.com/), [OCamlPro](https://ocamlpro.com) where they improve it frequently and they are [open for feedback and feature requests](https://discuss.ocaml.org/t/dune-wish-list-for-2023/11083).
+
+After working with it almost 10 months I’m convinced that it’s a big improvement over previous status.
+
+To learn more about dune specifically, I recommend → [A handy guide to Dune](https://mukulrathi.com/ocaml-tooling-dune/)
+
+## Different package manager: opam
+
+The recommended package manager for Melange development is **opam**. **opam** is OCaml's package manager (think of npm, rubygems, pip, cargo) and compiler version manager (nvm, rvm, …). In opam, those compiler version plus the dependencies are called switches.
+
+Again, a new tool. It has a few key differences from **npm** based on a safer model:
+
+- **Safer**. The premise of opam is to ensure that after a successful installation, the project will compile correctly.
+- **More strict**. You only can have on single version of a dependency on your project
+- **but slower**. Since it downloads and builds all dependencies from source, the installation takes much longer than npm since it does a bunch of more work.
+
+## Most advances from ReScript won’t be available
+
+ReScript is evolving at a fast pace towards better interoperability with JavaScript and getting ready to compete with TypeScript in terms of features. The ReScript team is working on v11 which includes an impressive list of features such as:
+
+- Extensible records
+- Variants representation as strings
+- async/await keywords
+- uncurry by default
+
+Those features aren’t possible to implement or support with the same design in Melange, since it would mean breaking compatibility with OCaml and all the ecosystem.
+
+## Final words
+
+I’m particularly excited about exploring universal code further, and came up with solutions that I wish existed when I started working with Reason. If you are passionate about this, DM me and let’s work together!
+
+The “benefits” are very clear based on the experience of using Melange in our ahrefs codebase and other projects. If you are curious about Melange, take a look at the [Getting started guide](https://melange.re/v2.1.0/getting-started)
+
+For a fast start, take a look at the [Melange opam template](https://github.com/melange-re/melange-opam-template), [read the documentation](https://dune.readthedocs.io/en/latest/melange.html) or read the [Melange book for React developers](https://react-book.melange.re) for a better step-by-step guide.
+
+I would like to thank Antonio Nuno Monteiro, Javier Chávarri and Rudi for their effort on making all of this possible. Integrating Melange and Dune is just the start.
+
+Thanks again to Antonio for review a previous version of this post.
