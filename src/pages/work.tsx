@@ -21,8 +21,8 @@ let Work = () => (
           <TextLink href="https://github.com/davesnx/styled-ppx">
             styled-ppx
           </TextLink>
-          Type-safe styled components for ReScript and Melange with type-safe
-          CSS, including a CSS parser and type-checker.
+          Styled components for ReScript and Melange with type-safe CSS,
+          including a CSS parser and CSS type-checker.
         </Text>
 
         <Text>
