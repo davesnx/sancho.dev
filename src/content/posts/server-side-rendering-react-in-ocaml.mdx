@@ -137,9 +137,9 @@ components and HTML representation.
   Note: `++` is a string concatenation operator */
 
 let rec render_to_string = node =>
-  (* ... *)
+  /* ... */
   switch (node) {
-    (* ... *)
+    /* ... */
     | Html_element({ tag, attributes, _ }) when Html.is_self_closing_tag(tag) =>
         "<" ++ tag ++ attributes_to_string(tag, attributes) ++ "/>"
     | Html_element({ tag, attributes, children }) =>
