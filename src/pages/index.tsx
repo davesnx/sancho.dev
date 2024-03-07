@@ -64,10 +64,10 @@ const Home = () => {
             </TextLink>
             <TextLink
               underlined
-              href="https://t.me/davesnx"
-              color={colors.telegram}
+              href="https://discordapp.com/users/122441959414431745"
+              color={colors.discord}
             >
-              {"Telegram"}
+              {"Discord"}
             </TextLink>
             <TextLink
               underlined

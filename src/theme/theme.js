@@ -16,7 +16,7 @@ const lightValues = {
   primary: "66,153,232",
   twitter: "29,161,242",
   github: "24,23,23",
-  telegram: "114,137,218",
+  discord: "114,137,218",
   strava: "252,76,2",
   /* strongBlue: "#4c575d",*/
 };
@@ -31,7 +31,7 @@ const darkValues = {
   primary: "58,128,191",
   twitter: "29,161,242",
   github: "164,173,187",
-  telegram: "114,137,218",
+  discord: "114,137,218",
   strava: "252,76,2",
   /* strongBlue: "#aabfc9",*/
 };
