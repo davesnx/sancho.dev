@@ -105,14 +105,14 @@ let Work = () => (
           <Text size={font.fontSize2}>
             <TextLink href="https://ahrefs.com">Ahrefs</TextLink>
           </Text>
-          <Text wieght={400}>{" (2021 - now)"}</Text>
+          <Text wieght={400}>{"2021 - now"}</Text>
           <Text>{"Design system, tooling and Open Source"}</Text>
         </Stack>
         <Stack gap={1} align="left">
           <Text size={font.fontSize2}>
             <TextLink href="https://draftbit.com">Draftbit</TextLink>
           </Text>
-          <Text wieght={400}>{" (2020 - 2021)"}</Text>
+          <Text wieght={400}>{"2020 - 2021"}</Text>
           <Text>{"Fullstack product development"}</Text>
         </Stack>
 
@@ -120,7 +120,7 @@ let Work = () => (
           <Text size={font.fontSize2}>
             <TextLink href="https://typeform.com">Typeform</TextLink>
           </Text>
-          <Text wieght={400}>{" (2014 - 2019)"}</Text>
+          <Text wieght={400}>{"2014 - 2019"}</Text>
           <Text>{"Software Engineer"}</Text>
         </Stack>
 
@@ -128,7 +128,7 @@ let Work = () => (
           <Text size={font.fontSize2}>
             <TextLink href="https://ofteria.com">Ofertia</TextLink>
           </Text>
-          <Text wieght={400}>{" (2013)"}</Text>
+          <Text wieght={400}>{"2013"}</Text>
           <Text>
             {"Internal backend tools"}
             {/* Backend systems with PHP with Laravel, MySQL and Apache */}
@@ -137,7 +137,7 @@ let Work = () => (
 
         <Stack gap={1} align="left">
           <Text size={font.fontSize2}>Freelance</Text>
-          <Text wieght={400}>{" (2010 - 2013)"}</Text>
+          <Text wieght={400}>{"2010 - 2013"}</Text>
           <Text>{"Web development"}</Text>
         </Stack>
       </Stack>
