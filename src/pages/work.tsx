@@ -57,20 +57,19 @@ let Work = () => (
           <TextLink href="https://github.com/davesnx/html_of_jsx/">
             Html_of_jsx
           </TextLink>
-          An OCaml library to render HTML with JSX
+          OCaml library to render HTML with JSX
         </Text>
 
         <Text>
           <TextLink href="https://github.com/davesnx/ocaml-box">
             ocaml-box
           </TextLink>
-          OCaml library to render boxes in the terminal with OCaml or Reason.
-          (First opam package)
+          OCaml library to render boxes in the terminal
         </Text>
 
         <Text>
           <TextLink href="https://github.com/davesnx/taco">taco</TextLink>
-          Layout primitives written with ReasonReact and styled-ppx
+          Layout primitives written in ReasonReact and styled-ppx
         </Text>
 
         <Text>
@@ -85,12 +84,12 @@ let Work = () => (
             {`query-json's playground`}
           </TextLink>
           Backendless playground for query-json to play, explore and learn.
-          Build with Js_of_ocaml with jsoo-react
+          Build with Js_of_ocaml and jsoo-react
         </Text>
 
         <Text>
           <TextLink href="https://davesnx.github.io/learn-ramda/">
-            {`Learn ramda, the interactive way`}
+            {`🐏 The interactive way to learn ramda`}
           </TextLink>
           Website to teach Ramda.js interactively. Build with React.
         </Text>
