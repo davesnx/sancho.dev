@@ -45,7 +45,7 @@ let About = () => {
             </Text>
             <Spacer top={2} />
             <Text>
-              {`Working remote gave me the possibility to live between Barcelona and La Cerdanya (Pyrenees) and enjoy the freedom and beauty of the mountains.`}
+              {`Working remotely gave me the possibility to live between Barcelona and La Cerdanya (Pyrenees) and enjoy the freedom and beauty of the mountains.`}
             </Text>
             <Spacer top={2} />
             <Text>

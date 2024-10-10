@@ -22,7 +22,7 @@ const Home = () => {
       <Page title={<H2>David Sancho</H2>}>
         <Spacer bottom={10}>
           <Text size={fonts.fontSize1} align="left">
-            <span>{`I'm a Software Engineer based in Barcelona, making cute software
+            <span>{`I'm a Software Engineer based in Barcelona, making software
         with `}</span>
             <TextLink href="http://reasonml.github.io/">Reason</TextLink>
             <span>{` and `}</span>
@@ -34,8 +34,8 @@ const Home = () => {
           <Spacer top={2} />
           <Text size={fonts.fontSize1}>
             {`I am currently working at `}
-            <TextLink href="https://ahrefs.com/">Ahrefs</TextLink>
-            {`, building user interfaces and tools.`}
+            <TextLink href="https://ahrefs.com/">ahrefs</TextLink>
+            {`, building tools for other developers to make great user interfaces.`}
           </Text>
           <Spacer top={2} />
           <Text size={fonts.fontSize1}>
