@@ -49,9 +49,9 @@ export let getPages = async () => {
         return;
       }
       if (publishedAt) {
-        return { ...page, route, publishedAt };
+        return { ...page, route, publishedAt, title: fm.data.title };
       }
-      return { ...page, route };
+      return { ...page, route, title: fm.data.title };
     })
     .filter(Boolean);
 };
