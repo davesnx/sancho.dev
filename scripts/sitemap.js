@@ -3,10 +3,8 @@ const fs = require("fs");
 
 const globby = require("globby");
 const matter = require("gray-matter");
-const prettier = require("prettier");
 
 (async () => {
-  let prettierConfig = await prettier.resolveConfig("./.prettierrc");
   let pages = await globby([
     "src/pages/*.js",
     "src/pages/*.tsx",
@@ -18,15 +16,17 @@ const prettier = require("prettier");
     "!src/pages/api",
   ]);
 
-  let sitemap = `
-        <?xml version="1.0" encoding="UTF-8"?>
-        <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-            ${pages
+  let sitemap = `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">${pages
       .map((page) => {
+        let publishedAt = null;
         // Exclude drafts from the sitemap
         if (page.search(".md") >= 1 && fs.existsSync(page)) {
           let source = fs.readFileSync(page, "utf8");
           let fm = matter(source);
+
+          publishedAt = fm.data.publishedAt;
+
           if (fm.data.draft) {
             return;
           }
@@ -52,18 +52,16 @@ const prettier = require("prettier");
         ) {
           return;
         }
-        return `<url><loc>https://sancho.dev${route}</loc></url>`;
+        if (publishedAt) {
+          return `  <url><loc>https://sancho.dev${route}</loc><lastmod>${publishedAt}</lastmod></url>`;
+        }
+        return `  <url><loc>https://sancho.dev${route}</loc></url>`;
       })
-      .join(" ")}
-        </urlset>
-    `;
-
-  let formatted = prettier.format(sitemap, {
-    ...prettierConfig,
-    parser: "html",
-  });
+      .join("\n")}
+</urlset>
+`;
 
   // eslint-disable-next-line no-sync
   fs.unlinkSync("public/sitemap.xml");
-  fs.writeFileSync("public/sitemap.xml", formatted);
+  fs.writeFileSync("public/sitemap.xml", sitemap);
 })();
