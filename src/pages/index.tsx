@@ -12,7 +12,7 @@ import { Row } from "../components/taco";
 import { colors } from "../theme/theme";
 
 const Dimmed = styled.div`
-  opacity: 0.5;
+  opacity: 0.8;
 `;
 
 const Home = () => {
