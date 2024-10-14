@@ -22,39 +22,39 @@ const prettier = require("prettier");
         <?xml version="1.0" encoding="UTF-8"?>
         <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
             ${pages
-              .map((page) => {
-                // Exclude drafts from the sitemap
-                if (page.search(".md") >= 1 && fs.existsSync(page)) {
-                  let source = fs.readFileSync(page, "utf8");
-                  let fm = matter(source);
-                  if (fm.data.draft) {
-                    return;
-                  }
-                  if (fm.data.canonicalUrl) {
-                    return;
-                  }
-                }
-                let path = page
-                  .replace("pages/", "/")
-                  .replace("src//", "/")
-                  .replace("src/content/posts/", "/blog/")
-                  .replace("public/", "/")
-                  .replace(".js", "")
-                  .replace(".tsx", "")
-                  .replace(".mdx", "")
-                  .replace(".md", "")
-                  .replace("/feed.xml", "");
-                let route = path === "/index" ? "" : path;
+      .map((page) => {
+        // Exclude drafts from the sitemap
+        if (page.search(".md") >= 1 && fs.existsSync(page)) {
+          let source = fs.readFileSync(page, "utf8");
+          let fm = matter(source);
+          if (fm.data.draft) {
+            return;
+          }
+          if (fm.data.canonicalUrl) {
+            return;
+          }
+        }
+        let path = page
+          .replace("pages/", "/")
+          .replace("src//", "/")
+          .replace("src/content/posts/", "/blog/")
+          .replace("public/", "/")
+          .replace(".js", "")
+          .replace(".tsx", "")
+          .replace(".mdx", "")
+          .replace(".md", "")
+          .replace("/feed.xml", "");
+        let route = path === "/index" ? "" : path;
 
-                if (
-                  page.search("pages/404.") > -1 ||
-                  page.search(`pages/blog/[...slug].`) > -1
-                ) {
-                  return;
-                }
-                return `<url><loc>https://sancho.dev${route}</loc></url>`;
-              })
-              .join(" ")}
+        if (
+          page.search("pages/404.") > -1 ||
+          page.search(`pages/blog/[...slug].`) > -1
+        ) {
+          return;
+        }
+        return `<url><loc>https://sancho.dev${route}</loc></url>`;
+      })
+      .join(" ")}
         </urlset>
     `;
 
