@@ -1,9 +1,13 @@
 /* This file can't have any dependency, we inject it outside of the app and react. During SSR. */
 
-const values = {
+const commonValues = {
   r: "#FF211B",
   g: "#17E620",
   b: "#003AEC",
+  twitter: "29,161,242", // #1DA1F2
+  github: "164,173,187", // #181717
+  discord: "114,137,218", // #7289DA
+  strava: "252,76,2", // #FC4C02
 };
 
 const lightValues = {
@@ -14,11 +18,6 @@ const lightValues = {
   contrastCodeBackground: "238,238,238", // #EEEEEE
   subtle: "174,178,185", // #AEB2B9
   primary: "66,153,232", // #4299E8
-  twitter: "29,161,242", // #1DA1F2
-  github: "24,23,23", // #181717
-  discord: "114,137,218", // #7289DA
-  strava: "252,76,2", // #FC4C02
-  /* strongBlue: "#4c575d",*/
 };
 
 const darkValues = {
@@ -29,17 +28,10 @@ const darkValues = {
   contrastCodeBackground: "38,38,41", // #262629
   subtle: "84,88,93", // #54585D
   primary: "58,128,191", // #3A80BF
-  twitter: "29,161,242", // #1DA1F2
-  github: "164,173,187", // #AABFC9
-  discord: "114,137,218", // #7289DA
-  strava: "252,76,2", // #FC4C02
-  /* strongBlue: "#aabfc9",*/
 };
 
-const lightTheme = Object.assign({}, lightValues, values);
-const darkTheme = Object.assign({}, darkValues, values);
-
-export let KEY = "__sancho-www-theme";
+const lightTheme = Object.assign({}, lightValues, commonValues);
+const darkTheme = Object.assign({}, darkValues, commonValues);
 
 let declaration = (theme, key, value) => `--c-${theme}-${key}: ${value};`;
 let variable = (str) => `var(${str})`;
