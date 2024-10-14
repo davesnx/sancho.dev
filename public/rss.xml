@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+    <channel>
+        <title><![CDATA[sancho.dev]]></title>
+        <description><![CDATA[sancho.dev | davesnx's personal blog]]></description>
+        <link>https://sancho.dev</link>
+        <generator>RSS for Node</generator>
+        <lastBuildDate>Mon, 14 Oct 2024 21:52:44 GMT</lastBuildDate>
+        <atom:link href="https://sancho.dev/rss.xml" rel="self" type="application/rss+xml"/>
+        <pubDate>Mon, 14 Oct 2024 21:52:44 GMT</pubDate>
+        <copyright><![CDATA[2024 sancho.dev]]></copyright>
+        <language><![CDATA[en]]></language>
+        <item>
+            <title><![CDATA[No title]]></title>
+            <link>https://sancho.dev/about</link>
+            <guid isPermaLink="true">https://sancho.dev/about</guid>
+        </item>
+        <item>
+            <title><![CDATA[No title]]></title>
+            <link>https://sancho.dev/blog</link>
+            <guid isPermaLink="true">https://sancho.dev/blog</guid>
+        </item>
+        <item>
+            <title><![CDATA[No title]]></title>
+            <link>https://sancho.dev</link>
+            <guid isPermaLink="true">https://sancho.dev</guid>
+        </item>
+        <item>
+            <title><![CDATA[No title]]></title>
+            <link>https://sancho.dev/talks</link>
+            <guid isPermaLink="true">https://sancho.dev/talks</guid>
+        </item>
+        <item>
+            <title><![CDATA[No title]]></title>
+            <link>https://sancho.dev/work</link>
+            <guid isPermaLink="true">https://sancho.dev/work</guid>
+        </item>
+        <item>
+            <title><![CDATA[No title]]></title>
+            <link>https://sancho.dev/blog/better-yarn-npm-run</link>
+            <guid isPermaLink="true">https://sancho.dev/blog/better-yarn-npm-run</guid>
+        </item>
+        <item>
+            <title><![CDATA[No title]]></title>
+            <link>https://sancho.dev/blog/cross-compile-query-json</link>
+            <guid isPermaLink="true">https://sancho.dev/blog/cross-compile-query-json</guid>
+        </item>
+        <item>
+            <title><![CDATA[No title]]></title>
+            <link>https://sancho.dev/blog/hello</link>
+            <guid isPermaLink="true">https://sancho.dev/blog/hello</guid>
+        </item>
+        <item>
+            <title><![CDATA[No title]]></title>
+            <link>https://sancho.dev/blog/learning-ocaml</link>
+            <guid isPermaLink="true">https://sancho.dev/blog/learning-ocaml</guid>
+        </item>
+        <item>
+            <title><![CDATA[No title]]></title>
+            <link>https://sancho.dev/blog/server-side-rendering-react-in-ocaml</link>
+            <guid isPermaLink="true">https://sancho.dev/blog/server-side-rendering-react-in-ocaml</guid>
+        </item>
+        <item>
+            <title><![CDATA[No title]]></title>
+            <link>https://sancho.dev/blog/tailwind-and-design-systems</link>
+            <guid isPermaLink="true">https://sancho.dev/blog/tailwind-and-design-systems</guid>
+        </item>
+        <item>
+            <title><![CDATA[No title]]></title>
+            <link>https://sancho.dev/blog/whats-possible-with-melange</link>
+            <guid isPermaLink="true">https://sancho.dev/blog/whats-possible-with-melange</guid>
+        </item>
+    </channel>
+</rss>
