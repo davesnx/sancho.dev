@@ -7,32 +7,32 @@ const values = {
 };
 
 const lightValues = {
-  body: "35,48,68",
-  contrast: "250,250,250",
-  overlay: "255,255,255",
-  codeBackground: "38,38,41" /* 238, 238, 238 */,
-  contrastCodeBackground: "238,238,238",
-  subtle: "174,178,185",
-  primary: "66,153,232",
-  twitter: "29,161,242",
-  github: "24,23,23",
-  discord: "114,137,218",
-  strava: "252,76,2",
+  body: "35,48,68", // #233044
+  contrast: "250,250,250", // #FAFAFA
+  overlay: "255,255,255", // #FFFFFF
+  codeBackground: "38,38,41", // #262629
+  contrastCodeBackground: "238,238,238", // #EEEEEE
+  subtle: "174,178,185", // #AEB2B9
+  primary: "66,153,232", // #4299E8
+  twitter: "29,161,242", // #1DA1F2
+  github: "24,23,23", // #181717
+  discord: "114,137,218", // #7289DA
+  strava: "252,76,2", // #FC4C02
   /* strongBlue: "#4c575d",*/
 };
 
 const darkValues = {
-  body: "206,208,210",
-  contrast: "29,29,29",
-  overlay: "17,17,17",
-  codeBackground: "38,38,41",
-  contrastCodeBackground: "38,38,41",
-  subtle: "84,88,93",
-  primary: "58,128,191",
-  twitter: "29,161,242",
-  github: "164,173,187",
-  discord: "114,137,218",
-  strava: "252,76,2",
+  body: "206,208,210", // #CED0D2
+  contrast: "29,29,29", // #1D1D1D
+  overlay: "17,17,17", // #111111
+  codeBackground: "38,38,41", // #262629
+  contrastCodeBackground: "38,38,41", // #262629
+  subtle: "84,88,93", // #54585D
+  primary: "58,128,191", // #3A80BF
+  twitter: "29,161,242", // #1DA1F2
+  github: "164,173,187", // #AABFC9
+  discord: "114,137,218", // #7289DA
+  strava: "252,76,2", // #FC4C02
   /* strongBlue: "#aabfc9",*/
 };
 

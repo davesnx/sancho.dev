@@ -1,13 +1,74 @@
 import React from "react";
+import styled from "@emotion/styled";
 
 import { H1, H2 } from "../components/heading";
 import Page from "../components/page";
 import MetaData from "../components/site-metadata";
 import Spacer from "../components/spacer";
-import { Stack } from "../components/taco";
+import { Stack, Row } from "../components/taco";
 import Text from "../components/text";
 import font from "../theme/fonts";
+import { colors } from "../theme/theme";
 import { TextLink } from "../components/link";
+import { rgb } from "../theme/color";
+
+let Job = ({
+  company,
+  date,
+  role,
+}: {
+  company: { name: string; url: string | null };
+  date: string;
+  role: string;
+}) => (
+  <Stack gap={1} align="left" fullWidth>
+    <Row distribute="between" fullWidth>
+      {company.url && (
+        <Text weight={400} size={font.fontSize2}>
+          <TextLink href={company.url}>{company.name}</TextLink>
+        </Text>
+      )}
+      {!company.url && (
+        <Text weight={400} size={font.fontSize2}>
+          {company.name}
+        </Text>
+      )}
+      <Text wieght={400} size={font.fontSize2}>
+        {date}
+      </Text>
+    </Row>
+    <Text>{role}</Text>
+  </Stack>
+);
+
+let OpenSourceItem = styled.a`
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  width: 100%;
+
+  border: 1px solid ${rgb(colors.codeBackground)};
+  padding: 1rem;
+  border-radius: 0.5rem;
+
+  text-decoration: none;
+`;
+let OpenSource = ({
+  name,
+  description,
+  url,
+}: {
+  name: string;
+  description: string;
+  url: string;
+}) => (
+  <OpenSourceItem href={url} target="_blank">
+    <Text weight={600} size={font.fontSize2}>
+      {name}
+    </Text>
+    <Text size={font.fontSize1}>{description}</Text>
+  </OpenSourceItem>
+);
 
 let Work = () => (
   <>
@@ -17,128 +78,93 @@ let Work = () => (
       <Text>{`I author, maintain or co-maintain a few open-source projects`}</Text>
       <Spacer top={3} />
       <Stack gap={3} align="left">
-        <Text>
-          <TextLink href="https://github.com/davesnx/styled-ppx">
-            styled-ppx
-          </TextLink>
-          Styled components for ReScript and Melange with type-safe CSS,
-          including a CSS parser and CSS type-checker.
-        </Text>
-
-        <Text>
-          <TextLink href="https://github.com/ml-in-barcelona/server-reason-react">
-            server-reason-react
-          </TextLink>
-          Server rendering Reason React components in OCaml using Reason.
-        </Text>
-
-        <Text>
-          <TextLink href="https://github.com/reasonml/reason-react">
-            reason-react
-          </TextLink>
-          Reason bindings for React.js
-        </Text>
-
-        <Text>
-          <TextLink href="https://github.com/reasonml/reason">Reason</TextLink>A
-          programming language that combines the JavaScript and OCaml
-          ecosystems. It is simple, fast, and type-safe.
-        </Text>
-
-        <Text>
-          <TextLink href="https://github.com/melange-re/melange">
-            Melange
-          </TextLink>
-          A mixture of tools combined to produce JavaScript from OCaml and
-          Reason
-        </Text>
-
-        <Text>
-          <TextLink href="https://github.com/davesnx/html_of_jsx/">
-            Html_of_jsx
-          </TextLink>
-          OCaml library to render HTML with JSX
-        </Text>
-
-        <Text>
-          <TextLink href="https://github.com/davesnx/ocaml-box">
-            ocaml-box
-          </TextLink>
-          OCaml library to render boxes in the terminal
-        </Text>
-
-        <Text>
-          <TextLink href="https://github.com/davesnx/taco">taco</TextLink>
-          Layout primitives written in ReasonReact and styled-ppx
-        </Text>
-
-        <Text>
-          <TextLink href="https://github.com/davesnx/query-json">
-            query-json
-          </TextLink>
-          Faster, simpler and more portable implementation of `jq` in Reason
-        </Text>
-
-        <Text>
-          <TextLink href="https://query-json.netlify.app/">
-            {`query-json's playground`}
-          </TextLink>
-          Backendless playground for query-json to play, explore and learn.
-          Build with Js_of_ocaml and jsoo-react
-        </Text>
-
-        <Text>
-          <TextLink href="https://davesnx.github.io/learn-ramda/">
-            {`🐏 The interactive way to learn ramda`}
-          </TextLink>
-          Website to teach Ramda.js interactively. Build with React.
-        </Text>
-
+        <OpenSource
+          name="styled-ppx"
+          description="Styled components for ReScript and Melange with type-safe CSS, including a CSS parser and CSS type-checker."
+          url="https://github.com/davesnx/styled-ppx"
+        />
+        <OpenSource
+          name="server-reason-react"
+          description="Server rendering Reason React components in OCaml using Reason."
+          url="https://github.com/ml-in-barcelona/server-reason-react"
+        />
+        <OpenSource
+          name="reason-react"
+          description="Reason bindings for React.js"
+          url="https://github.com/reasonml/reason-react"
+        />
+        <OpenSource
+          name="reason"
+          description="A programming language that combines the JavaScript and OCaml ecosystems."
+          url="https://github.com/reasonml/reason"
+        />
+        <OpenSource
+          name="melange"
+          description="A mixture of tools combined to produce JavaScript from OCaml and Reason"
+          url="https://github.com/melange-re/melange"
+        />
+        <OpenSource
+          name="html_of_jsx"
+          description="OCaml library to render HTML with JSX"
+          url="https://github.com/davesnx/html_of_jsx"
+        />
+        <OpenSource
+          name="ocaml-box"
+          description="OCaml library to render boxes in the terminal"
+          url="https://github.com/davesnx/ocaml-box"
+        />
+        <OpenSource
+          name="taco"
+          description="Layout primitives written in ReasonReact and styled-ppx"
+          url="https://github.com/davesnx/taco"
+        />
+        <OpenSource
+          name="query-json"
+          description="Faster, simpler and more portable implementation of `jq` in Reason"
+          url="https://github.com/davesnx/query-json"
+        />
+        <OpenSource
+          name="query-json's playground"
+          description="Backendless playground for query-json to play, explore and learn. Build with Js_of_ocaml and jsoo-react"
+          url="https://github.com/davesnx/query-json"
+        />
+        <OpenSource
+          name="The interactive way to learn ramda"
+          description="Website to teach Ramda.js interactively. Build with React."
+          url="https://github.com/davesnx/learn-ramda"
+        />
         <Spacer top={2} />
       </Stack>
       <Spacer bottom={3}>
         <H2>Experience</H2>
       </Spacer>
       <Stack gap={5} align="left">
-        <Stack gap={1} align="left">
-          <Text size={font.fontSize2}>
-            <TextLink href="https://ahrefs.com">Ahrefs</TextLink>
-          </Text>
-          <Text wieght={400}>{"2021 - now"}</Text>
-          <Text>{"Design system, tooling and Open Source"}</Text>
-        </Stack>
-        <Stack gap={1} align="left">
-          <Text size={font.fontSize2}>
-            <TextLink href="https://draftbit.com">Draftbit</TextLink>
-          </Text>
-          <Text wieght={400}>{"2020 - 2021"}</Text>
-          <Text>{"Fullstack product development"}</Text>
-        </Stack>
+        <Job
+          company={{ name: "Ahrefs", url: "https://ahrefs.com" }}
+          date="2021 - now"
+          role="Software Engineer"
+        />
+        <Job
+          company={{ name: "Draftbit", url: "https://draftbit.com" }}
+          date="2020 - 2021"
+          role="Fullstack Engineer"
+        />
+        <Job
+          company={{ name: "Typeform", url: "https://typeform.com" }}
+          date="2014 - 2019"
+          role="Frontend Engineer"
+        />
+        <Job
+          company={{ name: "Ofertia", url: "https://ofertia.com" }}
+          date="2013 - 2014"
+          role="Backend developer"
+        ></Job>
 
-        <Stack gap={1} align="left">
-          <Text size={font.fontSize2}>
-            <TextLink href="https://typeform.com">Typeform</TextLink>
-          </Text>
-          <Text wieght={400}>{"2014 - 2019"}</Text>
-          <Text>{"Software Engineer"}</Text>
-        </Stack>
-
-        <Stack gap={1} align="left">
-          <Text size={font.fontSize2}>
-            <TextLink href="https://ofteria.com">Ofertia</TextLink>
-          </Text>
-          <Text wieght={400}>{"2013"}</Text>
-          <Text>
-            {"Internal backend tools"}
-            {/* Backend systems with PHP with Laravel, MySQL and Apache */}
-          </Text>
-        </Stack>
-
-        <Stack gap={1} align="left">
-          <Text size={font.fontSize2}>Freelance</Text>
-          <Text wieght={400}>{"2010 - 2013"}</Text>
-          <Text>{"Web development"}</Text>
-        </Stack>
+        <Job
+          company={{ name: "Freelance", url: null }}
+          date="2010 - 2013"
+          role="Web developer"
+        />
       </Stack>
     </Page>
   </>

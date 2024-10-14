@@ -19,10 +19,10 @@ const Home = () => {
   return (
     <>
       <MetaData title="Home" />
-      <Page title={<H2>David Sancho</H2>}>
+      <Page title={<H2>{"Hi, I'm David Sancho"}</H2>}>
         <Spacer bottom={10}>
           <Text size={fonts.fontSize1} align="left">
-            <span>{`I'm a Software Engineer based in Barcelona, making software
+            <span>{`A Software Engineer based in Barcelona, making software
         with `}</span>
             <TextLink href="http://reasonml.github.io/">Reason</TextLink>
             <span>{` and `}</span>

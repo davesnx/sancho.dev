@@ -19,6 +19,7 @@ const StackDistributeMap = {
 
 type StackProps = {
   fullHeight?: boolean;
+  fullWidth?: boolean;
   gap?: number;
   align?: keyof typeof StackAlignMap;
   distribute?: keyof typeof StackDistributeMap;
@@ -28,6 +29,7 @@ export const Stack = styled.div`
   display: flex;
   flex-direction: column;
   height: ${(props: StackProps) => (props.fullHeight ? "100%" : "auto")};
+  width: ${(props: StackProps) => (props.fullWidth ? "100%" : "auto")};
 
   align-items: ${(props: StackProps) => StackAlignMap[props.align || "center"]};
   justify-content: ${(props: StackProps) =>
