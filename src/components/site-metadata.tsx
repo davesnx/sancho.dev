@@ -5,6 +5,7 @@ const config = {
   siteUrl: `https://sancho.dev`,
   title: `David Sancho`,
   twitter: `@davesnx`,
+  feedUrl: `https://sancho.dev/rss.xml`,
   description:
     "Software engineer into ReasonML and OCaml. Working on styled-ppx and UI stuff at Ahrefs. Co-host at emelle.tv",
 };
@@ -95,7 +96,12 @@ const MetaData = (props: Props) => {
       <meta itemProp="name" content={title} />
       <meta itemProp="description" content={description} />
       <meta itemProp="image" content={image} />
-      {/* <link rel="manifest" href="/favicon/site.webmanifest" /> */}
+      <link
+        rel="alternate"
+        type="application/rss+xml"
+        title="davesnx's personal blog"
+        href={config.feedUrl}
+      />
       {favicons.map((favicon) => (
         <link key={favicon.href} {...favicon} />
       ))}
