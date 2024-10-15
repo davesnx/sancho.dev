@@ -22,7 +22,7 @@ const defaultProps = {
 };
 
 type Props = RequiredProps & {
-  [key in keyof typeof defaultProps]?: typeof defaultProps[key];
+  [key in keyof typeof defaultProps]?: (typeof defaultProps)[key];
 };
 
 const MetaData = (props: Props) => {
@@ -96,7 +96,12 @@ const MetaData = (props: Props) => {
       <meta itemProp="name" content={title} />
       <meta itemProp="description" content={description} />
       <meta itemProp="image" content={image} />
-      <link rel="alternate" type="application/rss+xml" title="davesnx's personal blog" href={config.feedUrl} />
+      <link
+        rel="alternate"
+        type="application/rss+xml"
+        title="davesnx's personal blog"
+        href={config.feedUrl}
+      />
       {/* <link rel="manifest" href="/favicon/site.webmanifest" /> */}
       {favicons.map((favicon) => (
         <link key={favicon.href} {...favicon} />
