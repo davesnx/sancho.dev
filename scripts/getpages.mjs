@@ -1,11 +1,41 @@
-/* eslint-disable */
-import fs from "fs";
+import Fs from "fs";
 
 import globby from "globby";
 import matter from "gray-matter";
 
-export let getPages = async () => {
+let getJsPages = async () => {
   let pages = await globby([
+    "src/pages/*.js",
+    "src/pages/*.tsx",
+    "!src/pages/_*.js",
+    "!src/pages/_*.tsx",
+    "!src/pages/api",
+  ]);
+
+  console.log("JS PAGES", pages);
+
+  return pages
+    .map((page) => {
+      if (
+        page.search("pages/404.") > -1 ||
+        page.search(`pages/blog/[...slug].`) > -1
+      ) {
+        return null;
+      }
+      return {
+        route: page
+          .replace("src/pages/", "/")
+          .replace(".js", "")
+          .replace(".jsx", "")
+          .replace(".ts", "")
+          .replace(".tsx", ""),
+      };
+    })
+    .filter(Boolean);
+};
+
+let getBlogPages = async () => {
+  let mdxPages = await globby([
     "src/pages/*.js",
     "src/pages/*.tsx",
     "src/content/posts/**/*.mdx",
@@ -16,21 +46,20 @@ export let getPages = async () => {
     "!src/pages/api",
   ]);
 
-  return pages
+  return mdxPages
+    .filter((page) => page.search(".md") >= 1 && Fs.existsSync(page))
     .map((page) => {
-      let publishedAt = null;
       // Exclude drafts from the sitemap
-      if (page.search(".md") >= 1 && fs.existsSync(page)) {
-        let source = fs.readFileSync(page, "utf8");
-        let fm = matter(source);
+      let source = Fs.readFileSync(page, "utf8");
+      let fm = matter(source);
 
-        if (fm.data.draft) {
-          return;
-        }
-        if (fm.data.canonicalUrl) {
-          return;
-        }
+      if (fm.data.draft) {
+        return null;
       }
+      if (fm.data.canonicalUrl) {
+        return null;
+      }
+
       let path = page
         .replace("pages/", "/")
         .replace("src//", "/")
@@ -39,19 +68,30 @@ export let getPages = async () => {
         .replace(".js", "")
         .replace(".tsx", "")
         .replace(".mdx", "")
-        .replace(".md", "")
+        .replace(".md", "");
+
       let route = path === "/index" ? "" : path;
 
       if (
         page.search("pages/404.") > -1 ||
         page.search(`pages/blog/[...slug].`) > -1
       ) {
-        return;
+        return null;
       }
-      if (publishedAt) {
-        return { ...page, route, publishedAt, title: fm.data.title };
+
+      if (fm.data.publishedAt) {
+        return {
+          route,
+          ...fm.data,
+        };
       }
-      return { ...page, route, title: fm.data.title };
+      return { route };
     })
     .filter(Boolean);
+};
+
+export let getPages = async () => {
+  const blogPages = await getBlogPages();
+  const jsPages = await getJsPages();
+  return { blog: blogPages, pages: jsPages };
 };

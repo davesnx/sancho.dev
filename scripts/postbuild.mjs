@@ -1,8 +1,8 @@
-import Fs from "fs/promises";
-import { generateSitemap } from "./sitemap.mjs";
-import { generateRSS } from "./rss.mjs";
 import Path from "path";
 import { fileURLToPath } from "url";
+import Fs from "fs/promises";
+import { generateRSS } from "./rss.mjs";
+import { generateSitemap } from "./sitemap.mjs";
 const root = Path.dirname(fileURLToPath(import.meta.url));
 
 (async function postbuild() {
@@ -13,6 +13,7 @@ const root = Path.dirname(fileURLToPath(import.meta.url));
     sitemap = await generateSitemap();
   } catch (e) {
     console.log("can't generate sitemap");
+    console.error(e);
     process.exit(1);
   }
 
