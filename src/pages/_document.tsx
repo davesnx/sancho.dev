@@ -37,6 +37,12 @@ class MyDocument extends Document {
             type="font/otf"
             crossOrigin="anonymous"
           />
+          <link
+            rel="alternate"
+            type="application/rss+xml"
+            title="davesnx's personal blog"
+            href="https://sancho.dev/rss.xml"
+          ></link>
         </Head>
         <body>
           <Main />

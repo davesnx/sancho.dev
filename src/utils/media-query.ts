@@ -1,9 +1,9 @@
 import {
-  useState,
-  useEffect,
-  useLayoutEffect,
   DependencyList,
   EffectCallback,
+  useEffect,
+  useLayoutEffect,
+  useState,
 } from "react";
 
 import constants from "../theme/constants";

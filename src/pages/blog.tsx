@@ -1,11 +1,11 @@
 import React from "react";
 
-import { parseISO, format } from "date-fns";
+import { format, parseISO } from "date-fns";
 import { GetStaticProps } from "next";
 
+import MetaData from "../components/site-metadata";
 import { Frontmatter } from "../lib/frontmatter";
 import { getAllFrontmatter } from "../lib/mdx";
-import MetaData from "../components/site-metadata";
 
 import { H1, H3 } from "../components/heading";
 import { NavigateButton } from "../components/link";
@@ -17,10 +17,11 @@ import { colors } from "../theme/theme";
 
 export const getStaticProps: GetStaticProps = async () => {
   let frontmatters = getAllFrontmatter();
-  let sortedFrontmatters = frontmatters.sort((a: Frontmatter, b: Frontmatter) =>
-    b.publishedAt && a.publishedAt
-      ? Number(new Date(b.publishedAt)) - Number(new Date(a.publishedAt))
-      : 0
+  let sortedFrontmatters = frontmatters.sort(
+    (a: Frontmatter, b: Frontmatter) =>
+      b.publishedAt && a.publishedAt
+        ? Number(new Date(b.publishedAt)) - Number(new Date(a.publishedAt))
+        : 0,
   );
   return { props: { frontmatters: sortedFrontmatters } };
 };

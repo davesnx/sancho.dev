@@ -1,7 +1,7 @@
 import styled from "@emotion/styled";
 
 import constants from "../theme/constants";
-import { unit, px, rem } from "../utils/unit";
+import { px, rem, unit } from "../utils/unit";
 
 type Props = {
   top?: number;

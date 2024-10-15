@@ -9,7 +9,7 @@ import rehypeAutolinkHeadings from "rehype-autolink-headings";
 import rehypePrettyCode from "rehype-pretty-code";
 import rehypeSlug from "rehype-slug";
 import remarkGfm from "remark-gfm";
-import { getHighlighter, BUNDLED_LANGUAGES } from "shiki";
+import { BUNDLED_LANGUAGES, getHighlighter } from "shiki";
 
 import type { Frontmatter } from "./frontmatter";
 import rehypeHighlightCode from "./rehype-highlight-code";
@@ -38,14 +38,14 @@ const codeHighlightOptions = {
     dark: JSON.parse(
       fs.readFileSync(
         path.join(cwd, "src", "lib", "./code-highlight/themes/ayu-mirage.json"),
-        "utf-8"
-      )
+        "utf-8",
+      ),
     ),
     light: JSON.parse(
       fs.readFileSync(
         path.join(cwd, "src", "lib", "./code-highlight/themes/ayu-light.json"),
-        "utf-8"
-      )
+        "utf-8",
+      ),
     ),
   },
   getHighlighter: (options) =>

@@ -1,8 +1,8 @@
 import React from "react";
 
 import Layout from "./layout";
-import Spacer from "./spacer";
 import Main from "./main";
+import Spacer from "./spacer";
 
 const Page = ({ title, children }) => (
   <Layout key={title}>

@@ -10,7 +10,7 @@ import YouTube from "./../components/svgs/youtube";
 import { H3 } from "./heading";
 import Icon from "./icon";
 import { ButtonLink } from "./link";
-import { Stack, Row } from "./taco";
+import { Row, Stack } from "./taco";
 import Text from "./text";
 
 const GithubIcon = ({ href }: { href: string }) => (

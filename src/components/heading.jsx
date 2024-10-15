@@ -1,9 +1,9 @@
 import { css } from "@emotion/react";
 import styled from "@emotion/styled";
 
+import { rgb } from "../theme/color";
 import fonts from "../theme/fonts";
 import { colors } from "../theme/theme";
-import { rgb } from "../theme/color";
 
 const Heading = css`
   margin: 0;

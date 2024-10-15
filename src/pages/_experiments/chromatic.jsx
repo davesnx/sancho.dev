@@ -1,19 +1,19 @@
-import React from "react";
 import styled from "@emotion/styled";
 import { window } from "browser-monads-ts";
+import React from "react";
 
-import { colors } from "../../theme/theme";
-import font from "../../theme/fonts";
 import Layout from "../../components/layout";
-import Overlap from "../../components/overlap";
-import Text from "../../components/text";
-import Spacer from "../../components/spacer";
 import { TextLink } from "../../components/link";
+import Overlap from "../../components/overlap";
+import Spacer from "../../components/spacer";
 import { RelativeSpacer } from "../../components/spacer";
-import useDeviceOrientation from "../../utils/device-orientation";
-import useMousePosition from "../../utils/mouse-position";
-import { useIsMobile } from "../../utils/media-query";
+import Text from "../../components/text";
 import { rgb } from "../../theme/color";
+import font from "../../theme/fonts";
+import { colors } from "../../theme/theme";
+import useDeviceOrientation from "../../utils/device-orientation";
+import { useIsMobile } from "../../utils/media-query";
+import useMousePosition from "../../utils/mouse-position";
 
 const Layer = styled.div((props) => ({
   style: {

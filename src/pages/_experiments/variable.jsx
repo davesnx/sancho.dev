@@ -1,14 +1,14 @@
-import React from "react";
 import styled from "@emotion/styled";
+import React from "react";
 
-import Layout from "../../components/layout";
-import { colors } from "../../theme/theme";
-import Spacer from "../../components/spacer";
-import { TextLink } from "../../components/link";
-import Text from "../../components/text";
 import { Character } from "../../components/character";
-import useMousePosition from "../../utils/mouse-position";
+import Layout from "../../components/layout";
+import { TextLink } from "../../components/link";
+import Spacer from "../../components/spacer";
+import Text from "../../components/text";
+import { colors } from "../../theme/theme";
 import { useIsMobile } from "../../utils/media-query";
+import useMousePosition from "../../utils/mouse-position";
 
 const Row = styled.div`
   display: flex;

@@ -1,5 +1,5 @@
-import React from "react";
 import Head from "next/head";
+import React from "react";
 
 const config = {
   siteUrl: `https://sancho.dev`,
@@ -21,7 +21,7 @@ const defaultProps = {
 };
 
 type Props = RequiredProps & {
-  [key in keyof typeof defaultProps]?: typeof defaultProps[key];
+  [key in keyof typeof defaultProps]?: (typeof defaultProps)[key];
 };
 
 const MetaData = (props: Props) => {

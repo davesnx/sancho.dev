@@ -1,12 +1,12 @@
-import fonts from "./fonts";
-import { make, lightRoot, darkRoot, colors } from "./theme";
 import { css } from "@emotion/react";
 import { rgb } from "./color";
+import fonts from "./fonts";
+import { colors, darkCSSVariables, lightCSSVariables, make } from "./theme";
 
 const GlobalStyles = css`
   :root {
-    ${lightRoot};
-    ${darkRoot};
+    ${lightCSSVariables};
+    ${darkCSSVariables};
   }
 
   @media (prefers-color-scheme: dark) {

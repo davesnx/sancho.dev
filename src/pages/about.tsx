@@ -1,13 +1,13 @@
-import React from "react";
 import styled from "@emotion/styled";
+import React from "react";
 
 import { H1 } from "../components/heading";
-import { TextLink, NavigateText } from "../components/link";
+import { NavigateText, TextLink } from "../components/link";
 import Page from "../components/page";
 import MetaData from "../components/site-metadata";
 import Spacer from "../components/spacer";
-import Text from "../components/text";
 import { Stack } from "../components/taco";
+import Text from "../components/text";
 import { unit } from "../utils/unit";
 
 const Avatar = styled.img`

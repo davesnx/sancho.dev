@@ -5,8 +5,6 @@ import { compareDesc, parseISO } from "date-fns";
 export let generateRSS = async () => {
   let { blog, pages: _ } = await getPages();
 
-  console.log("rss", blog);
-
   const feed = new rss({
     title: "sancho.dev",
     description: "sancho.dev | davesnx's personal blog",

@@ -1,7 +1,7 @@
 import styled from "@emotion/styled";
 
-import { colors } from "../theme/theme";
 import { rgb } from "../theme/color";
+import { colors } from "../theme/theme";
 
 export const Character = styled.span`
   font-wariation-settings: "wght" ${(props) => props.wght};

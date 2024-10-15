@@ -1,16 +1,16 @@
-import React from "react";
 import styled from "@emotion/styled";
+import React from "react";
 
 import { H1, H2 } from "../components/heading";
+import { TextLink } from "../components/link";
 import Page from "../components/page";
 import MetaData from "../components/site-metadata";
 import Spacer from "../components/spacer";
-import { Stack, Row } from "../components/taco";
+import { Row, Stack } from "../components/taco";
 import Text from "../components/text";
+import { rgb } from "../theme/color";
 import font from "../theme/fonts";
 import { colors } from "../theme/theme";
-import { TextLink } from "../components/link";
-import { rgb } from "../theme/color";
 
 let Job = ({
   company,

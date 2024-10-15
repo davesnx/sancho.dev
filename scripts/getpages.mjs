@@ -12,8 +12,6 @@ let getJsPages = async () => {
     "!src/pages/api",
   ]);
 
-  console.log("JS PAGES", pages);
-
   return pages
     .map((page) => {
       if (

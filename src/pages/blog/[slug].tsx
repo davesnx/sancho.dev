@@ -1,10 +1,10 @@
 import React from "react";
 
-import { useRouter } from "next/router";
 import { css } from "@emotion/react";
 import styled from "@emotion/styled";
 import { getMDXComponent } from "mdx-bundler/client";
 import { GetStaticPaths, GetStaticProps, InferGetStaticPropsType } from "next";
+import { useRouter } from "next/router";
 
 import { Frontmatter } from "../../lib/frontmatter";
 import { getAllFrontmatter, getMdxBySlug } from "../../lib/mdx";
@@ -17,12 +17,12 @@ import Page from "../../components/page";
 import MetaData from "../../components/site-metadata";
 import Spacer from "../../components/spacer";
 import Twitter from "../../components/svgs/twitter";
-import { Stack, Row } from "../../components/taco";
+import { Row, Stack } from "../../components/taco";
 import Text from "../../components/text";
 import { rgb, rgba } from "../../theme/color";
+import breakpoints from "../../theme/constants";
 import font from "../../theme/fonts";
 import { colors } from "../../theme/theme";
-import breakpoints from "../../theme/constants";
 
 const PaddedH1 = styled(H1)`
   margin-top: 5rem;

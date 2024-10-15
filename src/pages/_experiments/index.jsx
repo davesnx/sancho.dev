@@ -1,15 +1,15 @@
-import React from "react";
 import styled from "@emotion/styled";
-import { useSpring, animated } from "react-spring";
+import React from "react";
+import { animated, useSpring } from "react-spring";
 
+import { Character } from "../../components/character";
+import { H1 } from "../../components/heading";
+import Overlap from "../../components/overlap";
 import Page from "../../components/page";
 import Spacer from "../../components/spacer";
-import Overlap from "../../components/overlap";
-import { Character } from "../../components/character";
-import { colors } from "../../theme/theme";
-import font from "../../theme/fonts";
-import { H1 } from "../../components/heading";
 import { rgb } from "../../theme/color";
+import font from "../../theme/fonts";
+import { colors } from "../../theme/theme";
 function useHover() {
   const [value, setValue] = React.useState(false);
 

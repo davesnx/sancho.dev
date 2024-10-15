@@ -1,6 +1,6 @@
 import styled from "@emotion/styled";
 
-import { unit, px } from "../utils/unit";
+import { px, unit } from "../utils/unit";
 
 const StackAlignMap = {
   left: "flex-start",

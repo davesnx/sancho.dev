@@ -11,9 +11,9 @@ export default function diffHighlight(Prism) {
       /__/g,
       function match() {
         return HTML_TAG.source;
-      }
+      },
     ),
-    "gi"
+    "gi",
   );
 
   let { PREFIXES } = Prism.languages.diff;

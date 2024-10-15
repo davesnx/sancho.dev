@@ -1,12 +1,12 @@
 import React from "react";
 
-import { Row } from "./taco";
-import LinkIcon from "./link-icon";
-import Twitter from "./../svgs/twitter";
 import Github from "./../svgs/github";
 import Strava from "./../svgs/strava";
 import Telegram from "./../svgs/telegram";
+import Twitter from "./../svgs/twitter";
 import { colors } from "./../theme";
+import LinkIcon from "./link-icon";
+import { Row } from "./taco";
 
 const SocialMedia = () => (
   <Row gap={2} distribute="left">

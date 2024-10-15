@@ -1,17 +1,17 @@
-import React from "react";
-import styled from "@emotion/styled";
 import { keyframes } from "@emotion/react";
-import { useSpring, animated } from "react-spring";
+import styled from "@emotion/styled";
+import React from "react";
+import { animated, useSpring } from "react-spring";
 import { rgb } from "../theme/color";
 
-import { colors } from "../theme/theme";
+import { TextLink } from "../components/link";
+import Text from "../components/text";
 import constants from "../theme/constants";
 import font from "../theme/fonts";
-import Main from "./../components/main";
+import { colors } from "../theme/theme";
 import { NavigateButton } from "./../components/link";
+import Main from "./../components/main";
 import { ResponsiveSpacer } from "./../components/spacer";
-import Text from "../components/text";
-import { TextLink } from "../components/link";
 import { Row, Stack } from "./../components/taco";
 
 const Root = styled.div`

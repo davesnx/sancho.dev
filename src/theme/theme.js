@@ -43,16 +43,17 @@ let objectToCSSVariable = (prefix, obj) => {
     .join(" ");
 };
 
-export let lightRoot = objectToCSSVariable("light", lightTheme);
-export let darkRoot = objectToCSSVariable("dark", darkTheme);
+export let lightCSSVariables = objectToCSSVariable("light", lightTheme);
+export let darkCSSVariables = objectToCSSVariable("dark", darkTheme);
 
 let makeRoot = (str) => `:root { ${str} }`;
+
 export let make = (theme) => {
   return makeRoot(
     Object.keys(lightTheme)
       .map((key) => [`--c-${key}`, `var(--c-${theme}-${key})`])
       .map(([colorName, themeName]) => `${colorName}: ${themeName};`)
-      .join(" ")
+      .join(" "),
   );
 };
 
@@ -60,5 +61,5 @@ export let colors = Object.fromEntries(
   Object.entries(lightTheme).map(([key, _value]) => [
     key,
     variable(variableName(key)),
-  ])
+  ]),
 );

@@ -9,7 +9,7 @@ export default function rehypeHighlightWord(code: Node | Array<Node>) {
   let html = toHtml(code);
   let result = html.replace(
     CALLOUT,
-    (_, text) => `<span class="highlight-word">${text}</span>`
+    (_, text) => `<span class="highlight-word">${text}</span>`,
   );
   let hast = unified()
     .use(parse, { emitParseErrors: true, fragment: true })

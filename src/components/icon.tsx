@@ -1,5 +1,5 @@
-import React from "react";
 import styled from "@emotion/styled";
+import React from "react";
 
 import { rgb } from "../theme/color";
 import { colors } from "../theme/theme";

@@ -59,7 +59,7 @@
     "unist-util-visit": "4.1.0"
   },
   "devDependencies": {
-    "@next/eslint-plugin-next": "^11.1.4",
+    "@biomejs/biome": "1.9.3",
     "@types/glob": "^7.2.0",
     "@types/node": "^16.10.1",
     "@types/parse-numeric-range": "^0.0.1",
@@ -71,20 +71,10 @@
     "@typescript-eslint/parser": "^4.33.0",
     "autoprefixer": "^10.3.6",
     "cross-env": "^7.0.3",
-    "eslint": "^7.32.0",
-    "eslint-config-next": "^11.1.4",
-    "eslint-config-prettier": "^8.5.0",
-    "eslint-plugin-import": "^2.24.2",
-    "eslint-plugin-jsx-a11y": "^6.4.1",
-    "eslint-plugin-prefer-let": "^3.0.1",
-    "eslint-plugin-prettier": "^4.0.0",
-    "eslint-plugin-react": "^7.30.0",
-    "eslint-plugin-unused-imports": "^1.1.5",
     "netlify": "^3.0.0",
     "netlify-cli": "^2.25.0",
     "npm-run-all": "^4.1.5",
     "postcss": "^8.3.11",
-    "prettier": "^2.4.1",
     "rimraf": "^3.0.2",
     "typescript": "^4.4.3"
   }

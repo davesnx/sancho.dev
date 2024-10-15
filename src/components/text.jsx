@@ -1,10 +1,10 @@
-import React from "react";
 import { css } from "@emotion/react";
 import styled from "@emotion/styled";
+import React from "react";
 
+import { rgb } from "../theme/color";
 import font from "../theme/fonts";
 import { colors } from "../theme/theme";
-import { rgb } from "../theme/color";
 
 export const styles = (props) => css`
   font-weight: ${props.weight ? props.weight : 200};
