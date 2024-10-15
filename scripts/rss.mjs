@@ -15,6 +15,8 @@ export let generateRSS = async () => {
 
   let pages = await getPages();
   let blogPages = pages.filter((page) => page.route.includes("/blog/"));
+  // sort reverse chronologically
+  blogPages.sort((a, b) => new Date(b.publishedAt) - new Date(a.publishedAt));
   blogPages.forEach((page) => {
     feed.item({
       title: page.title,
