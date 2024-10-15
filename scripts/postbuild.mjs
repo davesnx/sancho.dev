@@ -6,8 +6,8 @@ import { generateSitemap } from "./sitemap.mjs";
 const root = Path.dirname(fileURLToPath(import.meta.url));
 
 (async function postbuild() {
-  const sitemap_path = Path.join(root, "..", "public/sitemap.xml");
-  const rss_path = Path.join(root, "..", "public/rss.xml");
+  const sitemap_path = Path.join(root, "..", "out/sitemap.xml");
+  const rss_path = Path.join(root, "..", "out/rss.xml");
   let sitemap;
   try {
     sitemap = await generateSitemap();
