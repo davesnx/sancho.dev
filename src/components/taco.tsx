@@ -44,6 +44,7 @@ const RowAlignMap = {
   top: "flex-start",
   center: "center",
   bottom: "flex-end",
+  baseline: "baseline",
 };
 
 const RowDistributeMap = {

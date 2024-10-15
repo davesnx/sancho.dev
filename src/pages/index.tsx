@@ -1,7 +1,7 @@
 import styled from "@emotion/styled";
 import React from "react";
 
-import { H2 } from "../components/heading";
+import { H4 } from "../components/heading";
 import { NavigateText, TextLink } from "../components/link";
 import Page from "../components/page";
 import MetaData from "../components/site-metadata";
@@ -15,11 +15,19 @@ const Dimmed = styled.div`
   opacity: 0.8;
 `;
 
+let Title = () => {
+  return (
+    <Row distribute="left" gap={2} align="baseline">
+      <H4>{"David Sancho"}</H4>
+    </Row>
+  );
+};
+
 const Home = () => {
   return (
     <>
       <MetaData title="Home" />
-      <Page title={<H2>{"Hi, I'm David Sancho"}</H2>}>
+      <Page title={<Title />}>
         <Spacer bottom={10}>
           <Text size={fonts.fontSize1} align="left">
             <span>{`A Software Engineer based in Barcelona, making software

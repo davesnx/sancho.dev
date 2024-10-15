@@ -240,8 +240,8 @@ const BackIcon = () => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     className="icon icon-tabler icon-tabler-arrow-left"
-    width="14"
-    height="14"
+    width="18"
+    height="18"
     viewBox="0 0 24 24"
     strokeWidth="2"
     stroke="currentColor"
@@ -288,6 +288,22 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
   };
 };
 
+let LeftFloating = styled.div`
+  position: absolute;
+  right: 100%;
+  margin-right: 3rem;
+
+  @media screen and (max-width: ${breakpoints.mobile.width}px) {
+    display: none;
+  }
+`;
+
+let FloatingPoint = styled.div`
+  position: relative;
+  display: flex;
+  align-items: center;
+`;
+
 let Post = ({
   frontmatter,
   code,
@@ -305,16 +321,23 @@ let Post = ({
       <Page
         title={
           <Spacer bottom={6}>
-            <Stack align="left" gap={1}>
-              <Spacer bottom={3}>
+            <FloatingPoint>
+              <H1>{frontmatter.title}</H1>
+              <LeftFloating>
                 <NavigateText color={colors.subtle} href="/blog">
                   <Row align="center" gap={0.5}>
-                    <BackIcon /> <span>{"Blog"}</span>
+                    <BackIcon />{" "}
+                    <Text
+                      color={colors.subtle}
+                      weight={500}
+                      size={font.fontSize2}
+                    >
+                      {"Blog"}
+                    </Text>
                   </Row>
                 </NavigateText>
-              </Spacer>
-              <H1>{frontmatter.title}</H1>
-            </Stack>
+              </LeftFloating>
+            </FloatingPoint>
           </Spacer>
         }
       >
