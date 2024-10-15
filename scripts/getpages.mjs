@@ -18,12 +18,14 @@ export let getPages = async () => {
 
   return pages
     .map((page) => {
+      let title = null;
       let publishedAt = null;
       // Exclude drafts from the sitemap
       if (page.search(".md") >= 1 && fs.existsSync(page)) {
         let source = fs.readFileSync(page, "utf8");
         let fm = matter(source);
-
+        publishedAt = fm.data.publishedAt;
+        title = fm.data.title;
         if (fm.data.draft) {
           return;
         }
@@ -49,9 +51,9 @@ export let getPages = async () => {
         return;
       }
       if (publishedAt) {
-        return { ...page, route, publishedAt, title: fm.data.title };
+        return { ...page, route, publishedAt, title };
       }
-      return { ...page, route, title: fm.data.title };
+      return { ...page, route, title };
     })
     .filter(Boolean);
 };
