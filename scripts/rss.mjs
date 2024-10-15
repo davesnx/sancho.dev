@@ -14,7 +14,8 @@ export let generateRSS = async () => {
   });
 
   let pages = await getPages();
-  pages.forEach((page) => {
+  let blogPages = pages.filter((page) => page.route.includes("/blog/"));
+  blogPages.forEach((page) => {
     feed.item({
       title: page.title,
       description: page.description,
