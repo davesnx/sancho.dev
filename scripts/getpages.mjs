@@ -25,8 +25,8 @@ let getJsPages = async () => {
           .replace("src/pages/", "/")
           .replace(".js", "")
           .replace(".jsx", "")
-          .replace(".ts", "")
-          .replace(".tsx", ""),
+          .replace(".tsx", "")
+          .replace(".ts", ""),
       };
     })
     .filter(Boolean);
