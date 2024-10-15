@@ -3,6 +3,7 @@ import Head from "next/head";
 
 const config = {
   siteUrl: `https://sancho.dev`,
+  feedUrl: `https://sancho.dev/rss.xml`,
   title: `David Sancho`,
   twitter: `@davesnx`,
   description:
@@ -95,6 +96,7 @@ const MetaData = (props: Props) => {
       <meta itemProp="name" content={title} />
       <meta itemProp="description" content={description} />
       <meta itemProp="image" content={image} />
+      <link rel="alternate" type="application/rss+xml" title="davesnx's personal blog" href={config.feedUrl} />
       {/* <link rel="manifest" href="/favicon/site.webmanifest" /> */}
       {favicons.map((favicon) => (
         <link key={favicon.href} {...favicon} />
