@@ -17,7 +17,7 @@ import Page from "../../components/page";
 import MetaData from "../../components/site-metadata";
 import Spacer from "../../components/spacer";
 import Twitter from "../../components/svgs/twitter";
-import { Row, Stack } from "../../components/taco";
+import { Row } from "../../components/taco";
 import Text from "../../components/text";
 import { rgb, rgba } from "../../theme/color";
 import breakpoints from "../../theme/constants";
@@ -291,7 +291,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 let LeftFloating = styled.div`
   position: absolute;
   right: 100%;
-  margin-right: 3rem;
+  margin-right: 8rem;
 
   @media screen and (max-width: ${breakpoints.mobile.width}px) {
     display: none;
