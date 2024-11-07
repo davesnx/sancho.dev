@@ -61,7 +61,7 @@ const Home = () => {
               href={"https://bsky.app/profile/david.sancho.dev"}
               color={colors.bluesky}
             >
-              {"BlueSky"}
+              {"Bluesky"}
             </TextLink>
             <TextLink
               underlined
@@ -69,6 +69,13 @@ const Home = () => {
               color={colors.github}
             >
               {"Github"}
+            </TextLink>
+            <TextLink
+              underlined
+              href={"https://x.com/davesnx"}
+              color={colors.twitter}
+            >
+              {"X"}
             </TextLink>
             <TextLink
               underlined
@@ -83,13 +90,6 @@ const Home = () => {
               color={colors.strava}
             >
               {"Strava"}
-            </TextLink>
-            <TextLink
-              underlined
-              href={"https://x.com/davesnx"}
-              color={colors.twitter}
-            >
-              {"X"}
             </TextLink>
           </Row>
         </Dimmed>
