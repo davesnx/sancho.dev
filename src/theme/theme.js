@@ -4,6 +4,7 @@ const commonValues = {
   r: "#FF211B",
   g: "#17E620",
   b: "#003AEC",
+  bluesky: "16,133,253", // #1085FD
   twitter: "29,161,242", // #1DA1F2
   github: "164,173,187", // #181717
   discord: "114,137,218", // #7289DA

@@ -58,10 +58,10 @@ const Home = () => {
           <Row gap={2} distribute="left">
             <TextLink
               underlined
-              href={"https://twitter.com/davesnx"}
-              color={colors.twitter}
+              href={"https://bsky.app/profile/david.sancho.dev"}
+              color={colors.bluesky}
             >
-              {"Twitter"}
+              {"BlueSky"}
             </TextLink>
             <TextLink
               underlined
@@ -83,6 +83,13 @@ const Home = () => {
               color={colors.strava}
             >
               {"Strava"}
+            </TextLink>
+            <TextLink
+              underlined
+              href={"https://x.com/davesnx"}
+              color={colors.twitter}
+            >
+              {"X"}
             </TextLink>
           </Row>
         </Dimmed>
