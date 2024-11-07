@@ -209,33 +209,6 @@ const Blockquote = styled.blockquote`
   }
 `;
 
-const Inline = styled.div`
-  display: inline-flex;
-`;
-
-const TwitterShare = ({ title, href }: { title: string; href: string }) => {
-  let { asPath } = useRouter();
-  let text = encodeURIComponent(title);
-  let url = href + asPath;
-  let urlToShare = `http://www.twitter.com/share?url=${url}&text=${text}`;
-  return (
-    <span>
-      <Spacer right={0.5} inline={true}>
-        <Text>If you like it enough, consider to </Text>{" "}
-      </Spacer>
-      <TextLink color={colors.twitter} href={urlToShare}>
-        <Inline>
-          <Text tiny weight={500} color={colors.primary}>
-            share it on Twitter
-          </Text>
-          <Spacer left={0.5} />
-          <Icon svg={Twitter} size={20} color={`rgb(${colors.primary})`} />
-        </Inline>
-      </TextLink>
-    </span>
-  );
-};
-
 const BackIcon = () => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
@@ -370,10 +343,6 @@ let Post = ({
           any feedback, corrections or questions. Always happy to chat.
         </Text>
         <Spacer top={2} />
-        <TwitterShare
-          title={frontmatter.title}
-          href={globalThis?.window?.location?.origin || "http://localhost:3005"}
-        />
       </Page>
     </>
   );
