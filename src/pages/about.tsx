@@ -49,9 +49,8 @@ let About = () => {
             </Text>
             <Spacer top={2} />
             <Text>
-              {`My interests are very broad, from functional programming with OCaml to design systems. Scalability, people and
-        startups. Lately got a passion for languages and compilers. Even with my limited english, I'm
-        trying to share about those in my personal `}
+              {`My interests are broad, from functional programming with OCaml to CSS, Math and design systems. Scalability, people and
+        startups. Lately got a passion for type-theory, programming languages and compilers. Even with my limited english, I'm trying to share about those in my `}
               <NavigateText underline href="/blog">
                 blog
               </NavigateText>
@@ -67,8 +66,7 @@ let About = () => {
             <Spacer top={2} />
             <Spacer top={2} />
             <Text>
-              {`I'm grateful for what Open Source gave me and that's why most of my code
-        is public and hosted in GitHub, you can find me `}
+              {`I'm grateful for what Open Source gave me and that's why most of my work is public and hosted in GitHub, you can find me `}
               <TextLink href="https://github.com/davesnx">
                 github.com/davesnx
               </TextLink>
@@ -76,8 +74,7 @@ let About = () => {
             </Text>
             <Spacer top={2} />
             <Text>
-              {`I love endurance sports, specifically triathlon and ski. I'm focused on
-        Olympic and Half-Ironman distances.`}
+              {`I love endurance sports, specifically triathlon and ski. I'm focused on Olympic and Half-Ironman distances.`}
             </Text>
           </div>
         </Stack>
