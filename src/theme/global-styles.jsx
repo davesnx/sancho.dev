@@ -1,5 +1,5 @@
 import { css } from "@emotion/react";
-import { rgb } from "./color";
+import { rgb, rgba } from "./color";
 import fonts from "./fonts";
 import { colors, darkCSSVariables, lightCSSVariables, make } from "./theme";
 
@@ -64,16 +64,16 @@ const GlobalStyles = css`
     padding: 2.25rem;
     border-radius: 3px;
     margin: 0;
-    background: ${rgb(colors.codeBackground)};
+    background: ${rgba(colors.codeBackground, 0.2)};
   }
 
   :not(pre) > code {
     white-space: normal;
-    border-radius: 2px;
+    border-radius: 4px;
     padding: 3px 6px;
     margin: 0px 2px;
     color: ${rgb(colors.body)};
-    background: ${rgb(colors.contrastCodeBackground)};
+    background: ${rgba(colors.contrastCodeBackground, 0.8)};
   }
 
   html[data-theme="dark"] pre[data-theme="light"],
