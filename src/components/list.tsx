@@ -23,6 +23,7 @@ export const ListItem = styled.li`
 
   & > a {
     display: inline-block;
+    width: 100%;
   }
 `;
 
@@ -33,6 +34,7 @@ export const OrderList = styled.ol`
 `;
 
 export const UnorderList = styled.ul`
+  width: 100%;
   margin: 24px 0px;
   padding: 0px;
   color: ${rgb(colors.body)};
