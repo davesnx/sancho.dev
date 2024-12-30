@@ -23,7 +23,7 @@ Those test files contain both the execution of the CLI invocations followed by t
 Let’s check the syntax with an example:
 
 ```ocaml
-Here there's just a coment about this test, since there's no space at the start
+Here there is just a coment about this test, since there is no space at the start
 it's treated as a comment.
 
 	$ echo "This command runs as part of the test" > data.txt
@@ -67,9 +67,9 @@ Let’s start with the simplest possible test.
 - run the entire “test suite” with **`dune runtest`**
 - or a specific test with their respective alias **`dune build @simple —watch`** (all cram tests are automatically dune aliases)
 
-Output of the execution will be
+Output of the execution will be:
 
-```prolog
+```diff
 File "tests/simple.t", line 1, characters 0-0:
 diff --git a/_build/.sandbox/e72f0d9cb592f23848ccd62f4a630862/tests/simple.t b/_build/.sandbox/e72f0d9cb592f23848ccd62f4a630862/tests/simple.t.corrected
 index de6f8c28..ef3231ef 100644
@@ -83,7 +83,7 @@ index de6f8c28..ef3231ef 100644
 To accept the result as correct, we can update the snapshot manually (a bit boring and tedious) or with promotion
 (https://dune.readthedocs.io/en/latest/concepts/promotion.html#promotion) (automatic).
 
-1. Running **`dune build @simple —auto-promote`** which updates `simple.t` file for you.
+Running **`dune build @simple —auto-promote`** which updates `simple.t` file for you.
 
 To ensure everything works, try running the tests again, which in this case should pass. Run **`dune build @simple`** and the output should be empty. Empty in dune, means very good
 
