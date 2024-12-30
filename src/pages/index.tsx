@@ -35,9 +35,6 @@ const Home = () => {
             <TextLink href="http://reasonml.github.io/">Reason</TextLink>
             <span>{` and `}</span>
             <TextLink href="https://ocaml.org/">OCaml</TextLink>
-            <span>{`. I co-host `}</span>
-            <TextLink href="https://www.twitch.tv/emelletv">emelle.tv</TextLink>
-            <span>{` a talk show about these languages.`}</span>
           </Text>
           <Spacer top={2} />
           <Text size={fonts.fontSize1}>
