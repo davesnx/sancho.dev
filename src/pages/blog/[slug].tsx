@@ -4,20 +4,16 @@ import { css } from "@emotion/react";
 import styled from "@emotion/styled";
 import { getMDXComponent } from "mdx-bundler/client";
 import { GetStaticPaths, GetStaticProps, InferGetStaticPropsType } from "next";
-import { useRouter } from "next/router";
 
 import { Frontmatter } from "../../lib/frontmatter";
 import { getAllFrontmatter, getMdxBySlug } from "../../lib/mdx";
 
 import { H1, H2, H3, H4, H5, H6 } from "../../components/heading";
-import Icon from "../../components/icon";
-import { NavigateText, TextLink } from "../../components/link";
+import { TextLink } from "../../components/link";
 import { ListItem, OrderList, UnorderList } from "../../components/list";
 import Page from "../../components/page";
 import MetaData from "../../components/site-metadata";
 import Spacer from "../../components/spacer";
-import Twitter from "../../components/svgs/twitter";
-import { Row } from "../../components/taco";
 import Text from "../../components/text";
 import { rgb, rgba } from "../../theme/color";
 import breakpoints from "../../theme/constants";
@@ -209,26 +205,6 @@ const Blockquote = styled.blockquote`
   }
 `;
 
-const BackIcon = () => (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    className="icon icon-tabler icon-tabler-arrow-left"
-    width="18"
-    height="18"
-    viewBox="0 0 24 24"
-    strokeWidth="2"
-    stroke="currentColor"
-    fill="none"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-  >
-    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-    <path d="M5 12l14 0"></path>
-    <path d="M5 12l6 6"></path>
-    <path d="M5 12l6 -6"></path>
-  </svg>
-);
-
 export const getStaticPaths: GetStaticPaths = () => {
   let frontmatters = getAllFrontmatter();
   const paths = frontmatters.map(({ slug }: Frontmatter) => ({
@@ -261,22 +237,6 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
   };
 };
 
-let LeftFloating = styled.div`
-  position: absolute;
-  right: 100%;
-  margin-right: 8rem;
-
-  @media screen and (max-width: ${breakpoints.mobile.width}px) {
-    display: none;
-  }
-`;
-
-let FloatingPoint = styled.div`
-  position: relative;
-  display: flex;
-  align-items: center;
-`;
-
 let Post = ({
   frontmatter,
   code,
@@ -294,23 +254,7 @@ let Post = ({
       <Page
         title={
           <Spacer bottom={6}>
-            <FloatingPoint>
-              <H1>{frontmatter.title}</H1>
-              <LeftFloating>
-                <NavigateText color={colors.subtle} href="/blog">
-                  <Row align="center" gap={0.5}>
-                    <BackIcon />{" "}
-                    <Text
-                      color={colors.subtle}
-                      weight={500}
-                      size={font.fontSize2}
-                    >
-                      {"Blog"}
-                    </Text>
-                  </Row>
-                </NavigateText>
-              </LeftFloating>
-            </FloatingPoint>
+            <H1>{frontmatter.title}</H1>
           </Spacer>
         }
       >
