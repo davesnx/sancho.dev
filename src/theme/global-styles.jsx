@@ -64,7 +64,7 @@ const GlobalStyles = css`
     padding: 2.25rem;
     border-radius: 3px;
     margin: 0;
-    background: ${rgba(colors.codeBackground, 0.2)};
+    background: ${rgb(colors.codeBackground)};
   }
 
   :not(pre) > code {
