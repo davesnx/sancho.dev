@@ -108,6 +108,7 @@ const MetaData = (props: Props) => {
       {metaTags.map(({ name, content }) => (
         <meta key={name} name={name} content={content} />
       ))}
+      <meta name="ahrefs-site-verification" content="66eb7258c64a949157d612bbbbbaf307cb4a3cad3ce20766bdc504486b0712b4" />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
