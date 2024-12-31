@@ -65,7 +65,7 @@ Let’s start with the simplest possible test.
   $ echo 'lola'
 ```
 
-1. Run the test and let it crash, either
+2. Run the test and let it crash, either
 - run the entire “test suite” with **`dune runtest`**
 - or a specific test with their respective alias **`dune build @simple —watch`** (all cram tests are automatically dune aliases)
 
@@ -82,7 +82,7 @@ index de6f8c28..ef3231ef 100644
 +  lola
 ```
 
-To accept the result as correct, we can update the snapshot manually (a bit boring and tedious) or with promotion
+3. Accept the result as correct, we can update the snapshot manually (a bit boring and tedious) or with promotion
 (https://dune.readthedocs.io/en/latest/concepts/promotion.html#promotion) (automatic).
 
 Running **`dune build @simple —auto-promote`** which updates `simple.t` file for you.
