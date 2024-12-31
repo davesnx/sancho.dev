@@ -97,9 +97,15 @@ Keep all your tests as `.t` files can get out of hand pretty quickly, since some
 
 ## Make your executable available under cram tests
 
-- make sure they have a public_name
-- or installed
-- or deps `(deps %{exe:../app/foo.exe})`
+You might write a perfect test, only to be greeted with `[ERROR] Program "your_binary" not found!`. This happens because Dune doesn't automatically know which executables should be accessible during cram test execution.
+
+There are three ways to expose your executable to cram tests:
+
+- First, you can add a `public_name` in your executable stanza like `(public_name my-app)`, which makes the executable available.
+- Second, you can set the executable to be part of the dune installation with an [install stanza](https://dune.readthedocs.io/en/latest/reference/dune/install.html) `(install (section bin) (files my_bin.exe))`. Do not confuse dune installation with opam installation, the dune installation offers a way to "copying freshly built artifacts from the workspace to the system", while opam installs opam packages in your opam switch (downloading from opam repositories, building from sources, etc).
+- Third, you can directly specify the executable as a dependency in your cram test `(deps %{exe:../bin/my_bin.exe})`. More info in about the `cram` stanza in the [dune documentation](https://dune.readthedocs.io/en/latest/reference/dune/cram.html)
+
+If you're not sure which to choose, I recommend starting with setting a `public_name` in your executable stanza. It's the most explicit approach and if you are working on a CLI, you will still need a `public_name` to expose it on the opam package.
 
 ## What makes a good (cram) test?
 
