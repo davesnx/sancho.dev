@@ -22,8 +22,7 @@ export const ListItem = styled.li`
   }
 
   & > a {
-    display: inline-block;
-    width: 100%;
+    display: inline;
   }
 `;
 
