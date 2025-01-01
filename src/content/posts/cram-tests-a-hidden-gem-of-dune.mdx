@@ -123,7 +123,6 @@ Your tests should be *hermetic* - meaning they're self-contained and don't depen
   hello
   $ cd ..
   $ rm -rf tmp
-
 ```
 
 ### Use relative paths and environment variables
@@ -136,7 +135,6 @@ One common pitfall is hardcoding absolute paths in your tests. This makes tests 
 
   # DO this instead
   $ cat $DUNE_ROOT/test.txt
-
 ```
 
 Some useful environment variables include:
@@ -161,7 +159,6 @@ Here's a more complete example showing these variables in action:
   # Test the compiled output
   $ dune exec ./bin/main.exe
   Hello, World!
-
 ```
 
 This approach ensures your tests will run consistently across different environments and developer machines. It's especially important if you plan to run these tests in CI or in other developer local envs.
