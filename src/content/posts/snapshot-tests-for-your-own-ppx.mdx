@@ -1,0 +1,129 @@
+---
+title: "Snapshot tests for your own ppx"
+publishedAt: "2025-01-01"
+tags:
+  - "ocaml"
+  - "dune"
+  - "cram"
+  - "testing"
+  - "ppx"
+  - "ppxlib"
+---
+
+When building preprocessor extensions (ppx) in OCaml, testing is crucial. You want to ensure your ppx works correctly and continues to work as you make changes. After experimenting with different approaches, I've found that cram tests fit well for the task.
+
+## Why cram tests?
+
+As explained in my [previous post](/blog/cram-tests-a-hidden-gem-of-dune), cram tests are essentially command-line snapshot test sessions.
+
+They're simple text files that contain commands and their expected output, which makes them particularly valuable for ppx development:
+
+1. They act as **living documentation**, showing exactly how your ppx behaves in different scenarios
+2. They make it **easy to report bugs** - users can simply share a cram test that demonstrates the issue
+3. They provide a **sandboxed environment that mimics real-world usage**
+
+I would asume that just the fact that you are reading this, you are already convinced that’s a good idea and if there was something left, with the previous 3 items packed with good arguments, I count it as done.
+
+## How to
+
+Let’s start with the how to... you need an opam switch, a dune project, a ppx and almost ready to go. If you miss some of those, check this repository https://github.com/ml-in-barcelona/ppxlib-simple-example to have a minimum setup.
+
+Unrelated to testing, but if you want to learn more about ppxes check [ppx-by-example](https://github.com/pedrobslisboa/ppx-by-example).
+
+## Setup the tests
+
+First, we need to make our ppx accessible to our tests inside dune. This requires a bit of understanding how dune handles the build folder and their executables, but you don’t need to be an expert.
+
+dune by default would generate all artifacts for your project under the build
+
+In the case of a ppx_rewriter (defined here), it creates what's called a "driver" - a single executable that can contain multiple ppx transformations and is optimised to run across your codebase.
+
+However, to run your ppx for testing purposes (and as a single executable), we want to run it standalone. Here's how to do it:
+
+### 1. Create a executable in your dune file
+
+I would keep the executable inside the tests folder, but you can put it anywhere you want.
+
+```clojure
+(executable
+ (name standalone) ; name of your executable _build/default/.../standalone.exe
+ (modules standalone) ; tell dune to only use "standalone.ml" to generate the executable
+ (libraries ppxlib your_ppx))
+```
+
+### 2. Create a `standalone.ml` file
+
+```ocaml
+let () = Ppxlib.Driver.standalone ()
+```
+
+This exposes your ppx transfomrations with ppxlib's [`Driver.standalone`](https://ocaml-ppx.github.io/ppxlib/ppxlib/Ppxlib/Driver/index.html) which defines a CLI to run your ppx transformations directly, and simulates what dune exposes to your users when your ppx is part of a build-step in a project.
+
+There are a few other ways to make the executable available, explained in my previous post: https://sancho.dev/blog/cram-tests-a-hidden-gem-of-dune#make-your-executable-available-under-cram-tests, but this is the simplest one.
+
+### 3. Let cram depend on your executable
+
+```clojure
+(cram
+ ; Tells dune to depend on the standalone exe,
+ ; so it will be part of the cram target
+ (deps standalone.exe))
+```
+
+### 4. Then simply run
+
+```bash
+dune runtest
+```
+
+Usually I keep a Makefile with the following commands: `test`, `test-watch` and `test-promote` to feel like I’m typing the minimum of the minimum to get the job done. As you can see in this [Makefile](https://github.com/davesnx/html_of_jsx/blob/d038d4bf4301512fdbd30f98877d6d6720b9568d/Makefile#L34-L44).
+
+## Real example
+
+Say we have a ppx that handles browser-specific code by stripping it out when not targeting JavaScript. It’s called [browser_ppx](https://ml-in-barcelona.github.io/server-reason-react/local/server-reason-react/browser_only.html) from [server-reason-react](https://github.com/ml-in-barcelona/server-reason-react).
+
+Here's what a cram test for this might look like
+
+```python
+  $ cat > input.ml << EOF
+  > let%browser_only pstr_value_binding = Webapi.Dom.getElementById "foo"
+  > EOF
+
+  $ ./standalone.exe -impl input.ml | ocamlformat - --enable-outside-detected-project --impl
+  let pstr_value_binding =
+    [%ocaml.error
+      "[browser_ppx] browser_only works on function definitions. For other \
+       cases, use switch%platform or feel free to open an issue in \
+       https://github.com/ml-in-barcelona/server-reason-react."]
+```
+
+Let's break down what's happening here:
+
+1. Creates an file with some OCaml code using [bash heredoc](https://linuxize.com/post/bash-heredoc/) `cat > input.ml`
+
+    ```jsx
+    $ cat > input.ml << EOF
+      > let%browser_only pstr_value_binding = Webapi.Dom.getElementById "foo"
+      > EOF
+    ```
+
+2. Run our standalone executable on the file with `--impl input.ml`
+
+    ```jsx
+    $ ./standalone.exe -impl input.ml
+    ```
+
+3. Finally, it’s piped the output through `ocamlformat` to ensure consistent formatting
+
+    ```jsx
+    $ ./standalone.exe -impl input.ml | ocamlformat - --enable-outside-detected-project --impl
+    ```
+
+
+The test verifies that the ppx transforms our browser-specific code into an `[%ocaml.error ...]` and raises the error defined in the
+
+## Conclusion
+
+If you're building a ppx, I highly recommend giving cram tests a try. They might just make your development process a bit more enjoyable, but not only that, it will make a easy way to add all cases that you want to keep supporting on the future, or ensure edge-cases of the language remain working.
+
+Happy testing folks!
