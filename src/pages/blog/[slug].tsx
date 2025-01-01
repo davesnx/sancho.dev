@@ -205,6 +205,14 @@ const Blockquote = styled.blockquote`
   }
 `;
 
+// Override margins for oversized code blocks inside lists
+const Li = styled(ListItem)`
+  & ${Oversized} {
+    margin: 0 !important;
+    margin-bottom: 2em !important;
+  }
+`;
+
 export const getStaticPaths: GetStaticPaths = () => {
   let frontmatters = getAllFrontmatter();
   const paths = frontmatters.map(({ slug }: Frontmatter) => ({
@@ -253,9 +261,7 @@ let Post = ({
       />
       <Page
         title={
-          <Spacer bottom={6}>
-            <H1>{frontmatter.title}</H1>
-          </Spacer>
+          <H1>{frontmatter.title}</H1>
         }
       >
         <Component
@@ -268,7 +274,7 @@ let Post = ({
             h6: PaddedH6,
             p: Content,
             a: TextLink,
-            li: ListItem,
+            li: Li,
             ol: OrderList,
             ul: UnorderList,
             hr: Hr,
