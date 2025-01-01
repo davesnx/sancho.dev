@@ -45,9 +45,7 @@ const GlobalStyles = css`
   pre,
   code {
     font-family: ${fonts.mono};
-    font-size: 15px;
     font-weight: 400;
-    line-height: 1.6em;
     text-align: left;
     white-space: pre;
     word-spacing: normal;
