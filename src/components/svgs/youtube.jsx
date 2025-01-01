@@ -1,14 +1,14 @@
 import React from "react";
 
-export default function YouTube({ fill }) {
+export default function YouTube({ fill, size = 24 }) {
   return (
     <svg
       version="1.1"
       xmlns="http://www.w3.org/2000/svg"
-      x="0px"
-      y="0px"
+      width={`${size}px`}
+      height={`${size}px`}
       viewBox="0 0 512 512"
-      stroke={fill}
+      fill={fill}
     >
       <g>
         <g>

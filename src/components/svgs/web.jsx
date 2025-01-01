@@ -1,12 +1,13 @@
 import React from "react";
 
-export default function Web({ fill }) {
+export default function Web({ fill, size = 24 }) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      fill="none"
+      fill={fill}
       viewBox="0 0 24 24"
-      stroke={fill}
+      width={`${size}px`}
+      height={`${size}px`}
     >
       <path
         strokeLinecap="round"
