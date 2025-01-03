@@ -22,7 +22,7 @@ They're simple text files that contain commands and their expected output, which
 2. They make it **easy to report bugs** - users can simply share a cram test that demonstrates the issue
 3. They provide a **sandboxed environment that mimics real-world usage**
 
-I would asume that just the fact that you are reading this, you are already convinced that’s a good idea and if there was something left, with the previous 3 items packed with good arguments, I count it as done.
+I would assume that just the fact that you are reading this, you are already convinced that’s a good idea and if there was something left, with the previous 3 items packed with good arguments, I count it as done.
 
 ## How to
 
@@ -32,13 +32,16 @@ Unrelated to testing, but if you want to learn more about ppxes check [ppx-by-ex
 
 ## Setup the tests
 
-First, we need to make our ppx accessible to our tests inside dune. This requires a bit of understanding how dune handles the build folder and their executables, but you don’t need to be an expert.
+It might be benefitial to understand a bit of the dune's model. Mainly how it handles build artifacts and executables.
+The goal is to make our ppx transformations accessible to our tests via an executable.
 
-dune by default would generate all artifacts for your project under the build
+dune scans all folders with a `dune` file, and generates all artifacts for your project under the `_build` folder. Depending on what it finds on those dune files, it will do completly different things.
 
-In the case of a ppx_rewriter (defined here), it creates what's called a "driver" - a single executable that can contain multiple ppx transformations and is optimised to run across your codebase.
+In the case of a ppx_rewriter `(preprocess (pps <ppx-name>))` will lookup for the respective ppx_rewriter library such as `(library ... (kind ppx_rewriter))` and generate a "driver" - a single executable that can contain multiple ppx transformations and is optimised to run across your codebase.
 
-However, to run your ppx for testing purposes (and as a single executable), we want to run it standalone. Here's how to do it:
+When an `executable` stanza is defined (let's say in src/dune), dune will generate that executable in `_build/default/src/xxx.exe`. In case of having a `(public_name <public-name>)`, it will move the executable to `_build/install/default/bin/<public-name>` and turn it available locally to your project, users of your package will be able to use the executable when installing your package.
+
+If this sounds alien, no worries, dune isn't particular straightforward, hopefully less by now ^^. Here's are the steps to do this:
 
 ### 1. Create a executable in your dune file
 
@@ -46,8 +49,13 @@ I would keep the executable inside the tests folder, but you can put it anywhere
 
 ```clojure
 (executable
- (name standalone) ; name of your executable _build/default/.../standalone.exe
- (modules standalone) ; tell dune to only use "standalone.ml" to generate the executable
+  ; name of your executable _build/default/.../standalone.exe
+  (name standalone)
+
+ ; tell dune to only use "standalone.ml" to generate the executable
+ ; this isn't strictly necessary, but it's a good practice to keep only the modules
+ ; that are part of the target and avoid "Multiple rules generated for ..."
+ (modules standalone)
  (libraries ppxlib your_ppx))
 ```
 
