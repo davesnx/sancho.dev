@@ -35,11 +35,9 @@ jobs:
           NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
           NETLIFY_DEPLOY_TO_PROD: ${{ github.event_name != 'pull_request' }}
 
-      # Creates a status check with link to preview
-      - name: Status check
-        uses: Sibz/github-status-action@v1.1.1
+      - name: Comment PR
+        uses: meysam81/comment-pr@v1.0.0
         with:
-          authToken: ${{ secrets.GITHUB_TOKEN }}
-          context: Netlify preview
-          state: success
-          target_url: ${{ env.NETLIFY_PREVIEW_URL }}
+          title: "# Live preview"
+          content: <${{ env.NETLIFY_PREVIEW_URL }}>
+          token: ${{ secrets.GITHUB_TOKEN }}
