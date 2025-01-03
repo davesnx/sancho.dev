@@ -38,6 +38,8 @@ jobs:
       - name: Deploy
         uses: jsmrcaga/action-netlify-deploy@v2.4.0
         with:
+          build_command: false
+          install_command: false
           build_directory: out
           NETLIFY_SITE_ID: ${{ secrets.SITE_ID }}
           NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
