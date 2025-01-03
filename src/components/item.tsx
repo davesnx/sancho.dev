@@ -28,23 +28,17 @@ const YouTubeIcon = ({ href, color, size }: { href: string; color: string; size:
 
 export const Kind = {
   Web: "Web",
-  GitHub: "Github",
+  Github: "Github",
   YouTube: "YouTube",
-};
+} as const;
 
-const KindToIcon = {
+type Icon = ({ href, color, size }: { href: string; color: string; size: number }) => JSX.Element;
+
+const KindToIcon: Record<keyof typeof Kind, Icon> = {
   Web: WebIcon,
   Github: GithubIcon,
   YouTube: YouTubeIcon,
 };
-
-const NotShrink = styled.div`
-  flex: 0;
-`;
-
-const FillSpace = styled.div`
-  flex: 1;
-`;
 
 let Box = styled.div`
   display: flex;
@@ -65,8 +59,8 @@ let Box = styled.div`
   }
 `;
 
-export const Item = ({ meta, title, description, kind, link }) => {
-  let Icon = KindToIcon[kind] || KindToIcon["Web"];
+export const Item = ({ meta, title, description, kind, link }: { meta: string; title: string; description: string; kind: string; link: string }) => {
+  let Icon: Icon = KindToIcon[kind as keyof typeof Kind] || KindToIcon["Web"];
 
   return (
     <Row fullWidth align="center" distribute="between" gap={2}>

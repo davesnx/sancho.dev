@@ -8,7 +8,7 @@ import MetaData from "../components/site-metadata";
 import Spacer from "../components/spacer";
 import { Row, Stack } from "../components/taco";
 import Text from "../components/text";
-import { rgb, rgba } from "../theme/color";
+import { rgba } from "../theme/color";
 import font from "../theme/fonts";
 import { colors } from "../theme/theme";
 
@@ -58,6 +58,7 @@ let OpenSourceItem = styled.a`
     background-color: ${rgba(colors.contrastCodeBackground, 0.2)};
   }
 `;
+
 let OpenSource = ({
   name,
   description,
