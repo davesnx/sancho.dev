@@ -1,7 +1,7 @@
 import fs from "fs";
 import path from "path";
 
-import glob from "glob";
+import { globbySync } from "globby";
 import matter from "gray-matter";
 import { bundleMDX } from "mdx-bundler";
 import readingTime from "reading-time";
@@ -19,7 +19,7 @@ const cwd = process.cwd();
 const DATA_PATH = path.join(cwd, "src", "content", "posts");
 
 export const getAllFrontmatter = () => {
-  let paths = glob.sync(`${path.join(DATA_PATH)}/*.mdx`);
+  let paths = globbySync(`${path.join(DATA_PATH)}/*.mdx`);
   return paths.map((filePath: string) => {
     let source = fs.readFileSync(path.join(filePath), "utf8");
     let { data, content } = matter(source);
