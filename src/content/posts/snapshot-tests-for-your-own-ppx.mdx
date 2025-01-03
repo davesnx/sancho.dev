@@ -93,12 +93,13 @@ Say we have a ppx that does the minimum possible transformation (a foobar-kind e
 Here's what a cram test for it might look like:
 
 ```python
-Creates an file with some OCaml code using [bash heredoc](https://linuxize.com/post/bash-heredoc/)
+Creates an file with some OCaml code using bash heredoc
+https://linuxize.com/post/bash-heredoc
   $ cat > input.ml <<EOF
   > let () = print_endline [%yay]
   > EOF
 
-Run the standalone executable and print the output
+Run the executable from input.ml and print the output to stdout
   $ ./standalone.exe --impl input.ml
   let () = print_endline "Hello future compiler engineer!"
 ```
@@ -114,8 +115,10 @@ Here's what a cram test for this might look like
   > let%browser_only pstr_value_binding = Webapi.Dom.getElementById "foo"
   > EOF
 
+Output goes into output.ml
   $ ./standalone.exe -impl input.ml -o output.ml
 
+Format the output with ocamlformat
   $ ocamlformat --enable-outside-detected-project --impl output.ml
   let pstr_value_binding =
     [%ocaml.error
@@ -132,6 +135,7 @@ Here's what a cram test for this might look like
     in
     ()
 
+Run the compiler
   $ ocamlc -c output.ml
   File "output.ml", line 2, characters 4-15:
   2 |   [%ocaml.error
@@ -142,7 +146,7 @@ Here's what a cram test for this might look like
   [2]
 ```
 
-The test verifies that the ppx transforms our browser-specific code into an `[%ocaml.error ...]` and raises the error defined in the ppx, runs the compiler and checks the output.
+The test verifies that the ppx transforms our browser-specific code into an `[%ocaml.error ...]` and raises the error defined in the ppx, runs the compiler and checks the output. Note that the `ocamlc` command returns the error code 2 defined in the last line of the output `[2]`.
 
 ## Compose your ppx with other OCaml tooling: `ocamlmerlin`
 
