@@ -46,7 +46,7 @@ const lightValues = {
   body: "35,48,68",                       // #233044
   contrast: "250,250,250",                // #FAFAFA
   overlay: "255,255,255",                 // #FFFFFF
-  codeBackground: "245,245,245",          // #F5F5F5
+  codeBackground: "35,35,35",             // #1F1F1F
   contrastCodeBackground: "238,238,238",  // #EEEEEE
   subtle: "174,178,185",                  // #AEB2B9
   primary: "66,153,232",                  // #4299E8
@@ -60,8 +60,8 @@ const darkValues = {
   body: "206,208,210",                // #CED0D2
   contrast: "29,29,29",               // #1D1D1D
   overlay: "17,17,17",                // #111111
-  codeBackground: "31,31,31",         // #1F1F1F
-  contrastCodeBackground: "38,38,41", // #262629
+  codeBackground: "33,33,33",         // #212121
+  contrastCodeBackground: "38,38,38", // #262626
   subtle: "84,88,93",                 // #54585D
   primary: "58,128,191",              // #3A80BF
 };

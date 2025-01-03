@@ -59,8 +59,8 @@ const GlobalStyles = css`
     display: grid;
     overflow: auto;
     position: relative;
-    padding: 2.25rem;
-    border-radius: 3px;
+    padding: 2rem;
+    border-radius: 6px;
     margin: 0;
     background: ${rgb(colors.codeBackground)};
   }

@@ -91,7 +91,7 @@ const Hr = styled.hr`
 
 const Img = styled.img`
   width: 100%;
-  border-radius: 4px;
+  border-radius: 6px;
   margin: 0;
 `;
 
