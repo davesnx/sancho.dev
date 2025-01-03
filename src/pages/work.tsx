@@ -8,7 +8,7 @@ import MetaData from "../components/site-metadata";
 import Spacer from "../components/spacer";
 import { Row, Stack } from "../components/taco";
 import Text from "../components/text";
-import { rgb } from "../theme/color";
+import { rgba } from "../theme/color";
 import font from "../theme/fonts";
 import { colors } from "../theme/theme";
 
@@ -46,13 +46,19 @@ let OpenSourceItem = styled.a`
   flex-direction: column;
   gap: 1rem;
   width: 100%;
-
-  border: 1px solid ${rgb(colors.codeBackground)};
-  padding: 1rem;
-  border-radius: 0.5rem;
+  cursor: pointer;
 
   text-decoration: none;
+
+  padding: 1rem;
+  border-radius: 0.5rem;
+  border: 1px solid ${rgba(colors.contrastCodeBackground, 1)};
+
+  &:hover {
+    background-color: ${rgba(colors.contrastCodeBackground, 0.2)};
+  }
 `;
+
 let OpenSource = ({
   name,
   description,

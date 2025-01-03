@@ -45,9 +45,7 @@ const GlobalStyles = css`
   pre,
   code {
     font-family: ${fonts.mono};
-    font-size: 15px;
     font-weight: 400;
-    line-height: 1.6em;
     text-align: left;
     white-space: pre;
     word-spacing: normal;
@@ -61,8 +59,8 @@ const GlobalStyles = css`
     display: grid;
     overflow: auto;
     position: relative;
-    padding: 2.25rem;
-    border-radius: 3px;
+    padding: 2rem;
+    border-radius: 6px;
     margin: 0;
     background: ${rgb(colors.codeBackground)};
   }

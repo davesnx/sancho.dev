@@ -1,7 +1,7 @@
 const calc = (str) => `calc(${str})`;
 
 const increment = "1.25";
-const lineHeightFixed = "0.45rem";
+const lineHeightFixed = "0.6rem";
 const lineHeightRelative = "1rem";
 
 const fontSize_N1 = `0.8rem`;
@@ -13,7 +13,7 @@ const fontSize_4 = `(${fontSize_3}) * ${increment}`;
 const fontSize_5 = `(${fontSize_4}) * ${increment}`;
 const fontSize_6 = `(${fontSize_5}) * ${increment}`;
 
-const globalFontSize = calc(fontSize_0);
+const globalFontSize = calc(fontSize_1);
 const globalLineHeight = `calc(${lineHeightFixed} + ${lineHeightRelative})`;
 
 const fonts = {

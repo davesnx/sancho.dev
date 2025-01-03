@@ -1,0 +1,259 @@
+---
+title: "Snapshot tests for your own ppx"
+publishedAt: "2025-01-01"
+tags:
+  - "ocaml"
+  - "dune"
+  - "cram"
+  - "testing"
+  - "ppx"
+  - "ppxlib"
+---
+
+When building preprocessor extensions (ppx) in OCaml, testing is crucial. You want to ensure your ppx works correctly and continues to work as you make changes. After experimenting with different approaches, I've found that cram tests fit well for the task.
+
+## Why cram tests?
+
+As explained in my [previous post](/blog/cram-tests-a-hidden-gem-of-dune), cram tests are essentially command-line snapshot test sessions.
+
+They're simple text files that contain commands and their expected output, which makes them particularly valuable for ppx development:
+
+1. They act as **living documentation**, showing exactly how your ppx behaves in different scenarios
+2. They make it **easy to report bugs** - users can simply share a cram test that demonstrates the issue
+3. They provide a **sandboxed environment that mimics real-world usage**
+
+I would assume that just the fact that you are reading this, you are already convinced that’s a good idea and if there was something left, with the previous 3 items packed with good arguments, I count it as done.
+
+## How to
+
+Let’s start with the how to... you need an opam switch, a dune project, a ppx and almost ready to go. If you miss some of those, check this repository https://github.com/ml-in-barcelona/ppxlib-simple-example to have a minimum setup.
+
+Unrelated to testing, but if you want to learn more about ppxes check [ppx-by-example](https://github.com/pedrobslisboa/ppx-by-example).
+
+## Setup the tests
+
+The goal here is to make our ppx transformations accessible to our tests via an executable, but wait!
+
+It might be benefitial to understand a bit of the dune's model. before writing any tests. Before writing any tests, it's helpful to understand how Dune organizes build artifacts and executables.
+
+### How dune works
+
+dune scans your project looking for dune files. When it finds one, it generates build artifacts in the _build directory. The contents of these dune files determine exactly what gets built.
+
+For example, when you specify a ppx rewriter:
+
+```scheme
+; a library that uses a ppx rewriter
+(library
+  (name my_program)
+  (preprocess (pps my-ppx)))
+```
+
+dune looks for a library marked as a ppx rewriter:
+
+```scheme
+(library
+  (name my_ppx)
+  (public_name my-ppx)
+  (kind ppx_rewriter))
+```
+
+From this, it creates a "driver" - a single executable that can contain multiple ppx transformations and is optimised to run across your codebase.
+
+## Building Executables
+
+When dune finds an executable and run the build it will generate an executable in the `_build/default/src/` folder, called `my_program.exe`.
+
+```scheme
+(executable
+  (name my_program))
+```
+
+If you add a public name:
+
+```scheme
+(executable
+  (name my_program)
+  (public_name my-program))
+```
+
+The executable becomes available at `_build/install/default/bin/my-program`. This makes it accessible both within your project and to users who install your package. Similar to adding a [install stanza to your dune file](https://dune.readthedocs.io/en/stable/reference/dune/install.html).
+
+Here's are the steps to achieve this:
+
+### 1. Create a executable in your dune file
+
+I would keep the executable inside the tests folder, but you can put it anywhere you want.
+
+```clojure
+(executable
+  ; name of your executable _build/default/.../standalone.exe
+  (name standalone)
+
+ ; tell dune to only use "standalone.ml" to generate the executable
+ ; this isn't strictly necessary, but it's a good practice to keep only the modules
+ ; that are part of the target and avoid "Multiple rules generated for ..."
+ (modules standalone)
+ (libraries ppxlib your_ppx))
+```
+
+### 2. Create a `standalone.ml` file
+
+```ocaml
+let () = Ppxlib.Driver.standalone ()
+```
+
+This exposes your ppx transfomrations with ppxlib's [`Driver.standalone`](https://ocaml-ppx.github.io/ppxlib/ppxlib/Ppxlib/Driver/index.html) which defines a CLI to run your ppx transformations directly, and simulates what dune exposes to your users when your ppx is part of a build-step in a project.
+
+There are a few other ways to make the executable available, explained in my previous post: https://sancho.dev/blog/cram-tests-a-hidden-gem-of-dune#make-your-executable-available-under-cram-tests, but this is the simplest one.
+
+### 3. Let cram depend on your executable
+
+```clojure
+(cram
+ ; Tells dune to depend on the standalone exe,
+ ; so it will be part of the cram target
+ (deps standalone.exe))
+```
+
+### 4. Now `./standalone.exe` is part of the cram
+
+Let's create a simple test file called `first_step.t` and run it with `dune runtest` to ensure it's working.
+
+```python
+  $ ls
+  first_step.t
+  standalone.exe
+```
+
+Usually I keep a Makefile with the following commands: `test`, `test-watch` and `test-promote` to feel like I’m typing the minimum of the minimum to get the job done. As you can see in this [Makefile](https://github.com/davesnx/html_of_jsx/blob/d038d4bf4301512fdbd30f98877d6d6720b9568d/Makefile#L34-L44).
+
+## Example from ppxlib-simple-example repo
+
+Say we have a ppx that does the minimum possible transformation (a foobar-kind example), which is to change the extension `[%yay]` into a string `"Hello future compiler engineer!"`.
+
+Here's what a cram test for it might look like:
+
+```python
+Creates an file with some OCaml code using bash heredoc
+https://linuxize.com/post/bash-heredoc
+  $ cat > input.ml <<EOF
+  > let () = print_endline [%yay]
+  > EOF
+
+Run the executable from input.ml and print the output to stdout
+  $ ./standalone.exe --impl input.ml
+  let () = print_endline "Hello future compiler engineer!"
+```
+
+## Compose your ppx with other OCaml tooling: `ocamlc`
+
+A real-example of a ppx, is browser_ppx which handles browser-specific code by stripping it out when not targeting JavaScript. Very useful when sharing code between native and JavaScript. The documentation lives [here](https://ml-in-barcelona.github.io/server-reason-react/local/server-reason-react/browser_only.html) and comes from [server-reason-react](https://github.com/ml-in-barcelona/server-reason-react).
+
+Here's what a cram test for this might look like
+
+```python
+  $ cat > input.ml << EOF
+  > let%browser_only pstr_value_binding = Webapi.Dom.getElementById "foo"
+  > EOF
+
+Output goes into output.ml
+  $ ./standalone.exe -impl input.ml -o output.ml
+
+Format the output with ocamlformat
+  $ ocamlformat --enable-outside-detected-project --impl output.ml
+  let pstr_value_binding =
+    [%ocaml.error
+      "[browser_ppx] browser_only works on function definitions. For other \
+       cases, use switch%platform or feel free to open an issue in \
+       https://github.com/ml-in-barcelona/server-reason-react."]
+
+  let make () =
+    let pstr_value_binding_2 =
+      [%ocaml.error
+        "[browser_ppx] browser_only works on function definitions. For other \
+         cases, use switch%platform or feel free to open an issue in \
+         https://github.com/ml-in-barcelona/server-reason-react."]
+    in
+    ()
+
+Run the compiler
+  $ ocamlc -c output.ml
+  File "output.ml", line 2, characters 4-15:
+  2 |   [%ocaml.error
+          ^^^^^^^^^^^
+  Error: [browser_ppx] browser_only works on function definitions. For other
+         cases, use switch%platform or feel free to open an issue in
+         https://github.com/ml-in-barcelona/server-reason-react.
+  [2]
+```
+
+The test verifies that the ppx transforms our browser-specific code into an `[%ocaml.error ...]` and raises the error defined in the ppx, runs the compiler and checks the output. Note that the `ocamlc` command returns the error code 2 defined in the last line of the output `[2]`.
+
+## Compose your ppx with other OCaml tooling: `ocamlmerlin`
+
+In a real world scenario like [reason-react-ppx](https://github.com/reason/reason-react), we want to ensure that the ppx transformations respect the AST location of the original code. We want the generated code to have the same location as the original code, so the editor can highlight the correct line, compiler errors report the correct line and column, etc.
+
+For those tests we use `ocamlmerlin` to inspect the AST and ensure the location is correct. Here's a piece of the test:
+
+```python
+
+Test some locations in reason-react components
+
+Create a dune project file, with "using melange"
+  $ cat > dune-project <<EOF
+  > (lang dune 3.8)
+  > (using melange 0.1)
+  > EOF
+
+Create a dune file, with a melange.emit stanza
+  $ cat > dune <<EOF
+  > (melange.emit
+  >  (alias foo)
+  >  (target foo)
+  >  (libraries reason-react)
+  >  (preprocess
+  >   (pps melange.ppx reason-react-ppx)))
+  > EOF
+
+Run the build (this runs the reason-react-ppx)
+  $ dune build
+
+Let's test hovering over parts of the component
+
+key={author.Author.name}
+_^
+
+Use ocamlmerlin to query the type of the expression at the cursor
+  $ ocamlmerlin single type-enclosing -position 10:7 -verbosity 0 \
+  > -filename component.re < component.re | jq '.value[0]'
+  {
+    "start": {
+      "line": 10,
+      "col": 2
+    },
+    "end": {
+      "line": 10,
+      "col": 85
+    },
+    "type": "string",
+    "tail": "no"
+  }
+```
+
+Here the key learning is to use all the tools you have at your disposal (such as `ocamlmerlin`) to ensure your ppx works as expected. This is incredibly useful since many tools in OCaml are just CLIs, such as:
+
+- `ocamlmerlin` a LSP library used by many editors to provide code analysis
+- `ocamlc` the bytecode OCaml compiler
+- `ocamlopt` the native OCaml compiler
+- `ocamldep` the dependency resolver
+- `ocamldoc` the OCaml documentation generator
+- `ocamlformat` formatter for OCaml code
+
+More tools are available, check the [OCaml documentation](https://ocaml.org/manual/5.2/index.html#sec339) for more.
+
+## Conclusion
+
+If you're building a ppx, I highly recommend giving cram tests a try. They might just make your development process a bit more enjoyable, but not only that, it will make a easy way to add all cases that you want to keep supporting on the future, or ensure edge-cases of the language remain working.
+
+Happy testing folks!

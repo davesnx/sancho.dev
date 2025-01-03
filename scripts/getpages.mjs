@@ -1,6 +1,6 @@
 import Fs from "fs";
 
-import globby from "globby";
+import { globby } from "globby";
 import matter from "gray-matter";
 
 let getJsPages = async () => {

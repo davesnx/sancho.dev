@@ -29,7 +29,7 @@ const Icon = ({
   padded,
 }: {
   svg: React.FC;
-  size: string;
+  size: number;
   color: string;
   bg: string;
   padded: boolean;
@@ -37,7 +37,7 @@ const Icon = ({
   let fill = color || colors.body;
   return (
     <Logo padded={padded} color={bg}>
-      <Svg size={size} fill={fill}></Svg>
+      <Svg size={size} fill={fill} />
     </Logo>
   );
 };

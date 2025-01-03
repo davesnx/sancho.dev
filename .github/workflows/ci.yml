@@ -16,35 +16,28 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - name: Use Node.js 18.x
+      - name: Use Node.js 18.14.x
         uses: actions/setup-node@v3
         with:
-          node-version: 18.x
+          node-version: 18.14.x
 
       - uses: actions/cache@v2
         with:
           path: "**/node_modules"
           key: ${{ runner.os }}-modules-${{ hashFiles('**/package-lock.json') }}
 
-      - name: Install
-        run: npm ci
+      - name: Deploy
+        uses: jsmrcaga/action-netlify-deploy@v2.4.0
+        with:
+          build_command: "npm run build-prod"
+          build_directory: out
+          NETLIFY_SITE_ID: ${{ secrets.SITE_ID }}
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+          NETLIFY_DEPLOY_TO_PROD: ${{ github.event_name != 'pull_request' }}
 
-      - name: Build
-        run: npm run build --no-lint
-
-      - name: Export
-        run: npm run export
-
-      - name: Deploy to prod
-        if: ${{ github.event_name != 'pull_request' }}
-        env:
-          SITE_ID: ${{ secrets.SITE_ID }}
-          AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
-        run: npx netlify deploy --site $SITE_ID --auth $AUTH_TOKEN --prod --dir=out
-
-      - name: Deploy preview
-        if: ${{ github.event_name == 'pull_request' }}
-        env:
-          SITE_ID: ${{ secrets.SITE_ID }}
-          AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
-        run: npx netlify deploy --site $SITE_ID --auth $AUTH_TOKEN --dir=out
+      - name: Comment PR
+        uses: meysam81/comment-pr@v1.0.0
+        with:
+          title: "# Live preview"
+          content: <${{ env.NETLIFY_PREVIEW_URL }}>
+          token: ${{ secrets.GITHUB_TOKEN }}
