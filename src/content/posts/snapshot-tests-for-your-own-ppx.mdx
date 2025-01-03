@@ -32,16 +32,54 @@ Unrelated to testing, but if you want to learn more about ppxes check [ppx-by-ex
 
 ## Setup the tests
 
-It might be benefitial to understand a bit of the dune's model. Mainly how it handles build artifacts and executables.
-The goal is to make our ppx transformations accessible to our tests via an executable.
+The goal here is to make our ppx transformations accessible to our tests via an executable, but wait!
 
-dune scans all folders with a `dune` file, and generates all artifacts for your project under the `_build` folder. Depending on what it finds on those dune files, it will do completly different things.
+It might be benefitial to understand a bit of the dune's model. before writing any tests. Before writing any tests, it's helpful to understand how Dune organizes build artifacts and executables.
 
-In the case of a ppx_rewriter `(preprocess (pps <ppx-name>))` will lookup for the respective ppx_rewriter library such as `(library ... (kind ppx_rewriter))` and generate a "driver" - a single executable that can contain multiple ppx transformations and is optimised to run across your codebase.
+### How dune works
 
-When an `executable` stanza is defined (let's say in src/dune), dune will generate that executable in `_build/default/src/xxx.exe`. In case of having a `(public_name <public-name>)`, it will move the executable to `_build/install/default/bin/<public-name>` and turn it available locally to your project, users of your package will be able to use the executable when installing your package.
+dune scans your project looking for dune files. When it finds one, it generates build artifacts in the _build directory. The contents of these dune files determine exactly what gets built.
 
-If this sounds alien, no worries, dune isn't particular straightforward, hopefully less by now ^^. Here's are the steps to do this:
+For example, when you specify a ppx rewriter:
+
+```scheme
+; a library that uses a ppx rewriter
+(library
+  (name my_program)
+  (preprocess (pps my-ppx)))
+```
+
+dune looks for a library marked as a ppx rewriter:
+
+```scheme
+(library
+  (name my_ppx)
+  (public_name my-ppx)
+  (kind ppx_rewriter))
+```
+
+From this, it creates a "driver" - a single executable that can contain multiple ppx transformations and is optimised to run across your codebase.
+
+## Building Executables
+
+When dune finds an executable and run the build it will generate an executable in the `_build/default/src/` folder, called `my_program.exe`.
+
+```scheme
+(executable
+  (name my_program))
+```
+
+If you add a public name:
+
+```scheme
+(executable
+  (name my_program)
+  (public_name my-program))
+```
+
+The executable becomes available at `_build/install/default/bin/my-program`. This makes it accessible both within your project and to users who install your package. Similar to adding a [install stanza to your dune file](https://dune.readthedocs.io/en/stable/reference/dune/install.html).
+
+Here's are the steps to achieve this:
 
 ### 1. Create a executable in your dune file
 
@@ -78,10 +116,14 @@ There are a few other ways to make the executable available, explained in my pre
  (deps standalone.exe))
 ```
 
-### 4. Then simply run
+### 4. Now `./standalone.exe` is part of the cram
 
-```bash
-dune runtest
+Let's create a simple test file called `first_step.t` and run it with `dune runtest` to ensure it's working.
+
+```python
+  $ ls
+  first_step.t
+  standalone.exe
 ```
 
 Usually I keep a Makefile with the following commands: `test`, `test-watch` and `test-promote` to feel like I’m typing the minimum of the minimum to get the job done. As you can see in this [Makefile](https://github.com/davesnx/html_of_jsx/blob/d038d4bf4301512fdbd30f98877d6d6720b9568d/Makefile#L34-L44).
