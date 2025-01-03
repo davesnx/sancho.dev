@@ -9,7 +9,6 @@
     "export": "next export && node scripts/postbuild.mjs",
     "build-prod": "run-s clean build export",
     "clean": "rimraf .next out",
-    "lint": "next lint",
     "ts": "tsc --noEmit --pretty --jsx react-jsx",
     "format": "prettier --write 'src'"
   },
@@ -67,8 +66,6 @@
     "@types/react-responsive": "^8.0.5",
     "@types/refractor": "^3.0.2",
     "@types/unist": "^2.0.6",
-    "@typescript-eslint/eslint-plugin": "^4.33.0",
-    "@typescript-eslint/parser": "^4.33.0",
     "autoprefixer": "^10.3.6",
     "cross-env": "^7.0.3",
     "netlify-cli": "^17.36.1",
