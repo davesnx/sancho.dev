@@ -23,6 +23,7 @@
     "date-fns": "2.19.0",
     "feather-icons-react": "^0.5.0",
     "glob": "7.1.6",
+    "globby": "^14.0.2",
     "gray-matter": "4.0.3",
     "hast-util-to-html": "8.0.3",
     "hast-util-to-string": "^2.0.0",
@@ -58,7 +59,7 @@
     "unist-util-visit": "4.1.0"
   },
   "devDependencies": {
-    "@biomejs/biome": "1.9.3",
+    "@biomejs/biome": "1.9.4",
     "@types/glob": "^7.2.0",
     "@types/node": "^18.14.0",
     "@types/parse-numeric-range": "^0.0.1",
