@@ -36,6 +36,7 @@ jobs:
           NETLIFY_DEPLOY_TO_PROD: ${{ github.event_name != 'pull_request' }}
 
       - name: Comment PR
+        if: ${{ github.event_name != 'pull_request' }}
         uses: meysam81/comment-pr@v1.0.0
         with:
           title: "# Live preview"
