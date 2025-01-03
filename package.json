@@ -11,7 +11,8 @@
     "start": "next start",
     "build-stats": "cross-env ANALYZE=true npm run build",
     "export": "next export && node scripts/postbuild.mjs",
-    "build-prod": "run-s clean build export",
+    "build-clean-prod": "run-s clean build export",
+    "build-prod": "run-s build export",
     "clean": "rimraf .next out",
     "ts": "tsc --noEmit --pretty --jsx react-jsx",
     "format": "prettier --write 'src'"
