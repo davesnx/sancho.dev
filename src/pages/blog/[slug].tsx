@@ -290,7 +290,7 @@ let Post = ({
         </Spacer>
         <Text>
           <strong>Thanks for reaching the end.</strong> Let me know if you have
-          any feedback, corrections or questions. Always happy to chat.
+          any feedback, corrections or questions. Always happy to chat about any topic mentioned in this post, feel free to reach out.
         </Text>
         <Spacer top={2} />
       </Page>
