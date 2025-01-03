@@ -35,16 +35,10 @@ jobs:
       - name: Export
         run: npm run export
 
-      - name: Deploy to prod
-        if: ${{ github.event_name != 'pull_request' }}
-        env:
-          SITE_ID: ${{ secrets.SITE_ID }}
-          AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
-        run: npx netlify deploy --site $SITE_ID --auth $AUTH_TOKEN --prod --dir=out
-
-      - name: Deploy preview
-        if: ${{ github.event_name == 'pull_request' }}
-        env:
-          SITE_ID: ${{ secrets.SITE_ID }}
-          AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
-        run: npx netlify deploy --site $SITE_ID --auth $AUTH_TOKEN --dir=out
+      - name: Deploy
+        uses: jsmrcaga/action-netlify-deploy@v2.4.0
+        with:
+          build_directory: out
+          NETLIFY_SITE_ID: ${{ secrets.SITE_ID }}
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+          NETLIFY_DEPLOY_TO_PROD: ${{ github.event_name != 'pull_request' }}
