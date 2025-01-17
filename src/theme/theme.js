@@ -43,13 +43,13 @@ const commonValues = {
  * @type {ThemeValues}
  */
 const lightValues = {
+  primary: "18,26,36",                    // #121A24
   body: "35,48,68",                       // #233044
   contrast: "250,250,250",                // #FAFAFA
   overlay: "255,255,255",                 // #FFFFFF
   codeBackground: "35,35,35",             // #1F1F1F
   contrastCodeBackground: "238,238,238",  // #EEEEEE
   subtle: "174,178,185",                  // #AEB2B9
-  primary: "66,153,232",                  // #4299E8
 };
 
 /**
@@ -57,13 +57,13 @@ const lightValues = {
  * @type {ThemeValues}
  */
 const darkValues = {
+  primary: "250,250,250",             // #FAFAFA
   body: "206,208,210",                // #CED0D2
-  contrast: "29,29,29",               // #1D1D1D
+  contrast: "20,20,20",               // #141414
   overlay: "17,17,17",                // #111111
   codeBackground: "33,33,33",         // #212121
   contrastCodeBackground: "38,38,38", // #262626
   subtle: "84,88,93",                 // #54585D
-  primary: "58,128,191",              // #3A80BF
 };
 
 /** @type {CommonValues & ThemeValues} */

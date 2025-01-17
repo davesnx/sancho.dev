@@ -13,7 +13,7 @@ export const styles = (props) => css`
   line-height: 1.85rem;
   color: ${rgb(props.color)};
   display: inline-block;
-  letter-spacing: -0.1px;
+  letter-spacing: 0.3px;
 `;
 
 const P = styled.p`

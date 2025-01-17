@@ -2,6 +2,7 @@ import React from "react";
 
 import { css } from "@emotion/react";
 import styled from "@emotion/styled";
+import { format, parseISO } from "date-fns";
 import { getMDXComponent } from "mdx-bundler/client";
 import { GetStaticPaths, GetStaticProps, InferGetStaticPropsType } from "next";
 
@@ -213,6 +214,39 @@ const Li = styled(ListItem)`
   }
 `;
 
+const PageTitle = styled.div`
+  display: flex;
+  margin: 8rem -3rem;
+  margin-top: 0px;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  gap: 1rem;
+
+  @media screen and (max-width: ${breakpoints.desktop.width}px) {
+    margin: 8rem 0;
+    margin-top: 0px;
+  }
+  @media screen and (max-width: ${breakpoints.mobile.width}px) {
+    margin: 3rem 0;
+    margin-top: 0px;
+  }
+`;
+
+const BlogPostTitle = styled(H1)`
+  font-size: 3.5rem;
+  text-align: center;
+  color: ${rgb(colors.primary)};
+
+  @media screen and (max-width: ${breakpoints.mobile.width}px) {
+    font-size: 2rem;
+  }
+`;
+
+const A = (props: any) => {
+  return <TextLink {...props} color={colors.body} hoverColor={colors.primary} />;
+};
+
 export const getStaticPaths: GetStaticPaths = () => {
   let frontmatters = getAllFrontmatter();
   const paths = frontmatters.map(({ slug }: Frontmatter) => ({
@@ -261,7 +295,12 @@ let Post = ({
       />
       <Page
         title={
-          <H1>{frontmatter.title}</H1>
+          <PageTitle>
+            <BlogPostTitle>{frontmatter.title}</BlogPostTitle>
+            <Text weight={400} color={colors.subtle} size={font.fontSize1}>
+              {format(parseISO(frontmatter.publishedAt), "MMMM yyyy")}
+            </Text>
+          </PageTitle>
         }
       >
         <Component
@@ -273,7 +312,7 @@ let Post = ({
             h5: PaddedH5,
             h6: PaddedH6,
             p: Content,
-            a: TextLink,
+            a: A,
             li: Li,
             ol: OrderList,
             ul: UnorderList,
