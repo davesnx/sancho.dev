@@ -11,7 +11,7 @@ export const styles = (props) => css`
   font-size: ${props.size ? props.size : font.fontSize1};
   font-family: ${font.sans};
   line-height: 1.85rem;
-  color: ${rgb(props.color)};
+  color: ${rgb(props.color || colors.body)};
   display: inline-block;
   letter-spacing: 0.3px;
 `;
