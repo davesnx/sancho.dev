@@ -236,6 +236,7 @@ const PageTitle = styled.div`
 const BlogPostTitle = styled(H1)`
   font-size: 3.5rem;
   text-align: center;
+  line-height: 1.2;
   color: ${rgb(colors.primary)};
 
   @media screen and (max-width: ${breakpoints.mobile.width}px) {
