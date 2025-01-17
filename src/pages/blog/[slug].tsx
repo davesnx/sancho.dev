@@ -280,6 +280,10 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
   };
 };
 
+let Strong = (props: any) => {
+  return <Text as="strong" weight={400} color={colors.primary} {...props} />;
+};
+
 let Post = ({
   frontmatter,
   code,
@@ -306,6 +310,7 @@ let Post = ({
       >
         <Component
           components={{
+            strong: Strong,
             h1: PaddedH1,
             h2: PaddedH2,
             h3: PaddedH3,
@@ -329,7 +334,7 @@ let Post = ({
           <Hr />
         </Spacer>
         <Text>
-          <strong>Thanks for reaching the end.</strong> Let me know if you have
+          <Strong>Thanks for reaching the end</Strong>. Let me know if you have
           any feedback, corrections or questions. Always happy to chat about any topic mentioned in this post, feel free to reach out.
         </Text>
         <Spacer top={2} />

@@ -6,8 +6,9 @@ import { styles } from "./text";
 
 export const ListItem = styled.li`
   ${(props) => styles(props)};
-  margin-top: 1em;
-  margin-bottom: 1em;
+  color: ${rgb(colors.body)};
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
   margin-left: 1em;
   padding-left: 0.5em;
   display: list-item;
