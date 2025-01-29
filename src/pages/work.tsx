@@ -18,33 +18,69 @@ let Gallery = styled.div`
   gap: 1rem;
 `;
 
+let CompanyLogo = styled.div`
+  min-width: 150px;
+  max-width: 150px;
+  padding: 1.8rem;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+let JobRoot = styled.section`
+  width: 100%;
+  padding: 1.4rem;
+  border-radius: 8px;
+  border: 2px solid ${rgba(colors.contrastCodeBackground, 1)};
+  background-color: ${rgba(colors.contrastCodeBackground, 0.3)};
+`;
+
 let Job = ({
   company,
   date,
   role,
 }: {
-  company: { name: string; url: string | null };
+  company: {
+    name: string;
+    url: string | null;
+    logo: React.ReactNode | null;
+    logoIsDark: boolean;
+  };
   date: string;
   role: string;
 }) => (
-  <Stack gap={1} align="left" fullWidth>
-    <Row distribute="between" fullWidth>
-      {company.url && (
-        <Text weight={400} size={font.fontSize2}>
-          <TextLink href={company.url}>{company.name}</TextLink>
-        </Text>
-      )}
-      {!company.url && (
-        <Text weight={400} size={font.fontSize2}>
-          {company.name}
-        </Text>
-      )}
-      <Text wieght={400} size={font.fontSize2}>
-        {date}
-      </Text>
+  <JobRoot>
+    <Row fullWidth gap={3}>
+      {company.logo && <CompanyLogo> {company.logo} </CompanyLogo>}
+      <Stack gap={1} align="left" fullWidth>
+        <Row distribute="between" fullWidth>
+          <Stack align="left" gap={0}>
+            <Text weight={400} size={font.fontSize2}>
+              {role}
+            </Text>
+            {company.url && (
+              <Text weight={400} size={font.fontSize0}>
+                <TextLink color={colors.subtle} href={company.url}>
+                  {company.url}
+                </TextLink>
+              </Text>
+            )}
+
+            {!company.url && (
+              <Text weight={400} color={colors.subtle} size={font.fontSize1}>
+                {company.name}
+              </Text>
+            )}
+          </Stack>
+          <Text wieght={800} size={font.fontSize2}>
+            {date}
+          </Text>
+        </Row>
+      </Stack>
+      <Spacer right={0} />
     </Row>
-    <Text>{role}</Text>
-  </Stack>
+  </JobRoot>
 );
 
 let OpenSourceItem = styled.a`
@@ -58,10 +94,11 @@ let OpenSourceItem = styled.a`
 
   padding: 1rem;
   border-radius: 0.5rem;
-  border: 1px solid ${rgba(colors.contrastCodeBackground, 1)};
+  border: 2px solid ${rgba(colors.contrastCodeBackground, 1)};
+  background-color: ${rgba(colors.contrastCodeBackground, 0.3)};
 
   &:hover {
-    background-color: ${rgba(colors.contrastCodeBackground, 0.2)};
+    background-color: ${rgba(colors.contrastCodeBackground, 0.8)};
   }
 `;
 
@@ -82,6 +119,25 @@ let OpenSource = ({
   </OpenSourceItem>
 );
 
+let LogoImg = styled.img`
+  width: 100%;
+  opacity: 0.7;
+
+  ${(props) => (props.logoIsDark ? "filter: brightness(0) invert(1)" : "")}
+`;
+
+let AherfsLogo = () => <LogoImg src="/logos/ahrefs.png" alt="Ahrefs" />;
+
+let DraftbitLogo = () => <LogoImg src="/logos/draftbit.png" alt="Draftbit" />;
+
+let TypeformLogo = () => (
+  <LogoImg logoIsDark={true} src="/logos/typeform.webp" alt="Typeform" />
+);
+
+let OfertiaLogo = () => (
+  <LogoImg logoIsDark={true} src="/logos/ofertia.png" alt="Ofertia" />
+);
+
 let Work = () => (
   <>
     <MetaData title="Work" />
@@ -89,30 +145,55 @@ let Work = () => (
       <Spacer top={6} bottom={3}>
         <H2>Experience</H2>
       </Spacer>
-      <Stack gap={5} align="left">
+      <Stack gap={3} align="left">
         <Job
-          company={{ name: "ahrefs", url: "https://ahrefs.com" }}
+          company={{
+            name: "ahrefs",
+            url: "https://ahrefs.com",
+            logo: <AherfsLogo />,
+          }}
           date="2021 - now"
           role="Software Engineer"
         />
         <Job
-          company={{ name: "Draftbit", url: "https://draftbit.com" }}
+          company={{
+            name: "Draftbit",
+            url: "https://draftbit.com",
+            logo: <DraftbitLogo />,
+          }}
           date="2020 - 2021"
           role="Fullstack Engineer"
         />
         <Job
-          company={{ name: "Typeform", url: "https://typeform.com" }}
+          company={{
+            name: "Typeform",
+            url: "https://typeform.com",
+            logo: <TypeformLogo />,
+          }}
           date="2014 - 2019"
           role="Frontend Engineer"
         />
         <Job
-          company={{ name: "Ofertia", url: "https://ofertia.com" }}
+          company={{
+            name: "Ofertia",
+            url: "https://ofertia.com",
+            logo: <OfertiaLogo />,
+          }}
           date="2013 - 2014"
           role="Backend developer"
         ></Job>
 
         <Job
-          company={{ name: "Freelance", url: null }}
+          company={{
+            name: "Freelance",
+            url: null,
+            logo: (
+              <Text weight={400} size={font.fontSize3}>
+                😭
+              </Text>
+            ),
+            logoIsDark: false,
+          }}
           date="2010 - 2013"
           role="Web developer"
         />

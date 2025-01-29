@@ -10,7 +10,7 @@ let Talks = () => (
   <>
     <MetaData title="Talks" />
     <Page title={<H1>Talks</H1>}>
-      <Stack gap={5}>
+      <Stack gap={3}>
         <Item
           title="Universal React in OCaml"
           description="server-reason-react implements react-dom/server and some of React's internals in OCaml. Its purpose is to natively render HTML markup from the server for a Reason React application. This pushes the idea for universal code (sharing code between the browser and native) and this talk is the story of all of this, and what are the solutions we applied at ahrefs"

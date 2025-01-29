@@ -103,12 +103,13 @@ let Box = styled.div`
 
   text-decoration: none;
 
-  padding: 1rem;
+  padding: 3rem;
   border-radius: 0.5rem;
-  border: 1px solid ${rgba(colors.contrastCodeBackground, 1)};
+  border: 2px solid ${rgba(colors.contrastCodeBackground, 1)};
+  background-color: ${rgba(colors.contrastCodeBackground, 0.3)};
 
   &:hover {
-    background-color: ${rgba(colors.contrastCodeBackground, 0.2)};
+    background-color: ${rgba(colors.contrastCodeBackground, 0.8)};
   }
 `;
 
