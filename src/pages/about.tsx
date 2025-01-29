@@ -24,7 +24,7 @@ const Bio = () => {
   return (
     <Content>
       <Text size={fonts.fontSize1} align="left">
-        Hi, I'm David. A software engineer based in Barcelona, with winters spent skiing in the Pyrenees. My work bridges functional programming and web technologies, focusing on creating better developer tools and experiences with {" "}
+        Hi, I'm David. A software engineer based in Barcelona, but also spent the cold winter in the Pyrenees. My work bridges functional programming, web technologies and maintanability; by focusing on creating better developer tools and experiences with {" "}
         <TextLink href="http://reasonml.github.io/">Reason</TextLink>
         <span> and </span>
         <TextLink href="https://ocaml.org/">OCaml</TextLink>
@@ -33,7 +33,7 @@ const Bio = () => {
 
       <Spacer top={2} />
       <Text size={fonts.fontSize1}>
-        I believe clarity in the design, a sound architecture, and the evolution of software are the foundation of building powerful and maintainable software. Working at{' '}
+        I believe that the recipe for creating maintainable and powerful software lies in designing with clarity, sound architecture, and embracing the iterations of the development process. Working at{' '}
         <TextLink href="https://ahrefs.com/">ahrefs</TextLink>
         , I'm building developer tooling while maintaining several Open Source projects in the Reason ecosystem, including:
       </Text>
