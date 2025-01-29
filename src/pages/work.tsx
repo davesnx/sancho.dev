@@ -12,6 +12,12 @@ import { rgba } from "../theme/color";
 import font from "../theme/fonts";
 import { colors } from "../theme/theme";
 
+let Gallery = styled.div`
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+`;
+
 let Job = ({
   company,
   date,
@@ -69,10 +75,10 @@ let OpenSource = ({
   url: string;
 }) => (
   <OpenSourceItem href={url} target="_blank">
-    <Text weight={600} size={font.fontSize2}>
+    <Text weight={600} size={font.fontSize1}>
       {name}
     </Text>
-    <Text size={font.fontSize1}>{description}</Text>
+    <Text size={font.fontSizeN1}>{description}</Text>
   </OpenSourceItem>
 );
 
@@ -80,10 +86,44 @@ let Work = () => (
   <>
     <MetaData title="Work" />
     <Page title={<H1>Work</H1>}>
+      <Spacer top={6} bottom={3}>
+        <H2>Experience</H2>
+      </Spacer>
+      <Stack gap={5} align="left">
+        <Job
+          company={{ name: "ahrefs", url: "https://ahrefs.com" }}
+          date="2021 - now"
+          role="Software Engineer"
+        />
+        <Job
+          company={{ name: "Draftbit", url: "https://draftbit.com" }}
+          date="2020 - 2021"
+          role="Fullstack Engineer"
+        />
+        <Job
+          company={{ name: "Typeform", url: "https://typeform.com" }}
+          date="2014 - 2019"
+          role="Frontend Engineer"
+        />
+        <Job
+          company={{ name: "Ofertia", url: "https://ofertia.com" }}
+          date="2013 - 2014"
+          role="Backend developer"
+        ></Job>
+
+        <Job
+          company={{ name: "Freelance", url: null }}
+          date="2010 - 2013"
+          role="Web developer"
+        />
+      </Stack>
       <Spacer top={3} />
+      <Spacer top={6} bottom={3}>
+        <H2>Open Source</H2>
+      </Spacer>
       <Text>{`I author, maintain or co-maintain a few open-source projects`}</Text>
       <Spacer top={3} />
-      <Stack gap={3} align="left">
+      <Gallery>
         <OpenSource
           name="styled-ppx"
           description="Styled components for ReScript and Melange with type-safe CSS, including a CSS parser and CSS type-checker."
@@ -139,39 +179,7 @@ let Work = () => (
           description="Website to teach Ramda.js interactively. Build with React."
           url="https://github.com/davesnx/learn-ramda"
         />
-        <Spacer top={2} />
-      </Stack>
-      <Spacer bottom={3}>
-        <H2>Experience</H2>
-      </Spacer>
-      <Stack gap={5} align="left">
-        <Job
-          company={{ name: "Ahrefs", url: "https://ahrefs.com" }}
-          date="2021 - now"
-          role="Software Engineer"
-        />
-        <Job
-          company={{ name: "Draftbit", url: "https://draftbit.com" }}
-          date="2020 - 2021"
-          role="Fullstack Engineer"
-        />
-        <Job
-          company={{ name: "Typeform", url: "https://typeform.com" }}
-          date="2014 - 2019"
-          role="Frontend Engineer"
-        />
-        <Job
-          company={{ name: "Ofertia", url: "https://ofertia.com" }}
-          date="2013 - 2014"
-          role="Backend developer"
-        ></Job>
-
-        <Job
-          company={{ name: "Freelance", url: null }}
-          date="2010 - 2013"
-          role="Web developer"
-        />
-      </Stack>
+      </Gallery>
     </Page>
   </>
 );

@@ -9,7 +9,7 @@ tags:
 
 `server-reason-react` is an implementation of `react-dom/server` and some of React's internals in OCaml. Its purpose is to render HTML markup from the server for a Reason React application natively.
 
-This post provides an overview of some of the concepts of the library, what it means to render React in OCaml, how we use it at [Ahrefs.com](http://ahrefs.com/), a benchmark against a Node equivalent, and the future of all of this.
+This post provides an overview of some of the concepts of the library, what it means to render React in OCaml, how we use it at [ahrefs.com](http://ahrefs.com/), a benchmark against a Node equivalent, and the future of all of this.
 
 If you are not familiar with Reason or OCaml, it's fine. The purpose of this post is not to convince you to learn or try those languages but rather to share something I built that I'm passionate about.
 
@@ -27,15 +27,15 @@ Despite being a niche programming language, OCaml has made an impact on modern p
 
 I often refer to Reason/OCaml interchangeably since they are the same for me. Reason has a different syntax that should feel familiar to JavaScript developers, but the “engine” is the same as OCaml.
 
-## Ahrefs.com
+## ahrefs.com
 
-At Ahrefs, I'm a Software engineer working on tooling. I work on maintaining the design system, styled-ppx, helping with [Melange](https://github.com/melange-re/melange) and now on server-reason-react.
+At ahrefs, I'm a Software engineer working on tooling. I work on maintaining the design system, styled-ppx, helping with [Melange](https://github.com/melange-re/melange) and now on server-reason-react.
 
-Ahrefs is a comprehensive SEO toolset that provides data-driven insights and competitive analysis for digital marketers and businesses. With one of the best crawlers of the internet, we recently launched a search engine called [Yep.com](https://yep.com/about) with the goal of providing a better revenue-sharing model.
+ahrefs is a comprehensive SEO toolset that provides data-driven insights and competitive analysis for digital marketers and businesses. With one of the best crawlers of the internet, we recently launched a search engine called [Yep.com](https://yep.com/about) with the goal of providing a better revenue-sharing model.
 
 It's written mainly in OCaml and Reason (there’s a bit of Rust and C++/D) with a monorepo containing more than 1M lines of code. We value type-safety, maintainability and performance.
 
-The frontend parts of Ahrefs are the dashboard (app.ahrefs.com), the public website (ahrefs.com), a tiny website called [wordcount.com](https://wordcount.com/) and [Yep.com](http://Yep.com).
+The frontend parts of ahrefs are the dashboard (app.ahrefs.com), the public website (ahrefs.com), a tiny website called [wordcount.com](https://wordcount.com/) and [Yep.com](http://Yep.com).
 
 ## The problem
 
@@ -76,7 +76,7 @@ This solution couples the build process (running in CI) with the runtime (the pr
 
 The other solution is to serve the application by Node and using OCaml as API.
 
-Placing node in front is a very common architecture that works wonderful in some teams, but there are still some drawbacks when using Node in the backend for Ahrefs.
+Placing node in front is a very common architecture that works wonderful in some teams, but there are still some drawbacks when using Node in the backend for ahrefs.
 
 Most of our API consists of fetching from different data storages and shuffle this data to serve it. Some of those problems make it non ideal for us:
 
@@ -230,14 +230,14 @@ Here are main reasons why I would not adopt server-reason-react today:
 
 - It’s an entire new ecosystem: new language, new package manager, new trade-offs
 - The learning curve might be big. The tradeoffs made by OCaml do not match with some by JavaScript (or node). Probably not as big as learning how to deal with a borrow checker 😛
-- Not everyone needs this. At Ahrefs it made a lot of sense, but this it may not for you.
+- Not everyone needs this. At ahrefs it made a lot of sense, but this it may not for you.
 - It is still very experimental
 - Requires to lift the ecosystem to work on the server, so all client-side libraries need to be ported to OCaml when needed or stub
 - Smaller community, but growing
 
 ## Final thoughts
 
-I intentionally didn’t mention **how** this is compiled, because I want to keep it short and explain Melange in future blog posts. For reference: [Ahrefs is now built with Melange](https://tech.ahrefs.com/ahrefs-is-now-built-with-melange-b14f5ec56df4?gi=582fa8d9438f)
+I intentionally didn’t mention **how** this is compiled, because I want to keep it short and explain Melange in future blog posts. For reference: [ahrefs is now built with Melange](https://tech.ahrefs.com/ahrefs-is-now-built-with-melange-b14f5ec56df4?gi=582fa8d9438f)
 
 This has been very fun and I hope I can keep pushing this stack further.
 If you are as excited as we are, come talk to us!

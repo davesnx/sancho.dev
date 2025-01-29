@@ -13,14 +13,14 @@ let Talks = () => (
       <Stack gap={5}>
         <Item
           title="Universal React in OCaml"
-          description="server-reason-react implements react-dom/server and some of React's internals in OCaml. Its purpose is to natively render HTML markup from the server for a Reason React application. This pushes the idea for universal code (sharing code between the browser and native) and this talk is the story of all of this, and what are the solutions we applied at Ahrefs"
+          description="server-reason-react implements react-dom/server and some of React's internals in OCaml. Its purpose is to natively render HTML markup from the server for a Reason React application. This pushes the idea for universal code (sharing code between the browser and native) and this talk is the story of all of this, and what are the solutions we applied at ahrefs"
           meta="FUN OCaml 2024"
           kind={Kind.YouTube}
           link="https://www.youtube.com/watch?v=Oy3lZl2kE-0"
         />
         <Item
           title="Server-side rendering React natively with Reason"
-          description="Presenting server-reason-react, some context of the language and the library. What it means to render React in OCaml. How we use it at Ahrefs.com. A benchmark against a Node equivalent, and the future of all of this."
+          description="Presenting server-reason-react, some context of the language and the library. What it means to render React in OCaml. How we use it at ahrefs.com. A benchmark against a Node equivalent, and the future of all of this."
           meta="React Alicante 2023"
           kind={Kind.YouTube}
           link="https://www.youtube.com/watch?v=e3qY-Eg9zRY"

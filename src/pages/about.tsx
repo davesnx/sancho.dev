@@ -43,11 +43,13 @@ const Bio = () => {
         <ListItem>
           <TextLink href="https://github.com/reasonml/reason-react">reason-react</TextLink> Official React bindings for Reason and Melange
         </ListItem>
-        <ListItem>
-          <TextLink href="https://github.com/davesnx/styled-ppx">styled-ppx</TextLink> Type-safe styled components for ReScript, Melange, and native
-        </ListItem>
+
         <ListItem>
           <TextLink href="https://github.com/ml-in-barcelona/server-reason-react">server-reason-react</TextLink> Native server-side rendering for Reason React components
+        </ListItem>
+
+        <ListItem>
+          <TextLink href="https://github.com/davesnx/styled-ppx">styled-ppx</TextLink> Type-safe styled components for ReScript, Melange, and native
         </ListItem>
       </UnorderList>
 
@@ -61,10 +63,8 @@ const Bio = () => {
       <Spacer top={2} />
       <Text size={fonts.fontSize1}>
         Previously, I helped build visual app development platforms at{' '}
-        <TextLink href="https://draftbit.com">Draftbit</TextLink>
-        {' '}and architected the form rendering engine during my 5 years at{' '}
-        <TextLink href="https://www.typeform.com">Typeform</TextLink>
-        . My technical interests span compilers, type systems, scalable systems, and startup cultures.
+        <TextLink href="https://draftbit.com">Draftbit</TextLink> for a year
+        {' '}and, before that, worked at <TextLink href="https://www.typeform.com">Typeform</TextLink> where I architected the form rendering engine during 5 years. My technical interests span across compilers, type systems, scalable systems, CSS, the Web and startups.
       </Text>
 
       <Spacer top={2} />

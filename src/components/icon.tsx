@@ -11,7 +11,7 @@ type LogoProps = {
 
 const Logo = styled.div`
   display: flex;
-  padding: ${(props: LogoProps) => (props.padded ? "8px" : "0px")};
+  padding-left: ${(props: LogoProps) => (props.padded ? "8px" : "0px")};
   border-radius: 6px;
   cursor: pointer;
   transition: all 100ms ease-in;

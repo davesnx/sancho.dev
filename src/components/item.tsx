@@ -7,23 +7,68 @@ import { colors } from "../theme/theme";
 import Github from "./../components/svgs/github";
 import Web from "./../components/svgs/web";
 import YouTube from "./../components/svgs/youtube";
-import { H3 } from "./heading";
+import { H3, H4 } from "./heading";
 import Icon from "./icon";
 import { ButtonLink } from "./link";
 import { Row, Stack } from "./taco";
 import Text from "./text";
 import { rgba, rgb } from "src/theme/color";
 
-const GithubIcon = ({ href, color, size }: { href: string; color: string; size: number }) => (
-  <Icon padded size={size} href={href} svg={Github} bg="rgba(24, 23, 23, 0.1)" color={color} />
+const GithubIcon = ({
+  href,
+  color,
+  size,
+}: {
+  href: string;
+  color: string;
+  size: number;
+}) => (
+  <Icon
+    padded
+    size={size}
+    href={href}
+    svg={Github}
+    bg="rgba(24, 23, 23, 0.1)"
+    color={color}
+  />
 );
 
-const WebIcon = ({ href, color, size }: { href: string; color: string; size: number }) => (
-  <Icon padded size={size} href={href} svg={Web} bg="rgba(24, 23, 23, 0.1)" color={color} />
+const WebIcon = ({
+  href,
+  color,
+  size,
+}: {
+  href: string;
+  color: string;
+  size: number;
+}) => (
+  <Icon
+    padded
+    size={size}
+    href={href}
+    svg={Web}
+    bg="rgba(24, 23, 23, 0.1)"
+    color={color}
+  />
 );
 
-const YouTubeIcon = ({ href, color, size }: { href: string; color: string; size: number }) => (
-  <Icon padded size={size} href={href} svg={YouTube} bg="rgba(24, 23, 23, 0.1)" color={color} />
+const YouTubeIcon = ({
+  href,
+  color,
+  size,
+}: {
+  href: string;
+  color: string;
+  size: number;
+}) => (
+  <Icon
+    padded
+    size={size}
+    href={href}
+    svg={YouTube}
+    bg="rgba(24, 23, 23, 0.1)"
+    color={color}
+  />
 );
 
 export const Kind = {
@@ -32,7 +77,15 @@ export const Kind = {
   YouTube: "YouTube",
 } as const;
 
-type Icon = ({ href, color, size }: { href: string; color: string; size: number }) => JSX.Element;
+type Icon = ({
+  href,
+  color,
+  size,
+}: {
+  href: string;
+  color: string;
+  size: number;
+}) => JSX.Element;
 
 const KindToIcon: Record<keyof typeof Kind, Icon> = {
   Web: WebIcon,
@@ -59,7 +112,19 @@ let Box = styled.div`
   }
 `;
 
-export const Item = ({ meta, title, description, kind, link }: { meta: string; title: string; description: string; kind: string; link: string }) => {
+export const Item = ({
+  meta,
+  title,
+  description,
+  kind,
+  link,
+}: {
+  meta: string;
+  title: string;
+  description: string;
+  kind: string;
+  link: string;
+}) => {
   let Icon: Icon = KindToIcon[kind as keyof typeof Kind] || KindToIcon["Web"];
 
   return (
@@ -67,14 +132,14 @@ export const Item = ({ meta, title, description, kind, link }: { meta: string; t
       <Box>
         <ButtonLink href={link}>
           <Row distribute="left" align="center" gap={0}>
-            <Text color={colors.subtle} size={font.fontSizeN1} weight={400}>
+            <Text color={colors.subtle} size={font.fontSize1} weight={400}>
               {meta}
             </Text>
             <Icon href={link} color={rgb(colors.subtle)} size={16} />
           </Row>
-          <Stack align="left" gap={0}>
-            <H3>{title}</H3>
-            <Text>{description}</Text>
+          <Stack align="left" gap={2}>
+            <H4>{title}</H4>
+            <Text size={font.fontSize0}>{description}</Text>
           </Stack>
         </ButtonLink>
       </Box>
