@@ -40,7 +40,7 @@ const Home = () => {
           <Text size={fonts.fontSize1}>
             {`I am currently working at `}
             <TextLink href="https://ahrefs.com/">ahrefs</TextLink>
-            {`, building tools for other developers to make great user interfaces.`}
+            {`, making tools that help developers to build great user interfaces.`}
           </Text>
           <Spacer top={2} />
           <Text size={fonts.fontSize1}>
