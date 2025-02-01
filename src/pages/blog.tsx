@@ -16,6 +16,7 @@ import Text from "../components/text";
 import constants from "../theme/constants";
 import font from "../theme/fonts";
 import { colors } from "../theme/theme";
+import { rgba } from "src/theme/color";
 
 export const getStaticProps: GetStaticProps = async () => {
   let frontmatters = getAllFrontmatter();
@@ -27,8 +28,22 @@ export const getStaticProps: GetStaticProps = async () => {
   return { props: { frontmatters: sortedFrontmatters } };
 };
 
+const PostTitle = styled(H3)`
+  color: ${rgba(colors.primary, 0.8)};
+  transition: color 0.2s ease-out;
+  &:hover {
+    color: ${rgba(colors.primary, 1)};
+  }
+`;
+
 const PostLink = styled(NavigateButton)`
   width: 100%;
+
+  &:hover {
+    ${PostTitle} {
+      color: ${rgba(colors.primary, 1)};
+    }
+  }
 `;
 
 const PostDescription = styled.div`
@@ -62,7 +77,7 @@ let Blog = ({ frontmatters }: { frontmatters: Array<Frontmatter> }) => {
               >
                 <Stack fullWidth align="left">
                   <Row distribute="between" gap={2} fullWidth>
-                    <H3> {frontmatter.title}</H3>
+                    <PostTitle> {frontmatter.title}</PostTitle>
                     {frontmatter.publishedAt ? (
                       <PostDate>
                         <Text
