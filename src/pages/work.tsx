@@ -143,7 +143,9 @@ let OpenSource = ({
 
 let LogoImg = styled.img`
   width: 100%;
-  opacity: 0.7;
+
+  min-height: min-content;
+  font-size: 0px;
 
   ${(props) => (props.logoIsDark ? "filter: brightness(0) invert(1)" : "")}
 `;
