@@ -1,5 +1,6 @@
 import Head from "next/head";
 import React from "react";
+import NextScript from "next/script";
 
 const config = {
   siteUrl: `https://sancho.dev`,
@@ -112,11 +113,11 @@ const MetaData = (props: Props) => {
         name="ahrefs-site-verification"
         content="66eb7258c64a949157d612bbbbbaf307cb4a3cad3ce20766bdc504486b0712b4"
       />
-      <script
+      <NextScript
         src="https://analytics.ahrefs.com/analytics.js"
         data-key="PlRodvhsdeDa2TA0XmHPLw"
         async
-      ></script>
+      />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{

@@ -8,7 +8,7 @@ const Page = ({ title, children }) => (
   <Layout key={title}>
     <Main>
       {title}
-      <Spacer top={3}>{children}</Spacer>
+      <Spacer top={5}>{children}</Spacer>
     </Main>
   </Layout>
 );

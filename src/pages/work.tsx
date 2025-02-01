@@ -9,6 +9,7 @@ import Spacer from "../components/spacer";
 import { Row, Stack } from "../components/taco";
 import Text from "../components/text";
 import { rgba } from "../theme/color";
+import constants from "../theme/constants";
 import font from "../theme/fonts";
 import { colors } from "../theme/theme";
 
@@ -34,6 +35,18 @@ let JobRoot = styled.section`
   border-radius: 8px;
   border: 2px solid ${rgba(colors.contrastCodeBackground, 1)};
   background-color: ${rgba(colors.contrastCodeBackground, 0.3)};
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+
+  flex-direction: column;
+  @media screen and (min-width: ${constants.mobile.width}px) {
+    flex-direction: row;
+  }
+
+  gap: 1rem;
 `;
 
 let Job = ({
@@ -47,39 +60,48 @@ let Job = ({
     logo: React.ReactNode | null;
     logoIsDark: boolean;
   };
-  date: string;
+  date: {
+    from: string;
+    to: string;
+  };
   role: string;
 }) => (
   <JobRoot>
-    <Row fullWidth gap={3}>
-      {company.logo && <CompanyLogo> {company.logo} </CompanyLogo>}
-      <Stack gap={1} align="left" fullWidth>
-        <Row distribute="between" fullWidth>
-          <Stack align="left" gap={0}>
-            <Text weight={400} size={font.fontSize2}>
-              {role}
+    {company.logo && <CompanyLogo> {company.logo} </CompanyLogo>}
+    <Stack gap={1} align="left" fullWidth>
+      <Row distribute="between" fullWidth>
+        <Stack align="left" gap={0}>
+          <Text weight={400} size={font.fontSize2}>
+            {role}
+          </Text>
+          {company.url && (
+            <Text weight={400} size={font.fontSize0}>
+              <TextLink color={colors.subtle} href={company.url}>
+                {company.url}
+              </TextLink>
             </Text>
-            {company.url && (
-              <Text weight={400} size={font.fontSize0}>
-                <TextLink color={colors.subtle} href={company.url}>
-                  {company.url}
-                </TextLink>
-              </Text>
-            )}
+          )}
 
-            {!company.url && (
-              <Text weight={400} color={colors.subtle} size={font.fontSize1}>
-                {company.name}
-              </Text>
-            )}
-          </Stack>
-          <Text wieght={800} size={font.fontSize2}>
-            {date}
+          {!company.url && (
+            <Text weight={400} color={colors.subtle} size={font.fontSize1}>
+              {company.name}
+            </Text>
+          )}
+        </Stack>
+        <Row gap={1}>
+          <Text weight={800} size={font.fontSize1}>
+            {date.from}
+          </Text>
+          <Text weight={800} color={colors.subtle}>
+            -
+          </Text>
+          <Text weight={800} size={font.fontSize1}>
+            {date.to}
           </Text>
         </Row>
-      </Stack>
-      <Spacer right={0} />
-    </Row>
+      </Row>
+    </Stack>
+    <Spacer right={0} />
   </JobRoot>
 );
 
@@ -142,7 +164,7 @@ let Work = () => (
   <>
     <MetaData title="Work" />
     <Page title={<H1>Work</H1>}>
-      <Spacer top={6} bottom={3}>
+      <Spacer top={0} bottom={3}>
         <H2>Experience</H2>
       </Spacer>
       <Stack gap={3} align="left">
@@ -152,7 +174,10 @@ let Work = () => (
             url: "https://ahrefs.com",
             logo: <AherfsLogo />,
           }}
-          date="2021 - now"
+          date={{
+            from: "2021",
+            to: "now",
+          }}
           role="Software Engineer"
         />
         <Job
@@ -161,7 +186,10 @@ let Work = () => (
             url: "https://draftbit.com",
             logo: <DraftbitLogo />,
           }}
-          date="2020 - 2021"
+          date={{
+            from: "2020",
+            to: "2021",
+          }}
           role="Fullstack Engineer"
         />
         <Job
@@ -170,7 +198,10 @@ let Work = () => (
             url: "https://typeform.com",
             logo: <TypeformLogo />,
           }}
-          date="2014 - 2019"
+          date={{
+            from: "2014",
+            to: "2019",
+          }}
           role="Frontend Engineer"
         />
         <Job
@@ -179,7 +210,10 @@ let Work = () => (
             url: "https://ofertia.com",
             logo: <OfertiaLogo />,
           }}
-          date="2013 - 2014"
+          date={{
+            from: "2013",
+            to: "2014",
+          }}
           role="Backend developer"
         ></Job>
 
@@ -194,7 +228,10 @@ let Work = () => (
             ),
             logoIsDark: false,
           }}
-          date="2010 - 2013"
+          date={{
+            from: "2010",
+            to: "2013",
+          }}
           role="Web developer"
         />
       </Stack>

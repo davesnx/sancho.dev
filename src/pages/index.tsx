@@ -1,7 +1,7 @@
 import styled from "@emotion/styled";
 import React from "react";
 
-import { H4 } from "../components/heading";
+import { H3 } from "../components/heading";
 import { NavigateText, TextLink } from "../components/link";
 import Page from "../components/page";
 import MetaData from "../components/site-metadata";
@@ -18,7 +18,7 @@ const Dimmed = styled.div`
 let Title = () => {
   return (
     <Row distribute="left" gap={2} align="baseline">
-      <H4>{"David Sancho"}</H4>
+      <H3>{"David Sancho"}</H3>
     </Row>
   );
 };
