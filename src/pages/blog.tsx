@@ -65,7 +65,7 @@ let Blog = ({ frontmatters }: { frontmatters: Array<Frontmatter> }) => {
     <>
       <MetaData title="Blog" />
       <Page title={<H1>Blog</H1>}>
-        <Stack gap={3} align="left" fullWidth>
+        <Stack gap={6} align="left" fullWidth>
           {frontmatters
             .filter((frontmatters: Frontmatter) => {
               return frontmatters.isDraft !== true;
