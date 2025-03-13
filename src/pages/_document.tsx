@@ -48,6 +48,11 @@ class MyDocument extends Document {
           <Main />
           <NextScript />
           <script async src="https://cdn.splitbee.io/sb.js"></script>
+          <script
+            src="https://analytics-staging.ahrefs.dev/analytics.js"
+            data-key="DWZmB48jYlnWJGp+P6ibzQ"
+            async
+          ></script>
         </body>
       </Html>
     );
