@@ -216,10 +216,9 @@ const Li = styled(ListItem)`
 
 const PageTitle = styled.div`
   display: flex;
-  margin: 8rem -3rem;
   margin-top: 0px;
   justify-content: center;
-  align-items: center;
+  align-items: flex-start;
   flex-direction: column;
   gap: 1rem;
 
@@ -234,8 +233,8 @@ const PageTitle = styled.div`
 `;
 
 const BlogPostTitle = styled(H1)`
-  font-size: 3.5rem;
-  text-align: center;
+  font-size: 2.8rem;
+  text-align: left;
   line-height: 1.2;
   color: ${rgb(colors.primary)};
 
@@ -245,7 +244,9 @@ const BlogPostTitle = styled(H1)`
 `;
 
 const A = (props: any) => {
-  return <TextLink {...props} color={colors.body} hoverColor={colors.primary} />;
+  return (
+    <TextLink {...props} color={colors.body} hoverColor={colors.primary} />
+  );
 };
 
 export const getStaticPaths: GetStaticPaths = () => {
@@ -335,7 +336,8 @@ let Post = ({
         </Spacer>
         <Text>
           <Strong>Thanks for reaching the end</Strong>. Let me know if you have
-          any feedback, corrections or questions. Always happy to chat about any topic mentioned in this post, feel free to reach out.
+          any feedback, corrections or questions. Always happy to chat about any
+          topic mentioned in this post, feel free to reach out.
         </Text>
         <Spacer top={2} />
       </Page>
