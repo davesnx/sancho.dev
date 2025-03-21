@@ -2,7 +2,6 @@ import React from "react";
 
 import { css } from "@emotion/react";
 import styled from "@emotion/styled";
-import { format, parseISO } from "date-fns";
 import { getMDXComponent } from "mdx-bundler/client";
 import { GetStaticPaths, GetStaticProps, InferGetStaticPropsType } from "next";
 
@@ -261,6 +260,10 @@ export const getStaticPaths: GetStaticPaths = () => {
   };
 };
 
+let Strong = (props: any) => {
+  return <Text as="strong" weight={400} color={colors.primary} {...props} />;
+};
+
 export const getStaticProps: GetStaticProps = async ({ params }) => {
   if (params?.slug && !Array.isArray(params?.slug)) {
     let { frontmatter, code } = await getMdxBySlug(params.slug);
@@ -281,14 +284,10 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
   };
 };
 
-let Strong = (props: any) => {
-  return <Text as="strong" weight={400} color={colors.primary} {...props} />;
-};
-
-let Post = ({
+export default function Post({
   frontmatter,
   code,
-}: InferGetStaticPropsType<typeof getStaticProps>) => {
+}: InferGetStaticPropsType<typeof getStaticProps>) {
   let Component = getMDXComponent(code);
 
   return (
@@ -303,9 +302,6 @@ let Post = ({
         title={
           <PageTitle>
             <BlogPostTitle>{frontmatter.title}</BlogPostTitle>
-            <Text weight={400} color={colors.subtle} size={font.fontSize1}>
-              {format(parseISO(frontmatter.publishedAt), "MMMM yyyy")}
-            </Text>
           </PageTitle>
         }
       >
@@ -343,6 +339,4 @@ let Post = ({
       </Page>
     </>
   );
-};
-
-export default Post;
+}
