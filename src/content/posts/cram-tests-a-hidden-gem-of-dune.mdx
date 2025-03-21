@@ -1,5 +1,5 @@
 ---
-title: "Cram tests: a hidden gem of dune"
+title: "Cram tests: dune's hidden gem"
 publishedAt: "2024-12-29"
 tags:
   - "ocaml"
@@ -54,7 +54,7 @@ dune supports cram tests out of the box and integrates nicely with all your dune
 
 In previous versions of dune, you need to enable them manually. For dune < 3 add `(cram enabled)` in dune-project (might need to create a dune-project file at the root of your project if you don't have one already). If you are using dune > 3, nothing to do, they are already enabled
 
-## **Your first cram test**
+### Your first cram test
 
 If you want to experience the flow of it before using it in a real-world scenario, open your dune project and follow it as a tutorial.
 
@@ -68,7 +68,7 @@ Let’s start with the simplest possible test.
 
 2. Run the test and let it crash, either
 - run the entire “test suite” with **`dune runtest`**
-- or a specific test with their respective alias **`dune build @simple —watch`** (all cram tests are automatically dune aliases)
+- or a specific test with their respective alias, since all cram tests are automatically dune aliases: **`dune build @simple —watch`**
 
 Output of the execution will be:
 
@@ -83,8 +83,7 @@ index de6f8c28..ef3231ef 100644
 +  lola
 ```
 
-3. Accept the result as correct, we can update the snapshot manually (a bit boring and tedious) or with promotion
-(https://dune.readthedocs.io/en/latest/concepts/promotion.html#promotion) (automatic).
+3. Accept the result as correct. We can update the snapshot with the boring and tedious way, manually or automatically with promotion.
 
 Running **`dune build @simple —auto-promote`** which updates `simple.t` file for you.
 

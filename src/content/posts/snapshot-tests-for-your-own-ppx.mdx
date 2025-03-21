@@ -106,7 +106,7 @@ let () = Ppxlib.Driver.standalone ()
 
 This exposes your ppx transfomrations with ppxlib's [`Driver.standalone`](https://ocaml-ppx.github.io/ppxlib/ppxlib/Ppxlib/Driver/index.html) which defines a CLI to run your ppx transformations directly, and simulates what dune exposes to your users when your ppx is part of a build-step in a project.
 
-There are a few other ways to make the executable available, explained in my previous post: https://sancho.dev/blog/cram-tests-a-hidden-gem-of-dune#make-your-executable-available-under-cram-tests, but this is the simplest one.
+There are a few other ways to make the executable available, explained in my previous post about cram tests: [make your executable available under cram tests](https://sancho.dev/blog/cram-tests-a-hidden-gem-of-dune#make-your-executable-available-under-cram-tests), but this is the simplest one.
 
 ### 3. Let cram depend on your executable
 
