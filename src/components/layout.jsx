@@ -252,10 +252,12 @@ export default function Layout({ children }) {
               >{` @davesnx`}</TextLink>
             </Text>
           </Row>
-          <TextLink
-            color={colors.body}
-            href="https://github.com/davesnx/sancho.dev"
-          >{`Source`}</TextLink>
+          <Text weight={400} size={font.fontSizeN1}>
+            <TextLink
+              color={colors.body}
+              href="https://github.com/davesnx/sancho.dev"
+            >{`Source`}</TextLink>
+          </Text>
         </Footer>
       </Main>
     </Root>
