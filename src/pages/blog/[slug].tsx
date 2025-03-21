@@ -66,25 +66,27 @@ const Content = styled.p`
 
 const Line = {
   horitzontal: css`
-    background-color: ${rgb(colors.subtle)};
-    opacity: 0.4;
+    background-color: ${rgb(colors.body)};
+    opacity: 0.1;
     width: 100%;
     height: 2px;
   `,
   vertical: css`
-    background-color: ${rgb(colors.subtle)};
-    opacity: 0.4;
+    background-color: ${rgb(colors.body)};
+    opacity: 0.1;
     width: 2px;
     height: 100%;
   `,
 };
 
 const Hr = styled.hr`
-  border-top-width: 1px;
+  border-top-width: 2px;
   border-style: none;
   border-bottom-width: 0;
-  margin-top: 3em;
-  margin-bottom: 3em;
+  margin-top: 2em;
+  margin-bottom: 1em;
+  width: 100%;
+  padding: 0px 2rem;
 
   ${Line["horitzontal"]}
 `;
@@ -219,7 +221,6 @@ const PageTitle = styled.div`
   justify-content: center;
   align-items: flex-start;
   flex-direction: column;
-  gap: 1rem;
 
   @media screen and (max-width: ${breakpoints.desktop.width}px) {
     margin: 8rem 0;
