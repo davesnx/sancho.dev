@@ -2,12 +2,14 @@ import React from "react";
 
 import { css } from "@emotion/react";
 import styled from "@emotion/styled";
+import { format, parseISO } from "date-fns";
 import { getMDXComponent } from "mdx-bundler/client";
 import { GetStaticPaths, GetStaticProps, InferGetStaticPropsType } from "next";
 
 import { Frontmatter } from "../../lib/frontmatter";
 import { getAllFrontmatter, getMdxBySlug } from "../../lib/mdx";
 
+import { Row } from "../../components/taco";
 import { H1, H2, H3, H4, H5, H6 } from "../../components/heading";
 import { TextLink } from "../../components/link";
 import { ListItem, OrderList, UnorderList } from "../../components/list";
@@ -67,11 +69,11 @@ const Line = {
   horitzontal: css`
     background-color: ${colors.body10};
     width: 100%;
-    height: 3px;
+    height: 1px;
   `,
   vertical: css`
     background-color: ${colors.body10};
-    width: 3px;
+    width: 1px;
     height: 100%;
   `,
 };
@@ -81,7 +83,7 @@ const Hr = styled.hr`
   border-style: none;
   border-bottom-width: 0;
   margin-top: 2em;
-  margin-bottom: 1em;
+  margin-bottom: 1.5em;
   width: 100%;
   padding: 0px 2rem;
 
@@ -96,11 +98,7 @@ const Img = styled.img`
 
 const Oversized = styled.span`
   display: block;
-  margin: 3rem -40px;
-
-  @media screen and (max-width: ${breakpoints.mobile.width}px) {
-    margin: 3rem 0;
-  }
+  margin: 3rem 0;
 `;
 
 const Pre = (props: any) => (
@@ -216,23 +214,22 @@ const PageTitle = styled.div`
   display: flex;
   margin-top: 0px;
   justify-content: center;
-  align-items: flex-start;
+  align-items: center;
   flex-direction: column;
-  gap: 0.8rem;
+  gap: 0.65rem;
 
-  @media screen and (max-width: ${breakpoints.desktop.width}px) {
-    margin: 8rem 0;
-    margin-top: 0px;
-  }
-  @media screen and (max-width: ${breakpoints.mobile.width}px) {
-    margin: 3rem 0;
+  margin-left: -1.5rem;
+  width: 100%;
+
+  @media screen and (max-width: calc(${breakpoints.desktop.width}px + 32px)) {
     margin-top: 0px;
   }
 `;
 
 const BlogPostTitle = styled(H1)`
-  font-size: 2.8rem;
-  text-align: left;
+  font-size: 3rem;
+  text-align: center;
+  width: 100%;
   line-height: 1.2;
   color: ${colors.primary};
 
@@ -301,13 +298,27 @@ export default function Post({
         title={
           <PageTitle>
             <BlogPostTitle>{frontmatter.title}</BlogPostTitle>
-            {/* <Text
-              color={rgba(colors.body, 0.4)}
-              size={font.fontSize1}
-              weight={400}
-            >
-              PUBLISHED AT {frontmatter.publishedAt}
-            </Text> */}
+            <Row gap={0.8}>
+              <Text
+                kerning="0.05rem"
+                color={colors.body30}
+                size={font.fontSizeN1}
+                weight={400}
+              >
+                PUBLISHED AT{" "}
+              </Text>
+              <Text
+                kerning="0.05rem"
+                color={colors.body50}
+                size={font.fontSizeN1}
+                weight={400}
+              >
+                {format(
+                  parseISO(frontmatter.publishedAt),
+                  "MMM yyyy"
+                ).toUpperCase()}
+              </Text>
+            </Row>
           </PageTitle>
         }
       >

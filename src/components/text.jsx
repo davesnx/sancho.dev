@@ -12,7 +12,7 @@ export const styles = (props) => css`
   line-height: 1.85rem;
   color: ${props.color || colors.body};
   display: inline-block;
-  letter-spacing: 0.02em;
+  letter-spacing: ${props.kerning ? props.kerning : "0.02em"};
 `;
 
 const P = styled.p`

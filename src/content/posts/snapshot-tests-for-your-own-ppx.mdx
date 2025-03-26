@@ -147,7 +147,7 @@ Run the executable from input.ml and print the output to stdout
   let () = print_endline "Hello future compiler engineer!"
 ```
 
-## Compose your ppx with other OCaml tooling: `ocamlc`
+## Enhance the cram tests with `ocamlc`
 
 A real-example of a ppx, is browser_ppx which handles browser-specific code by stripping it out when not targeting JavaScript. Very useful when sharing code between native and JavaScript. The documentation lives [here](https://ml-in-barcelona.github.io/server-reason-react/local/server-reason-react/browser_only.html) and comes from [server-reason-react](https://github.com/ml-in-barcelona/server-reason-react).
 
@@ -191,7 +191,7 @@ Run the compiler
 
 The test verifies that the ppx transforms our browser-specific code into an `[%ocaml.error ...]` and raises the error defined in the ppx, runs the compiler and checks the output. Note that the `ocamlc` command returns the error code 2 defined in the last line of the output `[2]`.
 
-## Compose your ppx with other OCaml tooling: `ocamlmerlin`
+## Enhance the cram tests with `ocamlmerlin`
 
 In a real world scenario like [reason-react-ppx](https://github.com/reason/reason-react), we want to ensure that the ppx transformations respect the AST location of the original code. We want the generated code to have the same location as the original code, so the editor can highlight the correct line, compiler errors report the correct line and column, etc.
 

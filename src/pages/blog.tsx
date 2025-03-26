@@ -79,11 +79,15 @@ let Blog = ({ frontmatters }: { frontmatters: Array<Frontmatter> }) => {
                     {frontmatter.publishedAt ? (
                       <PostDate>
                         <Text
-                          color={colors.subtle}
-                          size={font.fontSize1}
-                          weight={300}
+                          kerning="0.05rem"
+                          color={colors.body50}
+                          size={font.fontSizeN1}
+                          weight={400}
                         >
-                          {format(parseISO(frontmatter.publishedAt), "MM/yyyy")}
+                          {format(
+                            parseISO(frontmatter.publishedAt),
+                            "MMM yyyy"
+                          ).toUpperCase()}
                         </Text>
                       </PostDate>
                     ) : null}
@@ -91,7 +95,7 @@ let Blog = ({ frontmatters }: { frontmatters: Array<Frontmatter> }) => {
                   {frontmatter.description ? (
                     <PostDescription>
                       <Text
-                        color={colors.body80}
+                        color={colors.body50}
                         size={font.fontSize1}
                         weight={300}
                       >

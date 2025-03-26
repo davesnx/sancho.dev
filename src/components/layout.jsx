@@ -236,20 +236,12 @@ export default function Layout({ children }) {
       </Children>
       <Main>
         <Footer>
-          <Row gap={1}>
-            <Text weight={400} color={colors.subtle} size={font.fontSizeN1}>
-              {`David Sancho`}
-            </Text>
-            <Text weight={800} color={colors.subtle} size={font.fontSize4}>
-              {`·`}
-            </Text>
-            <Text weight={400} size={font.fontSizeN1}>
-              <TextLink
-                color={colors.subtle}
-                href="https://github.com/davesnx/sancho.dev"
-              >{` @davesnx`}</TextLink>
-            </Text>
-          </Row>
+          <Text weight={400} size={font.fontSizeN1}>
+            <TextLink
+              color={colors.subtle}
+              href="https://x.com/davesnx"
+            >{`@davesnx`}</TextLink>
+          </Text>
           <Text weight={400} size={font.fontSizeN1}>
             <TextLink
               color={colors.subtle}
