@@ -7,7 +7,6 @@ import { H1 } from "../../components/heading";
 import Overlap from "../../components/overlap";
 import Page from "../../components/page";
 import Spacer from "../../components/spacer";
-import { rgb } from "../../theme/color";
 import font from "../../theme/fonts";
 import { colors } from "../../theme/theme";
 function useHover() {
@@ -74,8 +73,8 @@ const ButtonWrapper = styled.a`
   padding: 1rem 1.5rem;
   justify-content: space-evenly;
   border-radius: 4px;
-  background-color: ${rgb(colors.contrast)};
-  color: ${rgb(colors.body)};
+  background-color: ${colors.contrast};
+  color: ${colors.body};
   font-family: "${font.sans}";
 
   user-select: none;
@@ -99,7 +98,7 @@ const OverlapWrapper = styled.div`
   justify-content: center;
   align-items: center;
 
-  background: ${rgb(colors.contrast)};
+  background: ${colors.contrast};
   border-radius: 4px;
 `;
 

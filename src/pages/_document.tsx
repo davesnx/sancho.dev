@@ -6,6 +6,22 @@ class MyDocument extends Document {
       <Html lang={"en"}>
         <Head>
           <link
+            key="silka-thin"
+            href={"/fonts/silka-thin-webfont.woff2"}
+            rel="preload"
+            as="font"
+            type="font/woff2"
+            crossOrigin="anonymous"
+          />
+          <link
+            key="silka-medium"
+            href={"/fonts/silka-medium-webfont.woff2"}
+            rel="preload"
+            as="font"
+            type="font/woff2"
+            crossOrigin="anonymous"
+          />
+          <link
             key="silka-regular"
             href={"/fonts/silka-regular-webfont.woff2"}
             rel="preload"
@@ -16,6 +32,14 @@ class MyDocument extends Document {
           <link
             key="silka-semibold"
             href={"/fonts/silka-semibold-webfont.woff2"}
+            rel="preload"
+            as="font"
+            type="font/woff2"
+            crossOrigin="anonymous"
+          />
+          <link
+            key="silka-bold"
+            href={"/fonts/silka-bold-webfont.woff2"}
             rel="preload"
             as="font"
             type="font/woff2"

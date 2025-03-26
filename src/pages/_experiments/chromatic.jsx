@@ -8,7 +8,6 @@ import Overlap from "../../components/overlap";
 import Spacer from "../../components/spacer";
 import { RelativeSpacer } from "../../components/spacer";
 import Text from "../../components/text";
-import { rgb } from "../../theme/color";
 import font from "../../theme/fonts";
 import { colors } from "../../theme/theme";
 import useDeviceOrientation from "../../utils/device-orientation";
@@ -23,7 +22,7 @@ const Layer = styled.div((props) => ({
             ${props.translateY}px
           )`,
     filter: `blur(${(props) => props.blur}px)`,
-    color: rgb(props.color),
+    color: props.color,
     mixBlendMode: "screen",
   },
 }));

@@ -15,7 +15,6 @@ import Page from "../../components/page";
 import MetaData from "../../components/site-metadata";
 import Spacer from "../../components/spacer";
 import Text from "../../components/text";
-import { rgb, rgba } from "../../theme/color";
 import breakpoints from "../../theme/constants";
 import font from "../../theme/fonts";
 import { colors } from "../../theme/theme";
@@ -52,11 +51,11 @@ const PaddedH6 = styled(H6)`
 
 const Content = styled.p`
   font-family: ${font.sans};
-  line-height: 1.7;
-  color: ${rgba(colors.body, 0.9)};
+  line-height: 1.85rem;
+  color: ${colors.body90};
   font-size: ${font.fontSize1};
   font-weight: 200;
-  margin-bottom: 1rem;
+  margin-bottom: 1.2rem;
   display: block;
 
   a {
@@ -66,15 +65,13 @@ const Content = styled.p`
 
 const Line = {
   horitzontal: css`
-    background-color: ${rgb(colors.body)};
-    opacity: 0.1;
+    background-color: ${colors.body10};
     width: 100%;
-    height: 2px;
+    height: 3px;
   `,
   vertical: css`
-    background-color: ${rgb(colors.body)};
-    opacity: 0.1;
-    width: 2px;
+    background-color: ${colors.body10};
+    width: 3px;
     height: 100%;
   `,
 };
@@ -118,7 +115,7 @@ const Table = styled.table`
   width: 100%;
   margin: 32px 0;
   font-family: "${font.sans}";
-  color: ${rgba(colors.body, 0.9)};
+  color: ${colors.body90};
   line-height: 1.7142857;
   margin-bottom: 2em;
   margin-top: 2em;
@@ -126,7 +123,7 @@ const Table = styled.table`
   text-align: left;
 
   td {
-    border-color: ${rgba(colors.body, 0.3)};
+    border-color: ${colors.body30};
     border-style: solid;
     border-bottom-width: 1px;
     border-top-width: 0px;
@@ -141,8 +138,8 @@ const Table = styled.table`
   }
 
   th {
-    background-color: ${rgba(colors.body, 0.1)};
-    border-color: ${rgba(colors.body, 0.3)};
+    background-color: ${colors.body10};
+    border-color: ${colors.body30};
     border-bottom-width: 1px;
     border-left-width: 1px;
     border-top-width: 1px;
@@ -153,7 +150,7 @@ const Table = styled.table`
   }
 
   td:last-child {
-    border-color: ${rgba(colors.body, 0.3)};
+    border-color: ${colors.body30};
     border-right-width: 1px;
   }
 
@@ -203,7 +200,7 @@ const Blockquote = styled.blockquote`
   }
 
   & > code {
-    background-color: rgba(0, 0, 0, 0.1) !important;
+    background-color: ${colors.grey} !important;
   }
 `;
 
@@ -221,6 +218,7 @@ const PageTitle = styled.div`
   justify-content: center;
   align-items: flex-start;
   flex-direction: column;
+  gap: 0.8rem;
 
   @media screen and (max-width: ${breakpoints.desktop.width}px) {
     margin: 8rem 0;
@@ -236,7 +234,7 @@ const BlogPostTitle = styled(H1)`
   font-size: 2.8rem;
   text-align: left;
   line-height: 1.2;
-  color: ${rgb(colors.primary)};
+  color: ${colors.primary};
 
   @media screen and (max-width: ${breakpoints.mobile.width}px) {
     font-size: 2rem;
@@ -303,6 +301,13 @@ export default function Post({
         title={
           <PageTitle>
             <BlogPostTitle>{frontmatter.title}</BlogPostTitle>
+            {/* <Text
+              color={rgba(colors.body, 0.4)}
+              size={font.fontSize1}
+              weight={400}
+            >
+              PUBLISHED AT {frontmatter.publishedAt}
+            </Text> */}
           </PageTitle>
         }
       >

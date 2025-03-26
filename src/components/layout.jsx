@@ -2,7 +2,6 @@ import { keyframes } from "@emotion/react";
 import styled from "@emotion/styled";
 import React from "react";
 import { animated, useSpring } from "react-spring";
-import { rgb } from "../theme/color";
 
 import { TextLink } from "../components/link";
 import Text from "../components/text";
@@ -16,7 +15,7 @@ import { Row, Stack } from "./../components/taco";
 
 const Root = styled.div`
   min-height: 100vh;
-  background-color: ${rgb(colors.contrast)};
+  background-color: ${colors.contrast};
   display: flex;
   flex-direction: column;
 `;
@@ -28,10 +27,10 @@ const MenuItem = styled(NavigateButton)`
   text-transform: uppercase;
   display: inline-flex;
   letter-spacing: 1.5px;
-  color: ${rgb(colors.body)};
+  color: ${colors.body};
 
   &:hover {
-    color: ${rgb(colors.primary)};
+    color: ${colors.primary};
   }
 `;
 
@@ -62,7 +61,7 @@ const MobileMenuOverlay = styled.div`
   bottom: 0;
   left: 0;
   right: 0;
-  background-color: ${rgb(colors.overlay)};
+  background-color: ${colors.overlay};
   filter: blur(4px);
   opacity: 0.9;
   display: flex;
@@ -81,7 +80,7 @@ const MobileMenuPopup = styled(animated.div)`
   padding: 0;
   margin: 10%;
   margin-top: 20%;
-  background-color: ${rgb(colors.contrast)};
+  background-color: ${colors.contrast};
   border-radius: 12px;
   transition: ease 300ms;
   padding: 1rem 0;
@@ -97,7 +96,7 @@ const Icon = styled.span`
 const Bar = styled.span`
   width: 100%;
   height: 3px;
-  background-color: ${rgb(colors.primary)};
+  background-color: ${colors.primary};
   display: block;
 `;
 
@@ -131,11 +130,11 @@ const MobileMenuItem = styled(MenuItem)`
 `;
 
 const Logo = styled.div`
-  color: ${rgb(colors.body)};
+  color: ${colors.body};
   transition: color 0.15s ease;
 
   &:hover {
-    color: ${rgb(colors.primary)};
+    color: ${colors.primary};
   }
 `;
 
@@ -160,7 +159,6 @@ const Footer = styled.footer`
   align-items: center;
   justify-content: space-between;
   width: 100%;
-  opacity: 0.4;
 `;
 
 const Children = styled.div`
@@ -239,7 +237,7 @@ export default function Layout({ children }) {
       <Main>
         <Footer>
           <Row gap={1}>
-            <Text weight={400} color={colors.body} size={font.fontSizeN1}>
+            <Text weight={400} color={colors.subtle} size={font.fontSizeN1}>
               {`David Sancho`}
             </Text>
             <Text weight={800} color={colors.subtle} size={font.fontSize4}>
@@ -247,14 +245,14 @@ export default function Layout({ children }) {
             </Text>
             <Text weight={400} size={font.fontSizeN1}>
               <TextLink
-                color={colors.body}
+                color={colors.subtle}
                 href="https://github.com/davesnx/sancho.dev"
               >{` @davesnx`}</TextLink>
             </Text>
           </Row>
           <Text weight={400} size={font.fontSizeN1}>
             <TextLink
-              color={colors.body}
+              color={colors.subtle}
               href="https://github.com/davesnx/sancho.dev"
             >{`Source`}</TextLink>
           </Text>

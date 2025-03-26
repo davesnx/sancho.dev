@@ -2,14 +2,14 @@
 
 /**
  * @typedef {Object} CommonValues
- * @property {string} r - Red color value (#FF211B)
- * @property {string} g - Green color value (#17E620)
- * @property {string} b - Blue color value (#003AEC)
- * @property {string} bluesky - Bluesky brand color (RGB: 16,133,253)
- * @property {string} twitter - Twitter brand color (RGB: 164,173,187)
- * @property {string} github - GitHub brand color (RGB: 164,173,187)
- * @property {string} discord - Discord brand color (RGB: 114,137,218)
- * @property {string} strava - Strava brand color (RGB: 252,76,2)
+ * @property {string} r - Red color value
+ * @property {string} g - Green color value
+ * @property {string} b - Blue color value
+ * @property {string} bluesky - Bluesky brand color
+ * @property {string} twitter - Twitter brand color
+ * @property {string} github - GitHub brand color
+ * @property {string} discord - Discord brand color
+ * @property {string} strava - Strava brand color
  */
 
 /**
@@ -20,11 +20,21 @@ const commonValues = {
   r: "#FF211B",
   g: "#17E620",
   b: "#003AEC",
-  bluesky: "16,133,253",  // #1085FD
-  twitter: "164,173,187", // #181717
-  github: "164,173,187",  // #181717
-  discord: "114,137,218", // #7289DA
-  strava: "252,76,2",     // #FC4C02
+  bluesky: "#1085FD",
+  bluesky50: "#124D88",
+  bluesky30: "#132537",
+  twitter: "#e1e2e4",
+  twitter50: "#5C6168",
+  twitter30: "#2A2B2D",
+  github: "#e1e2e4",
+  github50: "#5C6168",
+  github30: "#2A2B2D",
+  discord: "#7289DA",
+  discord50: "#434F77",
+  discord30: "#222632",
+  strava: "#FC4C02",
+  strava50: "#88300B",
+  strava30: "#5A250F",
 };
 
 /**
@@ -43,13 +53,23 @@ const commonValues = {
  * @type {ThemeValues}
  */
 const lightValues = {
-  primary: "18,26,36",                    // #121A24
-  body: "35,48,68",                       // #233044
-  contrast: "250,250,250",                // #FAFAFA
-  overlay: "255,255,255",                 // #FFFFFF
-  codeBackground: "35,35,35",             // #1F1F1F
-  contrastCodeBackground: "238,238,238",  // #EEEEEE
-  subtle: "174,178,185",                  // #AEB2B9
+  grey: "#E5E5E5",
+  primary: "#121A24",
+  primary90: "#293039",
+  primary80: "#40474F",
+  body: "#233044",
+  body90: "#384456",
+  body80: "#4C586A",
+  body50: "#78818C",
+  body30: "#B9BDC3",
+  body10: "#CFD2D6",
+  contrast: "#FAFAFA",
+  overlay: "#FFFFFF",
+  codeBackground: "#1F1F1F",
+  contrastCodeBackground: "#EEEEEE",
+  contrastCodeBackground30: "#F6F6F6",
+  contrastCodeBackground80: "#F0F0F0",
+  subtle: "#AEB2B9",
 };
 
 /**
@@ -57,13 +77,23 @@ const lightValues = {
  * @type {ThemeValues}
  */
 const darkValues = {
-  primary: "250,250,250",             // #FAFAFA
-  body: "206,208,210",                // #CED0D2
-  contrast: "20,20,20",               // #141414
-  overlay: "17,17,17",                // #111111
-  codeBackground: "33,33,33",         // #212121
-  contrastCodeBackground: "38,38,38", // #262626
-  subtle: "84,88,93",                 // #54585D
+  grey: "#E5E5E5",
+  primary: "#FAFAFA",
+  primary90: "#E3E3E3",
+  primary80: "#CCCCCC",
+  body: "#CED0D2",
+  body90: "#BCBEBF",
+  body80: "#A9ABAD",
+  body50: "#848686",
+  body30: "#4C4D4D",
+  body10: "#272727",
+  contrast: "#141414",
+  overlay: "#111111",
+  codeBackground: "#171717",
+  contrastCodeBackground: "#262626",
+  contrastCodeBackground80: "#222222",
+  contrastCodeBackground30: "#191919",
+  subtle: "#54585D",
 };
 
 /** @type {CommonValues & ThemeValues} */

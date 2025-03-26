@@ -1,7 +1,7 @@
 const calc = (str) => `calc(${str})`;
 
 const increment = "1.25";
-const lineHeightFixed = "0.6rem";
+const lineHeightFixed = "0.85rem";
 const lineHeightRelative = "1rem";
 
 const fontSize_N1 = `0.8rem`;

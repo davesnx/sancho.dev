@@ -1,6 +1,5 @@
 import styled from "@emotion/styled";
 
-import { rgb } from "../theme/color";
 import { colors } from "../theme/theme";
 
 export const Character = styled.span`
@@ -12,7 +11,7 @@ export const Character = styled.span`
   display: flex;
   justify-content: center;
   align-items: center;
-  color: ${rgb(colors.body)};
+  color: ${colors.body};
   transition: all 200ms ease-out;
 
   & + & {

@@ -4,17 +4,17 @@ import { css } from "@emotion/react";
 import styled from "@emotion/styled";
 import NextLink from "next/link";
 
-import { rgb } from "../theme/color";
 import fonts from "../theme/fonts";
 import { colors } from "../theme/theme";
 
 type AnchorProps = {
   color: string;
   hoverColor: string;
+  decorationColor: string;
 };
 
 const Anchor = (props: AnchorProps) => css`
-  color: ${rgb(props.color)};
+  color: ${props.color};
   font-family: ${fonts.sans};
   font-weight: 500;
   font-size: inherit;
@@ -30,11 +30,11 @@ const Anchor = (props: AnchorProps) => css`
   text-underline-offset: 2px;
   text-decoration: underline;
 
-  text-decoration-color: rgba(${props.color}, 0.5);
+  text-decoration-color: ${props.decorationColor};
 
   &:hover {
-    color: ${rgb(props.hoverColor)};
-    text-decoration-color: rgba(${props.hoverColor}, 1);
+    color: ${props.hoverColor};
+    text-decoration-color: ${props.hoverColor};
   }
 `;
 
@@ -45,6 +45,7 @@ const StyledA = styled.a`
 export const TextLink = ({ href, ...rest }: AnchorProps & { href: string }) => {
   let color = rest.color || colors.primary;
   let hoverColor = rest.hoverColor || color;
+  let decorationColor = rest.decorationColor || color;
 
   return (
     <NextLink href={href} shallow legacyBehavior>
@@ -53,6 +54,7 @@ export const TextLink = ({ href, ...rest }: AnchorProps & { href: string }) => {
         href={href}
         color={color}
         hoverColor={hoverColor}
+        decorationColor={decorationColor}
       />
     </NextLink>
   );
@@ -64,7 +66,10 @@ const UnstyledA = styled.a`
   cursor: pointer;
 `;
 
-export const ButtonLink = ({ href, ...rest }: AnchorProps & { href: string }) => {
+export const ButtonLink = ({
+  href,
+  ...rest
+}: AnchorProps & { href: string }) => {
   return (
     <NextLink href={href} shallow legacyBehavior>
       <UnstyledA href={href} {...rest} />

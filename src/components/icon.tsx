@@ -1,7 +1,6 @@
 import styled from "@emotion/styled";
 import React from "react";
 
-import { rgb } from "../theme/color";
 import { colors } from "../theme/theme";
 
 type LogoProps = {
@@ -17,7 +16,7 @@ const Logo = styled.div`
   transition: all 100ms ease-in;
 
   &:hover {
-    background: ${(props: LogoProps) => props.padded && rgb(props.color)};
+    background: ${(props: LogoProps) => props.padded && props.color};
   }
 `;
 

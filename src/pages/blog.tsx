@@ -16,7 +16,6 @@ import Text from "../components/text";
 import constants from "../theme/constants";
 import font from "../theme/fonts";
 import { colors } from "../theme/theme";
-import { rgba } from "src/theme/color";
 
 export const getStaticProps: GetStaticProps = async () => {
   let frontmatters = getAllFrontmatter();
@@ -29,10 +28,9 @@ export const getStaticProps: GetStaticProps = async () => {
 };
 
 const PostTitle = styled(H3)`
-  color: ${rgba(colors.primary, 0.8)};
   transition: color 0.2s ease-out;
   &:hover {
-    color: ${rgba(colors.primary, 1)};
+    color: ${colors.primary};
   }
 `;
 
@@ -41,7 +39,7 @@ const PostLink = styled(NavigateButton)`
 
   &:hover {
     ${PostTitle} {
-      color: ${rgba(colors.primary, 1)};
+      color: ${colors.primary};
     }
   }
 `;
@@ -93,7 +91,7 @@ let Blog = ({ frontmatters }: { frontmatters: Array<Frontmatter> }) => {
                   {frontmatter.description ? (
                     <PostDescription>
                       <Text
-                        color={colors.subtle}
+                        color={colors.body80}
                         size={font.fontSize1}
                         weight={300}
                       >

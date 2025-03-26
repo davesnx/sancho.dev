@@ -7,12 +7,11 @@ import { colors } from "../theme/theme";
 import Github from "./../components/svgs/github";
 import Web from "./../components/svgs/web";
 import YouTube from "./../components/svgs/youtube";
-import { H3, H4 } from "./heading";
+import { H4 } from "./heading";
 import Icon from "./icon";
 import { ButtonLink } from "./link";
 import { Row, Stack } from "./taco";
 import Text from "./text";
-import { rgba, rgb } from "src/theme/color";
 
 const GithubIcon = ({
   href,
@@ -28,7 +27,7 @@ const GithubIcon = ({
     size={size}
     href={href}
     svg={Github}
-    bg="rgba(24, 23, 23, 0.1)"
+    bg={colors.grey}
     color={color}
   />
 );
@@ -47,7 +46,7 @@ const WebIcon = ({
     size={size}
     href={href}
     svg={Web}
-    bg="rgba(24, 23, 23, 0.1)"
+    bg={colors.grey}
     color={color}
   />
 );
@@ -66,7 +65,7 @@ const YouTubeIcon = ({
     size={size}
     href={href}
     svg={YouTube}
-    bg="rgba(24, 23, 23, 0.1)"
+    bg={colors.grey}
     color={color}
   />
 );
@@ -105,11 +104,11 @@ let Box = styled.div`
 
   padding: 3rem;
   border-radius: 0.5rem;
-  border: 2px solid ${rgba(colors.contrastCodeBackground, 1)};
-  background-color: ${rgba(colors.contrastCodeBackground, 0.3)};
+  border: 2px solid ${colors.contrastCodeBackground};
+  background-color: ${colors.contrastCodeBackground30};
 
   &:hover {
-    background-color: ${rgba(colors.contrastCodeBackground, 0.8)};
+    background-color: ${colors.contrastCodeBackground80};
   }
 `;
 
@@ -136,7 +135,7 @@ export const Item = ({
             <Text color={colors.subtle} size={font.fontSize1} weight={400}>
               {meta}
             </Text>
-            <Icon href={link} color={rgb(colors.subtle)} size={16} />
+            <Icon href={link} color={colors.subtle} size={16} />
           </Row>
           <Stack align="left" gap={2}>
             <H4>{title}</H4>

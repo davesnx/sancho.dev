@@ -2,7 +2,6 @@ import { css } from "@emotion/react";
 import styled from "@emotion/styled";
 import React from "react";
 
-import { rgb } from "../theme/color";
 import font from "../theme/fonts";
 import { colors } from "../theme/theme";
 
@@ -11,9 +10,9 @@ export const styles = (props) => css`
   font-size: ${props.size ? props.size : font.fontSize1};
   font-family: ${font.sans};
   line-height: 1.85rem;
-  color: ${rgb(props.color || colors.body)};
+  color: ${props.color || colors.body};
   display: inline-block;
-  letter-spacing: 0.3px;
+  letter-spacing: 0.02em;
 `;
 
 const P = styled.p`

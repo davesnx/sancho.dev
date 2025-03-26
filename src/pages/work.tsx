@@ -8,7 +8,6 @@ import MetaData from "../components/site-metadata";
 import Spacer from "../components/spacer";
 import { Row, Stack } from "../components/taco";
 import Text from "../components/text";
-import { rgba } from "../theme/color";
 import constants from "../theme/constants";
 import font from "../theme/fonts";
 import { colors } from "../theme/theme";
@@ -22,7 +21,7 @@ let Gallery = styled.div`
 let CompanyLogo = styled.div`
   min-width: 150px;
   max-width: 150px;
-  padding: 1.8rem;
+  padding: 2rem 3rem 2rem 0px;
   border-radius: 6px;
   display: flex;
   align-items: center;
@@ -31,22 +30,15 @@ let CompanyLogo = styled.div`
 
 let JobRoot = styled.section`
   width: 100%;
-  padding: 1.4rem;
-  border-radius: 8px;
-  border: 2px solid ${rgba(colors.contrastCodeBackground, 1)};
-  background-color: ${rgba(colors.contrastCodeBackground, 0.3)};
 
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
 
-  flex-direction: column;
   @media screen and (min-width: ${constants.mobile.width}px) {
     flex-direction: row;
   }
-
-  gap: 1rem;
 `;
 
 let Job = ({
@@ -116,11 +108,11 @@ let OpenSourceItem = styled.a`
 
   padding: 1rem;
   border-radius: 0.5rem;
-  border: 2px solid ${rgba(colors.contrastCodeBackground, 1)};
-  background-color: ${rgba(colors.contrastCodeBackground, 0.3)};
+  border: 2px solid ${colors.contrastCodeBackground};
+  background-color: ${colors.contrastCodeBackground30};
 
   &:hover {
-    background-color: ${rgba(colors.contrastCodeBackground, 0.8)};
+    background-color: ${colors.contrastCodeBackground80};
   }
 `;
 

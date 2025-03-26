@@ -2,6 +2,14 @@
 
 @font-face {
   font-family: "Silka";
+  src: url("/fonts/silka-thin-webfont.woff2") format("woff2");
+  font-weight: 100;
+  font-style: normal;
+  font-display: block;
+}
+
+@font-face {
+  font-family: "Silka";
   src: url("/fonts/silka-regular-webfont.woff2") format("woff2");
   font-weight: 200;
   font-style: normal;
@@ -10,8 +18,24 @@
 
 @font-face {
   font-family: "Silka";
+  src: url("/fonts/silka-medium-webfont.woff2") format("woff2");
+  font-weight: 300;
+  font-style: normal;
+  font-display: block;
+}
+
+@font-face {
+  font-family: "Silka";
   src: url("/fonts/silka-semibold-webfont.woff2") format("woff2");
   font-weight: 500;
+  font-style: normal;
+  font-display: block;
+}
+
+@font-face {
+  font-family: "Silka";
+  src: url("/fonts/silka-bold-webfont.woff2") format("woff2");
+  font-weight: 700;
   font-style: normal;
   font-display: block;
 }
