@@ -212,17 +212,19 @@ const Li = styled(ListItem)`
 
 const PageTitle = styled.div`
   display: flex;
-  margin-top: 0px;
   justify-content: center;
   align-items: center;
   flex-direction: column;
   gap: 0.65rem;
 
-  margin-left: -1.5rem;
-  width: 100%;
+  margin-left: -6rem;
+  margin-right: -6rem;
+  max-width: 150%;
 
   @media screen and (max-width: calc(${breakpoints.desktop.width}px + 32px)) {
-    margin-top: 0px;
+    max-width: 100%;
+    margin-left: 0;
+    margin-right: 0;
   }
 `;
 
@@ -230,7 +232,7 @@ const BlogPostTitle = styled(H1)`
   font-size: 3rem;
   text-align: center;
   width: 100%;
-  line-height: 1.2;
+  line-height: 1.4;
   color: ${colors.primary};
 
   @media screen and (max-width: ${breakpoints.mobile.width}px) {
@@ -305,7 +307,7 @@ export default function Post({
                 size={font.fontSizeN1}
                 weight={400}
               >
-                PUBLISHED AT{" "}
+                PUBLISHED{" "}
               </Text>
               <Text
                 kerning="0.05rem"
@@ -318,6 +320,37 @@ export default function Post({
                   "MMM yyyy"
                 ).toUpperCase()}
               </Text>
+              <Text
+                kerning="0rem"
+                color={colors.body30}
+                size={font.fontSizeN1}
+                weight={800}
+              >
+                {" · "}
+              </Text>
+              <Text
+                kerning="0.05rem"
+                color={colors.body30}
+                size={font.fontSizeN1}
+                weight={400}
+              >
+                BY{" "}
+              </Text>
+              <TextLink
+                decorationColor="transparent"
+                hoverColor="transparent"
+                href="https://x.com/davesnx"
+                target="_blank"
+              >
+                <Text
+                  kerning="0.05rem"
+                  color={colors.body50}
+                  size={font.fontSizeN1}
+                  weight={400}
+                >
+                  {"davesnx".toUpperCase()}
+                </Text>
+              </TextLink>
             </Row>
           </PageTitle>
         }
