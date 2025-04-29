@@ -30,6 +30,8 @@ let CompanyLogo = styled.div`
 
   @media screen and (max-width: ${constants.mobile.width}px) {
     padding: 2rem;
+    width: auto;
+    max-width: 100%;
   }
 `;
 
