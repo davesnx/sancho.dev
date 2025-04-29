@@ -19,13 +19,18 @@ let Gallery = styled.div`
 `;
 
 let CompanyLogo = styled.div`
-  min-width: 150px;
   max-width: 150px;
-  padding: 2rem 3rem 2rem 0px;
+  width: 100%;
+  height: auto;
   border-radius: 6px;
   display: flex;
   align-items: center;
   justify-content: center;
+  padding: 2rem 3rem 2rem 0px;
+
+  @media screen and (max-width: ${constants.mobile.width}px) {
+    padding: 2rem;
+  }
 `;
 
 let JobRoot = styled.section`
