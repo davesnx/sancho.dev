@@ -15,19 +15,11 @@ class MyDocument extends Document {
       <Html lang={"en"} /* className={dmsans.className} */>
         <Head>
           <link
-            key="sfmono-bold"
-            href={"/fonts/SFMono-Bold.otf"}
+            key="jetbrains-mono"
+            href={"/fonts/JetBrainsMono.ttf"}
             rel="preload"
             as="font"
-            type="font/otf"
-            crossOrigin="anonymous"
-          />
-          <link
-            key="sfmono-medium"
-            href={"/fonts/SFMono-Medium.otf"}
-            rel="preload"
-            as="font"
-            type="font/otf"
+            type="font/ttf"
             crossOrigin="anonymous"
           />
           <link

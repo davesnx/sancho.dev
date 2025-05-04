@@ -29,9 +29,8 @@ const fonts = {
   fontSize6: calc(fontSize_6),
   globalFontSize,
   globalLineHeight,
-  mono: `SF Mono, Fira Code, monospace`,
+  mono: "Jet Brains Mono, Fira Code, monospace",
   sans: "DM Sans",
-  /* sans: "Silka", */
 };
 
 export default fonts;

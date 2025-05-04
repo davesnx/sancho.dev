@@ -1,4 +1,4 @@
-/* Content */
+/* Body */
 
 @font-face {
   font-family: "DM Sans";
@@ -14,20 +14,11 @@
   font-display: block;
 }
 
-/* Coding */
+/* Code */
 
 @font-face {
-  font-family: "SF Mono";
-  src: url("/fonts/SFMono-Medium.otf") format("otf");
-  font-weight: 500;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: "SF Mono";
-  src: url("/fonts/SFMono-Bold.otf") format("otf");
-  font-weight: 700;
+  font-family: "Jet Brains Mono";
+  src: url("/fonts/JetBrainsMono.ttf");
   font-style: normal;
   font-display: swap;
 }
