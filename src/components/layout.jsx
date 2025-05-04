@@ -1,6 +1,7 @@
 import { keyframes } from "@emotion/react";
 import styled from "@emotion/styled";
 import React from "react";
+import { createPortal } from "react-dom";
 import { animated, useSpring } from "react-spring";
 
 import { TextLink } from "../components/link";
@@ -21,6 +22,7 @@ const Root = styled.div`
 `;
 
 const MenuItem = styled(NavigateButton)`
+  user-select: none;
   font-size: ${font.fontSize0};
   font-family: ${font.sans};
   font-weight: 800;
@@ -54,6 +56,63 @@ let fadeIn = keyframes`{
   from { opacity: 0; }
   to { opacity: 1; }
 }`;
+
+const Svg = styled.svg`
+  cursor: pointer;
+  position: absolute;
+  top: 0;
+  border-radius: 50%;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+  fill: ${colors.body90};
+  transition: transform 200ms ease-in-out;
+  margin-right: 12px;
+
+  &:hover {
+    fill: ${colors.primary80};
+    transform: scale(1.1);
+  }
+`;
+
+const ToggleThemeTogglerButton = styled.button`
+  color: transparent;
+  background: transparent;
+  border: none;
+  padding: 0;
+
+  width: 10px;
+  height: 10px;
+
+  position: relative;
+`;
+
+const ToggleThemeToggler = ({ onClick }) => {
+  const [active, setActive] = React.useState(false);
+
+  const d = active ? "M-28" : "M0";
+
+  return (
+    <ToggleThemeTogglerButton>
+      <Svg
+        xmlns="http://www.w3.org/2000/svg"
+        aria-hidden="true"
+        fill="currentColor"
+        viewBox="0 0 32 32"
+        onClick={() => {
+          setActive(!active);
+          onClick();
+        }}
+      >
+        <g clipPath="url(#theme-toggle__eclipse__cutout)">
+          <circle cx="16" cy="16" r="16" />
+        </g>
+      </Svg>
+    </ToggleThemeTogglerButton>
+  );
+};
 
 const MobileMenuOverlay = styled.div`
   position: fixed;
@@ -167,6 +226,10 @@ const Children = styled.div`
 
 export default function Layout({ children }) {
   const [isOpen, setIsOpen] = React.useState(false);
+  const toggleTheme = () => {
+    const html = document.documentElement;
+    html.dataset.theme = html.dataset.theme === "dark" ? "light" : "dark";
+  };
   let open = () => setIsOpen(true);
   let close = () => setIsOpen(false);
 
@@ -186,6 +249,7 @@ export default function Layout({ children }) {
             </NavigateButton>
             <DesktopMenu key="desktop">
               <Row gap={4}>
+                <ToggleThemeToggler onClick={toggleTheme} />
                 <MenuItem href="/blog">blog</MenuItem>
                 <MenuItem href="/work">work</MenuItem>
                 <MenuItem href="/talks">talks</MenuItem>

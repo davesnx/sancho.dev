@@ -54,6 +54,15 @@ const Home = () => {
         <Row gap={2} distribute="left">
           <TextLink
             underlined
+            href="https://github.com/davesnx"
+            color={colors.body50}
+            hoverColor={colors.body}
+            decorationColor={colors.body30}
+          >
+            {"Github"}
+          </TextLink>
+          <TextLink
+            underlined
             href={"https://bsky.app/profile/david.sancho.dev"}
             color={colors.bluesky50}
             hoverColor={colors.bluesky}
@@ -63,19 +72,10 @@ const Home = () => {
           </TextLink>
           <TextLink
             underlined
-            href="https://github.com/davesnx"
-            color={colors.github50}
-            hoverColor={colors.github}
-            decorationColor={colors.github30}
-          >
-            {"Github"}
-          </TextLink>
-          <TextLink
-            underlined
             href={"https://x.com/davesnx"}
-            color={colors.twitter50}
-            hoverColor={colors.twitter}
-            decorationColor={colors.twitter30}
+            color={colors.body50}
+            hoverColor={colors.body}
+            decorationColor={colors.body30}
           >
             {"X"}
           </TextLink>

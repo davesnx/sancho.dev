@@ -23,12 +23,6 @@ const commonValues = {
   bluesky: "#1085FD",
   bluesky50: "#124D88",
   bluesky30: "#132537",
-  twitter: "#e1e2e4",
-  twitter50: "#5C6168",
-  twitter30: "#2A2B2D",
-  github: "#e1e2e4",
-  github50: "#5C6168",
-  github30: "#2A2B2D",
   discord: "#7289DA",
   discord50: "#434F77",
   discord30: "#222632",
@@ -55,6 +49,7 @@ const commonValues = {
 const lightValues = {
   grey: "#E5E5E5",
   primary: "#121A24",
+  inverted: "#1a1a1a",
   primary90: "#293039",
   primary80: "#40474F",
   body: "#233044",
@@ -94,6 +89,7 @@ const darkValues = {
   contrastCodeBackground80: "#222222",
   contrastCodeBackground30: "#191919",
   subtle: "#54585D",
+  inverted: "#1a1a1a",
 };
 
 /** @type {CommonValues & ThemeValues} */

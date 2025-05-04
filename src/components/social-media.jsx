@@ -1,4 +1,4 @@
-import React from "react";
+/* import React from "react";
 
 import Github from "./../svgs/github";
 import Strava from "./../svgs/strava";
@@ -38,3 +38,4 @@ const SocialMedia = () => (
 );
 
 export default SocialMedia;
+ */

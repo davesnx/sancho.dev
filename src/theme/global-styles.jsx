@@ -12,7 +12,15 @@ const GlobalStyles = css`
     ${make("dark")};
   }
 
+  html[data-theme="dark"] {
+    ${make("dark")};
+  }
+
   @media (prefers-color-scheme: light) {
+    ${make("light")};
+  }
+
+  html[data-theme="light"] {
     ${make("light")};
   }
 

@@ -26,7 +26,9 @@ let CompanyLogo = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 2rem 3rem 2rem 0px;
+  margin-right: 2rem;
+  padding: 2rem;
+  background-color: ${colors.inverted};
 
   @media screen and (max-width: ${constants.mobile.width}px) {
     padding: 4rem;
