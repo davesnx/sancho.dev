@@ -23,7 +23,7 @@ Those test files contain both the execution of the CLI invocations followed by t
 
 Let’s check the syntax with an example:
 
-```ocaml
+```cram
 Here there is just a coment about this test, since there is no space at the start
 it's treated as a comment.
 
@@ -62,7 +62,7 @@ Let’s start with the simplest possible test.
 
 1. Crete a file called `simple.t` with:
 
-```jsx
+```cram
   $ echo 'lola'
 ```
 
@@ -116,7 +116,7 @@ Writing effective cram tests requires more than just copying command output, let
 
 Your tests should be *hermetic* - meaning they're self-contained and don't depend on external state. Each test should clean up after itself and running it multiple times should produce the same result. For example:
 
-```bash
+```cram
   $ mkdir -p tmp
   $ cd tmp
   $ echo "hello" > test.txt
@@ -130,11 +130,11 @@ Your tests should be *hermetic* - meaning they're self-contained and don't depen
 
 One common pitfall is hardcoding absolute paths in your tests. This makes tests brittle and non-portable. Dune provides several environment variables to help write path-independent tests:
 
-```bash
-  # DON'T do this
+```cram
+DON'T do this
   $ cat /home/user/project/test.txt
 
-  # DO this instead
+DO this instead
   $ cat $DUNE_ROOT/test.txt
 ```
 
@@ -147,17 +147,17 @@ Some useful environment variables include:
 
 Here's a more complete example showing these variables in action:
 
-```bash
+```cram
   $ echo $DUNE_ROOT | grep -o '[^/]*$'
   my-project
 
-  # Create a file relative to project root
+Create a file relative to project root
   $ cat > $DUNE_ROOT/input.ml <<EOF
   > let greeting = "Hello, World!"
   > let () = print_endline greeting
   > EOF
 
-  # Test the compiled output
+Test the compiled output
   $ dune exec ./bin/main.exe
   Hello, World!
 ```

@@ -73,6 +73,11 @@ const codeHighlightOptions = {
           scopeName: "source.dune",
           path: path.resolve("./src/lib/code-highlight/syntaxes/dune.json"),
         },
+        {
+          id: "cram",
+          scopeName: "source.cram",
+          path: path.resolve("./src/lib/code-highlight/syntaxes/cram.json"),
+        },
       ],
     }),
   /* // Or your own JSON theme

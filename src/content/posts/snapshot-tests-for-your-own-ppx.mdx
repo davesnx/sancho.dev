@@ -43,7 +43,7 @@ dune scans your project looking for dune files. When it finds one, it generates 
 
 For example, when you specify a ppx rewriter:
 
-```scheme
+```dune
 ; a library that uses a ppx rewriter
 (library
   (name my_program)
@@ -52,7 +52,7 @@ For example, when you specify a ppx rewriter:
 
 dune looks for a library marked as a ppx rewriter:
 
-```scheme
+```dune
 (library
   (name my_ppx)
   (public_name my-ppx)
@@ -65,14 +65,14 @@ From this, it creates a "driver" - a single executable that can contain multiple
 
 When dune finds an executable and run the build it will generate an executable in the `_build/default/src/` folder, called `my_program.exe`.
 
-```scheme
+```dune
 (executable
   (name my_program))
 ```
 
 If you add a public name:
 
-```scheme
+```dune
 (executable
   (name my_program)
   (public_name my-program))
@@ -86,7 +86,7 @@ Here's are the steps to achieve this:
 
 I would keep the executable inside the tests folder, but you can put it anywhere you want.
 
-```clojure
+```dune
 (executable
   ; name of your executable _build/default/.../standalone.exe
   (name standalone)
@@ -110,7 +110,7 @@ There are a few other ways to make the executable available, explained in my pre
 
 ### 3. Let cram depend on your executable
 
-```clojure
+```dune
 (cram
  ; Tells dune to depend on the standalone exe,
  ; so it will be part of the cram target
@@ -121,7 +121,7 @@ There are a few other ways to make the executable available, explained in my pre
 
 Let's create a simple test file called `first_step.t` and run it with `dune runtest` to ensure it's working.
 
-```python
+```cram
   $ ls
   first_step.t
   standalone.exe
@@ -135,7 +135,7 @@ Say we have a ppx that does the minimum possible transformation (a foobar-kind e
 
 Here's what a cram test for it might look like:
 
-```python
+```cram
 Creates an file with some OCaml code using bash heredoc
 https://linuxize.com/post/bash-heredoc
   $ cat > input.ml <<EOF
@@ -153,7 +153,7 @@ A real-example of a ppx, is browser_ppx which handles browser-specific code by s
 
 Here's what a cram test for this might look like
 
-```python
+```cram
   $ cat > input.ml << EOF
   > let%browser_only pstr_value_binding = Webapi.Dom.getElementById "foo"
   > EOF
@@ -197,7 +197,7 @@ In a real world scenario like [reason-react-ppx](https://github.com/reason/reaso
 
 For those tests we use `ocamlmerlin` to inspect the AST and ensure the location is correct. Here's a piece of the test:
 
-```python
+```cram
 
 Test some locations in reason-react components
 
