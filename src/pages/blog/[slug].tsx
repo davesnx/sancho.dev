@@ -68,11 +68,11 @@ const Line = {
   horitzontal: css`
     background-color: ${colors.body10};
     width: 100%;
-    height: 1px;
+    height: 2px;
   `,
   vertical: css`
     background-color: ${colors.body10};
-    width: 1px;
+    width: 2px;
     height: 100%;
   `,
 };

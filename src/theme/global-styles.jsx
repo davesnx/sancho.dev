@@ -73,6 +73,10 @@ const GlobalStyles = css`
     background: ${colors.contrastCodeBackground30};
   }
 
+  p > code:first-of-type {
+    margin-left: 0;
+  }
+
   html[data-theme="dark"] pre[data-theme="light"],
   html[data-theme="dark"] code[data-theme="light"] {
     display: none;
