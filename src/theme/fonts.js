@@ -4,8 +4,9 @@ const increment = "1.25";
 const lineHeightFixed = "0.85rem";
 const lineHeightRelative = "1rem";
 
-const fontSize_N1 = `0.8rem`;
-const fontSize_0 = `0.7rem + 0.13vw`;
+const fontSize_N2 = `0.8rem`;
+const fontSize_N1 = `1rem`;
+const fontSize_0 = `0.8rem + 0.13vw`;
 const fontSize_1 = `(${fontSize_0}) * ${increment}`;
 const fontSize_2 = `(${fontSize_1}) * ${increment}`;
 const fontSize_3 = `(${fontSize_2}) * ${increment}`;
@@ -17,6 +18,7 @@ const globalFontSize = calc(fontSize_1);
 const globalLineHeight = `calc(${lineHeightFixed} + ${lineHeightRelative})`;
 
 const fonts = {
+  fontSizeN2: fontSize_N2,
   fontSizeN1: fontSize_N1,
   fontSize0: calc(fontSize_0),
   fontSize1: calc(fontSize_1),
@@ -28,7 +30,8 @@ const fonts = {
   globalFontSize,
   globalLineHeight,
   mono: `SF Mono, Fira Code, monospace`,
-  sans: "Silka",
+  sans: "DM Sans",
+  /* sans: "Silka", */
 };
 
 export default fonts;

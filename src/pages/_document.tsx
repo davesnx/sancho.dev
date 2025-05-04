@@ -1,50 +1,19 @@
 import Document, { Html, Head, Main, NextScript } from "next/document";
 
+/*
+TODO: When next@13 is installed, use next/font like:
+
+import { DM_Sans } from "@next/font/google";
+
+const dmsans = DM_Sans({
+  subsets: ["latin"],
+}); */
+
 class MyDocument extends Document {
   render() {
     return (
-      <Html lang={"en"}>
+      <Html lang={"en"} /* className={dmsans.className} */>
         <Head>
-          <link
-            key="silka-thin"
-            href={"/fonts/silka-thin-webfont.woff2"}
-            rel="preload"
-            as="font"
-            type="font/woff2"
-            crossOrigin="anonymous"
-          />
-          <link
-            key="silka-medium"
-            href={"/fonts/silka-medium-webfont.woff2"}
-            rel="preload"
-            as="font"
-            type="font/woff2"
-            crossOrigin="anonymous"
-          />
-          <link
-            key="silka-regular"
-            href={"/fonts/silka-regular-webfont.woff2"}
-            rel="preload"
-            as="font"
-            type="font/woff2"
-            crossOrigin="anonymous"
-          />
-          <link
-            key="silka-semibold"
-            href={"/fonts/silka-semibold-webfont.woff2"}
-            rel="preload"
-            as="font"
-            type="font/woff2"
-            crossOrigin="anonymous"
-          />
-          <link
-            key="silka-bold"
-            href={"/fonts/silka-bold-webfont.woff2"}
-            rel="preload"
-            as="font"
-            type="font/woff2"
-            crossOrigin="anonymous"
-          />
           <link
             key="sfmono-bold"
             href={"/fonts/SFMono-Bold.otf"}
@@ -62,11 +31,27 @@ class MyDocument extends Document {
             crossOrigin="anonymous"
           />
           <link
+            key="dmsans-regular"
+            href={"/fonts/DMSans.ttf"}
+            rel="preload"
+            as="font"
+            type="font/ttf"
+            crossOrigin="anonymous"
+          />
+          <link
+            key="dmsans-italic"
+            href={"/fonts/DMSans-Italic.ttf"}
+            rel="preload"
+            as="font"
+            type="font/ttf"
+            crossOrigin="anonymous"
+          />
+          <link
             rel="alternate"
             type="application/rss+xml"
             title="davesnx's personal blog"
             href="https://sancho.dev/rss.xml"
-          ></link>
+          />
         </Head>
         <body>
           <Main />

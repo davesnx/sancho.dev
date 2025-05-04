@@ -23,11 +23,11 @@ const Root = styled.div`
 const MenuItem = styled(NavigateButton)`
   font-size: ${font.fontSize0};
   font-family: ${font.sans};
-  font-weight: 500;
+  font-weight: 800;
   text-transform: uppercase;
   display: inline-flex;
-  letter-spacing: 1.5px;
-  color: ${colors.body};
+  letter-spacing: 2px;
+  color: ${colors.body90};
 
   &:hover {
     color: ${colors.primary};

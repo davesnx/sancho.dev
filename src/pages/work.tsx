@@ -29,7 +29,8 @@ let CompanyLogo = styled.div`
   padding: 2rem 3rem 2rem 0px;
 
   @media screen and (max-width: ${constants.mobile.width}px) {
-    padding: 2rem;
+    padding: 4rem;
+    aspect-ratio: 21 / 9;
     width: auto;
     max-width: 100%;
   }

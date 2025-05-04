@@ -85,6 +85,7 @@ const GlobalStyles = css`
 
   p {
     margin: 0;
+    font-family: DM Sans;
   }
 `;
 

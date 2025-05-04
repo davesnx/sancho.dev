@@ -1,41 +1,15 @@
 /* Content */
 
 @font-face {
-  font-family: "Silka";
-  src: url("/fonts/silka-thin-webfont.woff2") format("woff2");
-  font-weight: 100;
-  font-style: normal;
+  font-family: "DM Sans";
+  src: url("/fonts/DMSans-Italic.ttf");
+  font-style: italic;
   font-display: block;
 }
 
 @font-face {
-  font-family: "Silka";
-  src: url("/fonts/silka-regular-webfont.woff2") format("woff2");
-  font-weight: 200;
-  font-style: normal;
-  font-display: block;
-}
-
-@font-face {
-  font-family: "Silka";
-  src: url("/fonts/silka-medium-webfont.woff2") format("woff2");
-  font-weight: 300;
-  font-style: normal;
-  font-display: block;
-}
-
-@font-face {
-  font-family: "Silka";
-  src: url("/fonts/silka-semibold-webfont.woff2") format("woff2");
-  font-weight: 500;
-  font-style: normal;
-  font-display: block;
-}
-
-@font-face {
-  font-family: "Silka";
-  src: url("/fonts/silka-bold-webfont.woff2") format("woff2");
-  font-weight: 700;
+  font-family: "DM Sans";
+  src: url("/fonts/DMSans.ttf");
   font-style: normal;
   font-display: block;
 }
@@ -58,11 +32,12 @@
   font-display: swap;
 }
 
-/* Experiment */
+/* for _experiments page */
 
-@font-face {
+/* @font-face {
   font-family: "Inter";
   src: url("/fonts/Inter.otf");
   font-style: normal;
   font-display: swap;
 }
+*/

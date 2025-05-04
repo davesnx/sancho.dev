@@ -8,7 +8,6 @@ import { GetStaticPaths, GetStaticProps, InferGetStaticPropsType } from "next";
 
 import { Frontmatter } from "../../lib/frontmatter";
 import { getAllFrontmatter, getMdxBySlug } from "../../lib/mdx";
-
 import { Row } from "../../components/taco";
 import { H1, H2, H3, H4, H5, H6 } from "../../components/heading";
 import { TextLink } from "../../components/link";
@@ -56,7 +55,7 @@ const Content = styled.p`
   line-height: 1.85rem;
   color: ${colors.body90};
   font-size: ${font.fontSize1};
-  font-weight: 200;
+  font-weight: 400;
   margin-bottom: 1.2rem;
   display: block;
 
@@ -262,6 +261,25 @@ let Strong = (props: any) => {
   return <Text as="strong" weight={400} color={colors.primary} {...props} />;
 };
 
+let PostMetadataText = ({
+  bright = false,
+  children,
+}: {
+  bright: boolean;
+  children: React.ReactNode;
+}) => {
+  return (
+    <Text
+      kerning="0.05rem"
+      color={bright ? colors.body50 : colors.body30}
+      size={font.fontSizeN2}
+      weight={600}
+    >
+      {children}
+    </Text>
+  );
+};
+
 export const getStaticProps: GetStaticProps = async ({ params }) => {
   if (params?.slug && !Array.isArray(params?.slug)) {
     let { frontmatter, code } = await getMdxBySlug(params.slug);
@@ -298,61 +316,37 @@ export default function Post({
       />
       <Page
         title={
-          <PageTitle>
-            <BlogPostTitle>{frontmatter.title}</BlogPostTitle>
-            <Row gap={0.8}>
-              <Text
-                kerning="0.05rem"
-                color={colors.body30}
-                size={font.fontSizeN1}
-                weight={400}
-              >
-                PUBLISHED{" "}
-              </Text>
-              <Text
-                kerning="0.05rem"
-                color={colors.body50}
-                size={font.fontSizeN1}
-                weight={400}
-              >
-                {format(
-                  parseISO(frontmatter.publishedAt),
-                  "MMM yyyy"
-                ).toUpperCase()}
-              </Text>
-              <Text
-                kerning="0rem"
-                color={colors.body30}
-                size={font.fontSizeN1}
-                weight={800}
-              >
-                {" · "}
-              </Text>
-              <Text
-                kerning="0.05rem"
-                color={colors.body30}
-                size={font.fontSizeN1}
-                weight={400}
-              >
-                BY{" "}
-              </Text>
-              <TextLink
-                decorationColor="transparent"
-                hoverColor="transparent"
-                href="https://x.com/davesnx"
-                target="_blank"
-              >
-                <Text
-                  kerning="0.05rem"
-                  color={colors.body50}
-                  size={font.fontSizeN1}
-                  weight={400}
+          <>
+            <PageTitle>
+              <BlogPostTitle>{frontmatter.title}</BlogPostTitle>
+            </PageTitle>
+            <Spacer bottom={2} />
+            <Row gap={2}>
+              <Row gap={0.8}>
+                <PostMetadataText>PUBLISHED </PostMetadataText>
+                <PostMetadataText bright={true}>
+                  {format(
+                    parseISO(frontmatter.publishedAt),
+                    "MMM yyyy"
+                  ).toUpperCase()}
+                </PostMetadataText>
+              </Row>
+              <PostMetadataText>{" · "}</PostMetadataText>
+              <Row gap={0.8}>
+                <PostMetadataText>BY </PostMetadataText>
+                <TextLink
+                  decorationColor="transparent"
+                  hoverColor="transparent"
+                  href="https://x.com/davesnx"
+                  target="_blank"
                 >
-                  {"davesnx".toUpperCase()}
-                </Text>
-              </TextLink>
+                  <PostMetadataText bright={true}>
+                    {"davesnx".toUpperCase()}
+                  </PostMetadataText>
+                </TextLink>
+              </Row>
             </Row>
-          </PageTitle>
+          </>
         }
       >
         <Component
