@@ -19,9 +19,10 @@ let Gallery = styled.div`
 `;
 
 let CompanyLogo = styled.div`
-  max-width: 150px;
   width: 100%;
+  max-width: 150px;
   height: auto;
+
   border-radius: 6px;
   display: flex;
   align-items: center;
@@ -32,9 +33,9 @@ let CompanyLogo = styled.div`
 
   @media screen and (max-width: ${constants.mobile.width}px) {
     padding: 4rem;
-    aspect-ratio: 21 / 9;
-    width: auto;
     max-width: 100%;
+    margin-right: 0;
+    margin-bottom: 0.5rem;
   }
 `;
 
@@ -77,15 +78,15 @@ let Job = ({
             {role}
           </Text>
           {company.url && (
-            <Text weight={400} size={font.fontSize0}>
-              <TextLink color={colors.subtle} href={company.url}>
+            <Text weight={500} size={font.fontSize0}>
+              <TextLink color={colors.primary90} href={company.url}>
                 {company.url}
               </TextLink>
             </Text>
           )}
 
           {!company.url && (
-            <Text weight={400} color={colors.subtle} size={font.fontSize1}>
+            <Text weight={500} color={colors.primary90} size={font.fontSize1}>
               {company.name}
             </Text>
           )}

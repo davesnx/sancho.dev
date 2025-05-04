@@ -6,6 +6,7 @@ import { animated, useSpring } from "react-spring";
 
 import { TextLink } from "../components/link";
 import Text from "../components/text";
+import Spacer from "../components/spacer";
 import constants from "../theme/constants";
 import font from "../theme/fonts";
 import { colors } from "../theme/theme";
@@ -281,6 +282,11 @@ export default function Layout({ children }) {
                       </MobileMenuItem>
                       <MobileMenuItem onClick={close} href="/about">
                         about
+                      </MobileMenuItem>
+                      <MobileMenuItem onClick={toggleTheme} href="#">
+                          toggle theme
+                          <Spacer left={2} />
+                          <ToggleThemeToggler onClick={toggleTheme} />
                       </MobileMenuItem>
                     </Stack>
                   </MobileMenuPopup>
