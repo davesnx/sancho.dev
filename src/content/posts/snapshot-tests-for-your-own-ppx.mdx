@@ -44,13 +44,13 @@ dune scans your project looking for dune files. When it finds one, it generates 
 For example, when you specify a ppx rewriter:
 
 ```dune
-; a library that uses a ppx rewriter
+; a library that uses a ppx
 (library
-  (name my_program)
+  (name my_cool_library)
   (preprocess (pps my-ppx)))
 ```
 
-dune looks for a library marked as a ppx rewriter:
+dune looks for a library marked as a ppx rewriter (the `public_name` is what matters)
 
 ```dune
 (library
