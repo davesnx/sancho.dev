@@ -2,6 +2,7 @@ import { keyframes } from "@emotion/react";
 import styled from "@emotion/styled";
 import React from "react";
 import { createPortal } from "react-dom";
+import { useTheme } from "next-themes";
 import { animated, useSpring } from "react-spring";
 
 import { TextLink } from "../components/link";
@@ -227,10 +228,8 @@ const Children = styled.div`
 
 export default function Layout({ children }) {
   const [isOpen, setIsOpen] = React.useState(false);
-  const toggleTheme = () => {
-    const html = document.documentElement;
-    html.dataset.theme = html.dataset.theme === "dark" ? "light" : "dark";
-  };
+  const { theme, setTheme } = useTheme()
+  const toggleTheme = () => setTheme(theme === "dark" ? "light" : "dark");
   let open = () => setIsOpen(true);
   let close = () => setIsOpen(false);
 
@@ -284,9 +283,9 @@ export default function Layout({ children }) {
                         about
                       </MobileMenuItem>
                       <MobileMenuItem onClick={toggleTheme} href="#">
-                          toggle theme
-                          <Spacer left={2} />
-                          <ToggleThemeToggler onClick={toggleTheme} />
+                        toggle theme
+                        <Spacer left={2} />
+                        <ToggleThemeToggler onClick={toggleTheme} />
                       </MobileMenuItem>
                     </Stack>
                   </MobileMenuPopup>

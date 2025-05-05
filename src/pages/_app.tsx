@@ -10,10 +10,12 @@ import GlobalStyles from "../theme/global-styles";
 
 function App({ Component, pageProps }: AppProps) {
   return (
-    <ThemeProvider defaultTheme={"dark"}>
+    <>
       <Global styles={GlobalStyles} />
-      <Component {...pageProps} />
-    </ThemeProvider>
+      <ThemeProvider defaultTheme={"dark"}>
+        <Component {...pageProps} />
+      </ThemeProvider>
+    </>
   );
 }
 

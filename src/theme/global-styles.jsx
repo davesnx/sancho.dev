@@ -8,16 +8,8 @@ const GlobalStyles = css`
     ${darkCSSVariables};
   }
 
-  @media (prefers-color-scheme: dark) {
-    ${make("dark")};
-  }
-
   html[data-theme="dark"] {
     ${make("dark")};
-  }
-
-  @media (prefers-color-scheme: light) {
-    ${make("light")};
   }
 
   html[data-theme="light"] {

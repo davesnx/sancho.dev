@@ -6,10 +6,14 @@
  * @property {string} g - Green color value
  * @property {string} b - Blue color value
  * @property {string} bluesky - Bluesky brand color
- * @property {string} twitter - Twitter brand color
- * @property {string} github - GitHub brand color
+ * @property {string} bluesky50 - Bluesky brand color
+ * @property {string} bluesky30 - Bluesky brand color
  * @property {string} discord - Discord brand color
+ * @property {string} discord50 - Discord brand color
+ * @property {string} discord30 - Discord brand color
  * @property {string} strava - Strava brand color
+ * @property {string} strava50 - Strava brand color
+ * @property {string} strava30 - Strava brand color
  */
 
 /**
