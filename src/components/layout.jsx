@@ -307,13 +307,13 @@ export default function Layout({ children }) {
         <Footer>
           <Text weight={400} size={font.fontSizeN1}>
             <TextLink
-              color={colors.subtle}
+              color={colors.body30}
               href="https://x.com/davesnx"
             >{`@davesnx`}</TextLink>
           </Text>
           <Text weight={400} size={font.fontSizeN1}>
             <TextLink
-              color={colors.subtle}
+              color={colors.body30}
               href="https://github.com/davesnx/sancho.dev"
             >{`Source`}</TextLink>
           </Text>

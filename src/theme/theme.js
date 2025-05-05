@@ -42,8 +42,19 @@ const commonValues = {
  * @property {string} overlay - Overlay background color
  * @property {string} codeBackground - Code block background color
  * @property {string} contrastCodeBackground - Contrasting code background color
- * @property {string} subtle - Subtle text color
+ * @property {string} contrastCodeBackground30 - Contrasting code background color
+ * @property {string} contrastCodeBackground80 - Contrasting code background color
  * @property {string} primary - Primary accent color
+ * @property {string} inverted - Inverted text color
+ * @property {string} primary90 - Primary accent color
+ * @property {string} primary80 - Primary accent color
+ * @property {string} body - Body text color
+ * @property {string} body90 - Body text color
+ * @property {string} body80 - Body text color
+ * @property {string} body50 - Body text color
+ * @property {string} body30 - Body text color
+ * @property {string} body10 - Body text color
+ * @property {string} grey - Grey color
  */
 
 /**
@@ -53,7 +64,7 @@ const commonValues = {
 const lightValues = {
   grey: "#E5E5E5",
   primary: "#121A24",
-  inverted: "#1a1a1a",
+  inverted: "#1A1A1A",
   primary90: "#293039",
   primary80: "#40474F",
   body: "#233044",
@@ -64,11 +75,10 @@ const lightValues = {
   body10: "#CFD2D6",
   contrast: "#FAFAFA",
   overlay: "#FFFFFF",
-  codeBackground: "#1F1F1F",
+  codeBackground: "#F5F5F5",
   contrastCodeBackground: "#EEEEEE",
   contrastCodeBackground30: "#F6F6F6",
   contrastCodeBackground80: "#F0F0F0",
-  subtle: "#AEB2B9",
 };
 
 /**
@@ -92,8 +102,7 @@ const darkValues = {
   contrastCodeBackground: "#262626",
   contrastCodeBackground80: "#222222",
   contrastCodeBackground30: "#191919",
-  subtle: "#54585D",
-  inverted: "#1a1a1a",
+  inverted: "#1A1A1A",
 };
 
 /** @type {CommonValues & ThemeValues} */

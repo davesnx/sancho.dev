@@ -61,7 +61,7 @@ let Job = ({
     name: string;
     url: string | null;
     logo: React.ReactNode | null;
-    logoIsDark: boolean;
+    logoIsDark?: boolean;
   };
   date: {
     from: string;
@@ -93,13 +93,7 @@ let Job = ({
         </Stack>
         <Row gap={1}>
           <Text weight={800} size={font.fontSize1}>
-            {date.from}
-          </Text>
-          <Text weight={800} color={colors.subtle}>
-            -
-          </Text>
-          <Text weight={800} size={font.fontSize1}>
-            {date.to}
+            {date.from} - {date.to}
           </Text>
         </Row>
       </Row>
@@ -150,7 +144,8 @@ let LogoImg = styled.img`
   min-height: min-content;
   font-size: 0px;
 
-  ${(props) => (props.logoIsDark ? "filter: brightness(0) invert(1)" : "")}
+  ${(props: { logoIsDark?: boolean }) =>
+    props.logoIsDark ? "filter: brightness(0) invert(1)" : ""}
 `;
 
 let AherfsLogo = () => <LogoImg src="/logos/ahrefs.png" alt="Ahrefs" />;
