@@ -30,7 +30,7 @@ const fonts = {
   globalFontSize,
   globalLineHeight,
   mono: "Jet Brains Mono, Fira Code, monospace",
-  sans: "DM Sans",
+  sans: '"DM Sans", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Ubuntu, "Helvetica Neue", Oxygen, Cantarell, sans-serif',
 };
 
 export default fonts;

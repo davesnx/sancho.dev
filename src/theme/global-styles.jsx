@@ -86,11 +86,6 @@ const GlobalStyles = css`
   html[data-theme="light"] code[data-theme="dark"] {
     display: none;
   }
-
-  p {
-    margin: 0;
-    font-family: DM Sans;
-  }
 `;
 
 export default GlobalStyles;
