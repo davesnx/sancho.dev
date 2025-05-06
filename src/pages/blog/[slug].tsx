@@ -97,7 +97,7 @@ const Img = styled.img`
 
 const Oversized = styled.span`
   display: block;
-  margin: 3rem 0;
+  margin: 1rem 0 3rem 0;
 `;
 
 const Pre = (props: any) => (

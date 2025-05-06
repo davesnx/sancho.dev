@@ -61,7 +61,7 @@ const Home = () => {
             href="https://github.com/davesnx"
             color={colors.body50}
             hoverColor={colors.body}
-            decorationColor={colors.body30}
+            decorationColor={colors.body10}
           >
             {"Github"}
           </TextLink>
@@ -79,9 +79,9 @@ const Home = () => {
             href={"https://x.com/davesnx"}
             color={colors.body50}
             hoverColor={colors.body}
-            decorationColor={colors.body30}
+            decorationColor={colors.body10}
           >
-            {"X"}
+            {"X (Twitter)"}
           </TextLink>
           <TextLink
             underlined

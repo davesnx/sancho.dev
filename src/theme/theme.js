@@ -32,7 +32,7 @@ const commonValues = {
   discord30: "#222632",
   strava: "#FC4C02",
   strava50: "#88300B",
-  strava30: "#5A250F",
+  strava30: "#411b0b",
 };
 
 /**

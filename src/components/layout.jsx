@@ -308,12 +308,14 @@ export default function Layout({ children }) {
           <Text weight={400} size={font.fontSizeN1}>
             <TextLink
               color={colors.body30}
+              hoverColor={colors.body50}
               href="https://x.com/davesnx"
             >{`@davesnx`}</TextLink>
           </Text>
           <Text weight={400} size={font.fontSizeN1}>
             <TextLink
               color={colors.body30}
+              hoverColor={colors.body50}
               href="https://github.com/davesnx/sancho.dev"
             >{`Source`}</TextLink>
           </Text>
