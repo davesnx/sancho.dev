@@ -43,8 +43,8 @@ const StyledA = styled.a`
 `;
 
 export const TextLink = ({ href, ...rest }: AnchorProps & { href: string }) => {
-  let color = rest.color || colors.primary;
-  let hoverColor = rest.hoverColor || color;
+  let color = rest.color || colors.body;
+  let hoverColor = rest.hoverColor || colors.primary;
   let decorationColor = rest.decorationColor || color;
 
   return (

@@ -232,7 +232,7 @@ const BlogPostTitle = styled(H1)`
   text-align: center;
   width: 100%;
   line-height: 1.4;
-  color: ${colors.primary};
+  color: ${colors.primary90};
 
   @media screen and (max-width: ${breakpoints.mobile.width}px) {
     font-size: 2rem;
