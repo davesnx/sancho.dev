@@ -8,7 +8,7 @@ const Heading = css`
   margin: 0;
   padding: 0;
   font-family: ${fonts.sans};
-  font-weight: 600;
+  font-weight: bold;
   line-height: 1.6;
 `;
 
