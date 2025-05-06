@@ -55,7 +55,7 @@ const Home = () => {
             {` page.`}
           </Text>
         </Spacer>
-        <Row gap={2} distribute="left">
+        <Row gap={2} distribute="left" wrap="wrap">
           <TextLink
             underlined
             href="https://github.com/davesnx"

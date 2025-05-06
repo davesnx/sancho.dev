@@ -61,12 +61,14 @@ type RowProps = {
   gap?: number;
   align?: keyof typeof RowAlignMap;
   distribute?: keyof typeof RowDistributeMap;
+  wrap?: "wrap" | "nowrap";
 };
 
 export const Row = styled.div`
   display: flex;
   flex-direction: row;
   width: ${(props: RowProps) => (props.fullWidth ? "100%" : "auto")};
+  flex-wrap: ${(props: RowProps) => (props.wrap ? "wrap" : "nowrap")};
 
   align-items: ${(props: RowProps) => RowAlignMap[props.align || "center"]};
   justify-content: ${(props: RowProps) =>
