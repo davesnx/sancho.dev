@@ -11,12 +11,13 @@ type AnchorProps = {
   color: string;
   hoverColor: string;
   decorationColor: string;
+  weight?: number;
 };
 
 const Anchor = (props: AnchorProps) => css`
   color: ${props.color};
   font-family: ${fonts.sans};
-  font-weight: 500;
+  font-weight: ${props.weight ? props.weight : 500};
   font-size: inherit;
   line-height: inherit;
 
@@ -39,7 +40,7 @@ const Anchor = (props: AnchorProps) => css`
 `;
 
 const StyledA = styled.a`
-  ${(props: AnchorProps) => Anchor(props)}
+  ${(props: AnchorProps) => Anchor(props)};
 `;
 
 export const TextLink = ({ href, ...rest }: AnchorProps & { href: string }) => {

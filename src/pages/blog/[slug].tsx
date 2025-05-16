@@ -241,7 +241,12 @@ const BlogPostTitle = styled(H1)`
 
 const A = (props: any) => {
   return (
-    <TextLink {...props} color={colors.body} hoverColor={colors.primary} />
+    <TextLink
+      {...props}
+      weight={500}
+      color={colors.body}
+      hoverColor={colors.primary}
+    />
   );
 };
 
@@ -259,25 +264,6 @@ export const getStaticPaths: GetStaticPaths = () => {
 
 let Strong = (props: any) => {
   return <Text as="strong" weight={400} color={colors.primary} {...props} />;
-};
-
-let PostMetadataText = ({
-  bright = false,
-  children,
-}: {
-  bright: boolean;
-  children: React.ReactNode;
-}) => {
-  return (
-    <Text
-      kerning="0.05rem"
-      color={bright ? colors.body50 : colors.body30}
-      size={font.fontSizeN2}
-      weight={600}
-    >
-      {children}
-    </Text>
-  );
 };
 
 export const getStaticProps: GetStaticProps = async ({ params }) => {
@@ -322,29 +308,32 @@ export default function Post({
             </PageTitle>
             <Spacer bottom={2} />
             <Row gap={2}>
-              <Row gap={0.8}>
-                <PostMetadataText>PUBLISHED </PostMetadataText>
-                <PostMetadataText bright={true}>
-                  {format(
-                    parseISO(frontmatter.publishedAt),
-                    "MMM yyyy"
-                  ).toUpperCase()}
-                </PostMetadataText>
-              </Row>
-              <PostMetadataText>{" · "}</PostMetadataText>
-              <Row gap={0.8}>
-                <PostMetadataText>BY </PostMetadataText>
+              <Text
+                kerning="0.05rem"
+                color={colors.body50}
+                size={font.fontSizeN2}
+                weight={600}
+              >
+                {format(
+                  parseISO(frontmatter.publishedAt),
+                  "MMM yyyy"
+                ).toUpperCase()}
+              </Text>
+              <Text color={colors.body30} size={font.fontSize0} weight={400}>
+                {" • ".toUpperCase()}
+              </Text>
+              <Text kerning="0.05rem" weight={600} size={font.fontSizeN2}>
                 <TextLink
+                  weight={600}
+                  color={colors.body50}
+                  hoverColor={colors.body80}
                   decorationColor="transparent"
-                  hoverColor="transparent"
                   href="https://x.com/davesnx"
                   target="_blank"
                 >
-                  <PostMetadataText bright={true}>
-                    {"davesnx".toUpperCase()}
-                  </PostMetadataText>
+                  {`davesnx`.toUpperCase()}
                 </TextLink>
-              </Row>
+              </Text>
             </Row>
           </>
         }
