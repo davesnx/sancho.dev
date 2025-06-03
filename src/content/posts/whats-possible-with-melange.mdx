@@ -6,7 +6,7 @@ tags:
   - "dune"
   - "OCaml"
   - "Reason"
-description: "Explain what's melange, it's integration with dune and a bunch of benefits of using Melange to compile Reason and OCaml to JavaScript"
+description: "Explain what's melange, its integration with dune and a bunch of benefits of using Melange to compile Reason and OCaml to JavaScript"
 ---
 
 [Melange](https://melange.re) is a backend for the OCaml compiler that emits readable, modular and highly performant JavaScript code. It’s integrated with all OCaml-related tooling such as opam to install packages and dune as a build system.
@@ -19,7 +19,7 @@ Melange started as a fork of BuckleScript but focusing in OCaml compatibility wh
 
 ## Works with the latest versions of OCaml
 
-One blocker for some OCaml developers to adopt ReScript is that the version of the OCaml typechecker is stuck on 4.06, a few versions behind the latest (5.1) OCaml.
+One blocker for some OCaml developers adopting ReScript is that it uses an old version (4.06) of the OCaml typechecker, which is several versions behind the latest OCaml release (5.1) at the moment of writing.
 
 This was an issue in our backend as well, since some packages needed to be compatible with 4.06 and 5.1, and a lot has changed:
 
@@ -47,11 +47,11 @@ A quality of life improvement is allowing to use the same editor to write both M
 
 ## Dune is a great build tool
 
-Dune is the defacto build tool for OCaml development these days. In grosso modo, it’s a wrapper to all OCaml tooling such as the Batch compiler (ocamlc), the Native compiler (ocamlopt), also a library manager, etc... It abstracts away those low level tools for users to be in a higher level to define their libraries, executables, testing suites, documentation and other pieces needed to develop a full application.
+Dune is the defacto build tool for OCaml development these days. Generally speaking, it’s a wrapper to all OCaml tooling such as the Batch compiler (ocamlc), the Native compiler (ocamlopt), also a library manager, etc... It abstracts away those low level tools for users to be in a higher level to define their libraries, executables, testing suites, documentation and other pieces needed to develop a full application.
 
 - Dune allows to rebuild your project smartly, only the libraries that change
 - Which means, it would only compile your opam dependencies once (from the same switch)
-- Dune wouldn’t rebuild dependent code where an interface didn’t change
+- Dune won't rebuild dependent code when an interface hasn't changed
 - Dune also builds in parallel as much as possible
 - Integrates with the rest of the OCaml ecosystem, for example ppxlib or menhir.
 
@@ -63,7 +63,7 @@ Dune deserves most of the credit for the features I'm attributing to Melange. Wi
 
 The [library stanza](https://dune.readthedocs.io/en/stable/dune-files.html#library) is useful to split your application into smaller pieces and create a better organisation of your codebase. Those libraries can be defined with their own set of dependencies and ppx’s. This is extremely useful for any application older than 1 month and almost a necessity for a monorepo or big application.
 
-Previously, with ReScript you had one big namespace where all module names were required to be unique, all dependencies and ppx's were applied to the entire codebase. There are some ways to define libraries and define namespaces but they are rarely used since are buggy and broken.
+Previously, with ReScript you had one big namespace requiring all module names to be unique, all dependencies and ppx's were applied to the entire codebase. There are some ways to define libraries and define namespaces but they are rarely used since they are buggy and broken.
 
 As an anecdote, in the ahrefs monorepo we had a bunch of sub-applications that are separated by boundary (Keywords Explorer, Site Audit, etc…) but since it needed to share the unique global namespace, it forced us to prefix all files by an acronym. So, all files from Keyword Explorer would be prefixed with `Ke`, Header becomes `KeHeader`, Table becomes `KeTable`, and so on… to avoid collisions.
 
@@ -163,7 +163,7 @@ The initial blocker might be their syntax, which is very lisp-y. Hopefully your 
  (libraries uri js))
 ```
 
-It’s mainained by [Jane Street](https://www.janestreet.com/), [Tarides](https://tarides.com/), [OCamlPro](https://ocamlpro.com) where they improve it frequently and they are [open for feedback and feature requests](https://discuss.ocaml.org/t/dune-wish-list-for-2023/11083).
+It’s maintained by [Jane Street](https://www.janestreet.com/), [Tarides](https://tarides.com/), [OCamlPro](https://ocamlpro.com) where they improve it frequently and they are [open for feedback and feature requests](https://discuss.ocaml.org/t/dune-wish-list-for-2023/11083).
 
 After working with it almost 10 months I’m convinced that it’s a big improvement over previous status.
 

@@ -24,13 +24,13 @@ At the time of writing I'm working at Draftbit and our frontend is built on top 
 
 I have also contributed to a few design systems in my career, even written my own.
 
-I'm obsessed with the conjunction of component-drive design with functional programming and how these enable the writing of modular UIs.
+I'm obsessed with the conjunction of component-driven design with functional programming and how these enable the writing of modular UIs.
 
 But now, let's talk about Tailwind.
 
 ### First, the good parts
 
-The reason I think Tailwind is amazing has nothing to do with the patterns of utility classes. These patterns have been around for a long time -[tachyons](http://tachyons.io/) created around 2016. While some people find them pleasant to use, I personally prefer to write the CSS code directly.
+The reason I think Tailwind is amazing has nothing to do with the patterns of utility classes. These patterns have been around for a long time, [tachyons](http://tachyons.io/) created around 2016. While some people find them pleasant to use, I personally prefer to write the CSS code directly.
 
 The reasons why I think Tailwind shines are:
 
@@ -40,11 +40,11 @@ The reasons why I think Tailwind shines are:
 
 ### How is used in React
 
-I use React as an example, but it is used very similar to any other component-based UI library. In particular, React uses JSX via Babel (or any transpiler) which to transform JSX to function calls and eventually will endup as DOM elements.
+I use React as an example, but it is used very similar to any other component-based UI library. In particular, React uses JSX via Babel (or any transpiler) which to transform JSX to function calls and eventually will end up as DOM elements.
 
 During this transformation `className` gets renamed to `class` (since it's a reserved keyword in JavaScript) which applies CSS classes to elements.
 
-This is the de facto method to use Tailwind with React. For example you will often will see:
+This is the de facto method to use Tailwind with React. For example you will often see:
 
 ```jsx
 <div className="flex md:block w-32 h-full" />
@@ -56,7 +56,7 @@ This is the de facto method to use Tailwind with React. For example you will oft
 
 ### Hard to maintain
 
-Removing one of the `classNames` from the list is prone to error.
+Removing one of the `classNames` from the list is error-prone.
 It is like removing an unused CSS class in an [append only stylesheet](https://css-tricks.com/oh-no-stylesheet-grows-grows-grows-append-stylesheet-problem). They can collide with and override other properties.
 
 There're a lot of tools to solve that particular issue, such as linters or editor plugins. But it's still a problem.
@@ -65,7 +65,7 @@ Aside from being hard to remove, Tailwind classes are hard to change. Adding cla
 
 ### It is optimised for writing, not for reading
 
-When reading JSX, I feel confortable to imagine a 1-to-1 match with the UI. I can easily navigate thought the component tree and map with the real-world interface.
+When reading JSX, I feel comfortable to imagine a 1-to-1 match with the UI. I can easily navigate thought the component tree and map with the real-world interface.
 
 ![screenshot-jsx-sketch-UI](/images/jsx-ui.jpeg)
 
@@ -230,7 +230,7 @@ But, there's a bunch of people who spend a lot of time thinking about those prob
 3. [https://stitches.dev](https://stitches.dev/)
 4. [https://radix-ui.com](https://radix-ui.com/primitives/docs/overview/introduction)
 
-If you still like what Tailwind offers, I recommend a similar approach that we do at **Draftbit**. Create a tiny layer on top of it: Treat all the Tailwind tokens as code and maintain Tailwind scoped inside those components. Abstract those utility components that you found repeated in your code into a more strict version, and minimise Tailwind for your app.
+If you still like what Tailwind offers, I recommend a similar approach that we do at **Draftbit**. Create a tiny layer on top of it: Treat all the Tailwind tokens as code and maintain Tailwind scoped within those components. Abstract those utility components that you found repeated in your code into a more strict version, and minimise Tailwind for your app.
 
 ### How do I try to do it
 

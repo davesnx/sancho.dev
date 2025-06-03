@@ -123,9 +123,9 @@ Now we already covered how it works internally and a little overview of the arch
 
 ## How to do cross-compilation to binary
 
-query-json is builded with dune, which supports out of the box ReasonML. dune runs the OCaml compiler to compile to binary code. It can compile to bytecode (and runned with the bytecode interpreter). I choose to compile to binary to make a fast native single executable.
+query-json is build with dune, which supports out of the box ReasonML. dune runs the OCaml compiler to compile to binary code. It can compile to bytecode (and run with the bytecode interpreter). I choose to compile to binary to make a fast native single executable.
 
-All of the build process and their tests runs on our CI in Github Actions, which allows running Mac, Windows and Linux images. I distribute the pre-builded binaries for all architectures in the Github Releases and the npm registry.
+All of the build process and their tests runs on our CI in Github Actions, which allows running Mac, Windows and Linux images. I distribute the pre-built binaries for all architectures in the Github Releases and the npm registry.
 
 Allowing npm users to download it with the CLI, and others to download from Github release page.
 
@@ -133,7 +133,7 @@ Allowing npm users to download it with the CLI, and others to download from Gith
 
 Apart from compiling to the executable, query-json is compiled to JavaScript as well.
 
-The compilation to JavaScript is the sweet section of this blog post and the part I'm most proud about. It's not my crucial effor to do so, but being capable of releasing 2 distributables from a single codebase seems like magic, including all query-json's dependencies (menhir, sedlex and [yojson](https://github.com/ocaml-community/yojson)).
+The compilation to JavaScript is the sweet section of this blog post and the part I'm most proud about. It's not my crucial effort to do so, but being capable of releasing 2 distributables from a single codebase seems like magic, including all query-json's dependencies (menhir, sedlex and [yojson](https://github.com/ocaml-community/yojson)).
 
 To accomplish this, I'm using [js_of_ocaml](https://github.com/ocsigen/js_of_ocaml) (jsoo for short). jsoo is a compiler that uses a intermediate representation of the OCaml compiler (the bytecode I mention before) and transforms to JavaScript.
 
@@ -149,7 +149,7 @@ Since [dune](https://dune.build) supports jsoo out of the box, I just needed to 
 
 ## Made query-json's playground
 
-After compiling to a JavaScript artefact I could run it syncronsly in the browser. I made a playground to teach people how to use it without the instalation of a binary. Aside from the accessibility for users, It helped me test new versions on each pull request.
+After compiling to a JavaScript artefact I could run it synchronously in the browser. I made a playground to teach people how to use it without the instalation of a binary. Aside from the accessibility for users, It helped me test new versions on each pull request.
 
 ![](/images/playground.png)
 
@@ -159,7 +159,7 @@ https://query-json.netlify.app
 
 The query-json computation runs on each key-stroke, which means that the playground is offline-ready. If you compare it with the official [jq playground](https://jqplay.org/) where it needs to communicate with a backend and run jq somehow there, and come back with a response.
 
-Having a playground as a serverless frontend app It's a massive improvement over backend-dependant ones. Actually, most of the REPL's from Reason, OCaml, Flow, ReScript (all written in OCaml) uses js_of_ocaml for their playgrounds.
+Having a playground as a serverless frontend app It's a massive improvement over backend-dependent ones. Actually, most of the REPL's from Reason, OCaml, Flow, ReScript (all written in OCaml) uses js_of_ocaml for their playgrounds.
 
 ### Benefits
 

@@ -9,7 +9,7 @@ tags:
 description: "A small trick I use to run yarn/npm scripts faster"
 ---
 
-In a Node enviroment or a project with a package.json, It's very common to have a field `"scripts"` inside the **package.json** which stores and lists the scripts available to build, test and run the project.
+In a Node environment or a project with a package.json, It's very common to have a field `"scripts"` inside the **package.json** which stores and lists the scripts available to build, test and run the project.
 
 In order to see which scripts are available in the project without opening the package.json with an editor, `yarn` and `npm` have a command that lists them: `yarn run` or `npm run`.
 
@@ -39,7 +39,7 @@ I was a little frustrated by it and I created a small bash script that solves it
 
 ![yarn-run.gif](/images/yarn-run.gif)
 
-It uses [fzf](https://github.com/junegunn/fzf) to filter the commands available and allows a fast search for them. If you don't know what's fzf, I can't recommend enough tacking a look at it. fzf stands for _fuzzy finder_ and it's used by when hit `CTRL+R` to navigate the bash history and It's commonly used to navigate between files in your editor.
+It uses [fzf](https://github.com/junegunn/fzf) to filter the commands available and allows a fast search for them. If you don't know what's fzf, I can't recommend enough taking a look at it. fzf stands for _fuzzy finder_ and it's used by when hit `CTRL+R` to navigate the bash history and It's commonly used to navigate between files in your editor.
 
 ![fzf.gif](/images/fzf.gif)
 
@@ -93,7 +93,7 @@ This output gets passed to [fzf](https://github.com/junegunn/fzf), which creates
 
 This script lives under my [dotfiles repo](https://github.com/davesnx/setup/blob/master/bin/run), which is an easy way to install and setup your enviroment each time you change laptops.
 
-Feel free to can change this script to use `npm` or do any sort of change, I found playing with my terminal very rewarding, getting to learn deeper about the tools that I used everyday, allowed me to do stuff that I wasn't capable before and having those small performance boosts made my life a little easier. I will keep sharing more as they pop in my head.
+Feel free to change this script to use `npm` or do any sort of change, I found playing with my terminal very rewarding, getting to learn deeper about the tools that I used everyday, allowed me to do stuff that I wasn't capable before and having those small performance boosts made my life a little easier. I will keep sharing more as they pop in my head.
 
 ### Resources
 

@@ -18,7 +18,7 @@ If you’re new to OCaml you may find the ecosystem confusing. There are a few r
 
 I’m not a teacher, I don’t have 10+ years of experience in OCaml, I don’t have a PhD and more terribly I didn’t finish my Computer Science degree.
 
-But often it’s very useful to learn from someone who is one step above you, and not someone how’s 10 steps above you.
+But often it’s very useful to learn from someone who is one step above you, and not someone who's 10 steps above you.
 
 I worked professionally in OCaml and ReasonML (a dialect of OCaml) for almost 3 years (and counting) and have been creating and maintaining some useful projects meanwhile. Some of them are:
 
@@ -77,14 +77,14 @@ The most important built-in types are records, tuples and variants.
   type person = { first_name : string; surname : string; age : int; }
 ```
 
-- `tuples` are a type with a fixed set of values, without specify their names. They're often used to assosiacte values without creating a more formal data structure (like a record).
+- `tuples` are a type with a fixed set of values, without specify their names. They're often used to associate values without creating a more formal data structure (like a record).
 
 ```ocaml
   let t = (1, "one", '1') in
   (*      int * string * char *)
 ```
 
-- `variants` are used to define a sum type (also known as ADTs: Algebraic Data Types). They can be used to represent a value that can be one of a few different kindš.
+- `variants` are used to define a sum type (also known as ADTs: Algebraic Data Types). They can be used to represent a value that can be one of a few different kinds.
 
 ```ocaml
   type color =
@@ -130,7 +130,7 @@ let data_plus_one = List.map (fun x => x + 1) data in
 (* `data_plus_one` is a new list and `data` is still available in scope *)
 ```
 
-But it's possible to mutate values using `ref` and `mutable` keyword (inside records). Extense explanation [here](https://cs3110.github.io/textbook/chapters/mut/refs.html)
+But it's possible to mutate values using `ref` and `mutable` keyword (inside records). Extensive explanation [here](https://cs3110.github.io/textbook/chapters/mut/refs.html)
 
 Similarly on the above, you can debug values by printing to the stdout with `print_endline` or [`Printf`](https://v2.ocaml.org/api/Printf.html). The `Printf` module comes with a lot of useful functions to format your output, and similarly to C with the printing notation: `%s` for strings, `%d` for integers, `%f` for floats, etc.
 
