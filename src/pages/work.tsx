@@ -140,8 +140,7 @@ let OpenSource = ({
 
 let LogoImg = styled.img`
   width: 100%;
-
-  min-height: min-content;
+  min-height: 100%;
   font-size: 0px;
 
   ${(props: { logoIsDark?: boolean }) =>
