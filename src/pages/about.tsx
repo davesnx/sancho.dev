@@ -23,9 +23,9 @@ const Bio = () => {
   return (
     <Content>
       <Text size={fonts.fontSize1} align="left">
-        Hi, I'm David. A software engineer based in Barcelona, but also spent
-        the cold winter in the Pyrenees. My work bridges functional programming,
-        web technologies and maintanability; by focusing on creating better
+        Hi, I'm David. A software engineer based in Barcelona, who spends the
+        cold winter in the Pyrenees. My work bridges functional programming, web
+        technologies and maintanability; by focusing on creating better
         developer tools and experiences with{" "}
         <TextLink href="http://reasonml.github.io/">Reason</TextLink>
         <span> and </span>
