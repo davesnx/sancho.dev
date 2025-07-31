@@ -37,7 +37,7 @@ const Bio = () => {
       <Text size={fonts.fontSize1}>
         I believe that the recipe for creating maintainable and powerful
         software lies in designing with clarity, sound architecture, and
-        embracing the iterations of the development process. Working at{" "}
+        embracing the iterative nature of development. Working at{" "}
         <TextLink href="https://ahrefs.com/">ahrefs</TextLink>, I'm building
         developer tooling while maintaining several Open Source projects in the
         Reason ecosystem, including:
