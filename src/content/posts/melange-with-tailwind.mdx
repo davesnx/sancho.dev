@@ -1,0 +1,27 @@
+---
+title: "Using Melange with Tailwind CSS"
+publishedAt: "2025-10-12"
+isDraft: true
+tags:
+  - "Melange"
+  - "Tailwind"
+  - "CSS"
+  - "dune"
+---
+
+```ocaml
+(install
+ (section bin)
+ (package query-json-playground)
+ (files
+  ("../node_modules/@tailwindcss/cli/dist/index.mjs" as tailwind)))
+
+(rule
+ (target output.css)
+ (deps
+  (:config ./tailwind.config.js)
+  (:input ./styles.css))
+ (action
+  (run tailwind -c %{config} -i %{input} -o %{target})))
+
+```

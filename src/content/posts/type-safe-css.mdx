@@ -1,0 +1,125 @@
+---
+title: "Type-safe CSS"
+publishedAt: "2025-10-12"
+isDraft: true
+tags:
+  - "CSS"
+  - "Type Safety"
+  - "styled-ppx"
+  - "OCaml"
+---
+
+[https://css-tricks.com/css-is-a-strongly-typed-language](https://css-tricks.com/css-is-a-strongly-typed-language/)
+
+https://nerdy.dev/cant-break-this-design-system
+
+https://andreipfeiffer.dev/blog/2022/scalable-css-evolution/part8-type-safe-css
+
+https://github.com/pveyes/theme-in-css
+
+### Check how people search for the terms to define the title
+
+- [How to create bindings for @Emotion/styled](https://forum.rescript-lang.org/t/how-to-create-bindings-for-emotion-styled/2995)
+- styled-components rescript/reason
+- emotion rescript
+
+Use this https://easy-peasy.ai/workflows/blog-post?
+
+Give an opinion about CSS-in-JS and examplify styled-ppx like [https://jfmengels.net/disable-comments](https://jfmengels.net/disable-comments/) for elm-review.
+
+---
+
+- [ ]  Explain styled-ppx
+- [ ]  Why and a bit of how
+    - Get this from 2 presentations and Lisboa talk or from
+
+        [Why](https://www.notion.so/Why-ba52b14e2a6349f9aae95a94b7a88211?pvs=21)
+
+
+# Type-safe CSS
+
+https://andreipfeiffer.dev/blog/2022/scalable-css-evolution/part8-type-safe-css
+
+Imagine CSS but safer to write.
+
+Image that it doesn't allow you to have invalid properties or invalid values on properties, that it yells at you when you have incorrect format for media-queries, selectors.
+
+from [https://css-tricks.com/css-is-a-strongly-typed-language](https://css-tricks.com/css-is-a-strongly-typed-language/)
+
+Unlike other programming languages where code largely exists under the hood, CSS is highly visual. You won’t see warnings or errors in the console if you use an invalid value for a property declaration, but you will get visuals that don’t update the way you anticipated.
+
+The reason for this is that CSS is resilient. When visuals don’t update because of a misconstructed declaration, CSS is prioritizing, **ensuring content can be shown at all costs** and will render every other valid declaration it possibly can. This is in keeping with [the design principles of the language](https://www.w3.org/TR/CSS22/intro.html#design-principles), the [principles of the platform](https://www.w3.org/TR/design-principles/), and the overarching goals of [the web’s mission](https://www.w3.org/Consortium/mission).
+
+## How
+
+- Imagine that all CSS properties are functions
+- Imagine all CSS values are, values.
+- Imagine all rules are lists
+
+color: red
+
+- color(red)
+
+.classname {
+
+ color: red;
+
+}
+
+let classname = [color(red)];
+
+If we ever want to make this typesafe, we would say:
+
+the color fn can only accept colors, duh, but in reality the spec say:
+
+blalblabla | lbablal | ‘currentColor’ | etc…
+
+we could define the
+
+// Explain the problem
+
+CSS has a few quirks, one of them is the possibility to be defined with invalid syntax or invalid values. Similarly to HTML, the browser will ignore those and won’t let you know if there’s something broken (unless you open DevTools and inspect it properly)
+
+- Example I: invalid URL
+- Example II: invalid syntax
+
+// Explain that it’s an issue since I started frontend back in 2010? When backbone + jQuery was the way to go. SCSS or SASS was the hotness and gulp was much better than grump. (??)
+
+// We ensure CSS is parsable
+
+// Aside from type-safety, it ensures CSS validity. Our parser will ensure that
+
+Type-safety is one of the biggest difference between all CSS-in-JS libs out there. Since we are in a language that encourages type soundness (explain this in simpler terms), made sense to push for correctness in your style definitions.
+
+## What does even mean?
+
+Type-safety in CSS means a few different things, but mostly making sure the styles follow the spec. (link to the spec, explain the spec a bit)
+
+- Ensuring properties and values make sense (following the spec)
+- Ensure media-queries being correct (right properties)
+- Ensure selectors are correct
+
+// Examples of error messages
+
+## How does it work?
+
+We transformed the spec into a type-checker
+
+- from `display: block | flex` to a function that accepts "block" or "flex"
+- from `margin: <length>` to a function that accepts
+
+The CSS Spec, in a nutshell, is a big list of rules defined by “variants” as values (`<length>`, `’block’`, etc) with “combinators” (such as `||` `[]` `[]` ) and a few `modifiers` (`?` `+` `*` , etc).
+
+// Image of example
+
+Which map perfectly as a parser combinator. (rephrase this) and it’s relatively simple to implement in Reason, thanks to the pattern match and function application (Do I need to be much explicit here?)
+
+## The entire pipeline
+
+- Parse the style with our CSS parser which ensures structure such as selectors, properties, media-queries and overall structure of
+- We run those type-checkers for each property from the declarations
+- Report back if there’s any error, if not, code-gen starts.
+
+## Code generation
+
+styled-ppx generates a ReasonReact (or @rescript/react component) given it’s styles, using bs-css as a backend to generate emotion calls and delegate all logic from CSS-in-JS to emotion (hashing styles, appending those to the head, keeping them in a cache, etc). Link to more resources.

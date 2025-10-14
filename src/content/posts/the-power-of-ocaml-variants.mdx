@@ -1,0 +1,86 @@
+---
+title: "The power of variants in OCaml"
+publishedAt: "2025-10-12"
+isDraft: true
+tags:
+  - "OCaml"
+  - "Type System"
+  - "Variants"
+  - "ADTs"
+---
+
+# Title: The power of variants in OCaml
+
+## Intro
+
+It never felt right to assign “power” into a technical concept, not even a program, like Figma? (to say one). “Figma is very powerful”. That feels wrong, the program just sits there, doing nothing. You are powerful one using figma. The power is on you, depends on your knowledge.
+
+Nevermind, In this post we’re going to be looking at a some basic use of OCaml’s type system, known as variants, but not only, we will get deep into all kinds of variants (variants, polyvariants, open and closed polyvariants, usages and differences).
+
+At by the end of it you’ll have another tool in your belt to help you better model data in your programs. And fear not, because this concept is universal to many languages you can apply this knowledge elsewhere.
+
+---
+
+- [ ]  Mention OCaml, but aplicable to any functional language: Elm, Haskell, or PureScript.
+
+## First, how are types “organised”
+
+subtitle: product types, sum types
+
+Types are classified mathematically by how many possibilities can represent.
+
+Records -think of it as an object with fixed fields- are product types, product because each field (N) can represent any number of types (M) N X M
+
+Example
+
+Sum types, are the sum of all the kinds.
+
+Example
+
+Similarities between enums, adts
+
+product types
+
+---
+
+- [ ]  Look on ReScript, Reason and OCaml for how to they describe them
+- [ ]  Link OCaml
+
+## Variants
+
+In OCaml, atds are called variants
+
+## Exhaustive pattern matching
+
+Explain match statement and exhaustivity
+
+- Explain payloads in variants
+- Real example with payloads + match
+
+## Polyvariants
+
+- One line example
+- Explain differences
+    - When to use one vs the other
+    - Link to rudi’s bloc post about error handling
+
+- polyvariants can behave like variants if annotated
+- Resolve these doubts https://discuss.ocaml.org/t/do-i-need-polymorphic-variants/1683/8
+
+## Extending polyvariants
+
+- explain closed and open polyvariants
+- link to error by rudy
+-
+
+## Composing polyvariants
+
+Explain the composition of polyvariants (type t = [ lola | `moar ])
+
+- Find any other representation about polyvars
+
+- gadt (for another day)
+    - https://drup.github.io/2016/08/02/difflists/
+    - https://www.cl.cam.ac.uk/teaching/1516/L28/gadts.pdf
+
+query-json commit hash: 3844f4b

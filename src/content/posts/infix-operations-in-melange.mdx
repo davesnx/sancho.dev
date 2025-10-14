@@ -1,0 +1,71 @@
+---
+title: "Infix operations in Melange"
+publishedAt: "2025-10-12"
+isDraft: true
+tags:
+  - "Melange"
+  - "OCaml"
+  - "Reason"
+---
+
+# Title
+
+??
+
+```prolog
+let (>>=) = bind: 'a t -> ('a -> 'b t) -> 'b t
+
+let (>|=) = map: 'a t -> ('a -> 'b) -> 'b t
+
+let (<&>) = join: 'a t -> 'b t -> ('a * 'b) t
+
+```
+
+# Content
+
+### Describe what infix operators are, how are used in ReasonML/OCaml.
+
+OCaml has this feature which is somewhat obscure and not always (or very briefly) mentioned in books and tutorials. Depending on the first character of a function, it can behave as an infix operator. This is a core feature of OCaml and many developers exploit it in order to achieve their goals.
+
+- Explained in the manual [here](http://caml.inria.fr/pub/docs/manual-ocaml/expr.html) and [here](http://caml.inria.fr/pub/docs/manual-ocaml/lex.html#sec82).
+
+So anyone can define such a function like this:
+
+**`let** ( ***>** ) param1 param2 **=** calc_something param1 param2`
+
+Which can later be used like `param1 *> param2`
+
+Try to make sense of this concept before proceeding, as otherwise you will have a very hard time.
+
+Try do explain what's possible now in ReasonML, and what can we do with Melange
+https://jobjo.github.io//2019/04/24/ocaml-has-some-new-shiny-syntax.html
+
+- Create basic operators for Promise in a branch/repo
+-
+
+Try lwt?
+
+https://github.com/mzp/bs-lwt
+
+# async/await
+
+A little history “One of the most requested features from Reason/BuckleScript”.
+
+`let%` or `async/await` for promises
+
+https://github.com/anmonteiro/gh-feed-reader/blob/master/src/let_syntax.ml
+
+Other use-cases:
+
+- File path (`/`)
+
+```css
+let (===) = (a, b) => Expect.expect a |> Expect.toEqual b;
+
+describe("formatFloat", () => {
+  test("0.05", () => Format.orgTraffic(0.05) === toBe("0"));
+};
+```
+
+- bind/then/flatMap
+- Examplify the problems that might introduce? parsing combinators?  https://reasonml.chat/t/a-gentle-introduction-to-parser-combinators-and-angstrom/2546/3

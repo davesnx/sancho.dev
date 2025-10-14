@@ -1,0 +1,45 @@
+---
+title: "Type-safe interpolation in styled-ppx"
+publishedAt: "2025-10-12"
+isDraft: true
+tags:
+  - "styled-ppx"
+  - "CSS"
+  - "Type Safety"
+  - "OCaml"
+---
+
+**Title: Type-safe interpolation in styled-ppx**
+
+This is an extension from from styled-ppx I, link to that post, but getting a little more deep into interpolation
+
+# What’s interpolation in this context
+
+- string interpolation
+- styled-components interpolation example
+
+# Our approach
+
+// Explain dynamic components
+
+We don’t allow any interpolation to exist, we limit it to values.
+
+// Example from the docs
+
+This gives us the possibilty to ensure that those values are correctly typed at compile time.
+
+### Type-safe interpolation, what?
+
+# How it works
+
+As mentioned in the previous post (link) we ensure properties to be type-safe, in the case there’s some interpolation we ensure that interpolation is valid in this place (rephrase this) and delegate to our backend to generate code that will help the compiler infer the right types.
+
+// Schema of arrows on how that works
+
+## Final thoughts
+
+We currently limited by our backend bs-css and want to explore to generate the backend from the CSS Spec directly, so we wouldn’t be limited anymore (rephrase this).
+
+// Explain what does it mean to support this in ahref’s design system
+
+// Example of variants + styles in CSS

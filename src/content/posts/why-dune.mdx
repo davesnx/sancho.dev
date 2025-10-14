@@ -1,0 +1,19 @@
+---
+title: "Why Dune?"
+publishedAt: "2025-10-12"
+isDraft: true
+tags:
+  - "dune"
+  - "OCaml"
+  - "Build Tools"
+---
+
+## Fast description
+
+Explain why dune is needed on the first place. Take the https://github.com/chenglou/intro-to-reason-compilation explanation and retro-fit it into a blog post.
+
+- https://jonbec11.dreamhosters.com/ocaml-training/2022/12/06/basics-of-ocaml-testing/
+
+- [dune](https://github.com/pveber/ocaml-cookbook/blob/main/dune.readthedocs.io) is a program that helps compiling OCaml code into executables (or libraries, see below)
+- you provide a description of your project in text files, and `dune` figures out the proper way to call the compiler from it.
+- • for instance in `dune`, you can specify that your program depends on a library `bar`, and `dune` will look at a conventional location for a description of that library, and use it to generate proper calls to `ocamlc`/`ocamlopt`

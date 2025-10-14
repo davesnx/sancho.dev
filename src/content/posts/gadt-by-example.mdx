@@ -1,0 +1,70 @@
+---
+title: "GADTs by example"
+publishedAt: "2025-10-12"
+isDraft: true
+tags:
+  - "OCaml"
+  - "Type System"
+  - "GADTs"
+---
+
+- Phantom type
+
+    ```ocaml
+    type meters;
+    type inches;
+    type distance('a) = { v: int };
+
+    let three_meters: distance(meters) = {v: 3};
+    let four_inches: distance(inches) = {v: 4};
+    ```
+
+- Example by gleen
+
+    ```ocaml
+    type seconds;
+    type milliseconds;
+    type t(_) =
+      | Seconds(int): t(seconds)
+      | Milliseconds(int): t(milliseconds);
+
+    let onlySeconds = (Seconds(s): t(seconds)) => s;
+    let onlyMilliseconds = (Milliseconds(ms): t(milliseconds)) => ms;
+    let anythingInMilliseconds = (type a, time: t(a)) =>
+      switch (time) {
+      | Seconds(s) => s * 1000
+      | Milliseconds(ms) => ms
+      };
+
+    onlySeconds(Seconds(10)) onlySeconds(Milliseconds(10)); /* type error */
+    ```
+
+
+```ocaml
+module type Unit = {
+  type t;
+  let (+): (t, t) => t;
+  let make: int => t;
+};
+
+module Seconds: Unit = {
+  type t = int;
+  let (+) = (+);
+  let make = a => a;
+};
+module Miliseconds: Unit = {
+  type t = float;
+  let (+) = (+.);
+  let make = float_of_int;
+};
+
+let seconds = Seconds.make(10);
+let milliseconds = Miliseconds.make(10);
+```
+
+Explain GADT
+
+- This repo contains some interesting GADT code pieces. Most codes are easy, but some are probably quite complicated to you. Few may be even at jaw-dropping level... https://github.com/objmagic/jaw
+- https://discuss.ocaml.org/t/memory-representation-guarantees-and-obj-magic/15494
+- Look for time type showcasing GADT-kind of things From kotlin/??? talk by David
+- Use case: https://discuss.ocaml.org/t/given-a-variant-is-it-possible-to-write-a-type-signature-for-a-list-of-tuples-of-that-variant-where-each-pair-must-be-the-same-specific-variant/17374

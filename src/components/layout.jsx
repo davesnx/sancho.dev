@@ -228,7 +228,7 @@ const Children = styled.div`
 
 export default function Layout({ children }) {
   const [isOpen, setIsOpen] = React.useState(false);
-  const { theme, setTheme } = useTheme()
+  const { theme, setTheme } = useTheme();
   const toggleTheme = () => setTheme(theme === "dark" ? "light" : "dark");
   let open = () => setIsOpen(true);
   let close = () => setIsOpen(false);
@@ -305,20 +305,28 @@ export default function Layout({ children }) {
       </Children>
       <Main>
         <Footer>
-          <Text weight={400} size={font.fontSizeN1}>
-            <TextLink
-              color={colors.body30}
-              hoverColor={colors.body50}
-              href="https://x.com/davesnx"
-            >{`@davesnx`}</TextLink>
-          </Text>
-          <Text weight={400} size={font.fontSizeN1}>
-            <TextLink
-              color={colors.body30}
-              hoverColor={colors.body50}
-              href="https://github.com/davesnx/sancho.dev"
-            >{`Source`}</TextLink>
-          </Text>
+          <div>
+            <Text color={colors.body30} weight={600} size={font.fontSizeN2}>
+              David Sancho (
+              <TextLink
+                weight={600}
+                color={colors.body30}
+                hoverColor={colors.body50}
+                href="https://x.com/davesnx"
+              >{`@davesnx`}</TextLink>
+              )
+            </Text>
+          </div>
+          <div>
+            <Text weight={600} size={font.fontSizeN2}>
+              <TextLink
+                weight={600}
+                color={colors.body30}
+                hoverColor={colors.body50}
+                href="https://github.com/davesnx/sancho.dev"
+              >{`Source`}</TextLink>
+            </Text>
+          </div>
         </Footer>
       </Main>
     </Root>

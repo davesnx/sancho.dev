@@ -5,7 +5,6 @@ import { H1 } from "../components/heading";
 import { TextLink } from "../components/link";
 import Page from "../components/page";
 import MetaData from "../components/site-metadata";
-import { ListItem, UnorderList } from "../components/list";
 import Spacer from "../components/spacer";
 import { Stack } from "../components/taco";
 import Text from "../components/text";
@@ -32,59 +31,43 @@ const Bio = () => {
         <TextLink href="https://ocaml.org/">OCaml</TextLink>
         <span>.</span>
       </Text>
-
       <Spacer top={2} />
       <Text size={fonts.fontSize1}>
         I believe that the recipe for creating maintainable and powerful
         software lies in designing with clarity, sound architecture, and
-        embracing the iterative nature of development. Working at{" "}
-        <TextLink href="https://ahrefs.com/">ahrefs</TextLink>, I'm building
-        developer tooling while maintaining several Open Source projects in the
-        Reason ecosystem, including:
+        embracing the iterative nature of development. Currently working at{" "}
+        <TextLink href="https://ahrefs.com/">ahrefs</TextLink>, primarily
+        building developer tooling to help create nice UIs, also maintaining
+        several Open Source projects in the Reason ecosystem, such as{" "}
+        <TextLink href="https://github.com/reasonml/reason-react">
+          reason-react
+        </TextLink>{" "}
+        {", "}
+        <TextLink href="https://github.com/ml-in-barcelona/server-reason-react">
+          server-reason-react
+        </TextLink>
+        and{" "}
+        <TextLink href="https://github.com/davesnx/styled-ppx">
+          styled-ppx
+        </TextLink>
+        {"."}
       </Text>
-
-      <Spacer top={2} />
-      <UnorderList>
-        <ListItem>
-          <TextLink href="https://github.com/reasonml/reason-react">
-            reason-react
-          </TextLink>{" "}
-          Official React bindings for Reason and Melange
-        </ListItem>
-
-        <ListItem>
-          <TextLink href="https://github.com/ml-in-barcelona/server-reason-react">
-            server-reason-react
-          </TextLink>{" "}
-          Native server-side rendering for Reason React components
-        </ListItem>
-
-        <ListItem>
-          <TextLink href="https://github.com/davesnx/styled-ppx">
-            styled-ppx
-          </TextLink>{" "}
-          Type-safe styled components for ReScript, Melange, and native
-        </ListItem>
-      </UnorderList>
-
       <Spacer top={2} />
       <Text size={fonts.fontSize1}>
         I also contribute to the broader Reason and Melange ecosystems and
         co-host{" "}
         <TextLink href="https://www.twitch.tv/emelletv">emelle.tv</TextLink>,
-        where we explore ML-family languages and meet incredible authors of the
-        ecosystem.
+        where we explore ML-family languages and meet incredible authors from
+        the ecosystem.
       </Text>
 
       <Spacer top={2} />
       <Text size={fonts.fontSize1}>
         Previously, I helped build visual app development platforms at{" "}
         <TextLink href="https://draftbit.com">Draftbit</TextLink> for a year{" "}
-        and, before that, worked at{" "}
-        <TextLink href="https://www.typeform.com">Typeform</TextLink> where I
-        architected the form rendering engine during 5 years. My technical
-        interests span across compilers, type systems, scalable systems, CSS,
-        the Web and startups.
+        and, even before, worked at{" "}
+        <TextLink href="https://www.typeform.com">Typeform</TextLink> for 5
+        years where I lead the form rendering engine.
       </Text>
 
       <Spacer top={2} />

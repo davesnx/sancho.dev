@@ -1,0 +1,147 @@
+---
+title: "Choosing programming languages in the AI age: An opportunity for safer languages?"
+publishedAt: "2025-10-12"
+isDraft: true
+tags:
+  - "AI"
+  - "LLMs"
+  - "Programming Languages"
+  - "Type Safety"
+description: "How LLMs might benefit from safer programming languages"
+---
+
+- [ ]  Read https://chreke.com/posts/little-languages
+- [ ]  Read https://martinfowler.com/articles/2025-nature-abstraction.html
+- [ ]  Watch https://www.youtube.com/watch?v=hh0axmFH1j8&t=670s&ab_channel=TheHaskellFoundation
+- [ ]  Read and quote https://kirancodes.me/posts/log-lang-design-llms.html
+    - **The LLM Problem, or, rather, Everything is Easier in Python**
+
+    Let's start with what I see as the biggest problem that the introduction of LLMs is presenting to language design: **everything is easier in Python**.
+    That's a little hyperbolic, but what I'm really getting at here is that LLMs have been consistently found to have substantially higher efficiacies when operating in programming languages that are well represented within their training set – think languages like Python, Javascript, Typescript etc.
+- [ ]  https://zed.dev/blog/why-llms-cant-build-software
+
+- [ ]  [https://harper.blog/2025/02/16/my-llm-codegen-workflow-atm](https://harper.blog/2025/02/16/my-llm-codegen-workflow-atm/)
+- [x]  Read the future of web dev [https://protoship.io/blog/rails-on-ocaml](https://protoship.io/blog/rails-on-ocaml/)
+- [x]  Read [https://cdsmith.wordpress.com/2011/01/09/an-old-article-i-wrote](https://cdsmith.wordpress.com/2011/01/09/an-old-article-i-wrote/)
+    - Good notes about different type-systems
+- [x]  Watch https://x.com/sundeep/status/1914002310973526127
+    - “I know how I’m going to do it and go and doing it” - It’s AIs job now
+
+https://manus.im/app/hxFiEUMqYQqOgLVf6h26f1
+
+Alternative title:
+
+- Safer languages in the Age of AI
+- Safer language may be the future of programming in the AI age
+- **Choosing programming language in the AI age: an opportunity to safer languages?**
+- LLMs may change our preferred programming language
+- LLMs Might Prefer Much Safer Languages
+
+---
+
+# LLMs might benefit from much safer languages
+
+The rapid evolution of LLMs, is undeniably reshaping software development. We see LLMs assisting in code generation, debugging, and even design.
+
+However, the mainstream languages are getting more and more used since there’s more data where LLMs are trained on, and xxxx
+
+If we want to ship at the speed of light without breaking previous iterations of your codebase, we might unlock the potential of LLMs by reconsidering with languages we use.
+
+This isn't just about LLMs adapting to our current programming paradigms, it's about whether certain language characteristics inherently make them more suitable for AI-driven development.
+
+This post is a brain dump of ideas around LLMs, programming languages, safety and a complain on why the heck does the LLM always answer in Python or TypeScript.
+
+I would spoil to say that, even as an OCaml fan, sadly, it might not be the best choice for LLMs.
+
+## It’s happening already, even before LLMs
+
+As any software systems grows in complexity, the cost of fixing bugs and vulnerabilities scales, while the speed of development can slow down.
+
+Developers and organizations have recognized that investing in languages that prevent entire classes of errors at compile-time, or through inherent design, leads to more maintainable, secure, and ultimately, more reliable software.
+
+This proactive approach to error prevention, focusing on building safety into the linguistic foundation, was gaining momentum independently.
+
+Therefore, the introduction of LLMs into this evolving ecosystem isn't just a new toolset; it's an interaction with a paradigm that already values and strives for the very safety and predictability that LLMs themselves might benefit from.
+
+https://world.hey.com/joaoqalves/five-opinions-i-ve-kept-let-go-and-picked-up-as-a-software-builder-and-leader-5ab3b919
+
+There’s already a shift towards safety languages. Safety as a broad term, let me show a few examples before I jump into a proper definition of satefy.
+
+We've witnessed the rise and increasing adoption of languages like
+
+- TypeScript which brings gradual static typing to JavaScript
+- Rust has gained significant traction for its guarantees of memory safety without a garbage collector, and its robust handling of concurrency, making it a strong candidate for systems programming where reliability is paramount.
+- The Elixir ecosystem, has seen enhancements with type systems, further bolstering its reputation for building fault-tolerant systems.
+- Similarly, languages like Gleam are emerging, offering strong static typing for environments like the Erlang VM and JavaScript runtimes, emphasizing correctness and developer clarity.
+- Even Python, xx
+
+This gravitation towards safer languages was, and continues to be, driven by practical necessities. Not all safety is the same, thought, there are **levels**
+
+## Levels of safety
+
+Language safety revolves around several pillars
+
+- **Memory safety** is paramount, addressing issues like buffer overflows and use-after-free errors, which are notoriously common in languages like C and C++
+- **Type safety** ensuring that operations are performed on data of the correct type, thereby preventing errors that can range from incorrect calculations to severe runtime crashes
+- Different degrees of type-safety between **static typing** (where checks are done at compile-time) and **dynamic typing** (checks at runtime), as well as **strong typing** (where type rules are strictly enforced) versus **weak typing** (allowing more implicit type conversions, which can be error-prone)
+- **Thread safety** ensure the management of concurrent access to shared resources correctly, preventing race conditions and deadlocks in multi-threaded applications.
+- At the most advanced end, though less mainstream for general development, lies **provable logic and formal verification**, where mathematical techniques are used to prove the correctness of software components.
+
+The adoption of these safety features, in varying degrees, brings tangible benefits. The most immediate is a reduction in bugs. This directly translates to improved security, as many vulnerabilities are simply specific types of bugs exploited maliciously. Furthermore, safer languages often lead to better maintainability and make refactoring less risky, as the language's constraints provide a safety net against introducing new errors during modification.
+
+If those are so amazing and fantastic, why Coq isn’t mainstream yet?
+
+## Safer languages require more attention
+
+Safer languages are more tedious to write.
+
+more attention to memory
+
+more attention to correctness
+
+more attention to being correct
+
+more attention to being sound
+
+type-safety is painful when you are migrating from unsafe to safe, or even when you are creating software from scratch, but it's marvelous when you are maintaining, refactoring, testing and explaining code
+
+## Machines are learning
+
+LLMs excell at producing new, relatively isolated snippets of code. The current challenge is working with big codebases. This is where LLMs often falter, struggling with large contexts, requiring considerable hand-holding and to a certain point not being useful anymore.
+
+// Add tweet of levelsio about stop using llms for vibecoding
+
+When the big context issue gets resolved, the potentially next barrier would be deep understanding of the system: Learning the stdlib, the features of the language, the modules available, which services and their documentation your codebase use, etc.
+
+LLMs will benefit a lot from shorter feedback loops (as humans do) and they won’t have the issue of using more complex, boilerplat-y and
+
+## Here’s the catch
+
+This view of this world is still a fantasy, nowadays LLMs get tripped into loopholes, repeat same mistakes and needs to manually intervention. Those safer languages have small community, not much data to train in, and
+
+
+
+The user ~~vibe coder~~ of LLMs would prefer to use safer languages since that would mean that their output could be verified by a deterministic compiler
+
+---
+
+I have been thinking more as to how it is possible that a tool change made me flip mind between 'llm are cool for code but currently not helpful enough' to 'llm are cool for code'.
+The thing is, cursor was already very good at helping writing new code. But as a developer, what is hard is to edit code not to write new ones. And basically I find cursor very lacking in this area. It has agents yes, but the agents require a lot of hand holding. Most often you really need to tell it look at this file, look at this function, and so you still need to do most of the hard job.
+And obviously doing the hard job is hard, so most of the time as a human you want to remain quite generic, which means you gave it broad instruction. Which means big context and then the model basically gets lost a bit.
+What Claude code does differently is that it tries to automate this part. Basically when it has a task, it will first use normal tools to discover the information. Look for small chunks of code or files, and it seems to do a lot of work in the background on compressing the context or rebuilding the prompts from information it gathers with those tools. It seems to be a very fine grained agents
+And the result is that, the code edits are a lot more precise, because the context is cleaner, probably. And in practice it is a big difference.
+And I guess what it means is that, when you are trying to build agents, the really hard question is the how. The workflow. Not the technical how, I mean the how you would actually do something. I mean most of the time as humans we focus on the what, the outcome, or when we focus on the how it is to teach some beginner so it is simple and basic how. But really, to build a good agent I think you need to understand in general the workflow of an expert, not the basic workflow, how an expert achievez tasks, break it down into good process that works most of the time, and turn it into a pipeline.
+It's pretty hard at least for me to think about that tbh most of the time when someone asks me 'how do I do x' as a workflow question, my answer is basically 'just figure it out' :D
+
+## Why?
+
+alternative subtitle: xx
+
+- Maintainability does decrease a bit
+- if the machine can eventually understand your entire program, or write tests for you or even debug it for you, and then explain/change the code.
+    -
+- and the idea of an agent playing with a compiler and forking
+
+## How
+
+Simplify this post [https://harper.blog/2025/02/16/my-llm-codegen-workflow-atm](https://harper.blog/2025/02/16/my-llm-codegen-workflow-atm/) and explain what will be the workflow of “forking”

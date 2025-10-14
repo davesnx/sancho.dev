@@ -1,0 +1,41 @@
+---
+title: "React server components in Reason & OCaml"
+publishedAt: "2024-xx-xx"
+isDraft: true
+tags:
+- "React"
+- "Open Source"
+- "Reason"
+- "OCaml"
+---
+
+- [ ]  Check intro from https://git.ahrefs.com/ahrefs/monorepo/pull/24942
+- [ ]  Check how others “release” stuff
+    - [ ]  https://nextjs.org/blog/turbopack-for-development-stable
+    - [ ]  https://archive.jlongster.com/A-Prettier-Formatter
+    - [ ]  https://www.phoenixframework.org/blog/phoenix-liveview-1.0-released?release=1.0
+    - [ ]  https://waku.gg/blog/server-actions-are-here
+
+---
+
+### Title: RSC in Reason and OCaml
+
+- Minimum description on what’s RSC
+
+**React Server Components**, strictly speaking, are **React components that run exclusively on the server**, they never run or are even hydrated on the client, in fact, **aren't even included, bundled with alongside client-side code**, and thus have **no client-side JavaScript bundle size impact**.
+
+Running on the server enables components to have access to any server-resource such as the Database, Filesystem, etc. (maybe mention system stuff?).
+
+which more importantly allows to stream the components, as data comes along
+
+- How we implemented in another language
+    - RSC payload
+    - Streaming
+    - Server actions
+    - Bundler integration
+    - A dummy client router
+- Demo - Showcase the app
+- Bright future
+    - a proper router
+    - a data-layer lib
+- Call to enthusiasts

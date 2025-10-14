@@ -1,0 +1,50 @@
+---
+title: "Why am I doing this? Why should stop?"
+publishedAt: "2025-10-12"
+isDraft: true
+tags:
+  - "OCaml"
+  - "React"
+  - "Open Source"
+  - "Personal"
+---
+
+## Why am I doing this?
+
+- because it's fun (learning is fun, creating tools is fun and going deep is fun)
+- if I build something useful on top of great fundamentals (ocaml type-checker and melange) the possibilities are big
+    - DX (confidence, fast shipping, LSP, fun with LLMs)
+    - performance (native perf could fix some of the issues with SSR, for example)
+    - new patterns can appear for React with ocaml effects, at least the Suspense implementation would be different, but even user code
+- to assemble a small group of hackers
+- I’m passionate about integration between frontend and backend
+- I’m being payed
+
+## Why should I stop?
+
+- Building tooling is sometimes very frustrating
+- TS won, it might not be a better language but it’s absolutely a better product, it’s everywhere
+- There’s too much to build if I want to have a production-ready on par with the features with JS stack
+    - hot module reload (requires touching the build system, which may be hard)
+    - implementing a router (server side routing is easy, client side routing seems very hard)
+- There are clearly limitations to OCaml
+    - package manager and build system are bad
+    - community isn’t focused on web (even thought we have seen many people working on this, fundamentals are there)
+    - OCaml compiler isn’t focused on UX
+    - OCaml community isn’t focused on shipping and sharing
+    - JaneStreet wants to change OCaml to be on pair with Rust
+    - the development of OCaml (the language) is slow
+
+## What I’m looking for
+
+- Showcase the implementation
+    - client components
+    - async components
+    - Suspense
+- Discuss concepts
+- Router implementation
+- React esbuild plugin?
+
+- React.cache
+- optimsations for inline scripts on chunks
+- Next prerendering (dinamic-io)
