@@ -74,19 +74,19 @@ let Job = ({
     <Stack gap={1} align="left" fullWidth>
       <Row distribute="between" fullWidth>
         <Stack align="left" gap={0}>
-          <Text weight={400} size={font.fontSize2}>
+          <Text weight={700} size={font.fontSize2} color={colors.primary90}>
             {role}
           </Text>
           {company.url && (
-            <Text weight={500} size={font.fontSize0}>
-              <TextLink color={colors.primary90} href={company.url}>
+            <Text weight={500} size={colors.body50}>
+              <TextLink color={colors.body50} href={company.url}>
                 {company.url}
               </TextLink>
             </Text>
           )}
 
           {!company.url && (
-            <Text weight={500} color={colors.primary90} size={font.fontSize1}>
+            <Text weight={500} color={colors.body50} size={font.fontSize1}>
               {company.name}
             </Text>
           )}
@@ -163,9 +163,6 @@ let Work = () => (
   <>
     <MetaData title="Work" />
     <Page title={<H1>Work</H1>}>
-      <Spacer top={0} bottom={3}>
-        <H2>Experience</H2>
-      </Spacer>
       <Stack gap={3} align="left">
         <Job
           company={{
@@ -213,7 +210,7 @@ let Work = () => (
             from: "2013",
             to: "2014",
           }}
-          role="Backend developer"
+          role="Backend Developer"
         ></Job>
 
         <Job
@@ -221,9 +218,16 @@ let Work = () => (
             name: "Freelance",
             url: null,
             logo: (
-              <Text weight={400} size={font.fontSize3}>
+              <p
+                style={{
+                  fontSize: font.fontSize3,
+                  lineHeight: 1,
+                  margin: 0,
+                  padding: 0,
+                }}
+              >
                 😭
-              </Text>
+              </p>
             ),
             logoIsDark: false,
           }}

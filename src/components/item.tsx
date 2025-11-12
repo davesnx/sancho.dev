@@ -132,12 +132,12 @@ export const Item = ({
       <Box>
         <ButtonLink href={link}>
           <Row distribute="left" align="center" gap={0}>
-            <Text color={colors.body30} size={font.fontSize1} weight={600}>
+            <Text color={colors.body30} size={font.fontSize1} weight={700}>
               {meta}
             </Text>
             <Icon href={link} color={colors.body30} size={16} />
           </Row>
-          <Stack align="left" gap={2}>
+          <Stack align="left" gap={1}>
             <H4>{title}</H4>
             <Text size={font.fontSize0}>{description}</Text>
           </Stack>

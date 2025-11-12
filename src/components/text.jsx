@@ -9,7 +9,7 @@ export const styles = (props) => css`
   font-weight: ${props.weight ? props.weight : 400};
   font-size: ${props.size ? props.size : font.fontSize1};
   font-family: ${font.sans};
-  line-height: 1.85rem;
+  line-height: 1.7;
   color: ${props.color || colors.body};
   display: inline-block;
   margin: 0;
