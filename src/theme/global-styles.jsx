@@ -41,6 +41,10 @@ const GlobalStyles = css`
     box-sizing: border-box;
   }
 
+  strong {
+    font-weight: 500;
+  }
+
   pre,
   code {
     font-family: ${fonts.mono};
