@@ -5,10 +5,115 @@ isDraft: true
 tags:
   - "OCaml"
   - "odoc"
+  - "documentation"
 ---
 
-- Explain the need (look at odoc PRs)
-    - https://github.com/ocaml/odoc/issues/352
-    - https://discuss.ocaml.org/t/2025-documentation-best-practices/17008/14
-- Explain the funtionality
-- Show an example
+At Melange, we use [odoc](https://github.com/ocaml/odoc) to generate API references for our libraries Belt, Js, Stdlib, and others.
+
+The rest of our documentation lives in [VitePress](https://vitepress.dev/), a static site generator that works with Markdown files and gives us all the modern features you'd expect: fast search, smooth navigation, a single-page app experience.
+
+This setup works, but it creates a hard boundary between the two documentation systems:
+
+- **No cross-referencing**: Can't link from VitePress articles to odoc modules in a meaningful way
+- **Fragmented search**: VitePress search doesn't index the odoc-generated HTML
+- **Jarring experience**: Users go from a smooth SPA to a multi-page HTML site mid-read
+- **Inconsistent navigation**: Different headers, sidebars, and styles
+- **Duplication**: Tracking scripts, favicons, syntax highlighting—everything needs separate configuration
+
+The problem isn't unique to Melange. Every OCaml project using modern documentation tools may faces this split: API docs in one world, guides and tutorials in another.
+
+## The rabbit hole: why markdown matters
+
+When I started looking into solutions, I realized this goes deeper than just "unifying docs."
+
+Markdown has become the universal language of documentation. GitHub renders it. GitLab renders it. Every static site generator speaks it fluently. And increasingly, Large Language Models need it.
+
+LLMs are trained on structured, human-readable text. Markdown's simple syntax makes it perfect for this—it's machine-parseable yet stays readable. When your API documentation is HTML-only, it's harder to index, harder to search, and harder for AI tools to understand.
+
+For OCaml, this matters. If we want our documentation to be accessible to modern tools—from static site generators to AI assistants—we need Markdown output from odoc.
+
+## The journey: previous attempts
+
+This isn't a new idea. The OCaml community has been thinking about it for years.
+
+Back in 2018, [issue #121](https://github.com/ocaml/odoc/issues/121) was opened on odoc's repository, requesting Markdown support. The use case was clear: better integration with tools like Docusaurus and GitHub's own rendering.
+
+In 2021, someone submitted [PR #791](https://github.com/ocaml/odoc/pull/791)—a serious attempt at building a Markdown generator. It showed promise but didn't merge. The technical challenges of mapping odoc's rich internal representation to Markdown while preserving cross-references and structure proved complex.
+
+[mbarbin's Docusaurus experiment](https://mbarbin.github.io/doc-experiment-docusaurus/) demonstrated what was possible: a proof-of-concept showing odoc content integrated into a modern documentation site. It looked great, but required workarounds.
+
+Then, in early 2025, the conversation reignited on [OCaml Discuss](https://discuss.ocaml.org/t/2025-documentation-best-practices/17008/14). Fresh momentum, fresh ideas, and renewed commitment from maintainers.
+
+Standing on the shoulders of these efforts, the feature finally landed.
+
+## The solution: using the markdown backend
+
+The markdown backend is now available in odoc. Here's how to use it.
+
+**Requirements**: You'll need odoc 2.5.0 or later, which includes the markdown renderer.
+
+**Building markdown docs**: If you're using Dune (and you probably are), it's as simple as:
+
+```bash
+dune build @doc-markdown
+```
+
+This generates Markdown files alongside your usual HTML documentation. The structure mirrors your module hierarchy, with each module getting its own `.md` file.
+
+**Example output**: Here's a snippet of what odoc generates from a simple OCaml module:
+
+```markdown
+# Module `Belt.Array`
+
+Functions for array manipulation.
+
+## val length : 'a array -> int
+
+Return the length (number of elements) of the given array.
+
+## val get : 'a array -> int -> 'a
+
+`get a n` returns the element number `n` of array `a`.
+
+Raises `Invalid_argument` if `n` is outside the range 0 to `(length a - 1)`.
+```
+
+Clean, readable, and ready to integrate into any Markdown-based system.
+
+**Real-world example**: We're already using this in Melange. You can see the results in our [documentation site](https://melange.re/), where API references now live alongside guides and tutorials in a unified experience.
+
+## The payoff: what this enables
+
+This isn't just about prettier docs. It unlocks capabilities that weren't possible before.
+
+**Unified documentation sites**: Your entire documentation—tutorials, guides, and API references—can now live in a single static site generator. One navigation system, one search index, one experience.
+
+**Platform flexibility**: Want your API docs on GitHub? Done. GitLab? Sure. Any platform that renders Markdown becomes a potential home for your documentation.
+
+**Better LLM context**: As AI tools become more integrated into development workflows, having your API documentation in a structured, parseable format means better code completion, better documentation search, and better AI-assisted development.
+
+**Modern SSG features**: Static site generators like Docusaurus, VitePress, and MkDocs come with powerful features—full-text search, versioning, internationalization, dark mode, responsive design. Now you can use all of them with your OCaml API docs.
+
+For Melange specifically, this means we can finally have the documentation site we've wanted: fast, searchable, beautiful, and consistent from the first page to the last function signature.
+
+## Try it and build
+
+The markdown backend is ready. If you maintain an OCaml library, this is your chance to modernize your documentation.
+
+Try it out. Run `dune build @doc-markdown` on your project. See what it generates. Integrate it with your favorite static site generator.
+
+Report issues you find. The feature is new, and real-world usage will surface edge cases and opportunities for improvement.
+
+Build awesome documentation sites. Show the OCaml community what's possible when API docs and human-written guides live together seamlessly.
+
+## Resources
+
+If you want to dive deeper or follow the history:
+
+- [OCaml Discuss: 2025 Documentation Best Practices](https://discuss.ocaml.org/t/2025-documentation-best-practices/17008/14) - The recent discussion that brought new momentum
+- [odoc Issue #121](https://github.com/ocaml/odoc/issues/121) - The original feature request from 2018
+- [odoc PR #791](https://github.com/ocaml/odoc/pull/791) - The 2021 attempt at implementing markdown support
+- [mbarbin's Docusaurus Experiment](https://mbarbin.github.io/doc-experiment-docusaurus/) - Proof-of-concept integration
+- [Melange Documentation](https://melange.re/) - A real-world example of the unified documentation approach
+
+The OCaml documentation ecosystem just got a lot more flexible. Time to put it to use.
