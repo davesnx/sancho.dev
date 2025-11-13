@@ -137,7 +137,7 @@ This allows users to download it directly via npm, or from the GitHub release pa
 
 Apart from compiling to the executable, query-json is compiled to JavaScript as well.
 
-The compilation to JavaScript is the sweet section of this blog post and the part I'm most proud of. It wasn't a big effort, since the tools I used are already mature, but being capable of releasing 2 distributables from a single codebase seems like magic, considering all query-json's dependencies ([menhir](https://opam.ocaml.org/packages/menhir/), [sedlex](https://github.com/ocaml-community/sedlex), and [yojson](https://github.com/ocaml-community/yojson)).
+Compilation to JavaScript is the sweet section of this blog post and the part I'm most proud of. It wasn't a big effort, since the tools I used are already mature, but being capable of releasing 2 distributables from a single codebase feels like magic, considering all query-json's dependencies ([menhir](https://opam.ocaml.org/packages/menhir/), [sedlex](https://github.com/ocaml-community/sedlex), and [yojson](https://github.com/ocaml-community/yojson)).
 
 To accomplish this, I used [js_of_ocaml](https://github.com/ocsigen/js_of_ocaml) (jsoo for short). jsoo is a compiler that uses an intermediate representation of the OCaml compiler (the bytecode I mentioned before) and transforms it to JavaScript.
 
@@ -154,7 +154,9 @@ After running `dune build`, I had a big file `Js.bc.js` with all the code bundle
 
 ## Building query-json's playground
 
-After compiling to a JavaScript artifact, I only needed a website where I could run it. I made a playground to teach people how to use it without installing a binary. Aside from the accessibility for users (speed, discoverability, security), it carries a few bonuses, such as testing new versions on each pull request and deploy previews.
+After compiling to JavaScript, I built a web playground where people could try query-json without installing anything. This made the tool immediately accessible—no downloads, no setup, just open a browser and start typing.
+
+Beyond user accessibility, the playground brought some nice benefits: I could deploy preview versions on every pull request, users could share bug reports via a single URL, and everything ran faster since it executed locally in the browser.
 
 ![](/images/query-json-playground.png)
 
@@ -178,6 +180,8 @@ Using jsoo seems a powerful way to run your OCaml code in a browser without much
 Most of the REPLs from Reason, OCaml, Flow, and ReScript (all written in OCaml) use js_of_ocaml for their playgrounds.
 
 # Future
+
+query-json is still young. It supports most of jq's core features, but there's room to grow—and maybe diverge.
 
 The future of query-json is to support more constructors from the jq language and provide a better experience for running operations on JSON by having better error messages and better performance.
 
