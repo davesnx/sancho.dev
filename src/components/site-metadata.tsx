@@ -111,7 +111,7 @@ const MetaData = (props: Props) => {
       ))}
       <meta
         name="ahrefs-site-verification"
-        content="66eb7258c64a949157d612bbbbbaf307cb4a3cad3ce20766bdc504486b0712b4"
+        content="e9ca7385f25c8be91c3030a42bb760b5c9f23a9e43e6dce7a5f3409951c4572d"
       />
       <NextScript
         src="https://analytics.ahrefs.com/analytics.js"
