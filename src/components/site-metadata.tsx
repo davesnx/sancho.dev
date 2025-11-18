@@ -8,7 +8,7 @@ const config = {
   twitter: `@davesnx`,
   feedUrl: `https://sancho.dev/rss.xml`,
   description:
-    "Software engineer into ReasonML and OCaml. Working on styled-ppx, server-reason-react and Open Source UI stuff at ahrefs",
+    "Open Source UI infra at @ahrefs with OCaml. Made styled-ppx and server-reason-react. Working on reason-react / Melange / Reason",
 };
 
 type RequiredProps = {
@@ -30,11 +30,11 @@ const MetaData = (props: Props) => {
   const subtitle = props.title || "";
   const title = subtitle + " | sancho.dev";
   const description = props.description || defaultProps.description;
+  const encodedDescription = encodeURIComponent(description);
   const schemaType = props.schemaType || defaultProps.schemaType;
   const createdAt = props.createdAt || defaultProps.createdAt;
   const url = props.url || defaultProps.url;
-
-  const image = `https://metaimg.fly.dev/v1/render?design=profile&avatar=https://avatars.githubusercontent.com/u/3763599?v=4&name=David+Sancho&handler=%40davesnx&description=Software+engineer.+Currently+working+at+ahrefs+remotely+on+UI+stuff+and+building+styled-ppx.+Previously+%40draftbit+%40Typeform.+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++Co-host+at+https%3A%2F%2Femelle.tv&backgroundColor=191919&textColor=ced0d2`;
+  const image = `https://metaimg.xyz/render?design=profile&avatar=https://avatars.githubusercontent.com/u/3763599?v=4&name=David+Sancho&handler=%40davesnx&description=${encodedDescription}&backgroundColor=191919&textColor=ced0d2`;
   const metaTags: Array<{ name: string; content: string }> = [
     { name: "twitter:card", content: "summary_large_image" },
     { name: "twitter:site", content: config.twitter },
