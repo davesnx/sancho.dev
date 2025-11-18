@@ -60,7 +60,8 @@
     "seamless-scroll-polyfill": "2.2.0",
     "shiki": "^0.10.1",
     "unified": "10.1.2",
-    "unist-util-visit": "4.1.0"
+    "unist-util-visit": "4.1.0",
+    "wrangler": "^4.47.0"
   },
   "devDependencies": {
     "@biomejs/biome": "1.9.4",
