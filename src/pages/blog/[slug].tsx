@@ -8,6 +8,7 @@ import { GetStaticPaths, GetStaticProps, InferGetStaticPropsType } from "next";
 
 import { Frontmatter } from "../../lib/frontmatter";
 import { getAllFrontmatter, getMdxBySlug } from "../../lib/mdx";
+import Twitter from "../../components/svgs/twitter";
 import { Row } from "../../components/taco";
 import { H1, H2, H3, H4, H5, H6 } from "../../components/heading";
 import { TextLink } from "../../components/link";
@@ -16,9 +17,38 @@ import Page from "../../components/page";
 import MetaData from "../../components/site-metadata";
 import Spacer from "../../components/spacer";
 import Text from "../../components/text";
+import { ZoomableImage } from "../../components/zoomable-image";
 import breakpoints from "../../theme/constants";
 import font from "../../theme/fonts";
 import { colors } from "../../theme/theme";
+
+const ThanksContainer = styled.div`
+  background-color: ${colors.codeBackground};
+  padding: 2rem;
+  border-radius: 8px;
+`;
+
+const TwitterButton = styled.a`
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background-color: ${colors.overlay};
+  color: ${colors.body};
+  padding: 10px 16px;
+  border-radius: 10px;
+  text-decoration: none;
+  font-weight: 600;
+  transition: transform 150ms ease-in-out;
+  font-size: 14px;
+
+  &:hover {
+    background-color: ${colors.contrastCodeBackground80};
+  }
+
+  &:active {
+    background-color: ${colors.contrastCodeBackground80};
+  }
+`;
 
 const PaddedH1 = styled(H1)`
   margin-top: 5rem;
@@ -170,7 +200,7 @@ const Table = styled.table`
 const Image = (props: any) => {
   return (
     <Oversized>
-      <Img {...props} />
+      <ZoomableImage {...props} />
     </Oversized>
   );
 };
@@ -328,8 +358,7 @@ export default function Post({
                   color={colors.body50}
                   hoverColor={colors.body80}
                   decorationColor="transparent"
-                  href="https://x.com/davesnx"
-                  target="_blank"
+                  href="/about"
                 >
                   {`davesnx`.toUpperCase()}
                 </TextLink>
@@ -363,11 +392,30 @@ export default function Post({
         <Spacer top={4} bottom={2}>
           <Hr />
         </Spacer>
-        <Text>
-          <Strong>Thanks for reaching the end</Strong>. Let me know if you have
-          any feedback, corrections or questions. Always happy to chat about any
-          topic mentioned in this post, feel free to reach out.
-        </Text>
+        <ThanksContainer>
+          <Row distribute="between" align="center" wrap="wrap" gap={2}>
+            <div style={{ flex: 1, minWidth: "280px" }}>
+              <Text>
+                <Strong>Thanks for reaching the end</Strong>! If you have any
+                feedback, corrections or questions, let me know.
+              </Text>
+              <Spacer top={2}>
+                <Text>
+                  Follow me on 𝕏 (Twitter) for more updates and to know when I
+                  publish new content.
+                </Text>
+              </Spacer>
+            </div>
+            <TwitterButton
+              href="https://twitter.com/davesnx"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <Twitter fill="#fff" size={20} />
+              <Text>Follow me </Text>
+            </TwitterButton>
+          </Row>
+        </ThanksContainer>
         <Spacer top={2} />
       </Page>
     </>

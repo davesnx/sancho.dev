@@ -60,58 +60,137 @@ let fadeIn = keyframes`{
 }`;
 
 const Svg = styled.svg`
-  cursor: pointer;
-  position: absolute;
-  top: 0;
-  border-radius: 50%;
-  right: 0;
-  left: 0;
-  bottom: 0;
   width: 100%;
   height: 100%;
   fill: ${colors.body90};
   transition: transform 200ms ease-in-out;
-  margin-right: 12px;
+
+  /* Reset absolute positioning if it was there before */
+  position: relative;
 
   &:hover {
     fill: ${colors.primary80};
-    transform: scale(1.1);
   }
 `;
 
-const ToggleThemeTogglerButton = styled.button`
-  color: transparent;
-  background: transparent;
-  border: none;
-  padding: 0;
-
-  width: 10px;
-  height: 10px;
-
-  position: relative;
+const IconWrapper = styled(animated.div)`
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
 `;
 
-const ToggleThemeToggler = ({ onClick }) => {
-  const [active, setActive] = React.useState(false);
+const ToggleThemeTogglerButton = styled.button`
+  color: ${props => props.floating ? colors.body : 'transparent'};
+  background: ${props => props.floating ? colors.body10 : 'transparent'};
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  border-radius: ${props => props.floating ? '24px' : '50%'};
 
-  const d = active ? "M-28" : "M0";
+  width: ${props => props.floating ? '48px' : '24px'};
+  height: ${props => props.floating ? '24px' : '24px'};
+
+  backdrop-filter: ${props => props.floating ? 'blur(5px)' : 'none'};
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  position: relative;
+  transition: all 0.2s ease;
+
+  &:hover {
+    background: ${props => props.floating ? colors.body20 : 'transparent'};
+  }
+`;
+
+const HeaderOuter = styled.div`
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  max-width: 100%;
+  margin: 0 auto;
+  position: relative;
+  margin-top: 24px;
+`;
+
+const HeaderInner = styled.div`
+  width: 100%;
+  max-width: ${constants.desktop.width}px;
+  margin: 0 auto;
+  padding: 0 32px;
+  display: flex;
+  align-items: center;
+
+  @media screen and (max-width: ${constants.mobile.width}px) {
+    padding: 0 24px;
+  }
+`;
+
+const DesktopSwitcherWrapper = styled.div`
+  position: absolute;
+  right: 16px;
+  display: none;
+
+  @media screen and (min-width: ${constants.desktop.width + 120}px) {
+    display: block;
+  }
+`;
+
+const ToggleThemeToggler = ({ isDark, onClick, floating }) => {
+  const firstRender = React.useRef(true);
+
+  React.useEffect(() => {
+    firstRender.current = false;
+  }, []);
+
+  const { cx, cy } = useSpring({
+    from: {
+      cx: isDark ? 10 : 30,
+      cy: isDark ? 2 : -10,
+    },
+    cx: isDark ? 10 : 30,
+    cy: isDark ? 2 : -10,
+    config: { tension: 400, friction: 30 },
+    immediate: firstRender.current,
+  });
+
+  const { x } = useSpring({
+    from: {
+      x: floating ? (isDark ? 28 : 4) : 0,
+    },
+    x: floating ? (isDark ? 28 : 4) : 0,
+    config: { tension: 300, friction: 20, clamp: true },
+    immediate: firstRender.current,
+  });
+
+  const content = (
+    <Svg
+      xmlns="http://www.w3.org/2000/svg"
+      aria-hidden="true"
+      fill="currentColor"
+      viewBox="0 0 32 32"
+    >
+      <mask id="theme-toggle-mask">
+        <rect x="0" y="0" width="32" height="32" fill="white" />
+        <animated.circle cx={cx} cy={cy} r="11" fill="black" />
+      </mask>
+      <circle cx="16" cy="16" r="14" mask="url(#theme-toggle-mask)" />
+    </Svg>
+  );
 
   return (
-    <ToggleThemeTogglerButton>
-      <Svg
-        xmlns="http://www.w3.org/2000/svg"
-        aria-hidden="true"
-        fill="currentColor"
-        viewBox="0 0 32 32"
-        onClick={() => {
-          setActive(!active);
-          onClick();
-        }}
-      >
-        <g clipPath="url(#theme-toggle__eclipse__cutout)">
-          <circle cx="16" cy="16" r="16" />
-        </g>
-      </Svg>
+    <ToggleThemeTogglerButton onClick={onClick} aria-label="Toggle theme" floating={floating}>
+      {floating ? (
+        <IconWrapper style={{ left: x, width: 16, height: 16 }}>
+          {content}
+        </IconWrapper>
+      ) : (
+        content
+      )}
     </ToggleThemeTogglerButton>
   );
 };
@@ -161,10 +240,6 @@ const Bar = styled.span`
   display: block;
 `;
 
-const Header = styled.header`
-  padding-top: 24px;
-`;
-
 const Hambuger = ({ onClick }) => {
   return (
     <Icon
@@ -191,6 +266,10 @@ const MobileMenuItem = styled(MenuItem)`
 `;
 
 const Logo = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
   color: ${colors.body};
   transition: color 0.15s ease;
 
@@ -229,7 +308,10 @@ const Children = styled.div`
 export default function Layout({ children }) {
   const [isOpen, setIsOpen] = React.useState(false);
   const { theme, setTheme } = useTheme();
+  const [mounted, setMounted] = React.useState(false);
+  React.useEffect(() => setMounted(true), []);
   const toggleTheme = () => setTheme(theme === "dark" ? "light" : "dark");
+  const isDark = mounted && theme === "dark";
   let open = () => setIsOpen(true);
   let close = () => setIsOpen(false);
 
@@ -241,15 +323,14 @@ export default function Layout({ children }) {
 
   return (
     <Root>
-      <Main>
-        <Header>
-          <Row distribute="between">
+      <HeaderOuter>
+        <HeaderInner>
+          <Row distribute="between" fullWidth>
             <NavigateButton href="/">
               <House />
             </NavigateButton>
             <DesktopMenu key="desktop">
               <Row gap={4}>
-                <ToggleThemeToggler onClick={toggleTheme} />
                 <MenuItem href="/blog">blog</MenuItem>
                 <MenuItem href="/work">work</MenuItem>
                 <MenuItem href="/talks">talks</MenuItem>
@@ -285,7 +366,7 @@ export default function Layout({ children }) {
                       <MobileMenuItem onClick={toggleTheme} href="#">
                         toggle theme
                         <Spacer left={2} />
-                        <ToggleThemeToggler onClick={toggleTheme} />
+                        <ToggleThemeToggler isDark={isDark} onClick={toggleTheme} />
                       </MobileMenuItem>
                     </Stack>
                   </MobileMenuPopup>
@@ -296,8 +377,11 @@ export default function Layout({ children }) {
               )}
             </MobileMenu>
           </Row>
-        </Header>
-      </Main>
+        </HeaderInner>
+        <DesktopSwitcherWrapper>
+          <ToggleThemeToggler isDark={isDark} onClick={toggleTheme} floating />
+        </DesktopSwitcherWrapper>
+      </HeaderOuter>
       <Children>
         <ResponsiveSpacer mobileTop={2} desktopTop={6}>
           {children}

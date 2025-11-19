@@ -81,7 +81,7 @@ const Home = () => {
             hoverColor={colors.body}
             decorationColor={colors.body10}
           >
-            {"X (Twitter)"}
+            {"𝕏 (Twitter)"}
           </TextLink>
           <TextLink
             underlined
