@@ -63,15 +63,9 @@ let fadeIn = keyframes`{
 const Svg = styled.svg`
   width: 100%;
   height: 100%;
-  fill: ${colors.body90};
+  fill: ${props => props.isDark ? colors.primary80 : colors.body80};
   transition: transform 200ms ease-in-out;
-
-  /* Reset absolute positioning if it was there before */
   position: relative;
-
-  &:hover {
-    fill: ${colors.primary80};
-  }
 `;
 
 const IconWrapper = styled(animated.div)`
@@ -83,7 +77,7 @@ const IconWrapper = styled(animated.div)`
   position: absolute;
 `;
 
-const ToggleThemeTogglerButton = styled.button`
+const ThemeTogglerButton = styled.button`
   color: ${props => props.floating ? colors.body : 'transparent'};
   background: ${props => props.floating ? colors.body10 : 'transparent'};
   border: none;
@@ -141,7 +135,7 @@ const DesktopSwitcherWrapper = styled.div`
   }
 `;
 
-const ToggleThemeTogglerComponent = ({ isDark, onClick, floating }) => {
+const ThemeTogglerComponent = ({ isDark, onClick, floating }) => {
   const { cx, cy } = useSpring({
     from: {
       cx: isDark ? 10 : 30,
@@ -164,7 +158,7 @@ const ToggleThemeTogglerComponent = ({ isDark, onClick, floating }) => {
     <Svg
       xmlns="http://www.w3.org/2000/svg"
       aria-hidden="true"
-      fill="currentColor"
+      isDark={isDark}
       viewBox="0 0 32 32"
     >
       <mask id="theme-toggle-mask">
@@ -176,7 +170,7 @@ const ToggleThemeTogglerComponent = ({ isDark, onClick, floating }) => {
   );
 
   return (
-    <ToggleThemeTogglerButton onClick={onClick} aria-label="Toggle theme" floating={floating}>
+    <ThemeTogglerButton onClick={onClick} aria-label="Toggle theme" floating={floating}>
       {floating ? (
         <IconWrapper style={{ left: x, width: 16, height: 16 }}>
           {content}
@@ -184,11 +178,11 @@ const ToggleThemeTogglerComponent = ({ isDark, onClick, floating }) => {
       ) : (
         content
       )}
-    </ToggleThemeTogglerButton>
+    </ThemeTogglerButton>
   );
 };
 
-const ToggleThemeToggler = dynamic(() => Promise.resolve(ToggleThemeTogglerComponent), { ssr: false });
+const ThemeToggler = dynamic(() => Promise.resolve(ThemeTogglerComponent), { ssr: false });
 
 const MobileMenuOverlay = styled.div`
   position: fixed;
@@ -359,7 +353,7 @@ export default function Layout({ children }) {
                       <MobileMenuItem onClick={toggleTheme} href="#">
                         toggle theme
                         <Spacer left={2} />
-                        <ToggleThemeToggler isDark={isDark} onClick={toggleTheme} />
+                        <ThemeToggler isDark={isDark} onClick={toggleTheme} />
                       </MobileMenuItem>
                     </Stack>
                   </MobileMenuPopup>
@@ -372,7 +366,7 @@ export default function Layout({ children }) {
           </Row>
         </HeaderInner>
         <DesktopSwitcherWrapper>
-          <ToggleThemeToggler isDark={isDark} onClick={toggleTheme} floating />
+          <ThemeToggler isDark={isDark} onClick={toggleTheme} floating />
         </DesktopSwitcherWrapper>
       </HeaderOuter>
       <Children>

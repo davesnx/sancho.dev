@@ -1,6 +1,3 @@
-// ABOUTME: GitHub API utility with types and client-safe utilities
-// ABOUTME: Handles fetching repo info including stars, language, description, and org avatars
-
 export interface GitHubRepo {
   owner: string;
   name: string;
@@ -92,15 +89,14 @@ export async function fetchAllGitHubRepos(urls: string[]): Promise<GitHubRepo[]>
     .map((result) => result.value);
 }
 
-// Language color mapping based on GitHub's language colors
 export const languageColors: Record<string, string> = {
   OCaml: "#EF7A08",
-  Reason: "#ff5847",
-  TypeScript: "#3178c6",
-  JavaScript: "#f1e05a",
-  HTML: "#e34c26",
-  CSS: "#563d7c",
-  Shell: "#89e051",
+  Reason: "#FF5847",
+  TypeScript: "#3178C6",
+  JavaScript: "#F1E05A",
+  HTML: "#E34C26",
+  CSS: "#563D7C",
+  Shell: "#89E051",
   Makefile: "#427819",
 };
 
