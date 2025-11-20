@@ -411,7 +411,7 @@ export default function Post({
               target="_blank"
               rel="noopener noreferrer"
             >
-              <Twitter fill="#fff" size={20} />
+              <Twitter fill={colors.body} size={20} />
               <Text>Follow me </Text>
             </TwitterButton>
           </Row>

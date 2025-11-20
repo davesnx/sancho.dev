@@ -14,10 +14,6 @@ const Logo = styled.div`
   border-radius: 6px;
   cursor: pointer;
   transition: all 100ms ease-in;
-
-  &:hover {
-    background: ${(props: LogoProps) => props.padded && props.color};
-  }
 `;
 
 const Icon = ({

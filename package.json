@@ -3,6 +3,7 @@
   "version": "0.1.1",
   "scripts": {
     "dev": "next dev -p 3005",
+    "prebuild": "node scripts/fetch-github-repos.mjs",
     "build": "next build",
     "start": "next start",
     "build-stats": "cross-env ANALYZE=true npm run build",
@@ -11,7 +12,8 @@
     "build-prod": "npm run build && npm run export",
     "clean": "rimraf .next out",
     "ts": "tsc --noEmit --pretty --jsx react-jsx",
-    "format": "prettier --write 'src'"
+    "format": "prettier --write 'src'",
+    "fetch-repos": "node scripts/fetch-github-repos.mjs"
   },
   "dependencies": {
     "@emotion/react": "^11.10.0",
@@ -22,6 +24,7 @@
     "color": "^3.2.1",
     "copy-to-clipboard": "3.3.1",
     "date-fns": "2.19.0",
+    "effect": "^3.19.5",
     "globby": "^14.0.2",
     "gray-matter": "4.0.3",
     "hast-util-to-html": "8.0.3",
@@ -69,6 +72,7 @@
     "@types/unist": "^2.0.6",
     "autoprefixer": "^10.3.6",
     "cross-env": "^7.0.3",
+    "dotenv": "^16.4.5",
     "postcss": "^8.3.11",
     "rimraf": "^3.0.2",
     "typescript": "^4.4.3"

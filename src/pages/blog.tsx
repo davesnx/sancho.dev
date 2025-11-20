@@ -11,7 +11,7 @@ import { getAllFrontmatter } from "../lib/mdx";
 import { H1, H3 } from "../components/heading";
 import { NavigateButton } from "../components/link";
 import Page from "../components/page";
-import { Stack } from "../components/taco";
+import { Row, Stack } from "../components/taco";
 import Text from "../components/text";
 import constants from "../theme/constants";
 import font from "../theme/fonts";
@@ -56,30 +56,8 @@ const PostDescription = styled.div`
   }
 `;
 
-const PostTitleOverflow = styled.div`
-  position: relative;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-`;
-
 const PostDate = styled.div`
-  position: absolute;
-  right: 100%;
-  width: max-content;
-  min-width: max-content;
-
-  padding-right: 3rem;
-
-  @media screen and (max-width: ${constants.big.width}px) {
-    position: relative;
-    right: auto;
-  }
-
-  @media screen and (max-width: ${constants.mobile.width}px) {
-    display: none;
-  }
+  flex-shrink: 0;
 `;
 
 let Blog = ({ frontmatters }: { frontmatters: Array<Frontmatter> }) => {
@@ -98,15 +76,14 @@ let Blog = ({ frontmatters }: { frontmatters: Array<Frontmatter> }) => {
                 href={"/blog/" + frontmatter.slug}
               >
                 <Stack fullWidth align="left">
-                  <PostTitleOverflow>
+                  <Row distribute="between" fullWidth>
                     <PostTitle> {frontmatter.title}</PostTitle>
                     {frontmatter.publishedAt ? (
                       <PostDate>
                         <Text
                           kerning="0.05rem"
-                          color={colors.body50}
-                          size={font.fontSizeN2}
-                          weight={600}
+                          size={font.fontSizeN1}
+                          weight={800}
                         >
                           {format(
                             parseISO(frontmatter.publishedAt),
@@ -115,7 +92,7 @@ let Blog = ({ frontmatters }: { frontmatters: Array<Frontmatter> }) => {
                         </Text>
                       </PostDate>
                     ) : null}
-                  </PostTitleOverflow>
+                  </Row>
                   {frontmatter.description ? (
                     <PostDescription>
                       <Text color={colors.body50} size={font.fontSize1}>

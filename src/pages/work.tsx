@@ -1,5 +1,8 @@
 import styled from "@emotion/styled";
 import React from "react";
+import { GetStaticProps } from "next";
+import Fs from "fs";
+import Path from "path";
 
 import { H1, H2 } from "../components/heading";
 import { TextLink } from "../components/link";
@@ -11,11 +14,28 @@ import Text from "../components/text";
 import constants from "../theme/constants";
 import font from "../theme/fonts";
 import { colors } from "../theme/theme";
+import { GitHubRepo, getLanguageColor } from "../lib/github";
+
+let OpenSourceSection = styled.div`
+  width: 100vw;
+  max-width: 1400px;
+  margin-left: 50%;
+  transform: translateX(-50%);
+  padding: 0 2rem;
+
+  @media screen and (max-width: ${constants.mobile.width}px) {
+    padding: 0 1rem;
+  }
+`;
 
 let Gallery = styled.div`
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: repeat(3, 1fr);
   gap: 1rem;
+
+  @media screen and (max-width: ${constants.mobile.width}px) {
+    grid-template-columns: 1fr;
+  }
 `;
 
 let CompanyLogo = styled.div`
@@ -114,10 +134,19 @@ let Job = ({
   </JobRoot>
 );
 
+let OrgAvatar = styled.img`
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  filter: grayscale(1);
+  transition: filter 0.2s ease;
+`;
+
 let OpenSourceItem = styled.a`
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 0.75rem;
   width: 100%;
   cursor: pointer;
 
@@ -125,35 +154,104 @@ let OpenSourceItem = styled.a`
 
   padding: 1rem;
   border-radius: 0.5rem;
-  border: 2px solid ${colors.contrastCodeBackground};
+  border: 1px solid ${colors.contrastCodeBackground};
   background-color: ${colors.contrastCodeBackground30};
+
+  transition: all 0.2s ease;
 
   &:hover {
     background-color: ${colors.contrastCodeBackground80};
+
+    ${OrgAvatar} {
+      filter: grayscale(0);
+    }
+
+    svg {
+      filter: grayscale(0) !important;
+    }
   }
 `;
 
-let OpenSource = ({
-  name,
-  description,
-  url,
-}: {
-  name: string;
-  description: string;
-  url: string;
-}) => (
-  <OpenSourceItem href={url} target="_blank">
-    <Text weight={600} size={font.fontSize1}>
-      {name}
+let RepoHeader = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+`;
+
+let RepoFooter = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-top: auto;
+`;
+
+let StatItem = styled.div`
+  display: inline-grid;
+  grid-auto-flow: column;
+  align-items: baseline;
+  gap: 0.375rem;
+  & > svg {
+    position: relative;
+    top: 1px;
+  }
+`;
+
+let LanguageDot = ({ color }: { color: string }) => (
+  <svg
+    width="12"
+    height="12"
+    viewBox="0 0 12 12"
+    fill="none"
+    style={{ filter: "grayscale(1)", transition: "filter 0.2s ease" }}
+  >
+    <circle cx="6" cy="6" r="6" fill={color} />
+  </svg>
+);
+
+let StarIcon = ({ color }: { color: string }) => (
+  <svg width="14" height="14" viewBox="0 0 24 24" fill={color}>
+    <path d="M12 1.75C12.311 1.75 12.5898 1.94201 12.7007 2.23263L15.0587 8.41234L21.5366 8.72913C21.8418 8.74406 22.1074 8.94263 22.2081 9.23111C22.3088 9.5196 22.2244 9.84032 21.9947 10.0419L17.0648 14.3695L18.8767 21.3106C18.9558 21.6135 18.8383 21.9338 18.5821 22.1137C18.3258 22.2937 17.9848 22.2956 17.7266 22.1183L12 18.1875L6.27335 22.1183C6.01519 22.2956 5.67409 22.2937 5.41785 22.1137C5.1616 21.9338 5.04413 21.6135 5.12323 21.3106L6.93517 14.3695L2.0052 10.0419C1.77557 9.84032 1.69118 9.5196 1.79186 9.23111C1.89253 8.94263 2.15815 8.74406 2.46334 8.72913L8.94127 8.41234L11.2992 2.23263C11.4101 1.94201 11.6889 1.75 12 1.75Z" />
+  </svg>
+);
+
+let OpenSource = ({ repo }: { repo: GitHubRepo }) => (
+  <OpenSourceItem href={repo.url} target="_blank">
+    <RepoHeader>
+      <OrgAvatar src={repo.ownerAvatar} alt={repo.owner} />
+      <Text weight={600} size={font.fontSize1} color={colors.primary90}>
+        {repo.name}
+      </Text>
+    </RepoHeader>
+    <Text size={font.fontSizeN1} color={colors.body}>
+      {repo.description}
     </Text>
-    <Text size={font.fontSizeN1}>{description}</Text>
+    <Text size={font.fontSize0} color={colors.body50}>
+      {"github.com/" + repo.owner + "/" + repo.name}
+    </Text>
+    <RepoFooter>
+      {repo.language && (
+        <StatItem>
+          <LanguageDot color={getLanguageColor(repo.language)} />{" "}
+          <Text weight={600} size={font.fontSize0} color={colors.body50}>
+            {repo.language}
+          </Text>
+        </StatItem>
+      )}
+      <StatItem>
+        <StarIcon color={colors.body50} />
+        <Text weight={600} size={font.fontSize0} color={colors.body50}>
+          {repo.stars.toLocaleString()}
+        </Text>
+      </StatItem>
+    </RepoFooter>
   </OpenSourceItem>
 );
 
 let AherfsLogo = () => (
   <svg
-    width="60"
-    height="60"
+    width="55"
+    height="55"
     viewBox="0 0 1200 1200"
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
@@ -235,7 +333,32 @@ let OfertiaLogo = () => (
   </svg>
 );
 
-let Work = () => (
+export const getStaticProps: GetStaticProps = async () => {
+  const reposFilePath = Path.join(process.cwd(), "src/data/github-repos.json");
+
+  let repos: GitHubRepo[] = [];
+
+  try {
+    if (Fs.existsSync(reposFilePath)) {
+      const fileContents = Fs.readFileSync(reposFilePath, "utf-8");
+      repos = JSON.parse(fileContents);
+    } else {
+      console.warn(
+        "⚠️ github-repos.json not found. Run 'npm run fetch-repos' to generate it."
+      );
+    }
+  } catch (error) {
+    console.error("Error reading github-repos.json:", error);
+  }
+
+  return {
+    props: {
+      repos,
+    },
+  };
+};
+
+let Work = ({ repos }: { repos: GitHubRepo[] }) => (
   <>
     <MetaData title="Work" />
     <Page title={<H1>Work</H1>}>
@@ -316,68 +439,18 @@ let Work = () => (
         ></Job>
       </Stack>
       <Spacer top={3} />
-      <Spacer top={6} bottom={3}>
+      <Spacer top={10} bottom={3}>
         <H2>Open Source</H2>
       </Spacer>
-      <Text>{`I author, maintain or co-maintain a few open-source projects`}</Text>
-      <Spacer top={3} />
-      <Gallery>
-        <OpenSource
-          name="styled-ppx"
-          description="Styled components for ReScript and Melange with type-safe CSS, including a CSS parser and CSS type-checker."
-          url="https://github.com/davesnx/styled-ppx"
-        />
-        <OpenSource
-          name="server-reason-react"
-          description="Server rendering Reason React components in OCaml using Reason."
-          url="https://github.com/ml-in-barcelona/server-reason-react"
-        />
-        <OpenSource
-          name="reason-react"
-          description="Reason bindings for React.js"
-          url="https://github.com/reasonml/reason-react"
-        />
-        <OpenSource
-          name="reason"
-          description="A programming language that combines the JavaScript and OCaml ecosystems."
-          url="https://github.com/reasonml/reason"
-        />
-        <OpenSource
-          name="melange"
-          description="A mixture of tools combined to produce JavaScript from OCaml and Reason"
-          url="https://github.com/melange-re/melange"
-        />
-        <OpenSource
-          name="html_of_jsx"
-          description="OCaml library to render HTML with JSX"
-          url="https://github.com/davesnx/html_of_jsx"
-        />
-        <OpenSource
-          name="ocaml-box"
-          description="OCaml library to render boxes in the terminal"
-          url="https://github.com/davesnx/ocaml-box"
-        />
-        <OpenSource
-          name="taco"
-          description="Layout primitives written in ReasonReact and styled-ppx"
-          url="https://github.com/davesnx/taco"
-        />
-        <OpenSource
-          name="query-json"
-          description="Faster, simpler and more portable implementation of `jq` in Reason"
-          url="https://github.com/davesnx/query-json"
-        />
-        <OpenSource
-          name="query-json's playground"
-          description="Backendless playground for query-json to play, explore and learn. Build with Js_of_ocaml and jsoo-react"
-          url="https://github.com/davesnx/query-json"
-        />
-        <OpenSource
-          name="The interactive way to learn ramda"
-          description="Website to teach Ramda.js interactively. Build with React."
-          url="https://github.com/davesnx/learn-ramda"
-        />
-      </Gallery>
+      <Text>{`Open source has been a significant part of my career, and I'm committed to giving back to the community that has given me so much. I actively author, maintain, and contribute to projects ranging from developer tools and languages to libraries that help others build better software. Here are some of the notable projects:`}</Text>
+      <Spacer top={6} />
+      <OpenSourceSection>
+        <Gallery>
+          {repos.map((repo) => (
+            <OpenSource key={repo.fullName} repo={repo} />
+          ))}
+        </Gallery>
+      </OpenSourceSection>
     </Page>
   </>
 );

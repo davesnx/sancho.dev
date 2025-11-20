@@ -1,0 +1,162 @@
+[
+  {
+    "owner": "davesnx",
+    "name": "styled-ppx",
+    "fullName": "davesnx/styled-ppx",
+    "description": "Type-safe styled components for ReScript, Melange and native with type-safe CSS",
+    "stars": 410,
+    "language": "Reason",
+    "url": "https://github.com/davesnx/styled-ppx",
+    "ownerAvatar": "https://avatars.githubusercontent.com/u/3763599?v=4"
+  },
+  {
+    "owner": "ml-in-barcelona",
+    "name": "server-reason-react",
+    "fullName": "ml-in-barcelona/server-reason-react",
+    "description": "Native implementation of React's Server-side rendering (SSR) and React Server Components (RSC) architecture for Reason and OCaml",
+    "stars": 156,
+    "language": "OCaml",
+    "url": "https://github.com/ml-in-barcelona/server-reason-react",
+    "ownerAvatar": "https://avatars.githubusercontent.com/u/71291184?v=4"
+  },
+  {
+    "owner": "reasonml",
+    "name": "reason-react",
+    "fullName": "reasonml/reason-react",
+    "description": "Reason bindings for ReactJS",
+    "stars": 3275,
+    "language": "Reason",
+    "url": "https://github.com/reasonml/reason-react",
+    "ownerAvatar": "https://avatars.githubusercontent.com/u/20414525?v=4"
+  },
+  {
+    "owner": "reasonml",
+    "name": "reason",
+    "fullName": "reasonml/reason",
+    "description": "Simple, fast & type safe code that leverages the JavaScript & OCaml ecosystems",
+    "stars": 10287,
+    "language": "OCaml",
+    "url": "https://github.com/reasonml/reason",
+    "ownerAvatar": "https://avatars.githubusercontent.com/u/20414525?v=4"
+  },
+  {
+    "owner": "melange-re",
+    "name": "melange",
+    "fullName": "melange-re/melange",
+    "description": "A mixture of tooling combined to produce JavaScript from OCaml & Reason",
+    "stars": 945,
+    "language": "OCaml",
+    "url": "https://github.com/melange-re/melange",
+    "ownerAvatar": "https://avatars.githubusercontent.com/u/81453532?v=4"
+  },
+  {
+    "owner": "davesnx",
+    "name": "html_of_jsx",
+    "fullName": "davesnx/html_of_jsx",
+    "description": "Render HTML with JSX",
+    "stars": 41,
+    "language": "OCaml",
+    "url": "https://github.com/davesnx/html_of_jsx",
+    "ownerAvatar": "https://avatars.githubusercontent.com/u/3763599?v=4"
+  },
+  {
+    "owner": "davesnx",
+    "name": "ocaml-box",
+    "fullName": "davesnx/ocaml-box",
+    "description": "Render boxes in the terminal with OCaml or Reason",
+    "stars": 25,
+    "language": "Reason",
+    "url": "https://github.com/davesnx/ocaml-box",
+    "ownerAvatar": "https://avatars.githubusercontent.com/u/3763599?v=4"
+  },
+  {
+    "owner": "davesnx",
+    "name": "taco",
+    "fullName": "davesnx/taco",
+    "description": "Layout primitives written with ReasonReact and styled-ppx",
+    "stars": 58,
+    "language": "Reason",
+    "url": "https://github.com/davesnx/taco",
+    "ownerAvatar": "https://avatars.githubusercontent.com/u/3763599?v=4"
+  },
+  {
+    "owner": "davesnx",
+    "name": "query-json",
+    "fullName": "davesnx/query-json",
+    "description": "Faster, simpler and more portable implementation of `jq` in OCaml",
+    "stars": 614,
+    "language": "OCaml",
+    "url": "https://github.com/davesnx/query-json",
+    "ownerAvatar": "https://avatars.githubusercontent.com/u/3763599?v=4"
+  },
+  {
+    "owner": "ml-in-barcelona",
+    "name": "quickjs.ml",
+    "fullName": "ml-in-barcelona/quickjs.ml",
+    "description": "OCaml bindings to QuickJS",
+    "stars": 22,
+    "language": "OCaml",
+    "url": "https://github.com/ml-in-barcelona/quickjs.ml",
+    "ownerAvatar": "https://avatars.githubusercontent.com/u/71291184?v=4"
+  },
+  {
+    "owner": "davesnx",
+    "name": "ocaml-toon",
+    "fullName": "davesnx/ocaml-toon",
+    "description": "TOON (Token-Oriented Object Notation) parser and printer library in OCaml",
+    "stars": 4,
+    "language": "OCaml",
+    "url": "https://github.com/davesnx/ocaml-toon",
+    "ownerAvatar": "https://avatars.githubusercontent.com/u/3763599?v=4"
+  },
+  {
+    "owner": "ocaml-mlx",
+    "name": "mlx",
+    "fullName": "ocaml-mlx/mlx",
+    "description": "OCaml .mlx syntax dialect with JSX syntax expressions",
+    "stars": 131,
+    "language": "OCaml",
+    "url": "https://github.com/ocaml-mlx/mlx",
+    "ownerAvatar": "https://avatars.githubusercontent.com/u/166814964?v=4"
+  },
+  {
+    "owner": "melange-re",
+    "name": "melange-re.github.io",
+    "fullName": "melange-re/melange-re.github.io",
+    "description": "Documentation site for Melange",
+    "stars": 26,
+    "language": "JavaScript",
+    "url": "https://github.com/melange-re/melange-re.github.io",
+    "ownerAvatar": "https://avatars.githubusercontent.com/u/81453532?v=4"
+  },
+  {
+    "owner": "davesnx",
+    "name": "dune-release-action",
+    "fullName": "davesnx/dune-release-action",
+    "description": "Automatically release OCaml packages to opam using dune-release in GitHub Actions",
+    "stars": 4,
+    "language": "JavaScript",
+    "url": "https://github.com/davesnx/dune-release-action",
+    "ownerAvatar": "https://avatars.githubusercontent.com/u/3763599?v=4"
+  },
+  {
+    "owner": "davesnx",
+    "name": "awesome-ppx-deriving",
+    "fullName": "davesnx/awesome-ppx-deriving",
+    "description": "A collection of ppx-deriving plugins",
+    "stars": 10,
+    "language": null,
+    "url": "https://github.com/davesnx/awesome-ppx-deriving",
+    "ownerAvatar": "https://avatars.githubusercontent.com/u/3763599?v=4"
+  },
+  {
+    "owner": "davesnx",
+    "name": "learn-ramda",
+    "fullName": "davesnx/learn-ramda",
+    "description": "🐏 The interactive way to learn ramda",
+    "stars": 89,
+    "language": "JavaScript",
+    "url": "https://github.com/davesnx/learn-ramda",
+    "ownerAvatar": "https://avatars.githubusercontent.com/u/3763599?v=4"
+  }
+]

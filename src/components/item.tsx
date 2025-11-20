@@ -15,11 +15,9 @@ import Text from "./text";
 
 const GithubIcon = ({
   href,
-  color,
   size,
 }: {
   href: string;
-  color: string;
   size: number;
 }) => (
   <Icon
@@ -28,17 +26,15 @@ const GithubIcon = ({
     href={href}
     svg={Github}
     bg={colors.grey}
-    color={color}
+    color="#181717"
   />
 );
 
 const WebIcon = ({
   href,
-  color,
   size,
 }: {
   href: string;
-  color: string;
   size: number;
 }) => (
   <Icon
@@ -47,17 +43,15 @@ const WebIcon = ({
     href={href}
     svg={Web}
     bg={colors.grey}
-    color={color}
+    color={colors.primary}
   />
 );
 
 const YouTubeIcon = ({
   href,
-  color,
   size,
 }: {
   href: string;
-  color: string;
   size: number;
 }) => (
   <Icon
@@ -66,7 +60,7 @@ const YouTubeIcon = ({
     href={href}
     svg={YouTube}
     bg={colors.grey}
-    color={color}
+    color={colors.r}
   />
 );
 
@@ -78,11 +72,9 @@ export const Kind = {
 
 type Icon = ({
   href,
-  color,
   size,
 }: {
   href: string;
-  color: string;
   size: number;
 }) => JSX.Element;
 
@@ -107,8 +99,17 @@ let Box = styled.div`
   border: 2px solid ${colors.contrastCodeBackground};
   background-color: ${colors.contrastCodeBackground30};
 
+  svg {
+    filter: grayscale(1);
+    transition: filter 0.2s ease;
+  }
+
   &:hover {
     background-color: ${colors.contrastCodeBackground80};
+
+    svg {
+      filter: grayscale(0);
+    }
   }
 `;
 
@@ -135,7 +136,7 @@ export const Item = ({
             <Text color={colors.body30} size={font.fontSize1} weight={700}>
               {meta}
             </Text>
-            <Icon href={link} color={colors.body30} size={16} />
+            <Icon href={link} size={16} />
           </Row>
           <Stack align="left" gap={1}>
             <H4>{title}</H4>
