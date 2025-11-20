@@ -43,7 +43,12 @@ const StyledA = styled.a`
   ${(props: AnchorProps) => Anchor(props)};
 `;
 
-export const TextLink = ({ href, ...rest }: AnchorProps & { href: string } & React.AnchorHTMLAttributes<HTMLAnchorElement>) => {
+export const TextLink = ({
+  href,
+  ...rest
+}: AnchorProps & {
+  href: string;
+} & React.AnchorHTMLAttributes<HTMLAnchorElement>) => {
   let color = rest.color || colors.body;
   let hoverColor = rest.hoverColor || colors.primary;
   let decorationColor = rest.decorationColor || color;
@@ -70,7 +75,9 @@ const UnstyledA = styled.a`
 export const ButtonLink = ({
   href,
   ...rest
-}: AnchorProps & { href: string } & React.AnchorHTMLAttributes<HTMLAnchorElement>) => {
+}: AnchorProps & {
+  href: string;
+} & React.AnchorHTMLAttributes<HTMLAnchorElement>) => {
   return (
     <NextLink href={href} shallow legacyBehavior>
       <UnstyledA href={href} {...rest} />
