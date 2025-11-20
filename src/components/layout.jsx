@@ -1,6 +1,7 @@
 import { keyframes } from "@emotion/react";
 import styled from "@emotion/styled";
 import React from "react";
+import dynamic from "next/dynamic";
 import { createPortal } from "react-dom";
 import { useTheme } from "next-themes";
 import { animated, useSpring } from "react-spring";
@@ -140,13 +141,7 @@ const DesktopSwitcherWrapper = styled.div`
   }
 `;
 
-const ToggleThemeToggler = ({ isDark, onClick, floating }) => {
-  const firstRender = React.useRef(true);
-
-  React.useEffect(() => {
-    firstRender.current = false;
-  }, []);
-
+const ToggleThemeTogglerComponent = ({ isDark, onClick, floating }) => {
   const { cx, cy } = useSpring({
     from: {
       cx: isDark ? 10 : 30,
@@ -155,7 +150,6 @@ const ToggleThemeToggler = ({ isDark, onClick, floating }) => {
     cx: isDark ? 10 : 30,
     cy: isDark ? 2 : -10,
     config: { tension: 400, friction: 30 },
-    immediate: firstRender.current,
   });
 
   const { x } = useSpring({
@@ -164,7 +158,6 @@ const ToggleThemeToggler = ({ isDark, onClick, floating }) => {
     },
     x: floating ? (isDark ? 28 : 4) : 0,
     config: { tension: 300, friction: 20, clamp: true },
-    immediate: firstRender.current,
   });
 
   const content = (
@@ -194,6 +187,8 @@ const ToggleThemeToggler = ({ isDark, onClick, floating }) => {
     </ToggleThemeTogglerButton>
   );
 };
+
+const ToggleThemeToggler = dynamic(() => Promise.resolve(ToggleThemeTogglerComponent), { ssr: false });
 
 const MobileMenuOverlay = styled.div`
   position: fixed;
@@ -308,10 +303,8 @@ const Children = styled.div`
 export default function Layout({ children }) {
   const [isOpen, setIsOpen] = React.useState(false);
   const { theme, setTheme } = useTheme();
-  const [mounted, setMounted] = React.useState(false);
-  React.useEffect(() => setMounted(true), []);
   const toggleTheme = () => setTheme(theme === "dark" ? "light" : "dark");
-  const isDark = mounted && theme === "dark";
+  const isDark = theme === "dark";
   let open = () => setIsOpen(true);
   let close = () => setIsOpen(false);
 
