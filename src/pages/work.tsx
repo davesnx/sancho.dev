@@ -30,11 +30,11 @@ let OpenSourceSection = styled.div`
 
 let Gallery = styled.div`
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: 1fr;
   gap: 1rem;
 
-  @media screen and (max-width: ${constants.mobile.width}px) {
-    grid-template-columns: 1fr;
+  @media screen and (min-width: ${constants.mobile.width}px) {
+    grid-template-columns: repeat(2, 1fr);
   }
 `;
 
@@ -373,7 +373,7 @@ let Work = ({ repos }: { repos: GitHubRepo[] }) => (
             from: "2021",
             to: "curr",
           }}
-          role="Software Engineer"
+          role="Software engineer"
         />
         <Job
           company={{
@@ -385,7 +385,7 @@ let Work = ({ repos }: { repos: GitHubRepo[] }) => (
             from: "2020",
             to: "2021",
           }}
-          role="Fullstack Engineer"
+          role="Fullstack engineer"
         />
         <Job
           company={{
@@ -397,7 +397,7 @@ let Work = ({ repos }: { repos: GitHubRepo[] }) => (
             from: "2014",
             to: "2019",
           }}
-          role="Frontend Engineer"
+          role="Frontend engineer"
         />
 
         <Job
