@@ -63,7 +63,7 @@ let fadeIn = keyframes`{
 const Svg = styled.svg`
   width: 100%;
   height: 100%;
-  fill: ${props => props.isDark ? colors.primary80 : colors.body80};
+  fill: ${(props) => (props.isDark ? colors.primary80 : colors.body80)};
   transition: transform 200ms ease-in-out;
   position: relative;
 `;
@@ -78,17 +78,17 @@ const IconWrapper = styled(animated.div)`
 `;
 
 const ThemeTogglerButton = styled.button`
-  color: ${props => props.floating ? colors.body : 'transparent'};
-  background: ${props => props.floating ? colors.body10 : 'transparent'};
+  color: ${(props) => (props.floating ? colors.body : "transparent")};
+  background: ${(props) => (props.floating ? colors.body10 : "transparent")};
   border: none;
   padding: 0;
   cursor: pointer;
-  border-radius: ${props => props.floating ? '24px' : '50%'};
+  border-radius: ${(props) => (props.floating ? "24px" : "50%")};
 
-  width: ${props => props.floating ? '48px' : '24px'};
-  height: ${props => props.floating ? '24px' : '24px'};
+  width: ${(props) => (props.floating ? "48px" : "24px")};
+  height: ${(props) => (props.floating ? "24px" : "24px")};
 
-  backdrop-filter: ${props => props.floating ? 'blur(5px)' : 'none'};
+  backdrop-filter: ${(props) => (props.floating ? "blur(5px)" : "none")};
   display: flex;
   align-items: center;
   justify-content: center;
@@ -97,7 +97,7 @@ const ThemeTogglerButton = styled.button`
   transition: all 0.2s ease;
 
   &:hover {
-    background: ${props => props.floating ? colors.body20 : 'transparent'};
+    background: ${(props) => (props.floating ? colors.body20 : "transparent")};
   }
 `;
 
@@ -109,7 +109,7 @@ const HeaderOuter = styled.div`
   max-width: 100%;
   margin: 0 auto;
   position: relative;
-  margin-top: 24px;
+  margin-top: 32px;
 `;
 
 const HeaderInner = styled.div`
@@ -170,7 +170,11 @@ const ThemeTogglerComponent = ({ isDark, onClick, floating }) => {
   );
 
   return (
-    <ThemeTogglerButton onClick={onClick} aria-label="Toggle theme" floating={floating}>
+    <ThemeTogglerButton
+      onClick={onClick}
+      aria-label="Toggle theme"
+      floating={floating}
+    >
       {floating ? (
         <IconWrapper style={{ left: x, width: 16, height: 16 }}>
           {content}
@@ -182,7 +186,9 @@ const ThemeTogglerComponent = ({ isDark, onClick, floating }) => {
   );
 };
 
-const ThemeToggler = dynamic(() => Promise.resolve(ThemeTogglerComponent), { ssr: false });
+const ThemeToggler = dynamic(() => Promise.resolve(ThemeTogglerComponent), {
+  ssr: false,
+});
 
 const MobileMenuOverlay = styled.div`
   position: fixed;
@@ -369,37 +375,43 @@ export default function Layout({ children }) {
           <ThemeToggler isDark={isDark} onClick={toggleTheme} floating />
         </DesktopSwitcherWrapper>
       </HeaderOuter>
+      <Spacer bottom={6} />
       <Children>
         <ResponsiveSpacer mobileTop={2} desktopTop={6}>
           {children}
         </ResponsiveSpacer>
       </Children>
       <Main>
-        <Footer>
-          <div>
-            <Text color={colors.body30} weight={600} size={font.fontSizeN2}>
-              David Sancho (
-              <TextLink
-                weight={600}
-                color={colors.body30}
-                hoverColor={colors.body50}
-                href="https://x.com/davesnx"
-              >{`@davesnx`}</TextLink>
-              )
-            </Text>
-          </div>
-          <div>
-            <Text weight={600} size={font.fontSizeN2}>
-              <TextLink
-                weight={600}
-                color={colors.body30}
-                hoverColor={colors.body50}
-                href="https://github.com/davesnx/sancho.dev"
-              >{`Source`}</TextLink>
-            </Text>
-          </div>
-        </Footer>
+        <Spacer top={4} bottom={6}>
+          <Footer>
+            <div>
+              <Text color={colors.body30} weight={600} size={font.fontSizeN2}>
+                David Sancho (
+                <TextLink
+                  weight={600}
+                  color={colors.body30}
+                  hoverColor={colors.body50}
+                  href="https://x.com/davesnx"
+                >{`@davesnx`}</TextLink>
+                )
+              </Text>
+            </div>
+            <div>
+
+
+<Text weight={600} size={font.fontSizeN2}>
+                <TextLink
+                  weight={600}
+                  color={colors.body30}
+                  hoverColor={colors.body50}
+                  href="https://github.com/davesnx/sancho.dev"
+                >{`Source`}</TextLink>
+              </Text>
+            </div>
+          </Footer>
+        </Spacer>
       </Main>
+
     </Root>
   );
 }

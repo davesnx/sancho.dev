@@ -12,7 +12,8 @@
     "build-prod": "npm run build && npm run export",
     "clean": "rimraf .next out",
     "ts": "tsc --noEmit --pretty --jsx react-jsx",
-    "format": "prettier --write 'src'",
+    "format": "biome format --write src",
+    "lint": "biome lint --write src",
     "fetch-repos": "node scripts/fetch-github-repos.mjs"
   },
   "dependencies": {
