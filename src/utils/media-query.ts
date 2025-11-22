@@ -1,6 +1,6 @@
 import {
-  DependencyList,
-  EffectCallback,
+  type DependencyList,
+  type EffectCallback,
   useEffect,
   useLayoutEffect,
   useState,
@@ -26,7 +26,7 @@ function queryObjectToString(query: string | MediaQueryObject) {
 
   return Object.entries(query)
     .map(([feature, value]) => {
-      let convertedFeature = camelToHyphen(feature);
+      const convertedFeature = camelToHyphen(feature);
       let convertedValue = value;
 
       if (typeof convertedValue === "boolean") {
@@ -61,17 +61,17 @@ export const mockMediaQueryList: MediaQueryList = {
 const createUseMedia =
   (effect: Effect) =>
   (rawQuery: string | MediaQueryObject, defaultState = false) => {
-    let [state, setState] = useState(defaultState);
-    let query = queryObjectToString(rawQuery);
+    const [state, setState] = useState(defaultState);
+    const query = queryObjectToString(rawQuery);
 
     effect(() => {
       let mounted = true;
-      let mediaQueryList: MediaQueryList =
+      const mediaQueryList: MediaQueryList =
         typeof window === "undefined"
           ? mockMediaQueryList
           : window.matchMedia(query);
 
-      let onChange = () => {
+      const onChange = () => {
         if (!mounted) {
           return;
         }
@@ -97,7 +97,7 @@ export const useMediaLayout = createUseMedia(useLayoutEffect);
 export default useMedia;
 
 export const useIsMobile = () => {
-  let isWide = useMedia({ minWidth: constants.mobile.width + "px" });
-  let isSmall = !isWide;
+  const isWide = useMedia({ minWidth: constants.mobile.width + "px" });
+  const isSmall = !isWide;
   return isSmall;
 };

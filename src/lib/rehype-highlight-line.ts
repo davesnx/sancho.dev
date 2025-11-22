@@ -4,7 +4,7 @@ import { toHtml } from "hast-util-to-html";
 import parse from "rehype-parse";
 import { unified } from "unified";
 
-let lineNumberify = function lineNumberify(ast, lineNum = 1) {
+const lineNumberify = function lineNumberify(ast, lineNum = 1) {
   let lineNumber = lineNum;
   return ast.reduce(
     (result, node) => {
@@ -15,7 +15,7 @@ let lineNumberify = function lineNumberify(ast, lineNum = 1) {
           return result;
         }
 
-        let lines = node.value.split("\n");
+        const lines = node.value.split("\n");
         for (let i = 0; i < lines.length; i++) {
           if (i !== 0) ++lineNumber;
           if (i === lines.length - 1 && lines[i].length === 0) continue;
@@ -32,7 +32,7 @@ let lineNumberify = function lineNumberify(ast, lineNum = 1) {
 
       if (node.children) {
         node.lineNumber = lineNumber;
-        let processed = lineNumberify(node.children, lineNumber);
+        const processed = lineNumberify(node.children, lineNumber);
         node.children = processed.nodes;
         result.lineNumber = processed.lineNumber;
         result.nodes.push(node);
@@ -46,13 +46,13 @@ let lineNumberify = function lineNumberify(ast, lineNum = 1) {
   );
 };
 
-let wrapLines = function wrapLines(ast, linesToHighlight) {
-  let highlightAll = linesToHighlight.length === 1 && linesToHighlight[0] === 0;
-  let allLines = Array.from(new Set(ast.map((x) => x.lineNumber)));
+const wrapLines = function wrapLines(ast, linesToHighlight) {
+  const highlightAll = linesToHighlight.length === 1 && linesToHighlight[0] === 0;
+  const allLines = Array.from(new Set(ast.map((x) => x.lineNumber)));
   let i = 0;
-  let wrapped = allLines.reduce((nodes, marker) => {
-    let line = marker;
-    let children = [];
+  const wrapped = allLines.reduce((nodes, marker) => {
+    const line = marker;
+    const children = [];
     for (; i < ast.length; i++) {
       if (ast[i].lineNumber < line) {
         nodes.push(ast[i]);
@@ -89,9 +89,9 @@ let wrapLines = function wrapLines(ast, linesToHighlight) {
 };
 
 // https://github.com/gatsbyjs/gatsby/pull/26161/files
-let MULTILINE_TOKEN_SPAN = /<span class="token ([^"]+)">[^<]*\n[^<]*<\/span>/g;
+const MULTILINE_TOKEN_SPAN = /<span class="token ([^"]+)">[^<]*\n[^<]*<\/span>/g;
 
-let applyMultilineFix = function (ast) {
+const applyMultilineFix = (ast) => {
   // AST to HTML
   let html = toHtml(ast);
 
@@ -101,7 +101,7 @@ let applyMultilineFix = function (ast) {
   );
 
   // HTML to AST
-  let hast = unified()
+  const hast = unified()
     .use(parse, { emitParseErrors: true, fragment: true })
     .parse(html);
 
@@ -109,8 +109,8 @@ let applyMultilineFix = function (ast) {
 };
 
 function rehypeHighlightLine(ast, lines) {
-  let formattedAst = applyMultilineFix(ast);
-  let numbered = lineNumberify(formattedAst).nodes;
+  const formattedAst = applyMultilineFix(ast);
+  const numbered = lineNumberify(formattedAst).nodes;
 
   return wrapLines(numbered, lines);
 }

@@ -4,7 +4,7 @@ import React from "react";
 
 import { Global } from "@emotion/react";
 import { ThemeProvider } from "next-themes";
-import { AppProps } from "next/app";
+import type { AppProps } from "next/app";
 
 import GlobalStyles from "../theme/global-styles";
 

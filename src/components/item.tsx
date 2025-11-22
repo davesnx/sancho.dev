@@ -84,7 +84,7 @@ const KindToIcon: Record<keyof typeof Kind, Icon> = {
   YouTube: YouTubeIcon,
 };
 
-let Box = styled.div`
+const Box = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -126,7 +126,7 @@ export const Item = ({
   kind: string;
   link: string;
 }) => {
-  let Icon: Icon = KindToIcon[kind as keyof typeof Kind] || KindToIcon["Web"];
+  const Icon: Icon = KindToIcon[kind as keyof typeof Kind] || KindToIcon["Web"];
 
   return (
     <Row fullWidth align="center" distribute="between" gap={2}>

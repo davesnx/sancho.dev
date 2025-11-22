@@ -47,13 +47,13 @@ const ChromaticText = ({ children, mouse, orientation }) => {
   if (isTouchDevice) {
     translateX = orientation.gamma / 6;
     translateY = (orientation.beta - 30) / 6;
-    const x = Math.abs(Math.pow(translateX, 2));
-    const y = Math.abs(Math.pow(translateY, 2));
+    const x = Math.abs(translateX ** 2);
+    const y = Math.abs(translateY ** 2);
     pita = Math.sqrt(x + y) / 10;
   } else {
     translateX = distanceX / 100;
     translateY = distanceY / 100;
-    pita = Math.sqrt(Math.pow(translateX, 2) + Math.pow(translateY, 2)) / 10;
+    pita = Math.sqrt(translateX ** 2 + translateY ** 2) / 10;
   }
 
   if (!ref.current) {
@@ -105,7 +105,7 @@ const Container = styled.div`
   cursor: crosshair;
 `;
 
-let Chromatic = () => {
+const Chromatic = () => {
   const mouse = useMousePosition();
   const orientation = useDeviceOrientation();
   const isMobile = useIsMobile();

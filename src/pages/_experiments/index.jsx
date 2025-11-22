@@ -161,7 +161,7 @@ const Grid = styled.div`
   grid-gap: 16px;
 `;
 
-let Experiments = () => {
+const Experiments = () => {
   return (
     <>
       <Page title={<H1>Experiments</H1>}>

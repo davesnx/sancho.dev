@@ -12,16 +12,16 @@ export function useClipboard(
   text: string,
   timeout = 1500,
 ): { value: string; onCopy: () => void; hasCopied: boolean } {
-  let [hasCopied, setHasCopied] = React.useState(false);
+  const [hasCopied, setHasCopied] = React.useState(false);
 
-  let onCopy = React.useCallback(() => {
-    let didCopy = copy(text);
+  const onCopy = React.useCallback(() => {
+    const didCopy = copy(text);
     setHasCopied(didCopy);
   }, [text]);
 
   React.useEffect(() => {
     if (hasCopied) {
-      let id = setTimeout(() => {
+      const id = setTimeout(() => {
         setHasCopied(false);
       }, timeout);
 

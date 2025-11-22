@@ -82,7 +82,7 @@ const Bio = () => {
   );
 };
 
-let About = () => {
+const About = () => {
   return (
     <>
       <MetaData title="About" />

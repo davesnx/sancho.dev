@@ -1,4 +1,4 @@
-import React from "react";
+import type React from "react";
 
 import { css } from "@emotion/react";
 import styled from "@emotion/styled";
@@ -49,9 +49,9 @@ export const TextLink = ({
 }: AnchorProps & {
   href: string;
 } & React.AnchorHTMLAttributes<HTMLAnchorElement>) => {
-  let color = rest.color || colors.body;
-  let hoverColor = rest.hoverColor || colors.primary;
-  let decorationColor = rest.decorationColor || color;
+  const color = rest.color || colors.body;
+  const hoverColor = rest.hoverColor || colors.primary;
+  const decorationColor = rest.decorationColor || color;
 
   return (
     <NextLink href={href} shallow legacyBehavior>

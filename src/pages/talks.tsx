@@ -6,7 +6,7 @@ import Page from "../components/page";
 import MetaData from "../components/site-metadata";
 import { Stack } from "../components/taco";
 
-let Talks = () => (
+const Talks = () => (
   <>
     <MetaData title="Talks" />
     <Page title={<H1>Talks</H1>}>

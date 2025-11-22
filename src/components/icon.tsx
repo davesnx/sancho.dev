@@ -1,5 +1,5 @@
 import styled from "@emotion/styled";
-import React from "react";
+import type React from "react";
 
 import { colors } from "../theme/theme";
 
@@ -29,7 +29,7 @@ const Icon = ({
   bg: string;
   padded: boolean;
 }) => {
-  let fill = color || colors.body;
+  const fill = color || colors.body;
   return (
     <Logo padded={padded} color={bg}>
       <Svg size={size} fill={fill} />

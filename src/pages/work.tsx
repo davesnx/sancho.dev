@@ -1,6 +1,6 @@
 import styled from "@emotion/styled";
-import React from "react";
-import { GetStaticProps } from "next";
+import type React from "react";
+import type { GetStaticProps } from "next";
 import Fs from "fs";
 import Path from "path";
 
@@ -14,9 +14,9 @@ import Text from "../components/text";
 import constants from "../theme/constants";
 import font from "../theme/fonts";
 import { colors } from "../theme/theme";
-import { GitHubRepo, getLanguageColor } from "../lib/github";
+import { type GitHubRepo, getLanguageColor } from "../lib/github";
 
-let OpenSourceSection = styled.div`
+const OpenSourceSection = styled.div`
   width: 100vw;
   max-width: 1400px;
   margin-left: 50%;
@@ -28,7 +28,7 @@ let OpenSourceSection = styled.div`
   }
 `;
 
-let Gallery = styled.div`
+const Gallery = styled.div`
   display: grid;
   grid-template-columns: 1fr;
   gap: 1rem;
@@ -38,7 +38,7 @@ let Gallery = styled.div`
   }
 `;
 
-let CompanyLogo = styled.div`
+const CompanyLogo = styled.div`
   width: 80px;
   height: 80px;
   flex-shrink: 0;
@@ -59,7 +59,7 @@ let CompanyLogo = styled.div`
   }
 `;
 
-let JobRoot = styled.section`
+const JobRoot = styled.section`
   width: 100%;
 
   display: flex;
@@ -72,7 +72,7 @@ let JobRoot = styled.section`
   }
 `;
 
-let Job = ({
+const Job = ({
   company,
   date,
   role,
@@ -134,7 +134,7 @@ let Job = ({
   </JobRoot>
 );
 
-let OrgAvatar = styled.img`
+const OrgAvatar = styled.img`
   width: 15px;
   height: 15px;
   border-radius: 50%;
@@ -143,7 +143,7 @@ let OrgAvatar = styled.img`
   transition: filter 0.2s ease;
 `;
 
-let OpenSourceItem = styled.a`
+const OpenSourceItem = styled.a`
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
@@ -172,21 +172,21 @@ let OpenSourceItem = styled.a`
   }
 `;
 
-let RepoHeader = styled.div`
+const RepoHeader = styled.div`
   display: flex;
   align-items: center;
   gap: 0.5rem;
   flex-wrap: wrap;
 `;
 
-let RepoFooter = styled.div`
+const RepoFooter = styled.div`
   display: flex;
   align-items: center;
   gap: 1rem;
   margin-top: auto;
 `;
 
-let StatItem = styled.div`
+const StatItem = styled.div`
   display: inline-grid;
   grid-auto-flow: column;
   align-items: baseline;
@@ -197,7 +197,7 @@ let StatItem = styled.div`
   }
 `;
 
-let LanguageDot = ({ color }: { color: string }) => (
+const LanguageDot = ({ color }: { color: string }) => (
   <svg
     width="12"
     height="12"
@@ -209,13 +209,13 @@ let LanguageDot = ({ color }: { color: string }) => (
   </svg>
 );
 
-let StarIcon = ({ color }: { color: string }) => (
+const StarIcon = ({ color }: { color: string }) => (
   <svg width="14" height="14" viewBox="0 0 24 24" fill={color}>
     <path d="M12 1.75C12.311 1.75 12.5898 1.94201 12.7007 2.23263L15.0587 8.41234L21.5366 8.72913C21.8418 8.74406 22.1074 8.94263 22.2081 9.23111C22.3088 9.5196 22.2244 9.84032 21.9947 10.0419L17.0648 14.3695L18.8767 21.3106C18.9558 21.6135 18.8383 21.9338 18.5821 22.1137C18.3258 22.2937 17.9848 22.2956 17.7266 22.1183L12 18.1875L6.27335 22.1183C6.01519 22.2956 5.67409 22.2937 5.41785 22.1137C5.1616 21.9338 5.04413 21.6135 5.12323 21.3106L6.93517 14.3695L2.0052 10.0419C1.77557 9.84032 1.69118 9.5196 1.79186 9.23111C1.89253 8.94263 2.15815 8.74406 2.46334 8.72913L8.94127 8.41234L11.2992 2.23263C11.4101 1.94201 11.6889 1.75 12 1.75Z" />
   </svg>
 );
 
-let OpenSource = ({ repo }: { repo: GitHubRepo }) => (
+const OpenSource = ({ repo }: { repo: GitHubRepo }) => (
   <OpenSourceItem href={repo.url} target="_blank">
     <RepoHeader>
       <OrgAvatar src={repo.ownerAvatar} alt={repo.owner} />
@@ -248,7 +248,7 @@ let OpenSource = ({ repo }: { repo: GitHubRepo }) => (
   </OpenSourceItem>
 );
 
-let AherfsLogo = () => (
+const AherfsLogo = () => (
   <svg
     width="55"
     height="55"
@@ -268,7 +268,7 @@ let AherfsLogo = () => (
   </svg>
 );
 
-let DraftbitLogo = () => (
+const DraftbitLogo = () => (
   <svg
     width="30"
     height="30"
@@ -283,7 +283,7 @@ let DraftbitLogo = () => (
   </svg>
 );
 
-let TypeformLogo = () => (
+const TypeformLogo = () => (
   <svg
     width="30"
     height="30"
@@ -306,7 +306,7 @@ let TypeformLogo = () => (
   </svg>
 );
 
-let OfertiaLogo = () => (
+const OfertiaLogo = () => (
   <svg
     width="40"
     height="40"
@@ -358,7 +358,7 @@ export const getStaticProps: GetStaticProps = async () => {
   };
 };
 
-let Work = ({ repos }: { repos: GitHubRepo[] }) => (
+const Work = ({ repos }: { repos: GitHubRepo[] }) => (
   <>
     <MetaData title="Work" />
     <Page title={<H1>Work</H1>}>

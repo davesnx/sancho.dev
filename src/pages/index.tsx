@@ -10,7 +10,7 @@ import Text from "../components/text";
 import fonts from "../theme/fonts";
 import { colors } from "../theme/theme";
 
-let Name = styled.h1`
+const Name = styled.h1`
   margin: 0;
   padding: 0;
   font-family: ${fonts.sans};

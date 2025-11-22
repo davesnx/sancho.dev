@@ -4,9 +4,9 @@ import { css } from "@emotion/react";
 import styled from "@emotion/styled";
 import { format, parseISO } from "date-fns";
 import { getMDXComponent } from "mdx-bundler/client";
-import { GetStaticPaths, GetStaticProps, InferGetStaticPropsType } from "next";
+import type { GetStaticPaths, GetStaticProps, InferGetStaticPropsType } from "next";
 
-import { Frontmatter } from "../../lib/frontmatter";
+import type { Frontmatter } from "../../lib/frontmatter";
 import { getAllFrontmatter, getMdxBySlug } from "../../lib/mdx";
 import Twitter from "../../components/svgs/twitter";
 import { Row } from "../../components/taco";
@@ -281,7 +281,7 @@ const A = (props: any) => {
 };
 
 export const getStaticPaths: GetStaticPaths = () => {
-  let frontmatters = getAllFrontmatter();
+  const frontmatters = getAllFrontmatter();
   const paths = frontmatters.map(({ slug }: Frontmatter) => ({
     params: { slug },
   }));
@@ -292,13 +292,13 @@ export const getStaticPaths: GetStaticPaths = () => {
   };
 };
 
-let Strong = (props: any) => {
+const Strong = (props: any) => {
   return <Text as="strong" weight={400} color={colors.primary} {...props} />;
 };
 
 export const getStaticProps: GetStaticProps = async ({ params }) => {
   if (params?.slug && !Array.isArray(params?.slug)) {
-    let { frontmatter, code } = await getMdxBySlug(params.slug);
+    const { frontmatter, code } = await getMdxBySlug(params.slug);
 
     return {
       props: {
@@ -320,7 +320,7 @@ export default function Post({
   frontmatter,
   code,
 }: InferGetStaticPropsType<typeof getStaticProps>) {
-  let Component = getMDXComponent(code);
+  const Component = getMDXComponent(code);
 
   return (
     <>

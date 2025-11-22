@@ -8,7 +8,7 @@ import Spacer from "../components/spacer";
 import Text from "../components/text";
 import font from "../theme/fonts";
 
-let Error = () => (
+const Error = () => (
   <>
     <MetaData title="404" />
     <Page title={<H1>Page not found</H1>}>

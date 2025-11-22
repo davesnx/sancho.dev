@@ -19,11 +19,11 @@ const cwd = process.cwd();
 const DATA_PATH = path.join(cwd, "src", "content", "posts");
 
 export const getAllFrontmatter = () => {
-  let paths = globbySync(`${path.join(DATA_PATH)}/*.mdx`);
+  const paths = globbySync(`${path.join(DATA_PATH)}/*.mdx`);
   return paths.map((filePath: string) => {
-    let source = fs.readFileSync(path.join(filePath), "utf8");
-    let { data, content } = matter(source);
-    let filenameWithoutExt = path.basename(filePath).replace(".mdx", "");
+    const source = fs.readFileSync(path.join(filePath), "utf8");
+    const { data, content } = matter(source);
+    const filenameWithoutExt = path.basename(filePath).replace(".mdx", "");
 
     return {
       ...(data as Frontmatter),
@@ -101,9 +101,9 @@ const codeHighlightOptions = {
 };
 
 export const getMdxBySlug = async (slug: string) => {
-  let source = fs.readFileSync(path.join(DATA_PATH, `${slug}.mdx`), "utf8");
+  const source = fs.readFileSync(path.join(DATA_PATH, `${slug}.mdx`), "utf8");
 
-  let { frontmatter, code } = await bundleMDX({
+  const { frontmatter, code } = await bundleMDX({
     source,
     mdxOptions: (options) => {
       return {

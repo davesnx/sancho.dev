@@ -2,11 +2,11 @@
 // https://github.com/PrismJS/prism/blob/master/plugins/diff-highlight/prism-diff-highlight.js
 
 export default function diffHighlight(Prism) {
-  let LANGUAGE_REGEX = /diff-([\w-]+)/i;
-  let HTML_TAG =
+  const LANGUAGE_REGEX = /diff-([\w-]+)/i;
+  const HTML_TAG =
     /<\/?(?!\d)[^\s>/=$<%]+(?:\s(?:\s*[^\s>/=]+(?:\s*=\s*(?:"[^"]*"|'[^']*'|[^\s'">=]+(?=[\s>]))|(?=[\s/>])))+)?\s*\/?>/gi;
   // this will match a line plus the line break while ignoring the line breaks HTML tags may contain.
-  let HTML_LINE = RegExp(
+  const HTML_LINE = RegExp(
     /(?:__|[^\r\n<])*(?:\r\n?|\n|(?:__|[^\r\n<])(?![^\r\n]))/.source.replace(
       /__/g,
       function match() {
@@ -16,27 +16,27 @@ export default function diffHighlight(Prism) {
     "gi",
   );
 
-  let { PREFIXES } = Prism.languages.diff;
+  const { PREFIXES } = Prism.languages.diff;
 
-  Prism.hooks.add("before-sanity-check", function (env) {
-    let lang = env.language;
+  Prism.hooks.add("before-sanity-check", (env) => {
+    const lang = env.language;
     if (LANGUAGE_REGEX.test(lang) && !env.grammar) {
       env.grammar = Prism.languages[lang] = Prism.languages.diff;
     }
   });
-  Prism.hooks.add("before-tokenize", function (env) {
-    let lang = env.language;
+  Prism.hooks.add("before-tokenize", (env) => {
+    const lang = env.language;
     if (LANGUAGE_REGEX.test(lang) && !Prism.languages[lang]) {
       Prism.languages[lang] = Prism.languages.diff;
     }
   });
 
-  Prism.hooks.add("wrap", function (env) {
+  Prism.hooks.add("wrap", (env) => {
     let diffLanguage;
     let diffGrammar;
 
     if (env.language !== "diff") {
-      let langMatch = LANGUAGE_REGEX.exec(env.language);
+      const langMatch = LANGUAGE_REGEX.exec(env.language);
       if (!langMatch) {
         return; // not a language specific diff
       }
@@ -48,13 +48,13 @@ export default function diffHighlight(Prism) {
     // one of the diff tokens without any nested tokens
     if (env.type in PREFIXES) {
       /** @type {string} */
-      let content = env.content.replace(HTML_TAG, ""); // remove all HTML tags
+      const content = env.content.replace(HTML_TAG, ""); // remove all HTML tags
 
       /** @type {string} */
-      let decoded = content.replace(/&lt;/g, "<").replace(/&amp;/g, "&");
+      const decoded = content.replace(/&lt;/g, "<").replace(/&amp;/g, "&");
 
       // remove any one-character prefix
-      let code = decoded.replace(/(^|[\r\n])./g, "$1");
+      const code = decoded.replace(/(^|[\r\n])./g, "$1");
 
       // highlight, if possible
       let highlighted;
@@ -65,13 +65,13 @@ export default function diffHighlight(Prism) {
       }
 
       // get the HTML source of the prefix token
-      let prefixToken = new Prism.Token("prefix", PREFIXES[env.type], [
+      const prefixToken = new Prism.Token("prefix", PREFIXES[env.type], [
         /\w+/.exec(env.type)[0],
       ]);
-      let prefix = Prism.Token.stringify(prefixToken, env.language);
+      const prefix = Prism.Token.stringify(prefixToken, env.language);
 
       // add prefix
-      let lines = [];
+      const lines = [];
       let m;
       HTML_LINE.lastIndex = 0;
       while ((m = HTML_LINE.exec(highlighted))) {

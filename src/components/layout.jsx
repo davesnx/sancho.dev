@@ -1,21 +1,19 @@
-import { keyframes } from "@emotion/react";
-import styled from "@emotion/styled";
-import React from "react";
-import dynamic from "next/dynamic";
-import { createPortal } from "react-dom";
-import { useTheme } from "next-themes";
-import { animated, useSpring } from "react-spring";
-
-import { TextLink } from "../components/link";
-import Text from "../components/text";
-import Spacer from "../components/spacer";
-import constants from "../theme/constants";
-import font from "../theme/fonts";
-import { colors } from "../theme/theme";
-import { NavigateButton } from "./../components/link";
-import Main from "./../components/main";
-import { ResponsiveSpacer } from "./../components/spacer";
-import { Row, Stack } from "./../components/taco";
+import { keyframes } from '@emotion/react';
+import styled from '@emotion/styled';
+import dynamic from 'next/dynamic';
+import { useTheme } from 'next-themes';
+import React from 'react';
+import { animated, useSpring } from 'react-spring';
+import { NavigateButton } from './../components/link';
+import { TextLink } from '../components/link';
+import Main from './../components/main';
+import { ResponsiveSpacer } from './../components/spacer';
+import Spacer from '../components/spacer';
+import { Row, Stack } from './../components/taco';
+import Text from '../components/text';
+import constants from '../theme/constants';
+import font from '../theme/fonts';
+import { colors } from '../theme/theme';
 
 const Root = styled.div`
   min-height: 100vh;
@@ -55,7 +53,7 @@ const MobileMenu = styled.div`
   }
 `;
 
-let fadeIn = keyframes`{
+const fadeIn = keyframes`{
   from { opacity: 0; }
   to { opacity: 1; }
 }`;
@@ -78,17 +76,17 @@ const IconWrapper = styled(animated.div)`
 `;
 
 const ThemeTogglerButton = styled.button`
-  color: ${(props) => (props.floating ? colors.body : "transparent")};
-  background: ${(props) => (props.floating ? colors.body10 : "transparent")};
+  color: ${(props) => (props.floating ? colors.body : 'transparent')};
+  background: ${(props) => (props.floating ? colors.body10 : 'transparent')};
   border: none;
   padding: 0;
   cursor: pointer;
-  border-radius: ${(props) => (props.floating ? "24px" : "50%")};
+  border-radius: ${(props) => (props.floating ? '24px' : '50%')};
 
-  width: ${(props) => (props.floating ? "48px" : "24px")};
-  height: ${(props) => (props.floating ? "24px" : "24px")};
+  width: ${(props) => (props.floating ? '48px' : '24px')};
+  height: ${(props) => (props.floating ? '24px' : '24px')};
 
-  backdrop-filter: ${(props) => (props.floating ? "blur(5px)" : "none")};
+  backdrop-filter: ${(props) => (props.floating ? 'blur(5px)' : 'none')};
   display: flex;
   align-items: center;
   justify-content: center;
@@ -97,7 +95,7 @@ const ThemeTogglerButton = styled.button`
   transition: all 0.2s ease;
 
   &:hover {
-    background: ${(props) => (props.floating ? colors.body20 : "transparent")};
+    background: ${(props) => (props.floating ? colors.body20 : 'transparent')};
   }
 `;
 
@@ -155,12 +153,7 @@ const ThemeTogglerComponent = ({ isDark, onClick, floating }) => {
   });
 
   const content = (
-    <Svg
-      xmlns="http://www.w3.org/2000/svg"
-      aria-hidden="true"
-      isDark={isDark}
-      viewBox="0 0 32 32"
-    >
+    <Svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" isDark={isDark} viewBox="0 0 32 32">
       <mask id="theme-toggle-mask">
         <rect x="0" y="0" width="32" height="32" fill="white" />
         <animated.circle cx={cx} cy={cy} r="11" fill="black" />
@@ -170,18 +163,8 @@ const ThemeTogglerComponent = ({ isDark, onClick, floating }) => {
   );
 
   return (
-    <ThemeTogglerButton
-      onClick={onClick}
-      aria-label="Toggle theme"
-      floating={floating}
-    >
-      {floating ? (
-        <IconWrapper style={{ left: x, width: 16, height: 16 }}>
-          {content}
-        </IconWrapper>
-      ) : (
-        content
-      )}
+    <ThemeTogglerButton onClick={onClick} aria-label="Toggle theme" floating={floating}>
+      {floating ? <IconWrapper style={{ left: x, width: 16, height: 16 }}>{content}</IconWrapper> : content}
     </ThemeTogglerButton>
   );
 };
@@ -276,11 +259,7 @@ const Logo = styled.div`
 const House = () => {
   return (
     <Logo>
-      <svg
-        viewBox="0 0 24 24"
-        aria-hidden="true"
-        style={{ fill: "currentColor", width: "18px", height: "18px" }}
-      >
+      <svg viewBox="0 0 24 24" aria-hidden="true" style={{ fill: 'currentColor', width: '18px', height: '18px' }}>
         <g>
           <path d="M21.591 7.146L12.52 1.157c-.316-.21-.724-.21-1.04 0l-9.071 5.99c-.26.173-.409.456-.409.757v13.183c0 .502.418.913.929.913H9.14c.51 0 .929-.41.929-.913v-7.075h3.909v7.075c0 .502.417.913.928.913h6.165c.511 0 .929-.41.929-.913V7.904c0-.301-.158-.584-.408-.758z"></path>
         </g>
@@ -303,10 +282,10 @@ const Children = styled.div`
 export default function Layout({ children }) {
   const [isOpen, setIsOpen] = React.useState(false);
   const { theme, setTheme } = useTheme();
-  const toggleTheme = () => setTheme(theme === "dark" ? "light" : "dark");
-  const isDark = theme === "dark";
-  let open = () => setIsOpen(true);
-  let close = () => setIsOpen(false);
+  const toggleTheme = () => setTheme(theme === 'dark' ? 'light' : 'dark');
+  const isDark = theme === 'dark';
+  const open = () => setIsOpen(true);
+  const close = () => setIsOpen(false);
 
   const { scale, opacity } = useSpring({
     scale: isOpen ? 1 : 0.8,
@@ -397,9 +376,7 @@ export default function Layout({ children }) {
               </Text>
             </div>
             <div>
-
-
-<Text weight={600} size={font.fontSizeN2}>
+              <Text weight={600} size={font.fontSizeN2}>
                 <TextLink
                   weight={600}
                   color={colors.body30}
@@ -411,7 +388,6 @@ export default function Layout({ children }) {
           </Footer>
         </Spacer>
       </Main>
-
     </Root>
   );
 }

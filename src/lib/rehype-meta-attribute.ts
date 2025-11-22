@@ -2,7 +2,7 @@
 
 import { visit } from "unist-util-visit";
 
-let re = /\b([-\w]+)(?:=(?:"([^"]*)"|'([^']*)'|([^"'\s]+)))?/g;
+const re = /\b([-\w]+)(?:=(?:"([^"]*)"|'([^']*)'|([^"'\s]+)))?/g;
 
 function onelement(node) {
   let match;

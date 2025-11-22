@@ -118,21 +118,21 @@ const darkTheme = Object.assign({}, darkValues, commonValues);
  * @param {string} value - Color value
  * @returns {string} CSS variable declaration
  */
-let declaration = (theme, key, value) => `--c-${theme}-${key}: ${value};`;
+const declaration = (theme, key, value) => `--c-${theme}-${key}: ${value};`;
 
 /**
  * Creates a CSS variable reference
  * @param {string} str - CSS variable name
  * @returns {string} CSS variable reference
  */
-let variable = (str) => `var(${str})`;
+const variable = (str) => `var(${str})`;
 
 /**
  * Creates a CSS variable name
  * @param {string} key - Color key
  * @returns {string} CSS variable name
  */
-let variableName = (key) => `--c-${key}`;
+const variableName = (key) => `--c-${key}`;
 
 /**
  * Converts a theme object to CSS variables
@@ -140,30 +140,30 @@ let variableName = (key) => `--c-${key}`;
  * @param {Record<string, string>} obj - Theme object
  * @returns {string} CSS variable declarations
  */
-let objectToCSSVariable = (prefix, obj) => {
+const objectToCSSVariable = (prefix, obj) => {
   return Object.entries(obj)
     .map(([key, value]) => declaration(prefix, key, value))
     .join(" ");
 };
 
 /** @type {string} */
-export let lightCSSVariables = objectToCSSVariable("light", lightTheme);
+export const lightCSSVariables = objectToCSSVariable("light", lightTheme);
 /** @type {string} */
-export let darkCSSVariables = objectToCSSVariable("dark", darkTheme);
+export const darkCSSVariables = objectToCSSVariable("dark", darkTheme);
 
 /**
  * Creates a CSS root rule
  * @param {string} str - CSS variable declarations
  * @returns {string} CSS root rule
  */
-let makeRoot = (str) => `:root { ${str} }`;
+const makeRoot = (str) => `:root { ${str} }`;
 
 /**
  * Creates a complete theme CSS root rule
  * @param {'light' | 'dark'} theme - Theme name
  * @returns {string} CSS root rule with theme variables
  */
-export let make = (theme) => {
+export const make = (theme) => {
   return makeRoot(
     Object.keys(lightTheme)
       .map((key) => [`--c-${key}`, `var(--c-${theme}-${key})`])
@@ -176,7 +176,7 @@ export let make = (theme) => {
  * Object containing CSS variable references for all theme colors
  * @type {Record<keyof (CommonValues & ThemeValues), string>}
  */
-export let colors = Object.fromEntries(
+export const colors = Object.fromEntries(
   Object.entries(lightTheme).map(([key, _value]) => [
     key,
     variable(variableName(key)),

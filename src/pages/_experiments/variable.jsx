@@ -27,7 +27,7 @@ const Squared = ({ isMobile, text, x: mousePosition }) => {
   return (
     <Row ref={ref}>
       {letters.map((char, idx) => {
-        let weight =
+        const weight =
           1000 - Math.abs(mousePosition - firstElementPosition - 75 * idx);
         return (
           <Character key={idx} wght={weight} isMobile={isMobile}>
@@ -49,7 +49,7 @@ const Container = styled.div`
   cursor: ew-resize;
 `;
 
-let Variable = () => {
+const Variable = () => {
   const mouse = useMousePosition();
   const isMobile = useIsMobile();
   return (

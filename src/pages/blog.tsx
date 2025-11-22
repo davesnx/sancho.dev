@@ -2,10 +2,10 @@ import React from "react";
 import styled from "@emotion/styled";
 
 import { format, parseISO } from "date-fns";
-import { GetStaticProps } from "next";
+import type { GetStaticProps } from "next";
 
 import MetaData from "../components/site-metadata";
-import { Frontmatter } from "../lib/frontmatter";
+import type { Frontmatter } from "../lib/frontmatter";
 import { getAllFrontmatter } from "../lib/mdx";
 
 import { H1, H3 } from "../components/heading";
@@ -18,8 +18,8 @@ import font from "../theme/fonts";
 import { colors } from "../theme/theme";
 
 export const getStaticProps: GetStaticProps = async () => {
-  let frontmatters = getAllFrontmatter();
-  let sortedFrontmatters = frontmatters.sort((a: Frontmatter, b: Frontmatter) =>
+  const frontmatters = getAllFrontmatter();
+  const sortedFrontmatters = frontmatters.sort((a: Frontmatter, b: Frontmatter) =>
     b.publishedAt && a.publishedAt
       ? Number(new Date(b.publishedAt)) - Number(new Date(a.publishedAt))
       : 0
@@ -60,7 +60,7 @@ const PostDate = styled.div`
   flex-shrink: 0;
 `;
 
-let Blog = ({ frontmatters }: { frontmatters: Array<Frontmatter> }) => {
+const Blog = ({ frontmatters }: { frontmatters: Array<Frontmatter> }) => {
   return (
     <>
       <MetaData title="Blog" />

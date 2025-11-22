@@ -24,7 +24,7 @@ interface GitHubAPIResponse {
 const GITHUB_API_BASE = "https://api.github.com";
 
 export function parseGitHubUrl(url: string): { owner: string; repo: string } | null {
-  const match = url.match(/github\.com\/([^\/]+)\/([^\/]+)/);
+  const match = url.match(/github\.com\/([^/]+)\/([^/]+)/);
   if (!match || !match[1] || !match[2]) return null;
   return {
     owner: match[1],

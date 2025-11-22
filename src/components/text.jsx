@@ -21,7 +21,7 @@ const P = styled.p`
   text-align: ${(props) => props.align}};
 `;
 
-let Text = ({ children, ...rest }) => {
+const Text = ({ children, ...rest }) => {
   const color = rest.color || colors.body;
   return (
     <P {...rest} color={color}>

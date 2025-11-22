@@ -12,8 +12,8 @@
     "build-prod": "npm run build && npm run export",
     "clean": "rimraf .next out",
     "ts": "tsc --noEmit --pretty --jsx react-jsx",
-    "format": "biome format --write src",
-    "lint": "biome lint --write src",
+    "format": "biome format --write src --config-path biome.json",
+    "lint": "biome lint --write src --config-path biome.json",
     "fetch-repos": "node scripts/fetch-github-repos.mjs"
   },
   "dependencies": {
@@ -63,7 +63,7 @@
     "wrangler": "^4.47.0"
   },
   "devDependencies": {
-    "@biomejs/biome": "1.9.4",
+    "@biomejs/biome": "2.3.7",
     "@types/glob": "^7.2.0",
     "@types/node": "^18.14.0",
     "@types/parse-numeric-range": "^0.0.1",

@@ -18,11 +18,11 @@ function visitor(node, index, parent) {
     return;
   }
 
-  let [, lang] = node.properties.className[0].split("-");
-  let codeString: string = toString(node);
+  const [, lang] = node.properties.className[0].split("-");
+  const codeString: string = toString(node);
   let result = refractor.highlight(codeString, lang);
 
-  let linesToHighlight = rangeParser(node.properties.line || "0");
+  const linesToHighlight = rangeParser(node.properties.line || "0");
   result = highlightLine(result, linesToHighlight);
   /* result = highlightWord(result); */
 
