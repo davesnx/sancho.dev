@@ -1,5 +1,6 @@
 import styled from "@emotion/styled";
 
+import constants from "../theme/constants";
 import { px, unit } from "../utils/unit";
 
 const StackAlignMap = {
@@ -62,6 +63,7 @@ type RowProps = {
   align?: keyof typeof RowAlignMap;
   distribute?: keyof typeof RowDistributeMap;
   wrap?: "wrap" | "nowrap";
+  reverseOnMobile?: boolean;
 };
 
 export const Row = styled.div`
@@ -81,6 +83,20 @@ export const Row = styled.div`
   & > *:not(:last-child) {
     ${(props: RowProps) => `margin-right: ${px(unit(props.gap || 0))}`};
   }
+
+  ${(props: RowProps) =>
+    props.reverseOnMobile &&
+    `
+    @media screen and (max-width: ${constants.mobile.width}px) {
+      flex-direction: column-reverse;
+      align-items: flex-start;
+
+      & > *:not(:last-child) {
+        margin-right: 0;
+        margin-top: ${px(unit(props.gap || 0))};
+      }
+    }
+  `}
 `;
 
 export const Align = styled.div`
@@ -90,4 +106,16 @@ export const Align = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+`;
+
+export const HideOnMobile = styled.div`
+  @media screen and (max-width: ${constants.mobile.width}px) {
+    display: none;
+  }
+`;
+
+export const HideOnDesktop = styled.div`
+  @media screen and (min-width: ${constants.mobile.width + 1}px) {
+    display: none;
+  }
 `;

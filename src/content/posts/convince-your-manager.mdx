@@ -6,6 +6,7 @@ tags:
   - "Programming languages"
 ---
 
+- [ ] https://x.com/hichaelmart/status/1990225556030517495
 - [ ]  https://t.co/qSHXaJ3raI
 - [ ]  https://x.com/swyx/status/1418670548075249665
 - [ ]  Read Elm at X
@@ -20,9 +21,9 @@ tags:
     - [Elm at Thoughtbot](https://thoughtbot.com/blog/tags/elm)
     - [Elm at other companies](https://github.com/jah2488/elm-companies#readme)
     - Read what are the advantatges of OOP https://www.reddit.com/r/ProgrammingLanguages/comments/qyf3k0/what_are_the_advantage_of_object_oriented/?utm_source=share&utm_medium=web2x&context=3
-- Draw some conclusions on what works and what doesn’t
 - Read https://elm-lang.org/news/how-to-use-elm-at-work
 - Read and steal from: https://www.javierchavarri.com/adopting-reason-strategies-dual-sources-of-truth-and-why-gentype-is-a-big-deal/
+- Draw some conclusions on what works and what doesn’t
 
 Mention some of the same ideas of this post about devs wanting to learn, or explore and risks: [https://lexi-lambda.github.io/blog/2025/05/29/a-break-from-programming-languages](https://lexi-lambda.github.io/blog/2025/05/29/a-break-from-programming-languages/)
 
@@ -31,59 +32,95 @@ Mention some of the same ideas of this post about devs wanting to learn, or expl
 
 ---
 
+Let's be honest. You found a piece of technology that feels like a cheat code. Maybe it's a programming language like Rust, OCaml or Gleam. Maybe it's a library like Effect.ts that fundamentally changes how you handle state, or maybe it's a new framework like Hono or runtime like Bun. Whatever it is, it solves the problems that make you pull your hair out in your current stack. You're in the honeymoon phase, you are hyped and you want everyone else to see the light.
+
+But then reality hits: you have to convince your colleagues, your manager, and the rest of the organization.
+
+I've been on both sides of this table for over a decade. At Typeform, I navigated the complexities of migrating legacy systems while keeping the product shipshape. And now at Ahrefs, I work in an environment that runs entirely on OCaml—a choice that many would consider "niche" but is actually our superpower.
+
+I've seen these migrations succeed spectacularly, transforming average teams into shipping machines. I've also seen them fail, burning social capital and leaving behind a mess of half-baked code.
+
+Discussions about technology are, by and large, emotionally driven shouting matches based on anecdotes and gut feelings. If your strategy is to say "it's cool", "it's better", or "it has algebraic data types", you've already lost and you will probably become a meme.
+
 This post outlines the best strategy for convincing your manager and colleagues to adopt a less known programming language or less common choice for a technology.
 
-Warning, do you really want it? Using the wrong tech, or choosing the wrong stack, can cause you the job? maybe the reputation if you really fuck it up. Or the company can spend millons of dollars in time and resources. It’s really slow.
+Warning: Do you really want this? Choosing the wrong tech stack is a high-stakes gamble. It can cost the company millions in rewrites, hiring difficulties, and lost time. For you personally? It could cost you your reputation, or even your job if you really mess it up.
 
-On the other side, if you really do it properly can transform an organitzation. It can potentially giving your company a competitive advantatge. It can also, transform your career.
+On the flip side, if you execute this properly, it can transform an organization. Adopting a niche language can give your company a massive competitive advantage—hiring better engineers, shipping fewer bugs, and moving faster than competitors stuck in the "industry standard" mud. It can also fast-track your career.
 
-Code bad in x, if you migrate to y. why do you think code with y is better?
+So, how do you do it without becoming "that guy"?
 
-tldr:
+The timeline I'm proposing has two main goals:
+1. **Minimize risk**. Business decisions are about risk management. People come and go, but technical decisions stick around and are expensive to reverse. If you want a "yes," you need to show that the downside is capped.
+2. **Prove the trade-offs are worth it**. Every technology has a cost. You need to demonstrate that the benefits (velocity, reliability, talent attraction) so clearly outweigh the costs that saying "no" becomes the silly decision.
 
-1. Become an expert
-    1. Don’t become the AcTualLy gUy
-    2. or at least don’t become a meme
+Here is the timeline.
 
-    Before proposing a new programming language to your team and manager, it's crucial to b an expert. This expertise will lend credibility to your proposal and enable you to address concerns effectively. Here's how to build and demonstrate your expertise
+## 1. Become an expert (or at least not a meme)
 
-    - Build real projects using the language
-    - Understand deployment processes and best practices
-    - Know the language's strengths and limitations
-    - Be prepared to answer technical questions confidently
-    - Know who to contact when
-2. Start small
-    - Mitigate Risk
-    - Begin with an internal tool or non-critical component
-    - Choose a project that showcases the language's strengths
-    - Set clear success criteria and evaluation metrics
-    - (Do you know this little tool that nobody cares? Yes, that one! But there’s the core of the business and it’s shiny. My ego is asking me to do it, I will get promoted)
-3. Create a detailed adoption strategy
-    - Minimize risks: what if it fails? What If you leave? What if everything breaks? What if everybody hates it?
-    - Outline learning resources (e.g., Elm's excellent documentation)
-    - Define a gradual integration approach
-    - Establish a backup plan in case of setbacks
+Before you open your mouth, you need to know your stuff. I don't mean reading the "Getting Started" guide. I mean building real things.
 
-    For inspiration, review successful adoption stories like Javier Chavarri's ReasonML strategy: [Adopting Reason: Strategies, Dual Sources of Truth, and Why GenType is a Big Deal](https://www.javierchavarri.com/adopting-reason-strategies-dual-sources-of-truth-and-why-gentype-is-a-big-deal)
+Don't become the "Actually..." guy who interrupts conversations to say, "Actually, in Rust, this memory safety issue wouldn't exist." That's the fastest way to get ignored.
 
-    - Demitigate doubts: Explain python paradox
+Instead, you need to be the person who knows the answer when things break. You need to understand:
+- How does the deployment process look?
+- What are the editor integrations like?
+- What are the "known issues" that will bite us 6 months from now?
+- Who do we contact in the community when we hit a wall?
 
-    The "Python Paradox," coined by Paul Graham, suggests that companies using less common languages tend to hire better programmers. But how can you introduce a niche language to your existing team?
-4. Create allies within your organization
-    - Teach other people
-    - Share exciting features and potential benefits
-    - Organize informal learning sessions or coding dojos
-    - Highlight how the new language could improve productivity or solve existing pain points
-        - Decide what’s the next component you will help migrate
-5. Apply the language where it truly shines
-    - Ensure to keep
-    - Choose projects that align with its core strengths
-    - Demonstrate measurable improvements (e.g., performance, reliability, development speed)
-    - Share success stories and metrics with the wider team
-6. Share it with the world (and write a blog post like “How to convince your manager and your team to adopt a niece programming language”)
-7. ???
-8. Profit
+Credibility is your currency here. If you can't answer the hard technical questions, you aren't ready to propose it.
 
-# Conclusion
+## 2. Start small (Mitigate risk)
 
-Introducing a niche programming language can be challenging, but with the right approach, it can bring significant benefits to your team and organization. By building expertise, mitigating risks, planning carefully, fostering advocacy, and showcasing strengths, you can successfully introduce a new language and potentially gain a competitive advantage in the process.
+Your ego wants to rewrite the core product. Your ego says, "This is shiny, I want to use it on the most visible feature so I get promoted."
+
+Ignore your ego.
+
+Start with the internal tool that nobody cares about but everyone hates using. Maybe it's a script, a dashboard, or a small isolated component. The goal is to choose a project where **failure is an option**. If it doesn't work out, you should be able to throw it away with zero impact on the business.
+
+This step is about proving the concept in *your* environment, with *your* constraints. It allows you to show a working example: "Look, this tool used to crash every week. Since I rewrote it in X, it hasn't crashed once."
+
+## 3. Create a detailed adoption strategy
+
+Once you have a small win, you need a plan. "We'll just figure it out" is not a strategy; it's a resignation letter waiting to happen.
+
+You need to address the risks head-on:
+- **What if you get hit by a bus?** (Or more likely, leave for a better offer). Who else knows this stack?
+- **How do we hire for this?**
+- **What is the "break glass" backup plan?**
+
+For inspiration, I highly recommend reading Javier Chavarri's [adoption strategy for ReasonML](https://www.javierchavarri.com/adopting-reason-strategies-dual-sources-of-truth-and-why-gentype-is-a-big-deal). He emphasizes minimizing friction and having a clear path for gradual integration.
+
+This is also where you bring up the **Python Paradox**. Coined by Paul Graham, it suggests that companies using less common languages often hire better programmers because those programmers care enough to learn tools outside the mainstream. By adopting a niche language, you aren't just changing syntax; you're filtering for curiosity and aptitude in your hiring pipeline.
+
+## 4. Create allies within your organization
+
+You cannot be a lone wolf. If you are the only person advocating for this, you will fail.
+
+You need to build a coalition. How?
+- **Teach others**: Organize a "brown bag" lunch or a coding dojo.
+- **Solve their pain**: Don't sell features; sell pain relief. Show a colleague how the new language solves that bug they spent three days debugging last week.
+- **Share excitement**: Drop interesting articles or small snippets in Slack—not to be annoying, but to spark curiosity.
+
+Identify who else on the team is open to new ideas. Get them to write a few lines of code. Once you have 2-3 other engineers saying, "Hey, this is actually pretty nice," the conversation with management changes from "Dave's crazy idea" to "The engineering team's recommendation."
+
+## 5. Apply the language where it truly shines
+
+Don't force the square peg into the round hole just because you like the peg.
+
+If you are adopting Elm, use it for that complex, state-heavy form that is always buggy. Don't use it for a static marketing page. If you are adopting OCaml, use it for the mission-critical business logic, not for a simple script that needs 50 different npm packages.
+
+You need to choose projects that align with the language's core strengths so that the benefits are obvious. Then, measure the improvements.
+- "We reduced runtime errors by 90%."
+- "We refactored this module in half the time."
+- "Performance improved by 2x."
+
+Managers love metrics. Give them numbers that prove the investment was worth it.
+
+## 6. Share it with the world
+
+Finally, once you've succeeded (or failed!), write about it.
+
+Write a blog post (like "How to convince your manager to adopt a niche programming language"). Speak at a meetup. Contributing back to the ecosystem helps validate your company's choice. It puts your company on the map as a place where interesting tech happens, which feeds right back into the "hiring better engineers" point from step 3.
+
+Plus, it feels pretty good to say, "I told you so."

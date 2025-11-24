@@ -9,7 +9,7 @@ import { TextLink } from "../components/link";
 import Page from "../components/page";
 import MetaData from "../components/site-metadata";
 import Spacer from "../components/spacer";
-import { Row, Stack } from "../components/taco";
+import { HideOnDesktop, HideOnMobile, Row, Stack } from "../components/taco";
 import Text from "../components/text";
 import constants from "../theme/constants";
 import font from "../theme/fonts";
@@ -50,27 +50,30 @@ const CompanyLogo = styled.div`
   justify-content: center;
   margin-right: 1.5rem;
   overflow: hidden;
-
-  @media screen and (max-width: ${constants.mobile.width}px) {
-    width: 60px;
-    height: 60px;
-    margin-right: 0;
-    margin-bottom: 0.5rem;
-  }
 `;
 
 const JobRoot = styled.section`
   width: 100%;
 
   display: flex;
-  flex-direction: column;
   justify-content: space-between;
   align-items: center;
-
-  @media screen and (min-width: ${constants.mobile.width}px) {
-    flex-direction: row;
-  }
+  flex-direction: row;
 `;
+
+const DateRange = ({ date }: { date: { from: string; to: string } }) => (
+  <Row gap={1}>
+    <Text weight={800} size={font.fontSize1}>
+      {date.from}
+    </Text>
+    <Text weight={800} size={font.fontSize1}>
+      -
+    </Text>
+    <Text weight={800} size={font.fontSize1}>
+      {date.to}
+    </Text>
+  </Row>
+);
 
 const Job = ({
   company,
@@ -98,39 +101,32 @@ const Job = ({
             {role}
           </Text>
           {company.url && (
-            <Text weight={500} size={colors.body50}>
-              <TextLink
-                target="_blank"
-                color={colors.body50}
-                hoverColor={colors.primary}
-                decorationColor={colors.body50}
-                href={company.url}
-              >
-                {company.url}
-              </TextLink>
-            </Text>
+            <TextLink
+              target="_blank"
+              color={colors.body50}
+              hoverColor={colors.primary80}
+              decorationColor={colors.body30}
+              href={company.url}
+            >
+              {company.url}
+            </TextLink>
           )}
 
           {!company.url && (
             <Text weight={500} color={colors.body50} size={font.fontSize1}>
               {company.name}
             </Text>
-          )}
+            )}
+          <HideOnDesktop>
+            <Spacer top={0.5} />
+            <DateRange date={date} />
+          </HideOnDesktop>
         </Stack>
-        <Row gap={1}>
-          <Text weight={800} size={font.fontSize1}>
-            {date.from}
-          </Text>
-          <Text weight={800} size={font.fontSize1}>
-            -
-          </Text>
-          <Text weight={800} size={font.fontSize1}>
-            {date.to}
-          </Text>
-        </Row>
+        <HideOnMobile>
+          <DateRange date={date} />
+        </HideOnMobile>
       </Row>
     </Stack>
-    <Spacer right={0} />
   </JobRoot>
 );
 

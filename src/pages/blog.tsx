@@ -11,7 +11,7 @@ import { getAllFrontmatter } from "../lib/mdx";
 import { H1, H3 } from "../components/heading";
 import { NavigateButton } from "../components/link";
 import Page from "../components/page";
-import { Row, Stack } from "../components/taco";
+import { HideOnDesktop, HideOnMobile, Row, Stack } from "../components/taco";
 import Text from "../components/text";
 import constants from "../theme/constants";
 import font from "../theme/fonts";
@@ -29,6 +29,7 @@ export const getStaticProps: GetStaticProps = async () => {
 
 const PostTitle = styled(H3)`
   transition: color 0.2s ease-out;
+  color: ${colors.primary80};
 
   width: 100%;
   text-align: left;
@@ -60,6 +61,20 @@ const PostDate = styled.div`
   flex-shrink: 0;
 `;
 
+const PublishedAt = ({date}: {date: string}) => (
+  <Text
+    kerning="0.05rem"
+    size={font.fontSizeN1}
+    color={colors.body50}
+    weight={800}
+  >
+    {format(
+      parseISO(date),
+      "MMM yyyy"
+    ).toUpperCase()}
+  </Text>
+);
+
 const Blog = ({ frontmatters }: { frontmatters: Array<Frontmatter> }) => {
   return (
     <>
@@ -76,22 +91,12 @@ const Blog = ({ frontmatters }: { frontmatters: Array<Frontmatter> }) => {
                 href={"/blog/" + frontmatter.slug}
               >
                 <Stack fullWidth align="left">
-                  <Row distribute="between" fullWidth>
+                  <Row distribute="between" fullWidth reverseOnMobile>
                     <PostTitle> {frontmatter.title}</PostTitle>
-                    {frontmatter.publishedAt ? (
-                      <PostDate>
-                        <Text
-                          kerning="0.05rem"
-                          size={font.fontSizeN1}
-                          weight={800}
-                        >
-                          {format(
-                            parseISO(frontmatter.publishedAt),
-                            "MMM yyyy"
-                          ).toUpperCase()}
-                        </Text>
-                      </PostDate>
-                    ) : null}
+                    <PostDate><HideOnMobile>
+                      {frontmatter.publishedAt && <PublishedAt date={frontmatter.publishedAt} />}
+                      </HideOnMobile>
+                    </PostDate>
                   </Row>
                   {frontmatter.description ? (
                     <PostDescription>
@@ -100,6 +105,9 @@ const Blog = ({ frontmatters }: { frontmatters: Array<Frontmatter> }) => {
                       </Text>
                     </PostDescription>
                   ) : null}
+                  <HideOnDesktop>
+                    {frontmatter.publishedAt && <PublishedAt date={frontmatter.publishedAt} />}
+                  </HideOnDesktop>
                 </Stack>
               </PostLink>
             ))}

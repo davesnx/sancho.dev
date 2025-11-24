@@ -396,15 +396,9 @@ export default function Post({
           <Row distribute="between" align="center" wrap="wrap" gap={2}>
             <div style={{ flex: 1, minWidth: "280px" }}>
               <Text>
-                <Strong>Thanks for reaching the end</Strong>! If you have any
-                feedback, corrections or questions, let me know.
+                <Strong>Thanks for reading!</Strong> Let me know if you have
+                feedback or questions, and follow me on 𝕏 (Twitter) for updates.
               </Text>
-              <Spacer top={2}>
-                <Text>
-                  Follow me on 𝕏 (Twitter) for more updates and to know when I
-                  publish new content.
-                </Text>
-              </Spacer>
             </div>
             <TwitterButton
               href="https://twitter.com/davesnx"

@@ -17,7 +17,7 @@ export const H1 = styled.h1`
 
   font-size: ${fonts.fontSize5};
   letter-spacing: 1.6px;
-  color: ${colors.primary};
+  color: ${colors.primary90};
 `;
 
 export const H2 = styled.h2`
