@@ -63,13 +63,13 @@ const JobRoot = styled.section`
 
 const DateRange = ({ date }: { date: { from: string; to: string } }) => (
   <Row gap={1}>
-    <Text weight={800} size={font.fontSize1}>
+    <Text monospace weight={800} size={font.fontSize1}>
       {date.from}
     </Text>
-    <Text weight={800} size={font.fontSize1}>
+    <Text monospace weight={800} size={font.fontSize1}>
       -
     </Text>
-    <Text weight={800} size={font.fontSize1}>
+    <Text monospace weight={800} size={font.fontSize1}>
       {date.to}
     </Text>
   </Row>
@@ -229,14 +229,14 @@ const OpenSource = ({ repo }: { repo: GitHubRepo }) => (
       {repo.language && (
         <StatItem>
           <LanguageDot color={getLanguageColor(repo.language)} />{" "}
-          <Text weight={600} size={font.fontSize0} color={colors.body50}>
+          <Text monospace weight={600} size={font.fontSize0} color={colors.body50}>
             {repo.language}
           </Text>
         </StatItem>
       )}
       <StatItem>
         <StarIcon color={colors.body50} />
-        <Text weight={600} size={font.fontSize0} color={colors.body50}>
+        <Text monospace weight={600} size={font.fontSize0} color={colors.body50}>
           {repo.stars.toLocaleString()}
         </Text>
       </StatItem>
