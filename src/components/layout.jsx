@@ -364,24 +364,26 @@ export default function Layout({ children }) {
         <Spacer top={4} bottom={6}>
           <Footer>
             <div>
-              <Text color={colors.body30} weight={600} size={font.fontSizeN2}>
+              <Text color={colors.body30} weight={600} size={font.fontSizeN2} monospace>
                 David Sancho (
                 <TextLink
                   weight={600}
                   color={colors.body30}
                   hoverColor={colors.body50}
                   href="https://x.com/davesnx"
+                  monospace
                 >{`@davesnx`}</TextLink>
                 )
               </Text>
             </div>
             <div>
-              <Text weight={600} size={font.fontSizeN2}>
+              <Text weight={600} size={font.fontSizeN2} monospace>
                 <TextLink
                   weight={600}
                   color={colors.body30}
                   hoverColor={colors.body50}
                   href="https://github.com/davesnx/sancho.dev"
+                  monospace
                 >{`Source`}</TextLink>
               </Text>
             </div>

@@ -66,7 +66,8 @@ const PublishedAt = ({date}: {date: string}) => (
     kerning="0.05rem"
     size={font.fontSizeN1}
     color={colors.body50}
-    weight={800}
+    weight={600}
+    monospace
   >
     {format(
       parseISO(date),

@@ -69,6 +69,11 @@ const codeHighlightOptions = {
           path: path.resolve("./src/lib/code-highlight/syntaxes/ocaml.json"),
         },
         {
+          id: "mlx",
+          scopeName: "source.mlx",
+          path: path.resolve("./src/lib/code-highlight/syntaxes/mlx.json"),
+        },
+        {
           id: "dune",
           scopeName: "source.dune",
           path: path.resolve("./src/lib/code-highlight/syntaxes/dune.json"),

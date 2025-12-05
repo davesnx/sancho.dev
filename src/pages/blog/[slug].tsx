@@ -343,22 +343,24 @@ export default function Post({
                 color={colors.body50}
                 size={font.fontSizeN2}
                 weight={600}
+                monospace
               >
                 {format(
                   parseISO(frontmatter.publishedAt),
                   "MMM yyyy"
                 ).toUpperCase()}
               </Text>
-              <Text color={colors.body30} size={font.fontSize0} weight={400}>
+              <Text color={colors.body30} size={font.fontSize0} weight={400} monospace>
                 {" • ".toUpperCase()}
               </Text>
-              <Text kerning="0.05rem" weight={600} size={font.fontSizeN2}>
+              <Text kerning="0.05rem" weight={600} size={font.fontSizeN2} monospace>
                 <TextLink
                   weight={600}
                   color={colors.body50}
                   hoverColor={colors.body80}
                   decorationColor="transparent"
                   href="/about"
+                  monospace
                 >
                   {`davesnx`.toUpperCase()}
                 </TextLink>

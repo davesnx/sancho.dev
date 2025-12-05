@@ -12,11 +12,12 @@ type AnchorProps = {
   hoverColor: string;
   decorationColor: string;
   weight?: number;
+  monospace?: boolean;
 };
 
 const Anchor = (props: AnchorProps) => css`
   color: ${props.color};
-  font-family: ${fonts.sans};
+  font-family: ${props.monospace ? fonts.mono : fonts.sans};
   font-weight: ${props.weight ? props.weight : 500};
   font-size: inherit;
   line-height: inherit;
