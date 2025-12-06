@@ -11,7 +11,7 @@ import { getAllFrontmatter } from "../lib/mdx";
 import { H1, H3 } from "../components/heading";
 import { NavigateButton } from "../components/link";
 import Page from "../components/page";
-import { HideOnDesktop, HideOnMobile, Row, Stack } from "../components/taco";
+import {  Row, Stack } from "../components/taco";
 import Text from "../components/text";
 import constants from "../theme/constants";
 import font from "../theme/fonts";
@@ -41,12 +41,6 @@ const PostTitle = styled(H3)`
 
 const PostLink = styled(NavigateButton)`
   width: 100%;
-
-  &:hover {
-    ${PostTitle} {
-      color: ${colors.primary};
-    }
-  }
 `;
 
 const PostDescription = styled.div`
@@ -56,25 +50,6 @@ const PostDescription = styled.div`
     width: 100%;
   }
 `;
-
-const PostDate = styled.div`
-  flex-shrink: 0;
-`;
-
-const PublishedAt = ({date}: {date: string}) => (
-  <Text
-    kerning="0.05rem"
-    size={font.fontSizeN1}
-    color={colors.body50}
-    weight={600}
-    monospace
-  >
-    {format(
-      parseISO(date),
-      "MMM yyyy"
-    ).toUpperCase()}
-  </Text>
-);
 
 const Blog = ({ frontmatters }: { frontmatters: Array<Frontmatter> }) => {
   return (
@@ -88,6 +63,9 @@ const Blog = ({ frontmatters }: { frontmatters: Array<Frontmatter> }) => {
             })
             .map((frontmatter: Frontmatter) => (
               <PostLink
+hoverColor={colors.primary}
+color={colors.body50}
+decorationColor={colors.body30}
                 key={frontmatter.title}
                 href={"/blog/" + frontmatter.slug}
               >

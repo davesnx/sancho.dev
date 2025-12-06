@@ -1,5 +1,5 @@
 ---
-title: "Learnings after 4 years at ahrefs"
+title: "4 years at ahrefs"
 publishedAt: "2024-10-12"
 isDraft: true
 tags:
@@ -8,69 +8,54 @@ tags:
 - "Work"
 ---
 
-During the pandemic, I worked on a side-project called [styled-ppx](https://styled-ppx.vercel.app) that eventually got me into Ahrefs. Javi, who I now consider a close friend, helped me with the setup and explained a bunch of concepts about the OCaml ecosystem. He worked (and still does) at Ahrefs, which is how I got to know the company better.
+I've been working at Ahrefs for the past four years, and it truly feels like I've found my dream job. While that phrase usually sounds idealistic and silly, this role is exactly what I always wanted: working on projects driven by passion, tackling big problems with complete autonomy, and building Open Source software with "the community" in mind.
 
-Fast forward 4 years, and it truly feels like I've found my dream job. While that phrase usually sounds idealistic or silly, this role is exactly what I always wanted: working on projects driven by passion, tackling big problems with complete autonomy, and building Open Source software with "the community" in mind while a team of users benefit from the iterations.
+We're fully remote across the world, which has completely changed my life. I spend my winters in the Pyrenees, locked in, skiing and peacefully enjoying nature. My summers are for trail running and cycling closer to family in Barcelona.
 
-But the reason I love it isn't just the autonomy or the stack. It's because I found a place that breaks almost every rule of the modern tech startup handbook.
+I want to take a moment to reflect on what I've learned here. It's one of the most unusual companies I've encountered, and I want to explain what I mean by that and share my learnings.
 
-Here are three flexes about why we're different, and three humbling lessons I've had to learn the hard way.
+If I ever feel sad or nostalgic because it ended, I could return to this post and smile.
 
-# The Flexes
+# The underdog
 
-## 1. The Efficiency Ratio
-Most companies tackling internet-scale problems have thousands of engineers. We have about 120, and we have no plans to grow much beyond that.
+Only marketing people, SEO specialists, and OCaml fans have heard of [ahrefs.com](https://ahrefs.com).
 
-Let that sink in. We run one of the most active crawlers in the world, processing 5 million pages every minute—around 7 billion pages daily. We compete directly with tech giants like Google and Bing in crawling capacity. Yet, we maintain the agility of a small startup.
+We're one of the top SEO tools in the world, helping users improve their search rankings on Google, Bing, YouTube, Amazon, and now the AI search engines. To show off a bit: about 45% of the S&P 500 use us, including Facebook, Nike, Adobe, IBM, and Pinterest.
 
-This isn't an accident; it's a choice. We don't hire to "scale culture" or to fill seats for a new funding round. We stay deliberately small, which forces us to be extremely good at our craft and choose technology that amplifies individual output, not just headcount.
+In short, we crawl the entire web and organize all that raw data into useful insights via different tools and reports. Those tools are used by people to analyze the world, their own web, their competitor's web, rankings, authority, and a million other things—and eventually get more traffic from search engines.
 
-## 2. The Unapologetic Monolith
-Our secret weapon? We use OCaml for everything. Yes, everything. The backend, the frontend, the crawler, devops, internal tools, and even our CI pipelines.
+Here's the kicker: companies tackling internet-scale problems usually have thousands of engineers. Google has tens of thousands. We have about 120, and we have no plans to grow beyond that.
 
-While the rest of the industry chases the "JS framework of the month," we built a truly unified tech stack. Our REST endpoints share the exact same type definitions as our frontend. Our SSR server reuses the same React components as the client. Change a type definition in the database, and the compiler immediately flags every usage across the entire stack—from API responses to UI components.
+We run one of the most active crawlers in the world, processing around 6 billion pages daily and storing petabytes of web data. Despite this genuinely staggering scale, we maintain the agility that only comes from staying deliberately small and being extremely good at our craft.
 
-Here's a concrete example: last month I added a new field to our backlink data structure. The compiler flagged 47 locations that needed updates. No runtime surprises, no "undefined is not a function" in production. Just compile-time safety end-to-end.
+Before joining, I only knew the company was doing "SEO with OCaml stuff" with just a few people and competing directly with tech giants like Google and Bing in crawling capacity. That paradox caught my attention immediately. Staying small seemed challenging but fascinating.
 
-We even use the same package manager (opam) and build system (dune) for everything. A newcomer learns one way of thinking and can suddenly contribute anywhere in the codebase. It’s the ultimate antidote to context switching.
+# The tech (NIH maxxing)
 
-## 3. The Anti-VC Mindset
-Our CEO codes. Our CTO codes. They aren't spending their days in board meetings with VCs or polishing pitch decks for the next exit. They are in the codebase, reviewing PRs, and solving problems.
+Our secret? Everything is written in OCaml. The backend, frontend, crawler, devops, internal tools, and even the CI.
 
-This is possible because we are bootstrapped. We have no external pressure to hit arbitrary growth metrics. I’ve worked at companies where roadmaps were shaped by investor anxiety. Here, if something is technically interesting and solves a real problem for our users, we build it.
+The short answer for why OCaml is that we needed an expressive and performant language for the crawler, and it went extremely well—so well that it spread across the entire backend and eventually the frontend.
 
-We are also "NIH (Not Invented Here) maxing." In a small ecosystem like OCaml, building for the long term often means owning your dependencies. We build most critical pieces in-house. It sounds extreme to some, but I'd rather modify and maintain code I understand than trust a black-box library I can't fix when it breaks at 3 AM.
+Originally, we had PHP as our backend. But after using OCaml for our crawler, it quickly took over the entire stack. On the frontend, we were using React, and we had to choose between TypeScript (or Flow, remember that?) and Reason. Since Reason is essentially OCaml with JavaScript-friendly syntax—sharing the same type system, semantics, tooling, and ecosystem—adopting it was a no-brainer.
 
-# The Learnings
+This gave us something powerful: a truly unified tech stack.
 
-## 1. Politeness is High Latency
-The culture at Ahrefs is a mix of international perspectives with strong Eastern European roots. It is direct, pragmatic, and rational above all else.
+Our REST endpoints share the exact same type definitions as our frontend. Our SSR server reuses the same React components as the client. Our data validation logic runs identically on both sides. Change a type definition once, and the compiler catches mismatches across the entire stack.
 
-Coming from Spain, this caught me completely off guard. I was used to the "compliment sandwich"—wrapping criticism in praise to soften the blow. At Ahrefs, if your solution is flawed, someone will simply write: "This won't scale. Try approach B."
+But this isn't just about type-safety or sharing code. We use the same package manager (opam), the same build system (dune), the same LSP for our editor, and deploy everything through a single pipeline. One language to learn, one mental model to master. A newcomer joins the team, learns a single way of thinking, and suddenly they can contribute anywhere.
 
-No emoji cushioning. No "great effort, but..." just facts.
+Aside from the unusual language choice, there's another particularity that didn't surprise me when I met the team: we are NIH maxxing.
 
-At first, I took it personally. I thought people were being mean. But after a few months, I realized the truth: sugar-coating is high latency. Directness is actually respectful of everyone's time. When you strip away the emotional padding, you iterate faster. The feedback isn't about *you*; it's about the *code*. Once I unlearned my need for validation, I started doing the best work of my career.
+In a small ecosystem like OCaml, building for the long term means owning your dependencies. We use some third-party tools like ClickHouse and Buildkite, but most critical pieces are built in-house. It sounds extreme, but I'd rather modify and maintain code I understand than trust a black-box library that breaks at 3 AM.
 
-## 2. The "Works on My Machine" Delusion
-Most of my work involves building tools for other engineers—libraries, compilers, build systems. It is dangerously easy to fall in love with a prototype.
+# Bootstrap freedom
 
-I used to spend two weeks building something elegant that worked perfectly in my local environment, thinking I was 90% done. Then came integration. Half my assumptions were wrong. The API didn't fit real-world use cases. Edge cases I hadn't imagined broke everything.
+Ahrefs is bootstrapped. No VCs, no board meetings, no arbitrary growth metrics to hit.
 
-I had to learn that the prototype is maybe 10% of the job. Real engineering is the "boring" 90% that follows: handling the messy reality of production, writing documentation, teaching the team how to use it, and ensuring it survives the chaos of a large monorepo.
+Our CEO makes decisions based on his view of the company and the market. He appears in technical discussions, shares his quiet view, and pushes products forward without external pressure. I've been at companies where entire roadmaps got shaped by investor anxiety, which constantly conflicted with the CEO's actual vision. Here, that conflict doesn't exist.
 
-If it works on my machine but isn't robust enough for the team to rely on, it’s not engineering—it’s just a hobby.
+Being profitable—very profitable, actually—means we can invest in what matters. We sponsor conferences like ICFP, fun-ocaml, and React Alicante. We're one of the main sponsors of Melange (the compiler we use for our frontend), and I'm part of its core team. We can take long-term bets on technology because we don't have to justify every decision to someone optimizing for the next funding round.
 
-## 3. Remote Trust is Analog
-We work remotely, spread across five time zones. But I've learned that you can't build deep trust with an avatar.
+Our CEO codes. Our CTO codes. They're not spending their days polishing pitch decks; they're in the codebase, reviewing PRs, solving problems. By focusing on OCaml, we attract a specific kind of engineer—people who care deeply about their craft. Bringing passionate people together generates great solutions and great energy. Projects like server-reason-react were born out of that passion, to face a big challenge that eventually paid off.
 
-Ahrefs understands this. We spend significant money sponsoring conferences like ICFP and React Alicante, and organizing ski retreats to bring the team together. These aren't just "team bonding" perks; they are critical infrastructure.
-
-When you've seen someone fight for their ideas at 3 AM in a hotel lobby, or shared a meal with them after a long day of skiing, the remote dynamic changes. Back on Slack, their direct feedback no longer feels cold. You hear their actual voice. You know they are challenging your code because they care, not because they're being difficult.
-
-Trust is analog. We just use digital tools to maintain it.
-
-# Final Thoughts
-Ahrefs isn't a typical company, and it definitely isn't for everyone. It requires a thick skin, a love for functional programming, and a willingness to take ownership that goes beyond a job description.
-
-But for me, it’s been a masterclass in what happens when you strip away the startup theater and focus entirely on the craft. I may have joined for the OCaml, but I stayed for the relentless pursuit of doing things the right way, even—or especially—when it’s not the easy way.
+# Learnings
