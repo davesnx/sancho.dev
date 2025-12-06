@@ -70,7 +70,7 @@ const Blog = ({ frontmatters }: { frontmatters: Array<Frontmatter> }) => {
                   href={"/blog/" + frontmatter.slug}
                 >
                   <Stack fullWidth align="left">
-                    <Row distribute="between" fullWidth reverseOnMobile>
+                    <Row distribute="between" fullWidth columnReverseOnMobile>
                       <PostTitle> {frontmatter.title}</PostTitle>
                     </Row>
                     {frontmatter.description ? (

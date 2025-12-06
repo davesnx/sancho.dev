@@ -392,7 +392,7 @@ export default function Post({
           <>
             <Spacer top={10} bottom={4}>
               <ThanksContainer>
-                <Row distribute="between" align="center" wrap="wrap" gap={2}>
+                <Row columnOnMobile distribute="between" align="center" wrap="wrap" gap={2}>
                   <div style={{ flex: 1, minWidth: "280px" }}>
                     <Text>
                       <Strong>Thanks for reading!</Strong> If something's unclear or you think I'm wrong, tell me. Feedback is appreciated.

@@ -63,7 +63,8 @@ type RowProps = {
   align?: keyof typeof RowAlignMap;
   distribute?: keyof typeof RowDistributeMap;
   wrap?: "wrap" | "nowrap";
-  reverseOnMobile?: boolean;
+  columnOnMobile?: boolean;
+  columnReverseOnMobile?: boolean;
 };
 
 export const Row = styled.div`
@@ -85,7 +86,21 @@ export const Row = styled.div`
   }
 
   ${(props: RowProps) =>
-    props.reverseOnMobile &&
+    props.columnOnMobile &&
+    `
+    @media screen and (max-width: ${constants.mobile.width}px) {
+      flex-direction: column;
+      align-items: flex-start;
+
+      & > *:not(:last-child) {
+        margin-right: 0;
+        margin-bottom: ${px(unit(props.gap || 0))};
+      }
+    }
+  `}
+
+  ${(props: RowProps) =>
+    props.columnReverseOnMobile &&
     `
     @media screen and (max-width: ${constants.mobile.width}px) {
       flex-direction: column-reverse;
