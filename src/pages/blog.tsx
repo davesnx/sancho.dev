@@ -94,10 +94,6 @@ const Blog = ({ frontmatters }: { frontmatters: Array<Frontmatter> }) => {
                 <Stack fullWidth align="left">
                   <Row distribute="between" fullWidth reverseOnMobile>
                     <PostTitle> {frontmatter.title}</PostTitle>
-                    <PostDate><HideOnMobile>
-                      {frontmatter.publishedAt && <PublishedAt date={frontmatter.publishedAt} />}
-                      </HideOnMobile>
-                    </PostDate>
                   </Row>
                   {frontmatter.description ? (
                     <PostDescription>
@@ -106,9 +102,6 @@ const Blog = ({ frontmatters }: { frontmatters: Array<Frontmatter> }) => {
                       </Text>
                     </PostDescription>
                   ) : null}
-                  <HideOnDesktop>
-                    {frontmatter.publishedAt && <PublishedAt date={frontmatter.publishedAt} />}
-                  </HideOnDesktop>
                 </Stack>
               </PostLink>
             ))}
