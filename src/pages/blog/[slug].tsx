@@ -133,6 +133,9 @@ const Pre = (props: any) => (
 const Table = styled.table`
   border-collapse: separate;
   border-spacing: 0 0;
+  overflow-x: auto;
+  max-width: 100%;
+  display: inline-block;
   width: 100%;
   margin: 32px 0;
   font-family: ${font.sans};
