@@ -74,11 +74,13 @@ const Blog = ({ frontmatters }: { frontmatters: Array<Frontmatter> }) => {
                       <PostTitle> {frontmatter.title}</PostTitle>
                     </Row>
                     {frontmatter.description ? (
-                      <PostDescription>
-                        <Text color={colors.body50} size={font.fontSize1}>
-                          {frontmatter.description}
-                        </Text>
-                      </PostDescription>
+                      <Spacer top={0.5}>
+                        <PostDescription>
+                          <Text color={colors.body50} size={font.fontSize1}>
+                            {frontmatter.description}
+                          </Text>
+                        </PostDescription>
+                      </Spacer>
                     ) : null}
                   </Stack>
                 </PostLink>
