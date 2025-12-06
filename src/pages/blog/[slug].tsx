@@ -119,12 +119,6 @@ const Hr = styled.hr`
   ${Line["horitzontal"]}
 `;
 
-const Img = styled.img`
-  width: 100%;
-  border-radius: 6px;
-  margin: 0;
-`;
-
 const Oversized = styled.span`
   display: block;
   margin: 1rem 0 3rem 0;
@@ -141,7 +135,7 @@ const Table = styled.table`
   border-spacing: 0 0;
   width: 100%;
   margin: 32px 0;
-  font-family: "${font.sans}";
+  font-family: ${font.sans};
   color: ${colors.body90};
   line-height: 1.7142857;
   margin-bottom: 2em;
@@ -391,28 +385,29 @@ export default function Post({
           }}
         />
 
-        <Spacer top={4} bottom={2}>
-          <Hr />
-        </Spacer>
-        <ThanksContainer>
-          <Row distribute="between" align="center" wrap="wrap" gap={2}>
-            <div style={{ flex: 1, minWidth: "280px" }}>
-              <Text>
-                <Strong>Thanks for reading!</Strong> Let me know if you have
-                feedback or questions, and follow me on 𝕏 (Twitter) for updates.
-              </Text>
-            </div>
-            <TwitterButton
-              href="https://twitter.com/davesnx"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <Twitter fill={colors.body} size={20} />
-              <Text>Follow me </Text>
-            </TwitterButton>
-          </Row>
-        </ThanksContainer>
-        <Spacer top={2} />
+        {frontmatter.slug !== "hello" && (
+          <>
+            <Spacer top={10} bottom={4}>
+              <ThanksContainer>
+                <Row distribute="between" align="center" wrap="wrap" gap={2}>
+                  <div style={{ flex: 1, minWidth: "280px" }}>
+                    <Text>
+                      <Strong>Thanks for reading!</Strong> If something's unclear or you think I'm wrong, tell me. Feedback is appreciated.
+                    </Text>
+                  </div>
+                  <TwitterButton
+                    href="https://twitter.com/davesnx"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <Twitter fill={colors.body} size={20} />
+                    <Text monospace>@davesnx</Text>
+                  </TwitterButton>
+                </Row>
+              </ThanksContainer>
+            </Spacer>
+          </>
+        )}
       </Page>
     </>
   );

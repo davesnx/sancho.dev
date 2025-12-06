@@ -1,17 +1,16 @@
 import React from "react";
 import styled from "@emotion/styled";
 
-import { format, parseISO } from "date-fns";
 import type { GetStaticProps } from "next";
 
 import MetaData from "../components/site-metadata";
 import type { Frontmatter } from "../lib/frontmatter";
 import { getAllFrontmatter } from "../lib/mdx";
-
+import Spacer from "../components/spacer";
 import { H1, H3 } from "../components/heading";
 import { NavigateButton } from "../components/link";
 import Page from "../components/page";
-import {  Row, Stack } from "../components/taco";
+import { Row, Stack } from "../components/taco";
 import Text from "../components/text";
 import constants from "../theme/constants";
 import font from "../theme/fonts";
@@ -56,34 +55,36 @@ const Blog = ({ frontmatters }: { frontmatters: Array<Frontmatter> }) => {
     <>
       <MetaData title="Blog" />
       <Page title={<H1>Blog</H1>}>
-        <Stack gap={6} align="left" fullWidth>
-          {frontmatters
-            .filter((frontmatters: Frontmatter) => {
-              return frontmatters.isDraft !== true;
-            })
-            .map((frontmatter: Frontmatter) => (
-              <PostLink
-hoverColor={colors.primary}
-color={colors.body50}
-decorationColor={colors.body30}
-                key={frontmatter.title}
-                href={"/blog/" + frontmatter.slug}
-              >
-                <Stack fullWidth align="left">
-                  <Row distribute="between" fullWidth reverseOnMobile>
-                    <PostTitle> {frontmatter.title}</PostTitle>
-                  </Row>
-                  {frontmatter.description ? (
-                    <PostDescription>
-                      <Text color={colors.body50} size={font.fontSize1}>
-                        {frontmatter.description}
-                      </Text>
-                    </PostDescription>
-                  ) : null}
-                </Stack>
-              </PostLink>
-            ))}
-        </Stack>
+        <Spacer bottom={16}>
+          <Stack gap={6} align="left" fullWidth>
+            {frontmatters
+              .filter((frontmatters: Frontmatter) => {
+                return frontmatters.isDraft !== true;
+              })
+              .map((frontmatter: Frontmatter) => (
+                <PostLink
+                  hoverColor={colors.primary}
+                  color={colors.body50}
+                  decorationColor={colors.body30}
+                  key={frontmatter.title}
+                  href={"/blog/" + frontmatter.slug}
+                >
+                  <Stack fullWidth align="left">
+                    <Row distribute="between" fullWidth reverseOnMobile>
+                      <PostTitle> {frontmatter.title}</PostTitle>
+                    </Row>
+                    {frontmatter.description ? (
+                      <PostDescription>
+                        <Text color={colors.body50} size={font.fontSize1}>
+                          {frontmatter.description}
+                        </Text>
+                      </PostDescription>
+                    ) : null}
+                  </Stack>
+                </PostLink>
+              ))}
+          </Stack>
+        </Spacer>
       </Page>
     </>
   );

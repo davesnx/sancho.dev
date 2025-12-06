@@ -1,0 +1,261 @@
+---
+title: "Making html_of_jsx ~10x faster"
+publishedAt: "2025-12-03"
+description: "A story of how static analysis helped improve performance in html_of_jsx"
+isDraft: false
+tags:
+  - "OCaml"
+  - "html_of_jsx"
+  - "SSR"
+---
+
+Server-side rendering should be as fast as possible. I've been working on this problem for a while now (with [server-reason-react](https://github.com/ml-in-barcelona/server-reason-react) and [html_of_jsx](https://github.com/davesnx/html_of_jsx)) and I have plenty of optimizations to do.
+
+Each time I dig into performance, I arrive at the same insight: the first step is to avoid doing work that can be done earlier (and do it only once).
+
+This post explains how static analysis can eliminate runtime overhead, making `html_of_jsx` between 2x and 12x faster and some assumptions that I thought were clever but turned out to be crap.
+
+## What is html_of_jsx
+
+html_of_jsx is an OCaml/Reason library that lets you write JSX and render it to HTML strings for server-side rendering:
+
+```mlx
+let page =
+  <html lang="en">
+    <head><title>(JSX.string "My Page")</title></head>
+    <body>
+      <h1>(JSX.string "Hello, World!")</h1>
+    </body>
+  </html>
+
+let html = JSX.render page
+```
+
+*Examples in this post use [mlx](https://github.com/ocaml-mlx/mlx), an OCaml syntax extension that enables JSX.*
+
+It's designed for building server-rendered applications, static sites or even HTML emails.
+
+## The baseline: building trees at runtime
+
+Since HTML is a tree, the naive JSX implementation builds one too.
+
+In the original implementation, the ppx (preprocessor) transforms JSX syntax into function calls that build a tree structure at runtime:
+
+```mlx
+(* You write *)
+<div id="container">
+  <span>(JSX.string "Hello")</span>
+</div>
+
+(* ppx transforms to *)
+JSX.node "div"
+  [ ("id", `String "container") ]
+  [ JSX.node "span" [] [ JSX.string "Hello" ] ]
+```
+
+The `JSX.node` function creates a `Node` from the type:
+
+```mlx
+type element =
+  | Null
+  | String of string
+  | Unsafe of string
+  | Node of {
+      tag: string;
+      attributes: attribute list;
+      children: element list
+    }
+  | List of element list
+```
+
+At runtime, the `JSX.render` function walks this tree recursively to generate the HTML.
+
+This works. But consider what happens for a simple static element like `<div id="container" />`:
+
+1. **Allocate** a `Node` record (4 words: 1 header + 3 fields)
+2. **Allocate** the attributes list (~14 words: cons cells + tuples + polymorphic variants + strings)
+3. **Pattern match** in `render` to identify it's a Node
+4. **Pattern match** on each attribute to render it
+
+In OCaml, every heap-allocated value has a 1-word header and each field is another word. A single `<div id="container" />` ends up allocating around **~18 words** (~144 bytes on 64-bit) just to produce a 24-character string:
+
+```html
+<div id="container"></div>
+```
+
+Looking at a real page like [ocaml.org](https://ocaml.org), it has 590 HTML nodes, almost ~85KB of allocations for static content. There's a lot of room for improvement.
+
+## Rethinking the model
+
+Since the ppx transformation runs at build time, the obvious optimization is to pre-render purely static elements into string literals.
+
+That's a good idea, but real components aren't purely static. They mix fixed HTML with dynamic data:
+
+```mlx
+let card ~title ~content =
+  <div id="card">
+    (JSX.string title)
+    <p>(JSX.string content)</p>
+  </div>
+```
+
+With the tree model, we're forced to allocate records and lists for the `div` and `p` nodes, just to put `title` and `content` in the right place. We need a different perspective.
+
+Instead of seeing it as a tree, we can see it as a **template**:
+
+```
+  <div id="card">    ├───── Static
+    ┌─────────────────┐
+    │   {title}       ├─ Dynamic
+    └─────────────────┘
+    <p>               ├───── Static
+      ┌─────────────────┐
+      │   {content}     ├─ Dynamic
+      └─────────────────┘
+    </p>              ├───── Static
+  </div>             ├───── Static
+```
+
+## Inspiration
+
+Separating the static structure from the dynamic values is a technique well-explored in other high-performance systems:
+
+- [Million.js](https://github.com/aidenybai/million): Optimizing compiler for React
+- [blaze-html](https://hackage.haskell.org/package/blaze-html): Haskell's blazingly fast HTML combinator library
+- [Play Framework Twirl Templates](https://www.playframework.com/documentation/2.8.x/ScalaTemplates): Scala's compiled template engine
+- [Partial Evaluation and Automatic Program Generation](https://www.itu.dk/people/sestoft/pebook/)
+
+## The strategy
+
+To implement this, I introduced a **static analyzer** step in the preprocessor that walks each JSX element **during the build step** and classifies it:
+
+1. **Analyze attributes**: Are all attribute values literals (`id="container"`) or do some depend on runtime values (`id={className}`)?
+
+2. **Analyze children**: Are children static text, static nested elements, or dynamic expressions?
+
+3. **Decide**: If everything is static, compute the HTML string during compilation and merge static portions together. Otherwise, bailout and generate code that builds the string at runtime.
+
+## Compile-time rendering
+
+For fully static elements, the ppx **runs the rendering at compile time** and emits a string literal:
+
+```mlx
+(* You write *)
+<div id="container"><span>"Hello"</span></div>
+
+(* ppx transforms to *)
+JSX.unsafe "<div id=\"container\"><span>Hello</span></div>"
+(* NOTE: `JSX.unsafe` creates a Unsafe variant
+         and avoids some HTML escaping logic *)
+```
+
+The string `"<div id=\"container\"><span>Hello</span></div>"` is computed during compilation: escaping attributes, building the tag structure, etc. At runtime, it's just a constant string. Zero computation, zero allocation.
+
+For elements with dynamic content, we can't pre-compute the full string, so we generate `Buffer`-based code that assembles the HTML at runtime:
+
+```mlx
+(* Has dynamic child - can't fully pre-compute *)
+let greet name = <div>(JSX.string name)</div>
+
+(* ppx emits *)
+let greet name =
+  let buf = Buffer.create 128 in
+  Buffer.add_string buf "<div>";
+  JSX.write buf (JSX.string name);
+  Buffer.add_string buf "</div>";
+  JSX.unsafe (Buffer.contents buf)
+```
+
+Notice that even here, the static parts (`"<div>"` and `"</div>"`) are pre-computed string literals. Only the dynamic `name` is processed at runtime.
+
+### The results
+
+I benchmarked using OCaml's [Benchmark](https://github.com/Chris00/ocaml-benchmark) library, measuring throughput (renders per second) with multiple iterations to account for variance.
+
+```
+Fully static element: <div class="container"></div>
+
+Baseline (JSX.node):     ~8M renders/sec
+After:                  ~27M renders/sec   → ~3x faster
+```
+
+For deeply nested static elements, the improvement is more dramatic:
+
+```
+Nested static: <div><header><h1>Title</h1></header><main>...</main></div>
+
+Baseline (JSX.node):     ~2M renders/sec
+After:                  ~27M renders/sec   → ~12x faster
+```
+
+The deeper the nesting, the less construction and traversal.
+
+## Small wins that added up
+
+### Eliminating wrapper allocations
+
+Dynamic strings like `<div>(JSX.string name)</div>` were still inefficient. `JSX.string` wraps the value in a `String` variant that eventually gets passed to `JSX.write`, which immediately unwraps it.
+
+I updated the ppx to detect `JSX.string` at compile time and generate a direct call to a new `JSX.escape` function.
+
+```mlx
+(* Before: allocate wrapper, pattern match, unwrap *)
+JSX.write buf (JSX.string name);
+
+(* After: direct call, no allocation *)
+Buffer.add_string buf (JSX.escape name);
+```
+
+This simple change made rendering dynamic strings **34% faster** (from ~15.5M to ~20.8M renders/sec).
+
+### Zero-allocation escaping
+
+The naive implementation of `JSX.escape` allocates a buffer and copies every character, which is slow.
+
+Most user-generated content doesn't contain HTML special characters (`<`, `>`, `&`, `"`, `'`).
+
+I implemented a "scan-first" strategy:
+1. Scan the string.
+2. If no special characters are found, return the original string **(0 allocations)**.
+3. Only allocate a buffer if escaping is actually needed.
+
+Allocations are expensive; reading memory is cheap. Scanning the string twice in the rare case is a small price to pay for zero allocations in the common case.
+
+## Detours: ideas that didn't work out
+
+Performance optimization is humbling. Most "obvious" improvements turn out to be slower, equivalent, or only faster in edge cases. There are some approaches I tried that seemed brilliant at the time:
+
+- **Pre-computing exact buffer sizes**: The overhead of calculating the final size exceeded the savings from avoiding reallocation.
+
+- **Eliminating the `element` type entirely**: If everything becomes `JSX.unsafe(string)`, why keep the variant type? Because `JSX.write` still needs to handle unknown elements passed as children, `JSX.null` needs semantic representation, and `JSX.list` requires deferred composition.
+
+- **Inlining `JSX.escape` at every call site**: The compiler already inlines small functions, and the code bloat hurt instruction cache performance.
+
+- **Using `Bytes` instead of `Buffer`**: Manual byte manipulation for "more control". Buffer is already optimized for this exact use case.
+
+- **Avoiding the fast-path check in `JSX.escape`**: at first, the scan-then-escape approach seemed wasteful (two passes). But in the common case (strings that don't need escaping), returning the original pointer is a win.
+
+## Conclusion
+
+After these optimizations, the ppx classifies elements into four tiers:
+
+| Tier | Pattern | Generated code |
+|------|---------|---------------|
+| **1. Fully Static** | All literals | `JSX.unsafe("...")` |
+| **2. Static + String Holes** | `JSX.string(expr)` children | `Buffer` + `JSX.escape` |
+| **3. Static + Element Holes** | Component/element children | `Buffer` + `JSX.write` |
+| **4. Dynamic Structure** | Dynamic attributes | `JSX.node(...)` |
+
+The improvement scales with how static your content is. Mostly-static pages (landing/emails) see up to 10x gains. Typical mixed pages see 2-4x improvements.
+
+In retrospect, the original implementation was correct, but correctness and efficiency are different goals. Performance often bends correctness (and sometimes maintainability too!).
+
+Once I knew some of the work only needs to happen once, the optimizations became obvious, so again: the fastest code is code that doesn't run at all.
+
+---
+
+*html_of_jsx is open source at [github.com/davesnx/html_of_jsx](https://github.com/davesnx/html_of_jsx). The code described here are available starting from version 0.0.7.*
+
+If you have ideas for more optimizations, I'd love to hear them -> [open an issue](https://github.com/davesnx/html_of_jsx/issues/new)!
+
+*Benchmarks were run on Apple Silicon (M1) with OCaml 5.4.0. Results will vary based on hardware, OCaml version, and content characteristics.*
