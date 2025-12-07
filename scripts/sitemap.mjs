@@ -1,4 +1,4 @@
-import { getPages } from "./getpages.mjs";
+import { getPages } from "./get-pages.mjs";
 
 export let generateSitemap = async () => {
   let { blog, pages } = await getPages();

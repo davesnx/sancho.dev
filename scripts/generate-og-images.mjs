@@ -60,6 +60,9 @@ function getPostsWithHashes() {
     const source = fs.readFileSync(filePath, "utf-8");
     const { data: frontmatter, content } = matter(source);
 
+    // Skip drafts
+    if (frontmatter.isDraft === true) continue;
+
     const first100Words = getFirst100Words(content);
     const hash = hashContent(frontmatter.title, frontmatter.description, first100Words);
 
@@ -197,17 +200,17 @@ async function generateOGImages() {
               <div style="
                 display: flex;
                 align-items: center;
-                gap: 12px;
+                gap: 16px;
               ">
                 <img
                   src="https://avatars.githubusercontent.com/u/3763599?v=4"
-                  style="width: 40px; height: 40px; border-radius: 50%;"
+                  style="width: 56px; height: 56px; border-radius: 50%;"
                 />
-                <div style="display: flex; flex-direction: column; gap: 4px;">
-                  <span style="color: #FAFAFA; font-family: system-ui; font-weight: 600; font-size: 14px; margin: 0; padding: 0; line-height: 1;">
+                <div style="display: flex; flex-direction: column; gap: 6px;">
+                  <span style="color: #FAFAFA; font-family: system-ui; font-weight: 600; font-size: 20px; margin: 0; padding: 0; line-height: 1;">
                     David Sancho
                   </span>
-                  <span style="color: #848686; font-family: system-ui; font-size: 12px; margin: 0; padding: 0; line-height: 1;">
+                  <span style="color: #848686; font-family: system-ui; font-size: 16px; margin: 0; padding: 0; line-height: 1;">
                     @davesnx
                   </span>
                 </div>
@@ -216,7 +219,7 @@ async function generateOGImages() {
                 color: #848686;
                 font-family: system-ui;
                 font-weight: 500;
-                font-size: 14px;
+                font-size: 18px;
               ">
                 <span style="color: #848686;">https://</span><span style="color: #FAFAFA;">sancho.dev</span>
               </div>

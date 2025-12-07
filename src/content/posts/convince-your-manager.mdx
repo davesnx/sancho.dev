@@ -27,100 +27,105 @@ tags:
 
 Mention some of the same ideas of this post about devs wanting to learn, or explore and risks: [https://lexi-lambda.github.io/blog/2025/05/29/a-break-from-programming-languages](https://lexi-lambda.github.io/blog/2025/05/29/a-break-from-programming-languages/)
 
-- Discussions of programming languages are, by and large, emotionally driven shouting matches based on anecdotes and gut feelings
--
+You found something that feels like a cheat code.
 
----
+Maybe it's Rust, OCaml, or Gleam. Maybe it's Effect.ts fundamentally changing how you handle errors. Whatever it is, it solves the exact problems that make you want to flip your desk. You're in the honeymoon phase. You want everyone to see the light.
 
-Let's be honest. You found a piece of technology that feels like a cheat code. Maybe it's a programming language like Rust, OCaml or Gleam. Maybe it's a library like Effect.ts that fundamentally changes how you handle state, or maybe it's a new framework like Hono or runtime like Bun. Whatever it is, it solves the problems that make you pull your hair out in your current stack. You're in the honeymoon phase, you are hyped and you want everyone else to see the light.
+Then reality hits: you see it but other people don't even know what it is. You might think you have to convince them.
 
-But then reality hits: you have to convince your colleagues, your manager, and the rest of the organization.
+I've been on both sides of this conversation for over a decade. At Typeform, I pushed for ReasonML while keeping a legacy system running. At Ahrefs, I work in an environment that runs entirely on OCaml—a choice that many would consider "niche" but has become our competitive advantage.
 
-I've been on both sides of this table for over a decade. At Typeform, I navigated the complexities of migrating legacy systems while keeping the product shipshape. And now at Ahrefs, I work in an environment that runs entirely on OCaml—a choice that many would consider "niche" but is actually our superpower.
+I've seen these adoptions succeed spectacularly, transforming teams into shipping machines. I've also seen them fail catastrophically, burning capital, slow development and leaving behind half-finished rewrites that nobody wants to maintain.
 
-I've seen these migrations succeed spectacularly, transforming average teams into shipping machines. I've also seen them fail, burning social capital and leaving behind a mess of half-baked code.
+Here's what I've learned: discussions about programming languages are, by and large, emotionally driven shouting matches. If your strategy is "it's cooler" or "it has algebraic data types," you've already lost—and you might become a meme in the process.
 
-Discussions about technology are, by and large, emotionally driven shouting matches based on anecdotes and gut feelings. If your strategy is to say "it's cool", "it's better", or "it has algebraic data types", you've already lost and you will probably become a meme.
+This post is a guide to avoiding that fate.
 
-This post outlines the best strategy for convincing your manager and colleagues to adopt a less known programming language or less common choice for a technology.
+## A big warning
 
-Warning: Do you really want this? Choosing the wrong tech stack is a high-stakes gamble. It can cost the company millions in rewrites, hiring difficulties, and lost time. For you personally? It could cost you your reputation, or even your job if you really mess it up.
+Choosing the wrong tech stack is a high-stakes gamble. For the company, it can mean millions in rewrites, hiring nightmares, and lost velocity. For you personally, it could cost your reputation—or worse.
 
-On the flip side, if you execute this properly, it can transform an organization. Adopting a niche language can give your company a massive competitive advantage—hiring better engineers, shipping fewer bugs, and moving faster than competitors stuck in the "industry standard" mud. It can also fast-track your career.
+On the flip side, getting this right can genuinely transform an organization: better engineers, fewer bugs, faster shipping. It can also accelerate your career in ways that playing it safe never will.
 
-So, how do you do it without becoming "that guy"?
+The difference between success and disaster comes down to two things:
 
-The timeline I'm proposing has two main goals:
-1. **Minimize risk**. Business decisions are about risk management. People come and go, but technical decisions stick around and are expensive to reverse. If you want a "yes," you need to show that the downside is capped.
-2. **Prove the trade-offs are worth it**. Every technology has a cost. You need to demonstrate that the benefits (velocity, reliability, talent attraction) so clearly outweigh the costs that saying "no" becomes the silly decision.
+1. **Minimizing risk.** Technical decisions outlast the people who make them. If you want a "yes," you need to show that the downside is capped.
 
-Here is the timeline.
+2. **Proving the trade-offs.** Every technology has costs. You need to make the benefits clear enough that saying "no" becomes the harder choice.
 
-## 1. Become an expert (or at least not a meme)
+Here's a roadmap that's worked for me and others I've seen succeed.
 
-Before you open your mouth, you need to know your stuff. I don't mean reading the "Getting Started" guide. I mean building real things.
+## Become an expert
 
-Don't become the "Actually..." guy who interrupts conversations to say, "Actually, in Rust, this memory safety issue wouldn't exist." That's the fastest way to get ignored.
+Before you open your mouth, you need to actually know your stuff. I don't mean reading the "Getting Started" guide. I mean building real things, hitting real walls, and figuring out how to get past them.
 
-Instead, you need to be the person who knows the answer when things break. You need to understand:
-- How does the deployment process look?
-- What are the editor integrations like?
-- What are the "known issues" that will bite us 6 months from now?
-- Who do we contact in the community when we hit a wall?
+Don't become the "Actually..." person. You know the type—they interrupt every conversation with "Actually, in Rust, this memory safety issue wouldn't exist." That's the fastest path to being ignored. (I may have been this person once. It did not go well.)
 
-Credibility is your currency here. If you can't answer the hard technical questions, you aren't ready to propose it.
+Instead, you need to be the one who knows the answer when things break. Before proposing anything, you should understand:
 
-## 2. Start small (Mitigate risk)
+- How does deployment actually work? Not in theory—in practice.
+- What are the editor integrations like? Are they stable or held together with duct tape?
+- What are the "known issues" that will bite you 6 months from now?
+- Who do you contact in the community when you hit a wall?
 
-Your ego wants to rewrite the core product. Your ego says, "This is shiny, I want to use it on the most visible feature so I get promoted."
+Credibility is your currency here, and if you can't answer the hard questions confidently, it's worth spending more time building that foundation before proposing anything.
 
-Ignore your ego.
+## Pick a project where failure is allowed
 
-Start with the internal tool that nobody cares about but everyone hates using. Maybe it's a script, a dashboard, or a small isolated component. The goal is to choose a project where **failure is an option**. If it doesn't work out, you should be able to throw it away with zero impact on the business.
+Your ego wants to rewrite the core product—to use this shiny new thing on the most visible feature so you can shine too. But that's exactly the wrong approach.
 
-This step is about proving the concept in *your* environment, with *your* constraints. It allows you to show a working example: "Look, this tool used to crash every week. Since I rewrote it in X, it hasn't crashed once."
+Instead, start with the internal tool that nobody cares about but everyone hates using. Maybe it's a flaky script, an ugly dashboard, or some isolated component that keeps breaking. The goal is to choose something where **failure costs nothing**. If it doesn't work out, you should be able to throw it away without anyone noticing.
 
-## 3. Create a detailed adoption strategy
+This step is about proving the concept in *your* environment, with *your* constraints. Generic blog posts about why Language X is great don't mean much to your manager. But "this tool used to crash every week, and since I rewrote it, it hasn't crashed once"? That's a story anyone can understand.
 
-Once you have a small win, you need a plan. "We'll just figure it out" is not a strategy; it's a resignation letter waiting to happen.
+## Write the plan they're afraid to ask for
 
-You need to address the risks head-on:
-- **What if you get hit by a bus?** (Or more likely, leave for a better offer). Who else knows this stack?
-- **How do we hire for this?**
-- **What is the "break glass" backup plan?**
+Once you have a small win, you need a real adoption strategy. "We'll just figure it out" is not a plan—it's a resignation letter waiting to happen.
 
-For inspiration, I highly recommend reading Javier Chavarri's [adoption strategy for ReasonML](https://www.javierchavarri.com/adopting-reason-strategies-dual-sources-of-truth-and-why-gentype-is-a-big-deal). He emphasizes minimizing friction and having a clear path for gradual integration.
+Address the fears head-on:
 
-This is also where you bring up the **Python Paradox**. Coined by Paul Graham, it suggests that companies using less common languages often hire better programmers because those programmers care enough to learn tools outside the mainstream. By adopting a niche language, you aren't just changing syntax; you're filtering for curiosity and aptitude in your hiring pipeline.
+- **What if you leave?** (Or, as managers like to phrase it, "get hit by a bus.") Who else knows this stack? How do you prevent a single point of failure?
+- **How do we hire for this?** Is the talent pool too small? Or does the [Python Paradox](http://paulgraham.com/pypar.html) apply—where niche languages attract better engineers because they select for curiosity?
+- **What's the escape hatch?** If this doesn't work out in 6 months, what's the rollback plan?
 
-## 4. Create allies within your organization
+For inspiration, I recommend Javier Chavarri's [adoption strategy for ReasonML](https://www.javierchavarri.com/adopting-reason-strategies-dual-sources-of-truth-and-why-gentype-is-a-big-deal/). His key insight is to minimize friction by maintaining interoperability with the existing codebase—asking for coexistence rather than a rewrite.
 
-You cannot be a lone wolf. If you are the only person advocating for this, you will fail.
+## You cannot do this alone
 
-You need to build a coalition. How?
-- **Teach others**: Organize a "brown bag" lunch or a coding dojo.
-- **Solve their pain**: Don't sell features; sell pain relief. Show a colleague how the new language solves that bug they spent three days debugging last week.
-- **Share excitement**: Drop interesting articles or small snippets in Slack—not to be annoying, but to spark curiosity.
+Being the sole advocate for a technology rarely works out. You need allies, and here's how to build them:
 
-Identify who else on the team is open to new ideas. Get them to write a few lines of code. Once you have 2-3 other engineers saying, "Hey, this is actually pretty nice," the conversation with management changes from "Dave's crazy idea" to "The engineering team's recommendation."
+**Teach, don't preach.** Organize a lunch-and-learn or a coding dojo. But here's the trick: don't make it about the language. Make it about a problem everyone hates, then show how the new approach solves it.
 
-## 5. Apply the language where it truly shines
+**Solve their pain.** Don't sell features; sell pain relief. Find that bug someone spent three days debugging last week. Show them how the type system would have caught it at compile time. That's worth more than any conference talk.
 
-Don't force the square peg into the round hole just because you like the peg.
+**Share sparingly.** Drop interesting articles in Slack occasionally—not to be annoying, but to plant seeds. When people come to you with questions, that's when you know it's working.
 
-If you are adopting Elm, use it for that complex, state-heavy form that is always buggy. Don't use it for a static marketing page. If you are adopting OCaml, use it for the mission-critical business logic, not for a simple script that needs 50 different npm packages.
+Once you have 2-3 engineers saying "Hey, this is actually pretty nice," the conversation with management shifts. It's no longer "David's pet project." It's "the team's recommendation."
 
-You need to choose projects that align with the language's core strengths so that the benefits are obvious. Then, measure the improvements.
+## Use it where it shines
+
+It's tempting to use your new favorite tool everywhere, but that usually backfires.
+
+If you're adopting Elm, use it for that complex, state-heavy form that's always buggy—not for a static marketing page. If you're adopting OCaml, use it for mission-critical business logic—not for a script that needs 50 npm packages. (Trust me on that last one.)
+
+Choose projects that align with the language's strengths so the benefits become undeniable. Then measure everything:
+
 - "We reduced runtime errors by 90%."
 - "We refactored this module in half the time."
-- "Performance improved by 2x."
+- "Response times improved by 3x."
 
-Managers love metrics. Give them numbers that prove the investment was worth it.
+Managers think in metrics, so giving them concrete numbers makes the decision much easier for everyone involved.
 
-## 6. Share it with the world
+## Tell the story
 
-Finally, once you've succeeded (or failed!), write about it.
+Finally, once you've succeeded—or even if you've failed—consider writing about it. A blog post, a talk at a meetup, or just internal documentation about what worked and what didn't. This does three things:
 
-Write a blog post (like "How to convince your manager to adopt a niche programming language"). Speak at a meetup. Contributing back to the ecosystem helps validate your company's choice. It puts your company on the map as a place where interesting tech happens, which feeds right back into the "hiring better engineers" point from step 3.
+1. It validates your company's choice externally. Other companies seeing "X uses Language Y" makes your bet feel less risky.
+2. It positions your company as a place where interesting engineering happens. This feeds directly back into hiring.
+3. It forces you to crystallize what you learned.
 
-Plus, it feels pretty good to say, "I told you so."
+The irony isn't lost on me that I'm writing this post while working at a company that already uses a niche language. But I've been on both sides. I've been the person desperately trying to convince a skeptical room, and I've been the person evaluating someone else's proposal.
+
+The strategy works, but it requires patience. There's no shortcut around building credibility, proving value, and earning trust.
+
+And when it finally pays off—when you're shipping something in a language that actually helps you think—all those awkward conversations and small wins along the way start to feel worth it.

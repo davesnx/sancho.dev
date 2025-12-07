@@ -1,5 +1,5 @@
 import rss from "rss";
-import { getPages } from "./getpages.mjs";
+import { getPages } from "./get-pages.mjs";
 import { compareDesc, parseISO } from "date-fns";
 
 export let generateRSS = async () => {
