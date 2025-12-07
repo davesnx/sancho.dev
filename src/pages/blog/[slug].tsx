@@ -326,6 +326,7 @@ export default function Post({
         description={frontmatter.description}
         schemaType="article"
         createdAt={frontmatter.publishedAt}
+        slug={frontmatter.slug}
       />
       <Page
         title={

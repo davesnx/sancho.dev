@@ -20,6 +20,7 @@ const defaultProps = {
   url: config.siteUrl,
   schemaType: "website",
   createdAt: new Date().toISOString(),
+  slug: undefined as string | undefined,
 };
 
 type Props = RequiredProps & {
@@ -30,11 +31,13 @@ const MetaData = (props: Props) => {
   const subtitle = props.title || "";
   const title = subtitle + " | sancho.dev";
   const description = props.description || defaultProps.description;
-  const encodedDescription = encodeURIComponent(description);
   const schemaType = props.schemaType || defaultProps.schemaType;
   const createdAt = props.createdAt || defaultProps.createdAt;
   const url = props.url || defaultProps.url;
-  const image = `https://metaimg.xyz/render?design=profile&avatar=https://avatars.githubusercontent.com/u/3763599?v=4&name=David+Sancho&handler=%40davesnx&description=${encodedDescription}&backgroundColor=191919&textColor=ced0d2`;
+
+  const image = props.slug
+    ? `${config.siteUrl}/og/${props.slug}.png`
+    : `https://metaimg.xyz/render?design=profile&avatar=https://avatars.githubusercontent.com/u/3763599?v=4&name=David+Sancho&handler=%40davesnx&description=${encodeURIComponent(description)}&backgroundColor=191919&textColor=ced0d2`;
   const metaTags: Array<{ name: string; content: string }> = [
     { name: "twitter:card", content: "summary_large_image" },
     { name: "twitter:site", content: config.twitter },
