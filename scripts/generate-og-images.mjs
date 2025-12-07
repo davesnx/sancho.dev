@@ -85,13 +85,30 @@ async function waitForServer(url, maxAttempts = 30) {
   throw new Error("Server did not start in time");
 }
 
+function cleanOutputDirectory() {
+  if (fs.existsSync(OUTPUT_DIR)) {
+    const files = fs.readdirSync(OUTPUT_DIR);
+    for (const file of files) {
+      if (file.endsWith(".png") || file === ".manifest.json") {
+        fs.unlinkSync(path.join(OUTPUT_DIR, file));
+      }
+    }
+    console.log("Cleaned up existing OG images.\n");
+  }
+}
+
 async function generateOGImages() {
   // Ensure output directory exists
   if (!fs.existsSync(OUTPUT_DIR)) {
     fs.mkdirSync(OUTPUT_DIR, { recursive: true });
   }
 
-  const manifest = loadManifest();
+  // Clean up before force regenerate
+  if (FORCE_REGENERATE) {
+    cleanOutputDirectory();
+  }
+
+  const manifest = FORCE_REGENERATE ? {} : loadManifest();
   let posts = getPostsWithHashes();
 
   // Filter to single post if --slug is provided
