@@ -203,23 +203,21 @@ I updated the ppx to detect `JSX.string` at compile time and generate a direct c
 JSX.write buf (JSX.string name);
 
 (* After: direct call, no allocation *)
-Buffer.add_string buf (JSX.escape name);
+JSX.escape buf name;
 ```
 
 This simple change made rendering dynamic strings **34% faster** (from ~15.5M to ~20.8M renders/sec).
 
-### Zero-allocation escaping
-
-The naive implementation of `JSX.escape` allocates a buffer and copies every character, which is slow.
+### Happy path with zero-allocation escaping
 
 Most user-generated content doesn't contain HTML special characters (`<`, `>`, `&`, `"`, `'`).
 
 I implemented a "scan-first" strategy:
-1. Scan the string.
-2. If no special characters are found, return the original string **(0 allocations)**.
-3. Only allocate a buffer if escaping is actually needed.
+1. Scan the string to find the first character that needs escaping
+2. If none found, return the original string untouched **(zero allocations)**
+3. If found, start escaping from that position onward, skipping the already-scanned prefix
 
-Allocations are expensive; reading memory is cheap. Scanning the string twice in the rare case is a small price to pay for zero allocations in the common case.
+The common case now allocates nothing. The less common case pays with a pass, but that's probably inevitable.
 
 ## Detours: ideas that didn't work out
 
