@@ -10,7 +10,7 @@ import type { Frontmatter } from "../../lib/frontmatter";
 import { getAllFrontmatter, getMdxBySlug } from "../../lib/mdx";
 import Twitter from "../../components/svgs/twitter";
 import { Row } from "../../components/taco";
-import { H1, H2, H3, H4, H5, H6 } from "../../components/heading";
+import * as Heading from "../../components/heading";
 import { TextLink } from "../../components/link";
 import { ListItem, OrderList, UnorderList } from "../../components/list";
 import Page from "../../components/page";
@@ -50,35 +50,87 @@ const TwitterButton = styled.a`
   }
 `;
 
-const PaddedH1 = styled(H1)`
+const HeadingContent = styled.span`
+  position: relative;
+  display: inline;
+`;
+
+const AnchorLink = styled.a<{ $offset: string }>`
+  opacity: 0.5;
+  position: absolute;
+  right: calc(100% + 1rem);
+  top: 0;
+  color: ${colors.body10};
+  text-decoration: none;
+  font-family: ${font.mono};
+  font-weight: 800;
+  line-height: inherit;
+  white-space: nowrap;
+
+  &:hover {
+    color: ${colors.body30};
+  }
+
+  @media screen and (max-width: ${breakpoints.mobile.width}px) {
+    display: none;
+  }
+`;
+
+const StyledH1 = styled(Heading.H1)`
   margin-top: 5rem;
   margin-bottom: 1rem;
 `;
 
-const PaddedH2 = styled(H2)`
+const StyledH2 = styled(Heading.H2)`
   margin-top: 4rem;
   margin-bottom: 1rem;
 `;
 
-const PaddedH3 = styled(H3)`
+const StyledH3 = styled(Heading.H3)`
   margin-top: 3rem;
   margin-bottom: 1rem;
 `;
 
-const PaddedH4 = styled(H4)`
+const StyledH4 = styled(Heading.H4)`
   margin-top: 2rem;
   margin-bottom: 1rem;
 `;
 
-const PaddedH5 = styled(H5)`
+const StyledH5 = styled(Heading.H5)`
   margin-top: 2rem;
   margin-bottom: 1rem;
 `;
 
-const PaddedH6 = styled(H6)`
+const StyledH6 = styled(Heading.H6)`
   margin-top: 1.5rem;
   margin-bottom: 1rem;
 `;
+
+const createHeadingWithAnchor = (
+  HeadingComponent: typeof StyledH1,
+  symbol: string
+) => {
+  const HeadingWithAnchor = ({ id, children, ...props }: any) => (
+    <HeadingComponent id={id} {...props}>
+      <HeadingContent>
+        {id && (
+          <AnchorLink href={`#${id}`} aria-label={`Link to ${children}`} $offset="0">
+            {symbol}
+          </AnchorLink>
+        )}
+        {children}
+      </HeadingContent>
+    </HeadingComponent>
+  );
+  return HeadingWithAnchor;
+};
+
+const H1 = createHeadingWithAnchor(StyledH1, "#");
+const H2 = createHeadingWithAnchor(StyledH2, "#");
+const H3 = createHeadingWithAnchor(StyledH3, "#");
+const H4 = createHeadingWithAnchor(StyledH4, "#");
+const H5 = createHeadingWithAnchor(StyledH5, "#");
+const H6 = createHeadingWithAnchor(StyledH6, "#");
 
 const Content = styled.p`
   font-family: ${font.sans};
@@ -386,12 +438,12 @@ export default function Post({
         <Component
           components={{
             strong: Strong,
-            h1: PaddedH1,
-            h2: PaddedH2,
-            h3: PaddedH3,
-            h4: PaddedH4,
-            h5: PaddedH5,
-            h6: PaddedH6,
+            h1: H1,
+            h2: H2,
+            h3: H3,
+            h4: H4,
+            h5: H5,
+            h6: H6,
             p: Content,
             a: A,
             li: Li,
