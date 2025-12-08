@@ -173,16 +173,15 @@ Notice that even here, the static parts (`"<div>"` and `"</div>"`) are pre-compu
 I benchmarked using OCaml's [Benchmark](https://github.com/Chris00/ocaml-benchmark) library, measuring throughput (renders per second) with multiple iterations to account for variance.
 
 ```
-Fully static element: <div class="container"></div>
+JSX.render <div class="container"></div>
 
 Baseline (JSX.node):     ~8M renders/sec
 After:                  ~27M renders/sec   → ~3x faster
 ```
 
-For deeply nested static elements, the improvement is more dramatic:
-
+For **nested static elements**, the improvement is more dramatic:
 ```
-Nested static: <div><header><h1>Title</h1></header><main>...</main></div>
+JSX.render <div><header><h1>Title</h1></header><main>...</main></div>
 
 Baseline (JSX.node):     ~2M renders/sec
 After:                  ~27M renders/sec   → ~12x faster
