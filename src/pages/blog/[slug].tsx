@@ -147,7 +147,7 @@ const Table = styled.table`
   text-align: left;
 
   td {
-    border-color: ${colors.body30};
+    border-color: ${colors.body10};
     border-style: solid;
     border-bottom-width: 1px;
     border-top-width: 0px;
@@ -162,8 +162,8 @@ const Table = styled.table`
   }
 
   th {
-    background-color: ${colors.body10};
-    border-color: ${colors.body30};
+    background-color: ${colors.codeBackground};
+    border-color: ${colors.body10};
     border-bottom-width: 1px;
     border-left-width: 1px;
     border-top-width: 1px;
@@ -174,7 +174,7 @@ const Table = styled.table`
   }
 
   td:last-child {
-    border-color: ${colors.body30};
+    border-color: ${colors.body10};
     border-right-width: 1px;
   }
 
