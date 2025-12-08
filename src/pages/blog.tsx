@@ -50,41 +50,84 @@ const PostDescription = styled.div`
   }
 `;
 
+const YearSection = styled.div`
+  position: relative;
+  width: 100%;
+`;
+
+const YearHeader = styled.h2`
+  position: absolute;
+  right: calc(100% + 42px);
+  top: 0px;
+  line-height: 1.3;
+  padding: 0;
+  font-family: ${font.mono};
+  font-size: ${font.fontSize3};
+  font-weight: ${font.fontWeight600};
+  color: ${colors.body10};
+  margin: 0;
+  user-select: none;
+`;
+
+type PostsByYear = { [year: string]: Frontmatter[] };
+
+const groupByYear = (frontmatters: Frontmatter[]): PostsByYear => {
+  return frontmatters.reduce((acc: PostsByYear, frontmatter) => {
+    const year = frontmatter.publishedAt
+      ? new Date(frontmatter.publishedAt).getFullYear().toString()
+      : "Unknown";
+    if (!acc[year]) {
+      acc[year] = [];
+    }
+    acc[year].push(frontmatter);
+    return acc;
+  }, {});
+};
+
 const Blog = ({ frontmatters }: { frontmatters: Array<Frontmatter> }) => {
+  const publishedPosts = frontmatters.filter(
+    (frontmatter: Frontmatter) => frontmatter.isDraft !== true
+  );
+  const postsByYear = groupByYear(publishedPosts);
+  const years = Object.keys(postsByYear).sort((a, b) => Number(b) - Number(a));
+
   return (
     <>
       <MetaData title="Blog" />
       <Page title={<H1>Blog</H1>}>
         <Spacer bottom={16}>
-          <Stack gap={6} align="left" fullWidth>
-            {frontmatters
-              .filter((frontmatters: Frontmatter) => {
-                return frontmatters.isDraft !== true;
-              })
-              .map((frontmatter: Frontmatter) => (
-                <PostLink
-                  hoverColor={colors.primary}
-                  color={colors.body50}
-                  decorationColor={colors.body30}
-                  key={frontmatter.title}
-                  href={"/blog/" + frontmatter.slug}
-                >
-                  <Stack fullWidth align="left">
-                    <Row distribute="between" fullWidth columnReverseOnMobile>
-                      <PostTitle> {frontmatter.title}</PostTitle>
-                    </Row>
-                    {frontmatter.description ? (
-                      <Spacer top={0.5}>
-                        <PostDescription>
-                          <Text color={colors.body50} size={font.fontSize1}>
-                            {frontmatter.description}
-                          </Text>
-                        </PostDescription>
-                      </Spacer>
-                    ) : null}
-                  </Stack>
-                </PostLink>
-              ))}
+          <Stack gap={10} align="left" fullWidth>
+            {years.map((year) => (
+              <YearSection key={year}>
+                <YearHeader>{year}</YearHeader>
+                <Stack gap={6} align="left" fullWidth>
+                  {postsByYear[year].map((frontmatter: Frontmatter) => (
+                    <PostLink
+                      hoverColor={colors.primary}
+                      color={colors.body50}
+                      decorationColor={colors.body30}
+                      key={frontmatter.title}
+                      href={"/blog/" + frontmatter.slug}
+                    >
+                      <Stack fullWidth align="left">
+                        <Row distribute="between" fullWidth columnReverseOnMobile>
+                          <PostTitle> {frontmatter.title}</PostTitle>
+                        </Row>
+                        {frontmatter.description ? (
+                          <Spacer top={0.5}>
+                            <PostDescription>
+                              <Text color={colors.body50} size={font.fontSize1}>
+                                {frontmatter.description}
+                              </Text>
+                            </PostDescription>
+                          </Spacer>
+                        ) : null}
+                      </Stack>
+                    </PostLink>
+                  ))}
+                </Stack>
+              </YearSection>
+            ))}
           </Stack>
         </Spacer>
       </Page>

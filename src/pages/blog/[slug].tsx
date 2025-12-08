@@ -348,8 +348,24 @@ export default function Post({
                   "MMM yyyy"
                 ).toUpperCase()}
               </Text>
+              {frontmatter.readingTime && (
+                <>
+                  <Text color={colors.body30} size={font.fontSize0} weight={400} monospace>
+                    {" • "}
+                  </Text>
+                  <Text
+                    kerning="0.05rem"
+                    color={colors.body50}
+                    size={font.fontSizeN2}
+                    weight={600}
+                    monospace
+                  >
+                    {`${Math.floor(frontmatter.readingTime.minutes)} MINUTES`}
+                  </Text>
+                </>
+              )}
               <Text color={colors.body30} size={font.fontSize0} weight={400} monospace>
-                {" • ".toUpperCase()}
+                {" • "}
               </Text>
               <Text kerning="0.05rem" weight={600} size={font.fontSizeN2} monospace>
                 <TextLink
