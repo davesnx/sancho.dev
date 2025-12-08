@@ -55,12 +55,11 @@ const HeadingContent = styled.span`
   display: inline;
 `;
 
-const AnchorLink = styled.a<{ $offset: string }>`
-  opacity: 0.5;
+const AnchorLink = styled.a`
   position: absolute;
   right: calc(100% + 1rem);
   top: 0;
-  color: ${colors.body10};
+  color: ${colors.contrastCodeBackground80};
   text-decoration: none;
   font-family: ${font.mono};
   font-weight: 800;
@@ -68,7 +67,7 @@ const AnchorLink = styled.a<{ $offset: string }>`
   white-space: nowrap;
 
   &:hover {
-    color: ${colors.body30};
+    color: ${colors.contrastCodeBackground};
   }
 
   @media screen and (max-width: ${breakpoints.mobile.width}px) {
@@ -76,34 +75,42 @@ const AnchorLink = styled.a<{ $offset: string }>`
   }
 `;
 
+const scrollOffsetTop = "5rem";
+
 const StyledH1 = styled(Heading.H1)`
   margin-top: 5rem;
   margin-bottom: 1rem;
+  scroll-margin-top: ${scrollOffsetTop};
 `;
 
 const StyledH2 = styled(Heading.H2)`
   margin-top: 4rem;
   margin-bottom: 1rem;
+  scroll-margin-top: ${scrollOffsetTop};
 `;
 
 const StyledH3 = styled(Heading.H3)`
   margin-top: 3rem;
   margin-bottom: 1rem;
+  scroll-margin-top: ${scrollOffsetTop};
 `;
 
 const StyledH4 = styled(Heading.H4)`
   margin-top: 2rem;
   margin-bottom: 1rem;
+  scroll-margin-top: ${scrollOffsetTop};
 `;
 
 const StyledH5 = styled(Heading.H5)`
   margin-top: 2rem;
   margin-bottom: 1rem;
+  scroll-margin-top: ${scrollOffsetTop};
 `;
 
 const StyledH6 = styled(Heading.H6)`
   margin-top: 1.5rem;
   margin-bottom: 1rem;
+  scroll-margin-top: ${scrollOffsetTop};
 `;
 
 const createHeadingWithAnchor = (
@@ -114,7 +121,7 @@ const createHeadingWithAnchor = (
     <HeadingComponent id={id} {...props}>
       <HeadingContent>
         {id && (
-          <AnchorLink href={`#${id}`} aria-label={`Link to ${children}`} $offset="0">
+          <AnchorLink href={`#${id}`} aria-label={`Link to ${children}`}>
             {symbol}
           </AnchorLink>
         )}
@@ -342,7 +349,7 @@ export const getStaticPaths: GetStaticPaths = () => {
 };
 
 const Strong = (props: any) => {
-  return <Text as="strong" weight={400} color={colors.primary} {...props} />;
+  return <Text as="strong" weight={600} color={colors.primary} {...props} />;
 };
 
 export const getStaticProps: GetStaticProps = async ({ params }) => {
