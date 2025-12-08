@@ -57,13 +57,13 @@ const YearSection = styled.div`
 
 const YearHeader = styled.h2`
   position: absolute;
-  right: calc(100% + 42px);
+  right: calc(100% + 120px);
   top: 0px;
   line-height: 1.3;
   padding: 0;
   font-family: ${font.mono};
   font-size: ${font.fontSize3};
-  font-weight: ${font.fontWeight600};
+  font-weight: 600;
   color: ${colors.body10};
   margin: 0;
   user-select: none;
