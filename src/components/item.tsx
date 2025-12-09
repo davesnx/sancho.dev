@@ -71,7 +71,7 @@ type IconComponent = ({
 }: {
   href: string;
   size: number;
-}) => JSX.Element;
+}) => React.ReactElement;
 
 const KindToIcon: Record<keyof typeof Kind, IconComponent> = {
   Web: WebIcon,

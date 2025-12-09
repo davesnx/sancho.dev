@@ -31,7 +31,7 @@
     "allowJs": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
-    "jsx": "preserve",
+    "jsx": "react-jsx",
     "noEmit": true,
     "isolatedModules": true,
     "incremental": true
@@ -44,6 +44,6 @@
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",
-    "src/*",
+    "src/*"
   ]
 }

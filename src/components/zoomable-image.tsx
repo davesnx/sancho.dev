@@ -29,11 +29,6 @@ const StyledImg = styled.img<{ isZoomed: boolean }>`
   border-radius: 6px;
   margin: 0;
   cursor: ${(props) => (props.isZoomed ? "default" : "zoom-in")};
-  transition: opacity 0.2s ease-in-out;
-
-  &:hover {
-    opacity: ${(props) => (props.isZoomed ? 1 : 0.9)};
-  }
 `;
 
 const Overlay = styled.div`

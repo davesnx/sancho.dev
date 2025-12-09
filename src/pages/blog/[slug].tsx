@@ -19,8 +19,40 @@ import Spacer from "../../components/spacer";
 import Text from "../../components/text";
 import { ZoomableImage } from "../../components/zoomable-image";
 import breakpoints from "../../theme/constants";
-import font from "../../theme/fonts";
+import fonts from "../../theme/fonts";
 import { colors } from "../../theme/theme";
+
+const BlogContent = styled.div`
+  /* Inline code styling */
+  :not(pre) > code {
+    font-family: ${fonts.mono};
+    white-space: normal;
+    border-radius: 4px;
+    padding: 3px 6px;
+    margin: 0px 2px;
+    color: ${colors.body};
+    background: ${colors.contrastCodeBackground30};
+  }
+
+  p > code:first-of-type {
+    margin-left: 0;
+  }
+
+  /* Shiki dual-theme: map CSS variables to color property based on site theme */
+  code[data-theme*=" "] span {
+    color: var(--shiki-dark);
+    font-style: var(--shiki-dark-font-style);
+    font-weight: var(--shiki-dark-font-weight);
+    text-decoration: var(--shiki-dark-text-decoration);
+  }
+
+  html[data-theme="light"] & code[data-theme*=" "] span {
+    color: var(--shiki-light);
+    font-style: var(--shiki-light-font-style);
+    font-weight: var(--shiki-light-font-weight);
+    text-decoration: var(--shiki-light-text-decoration);
+  }
+`;
 
 const ThanksContainer = styled.div`
   background-color: ${colors.codeBackground};
@@ -61,7 +93,7 @@ const AnchorLink = styled.a`
   top: 0;
   color: ${colors.contrastCodeBackground80};
   text-decoration: none;
-  font-family: ${font.mono};
+  font-family: ${fonts.mono};
   font-weight: 800;
   line-height: inherit;
   white-space: nowrap;
@@ -140,10 +172,10 @@ const H5 = createHeadingWithAnchor(StyledH5, "#");
 const H6 = createHeadingWithAnchor(StyledH6, "#");
 
 const Content = styled.p`
-  font-family: ${font.sans};
+  font-family: ${fonts.sans};
   line-height: 1.85rem;
   color: ${colors.body90};
-  font-size: ${font.fontSize1};
+  font-size: ${fonts.fontSize1};
   font-weight: 400;
   margin-bottom: 1.2rem;
   display: block;
@@ -183,11 +215,40 @@ const Oversized = styled.span`
   margin: 1rem 0 3rem 0;
 `;
 
-const Pre = (props: any) => (
-  <Oversized>
-    <pre {...props} />
-  </Oversized>
-);
+const Pre = styled.pre`
+  display: block;
+  margin: 1rem 0 3rem 0;
+
+  display: grid;
+  overflow: auto;
+  position: relative;
+  padding: 2rem;
+  border-radius: 6px;
+  margin: 0;
+  background: ${colors.codeBackground};
+
+  font-family: ${fonts.mono};
+  font-weight: 400;
+  text-align: left;
+  white-space: pre;
+  word-spacing: normal;
+  word-break: normal;
+  word-wrap: normal;
+  tab-size: 4;
+  hyphens: none;
+`
+
+const Code = styled.code`
+  font-family: ${fonts.mono};
+  font-weight: 400;
+  text-align: left;
+  white-space: pre;
+  word-spacing: normal;
+  word-break: normal;
+  word-wrap: normal;
+  tab-size: 4;
+  hyphens: none;
+`
 
 const Table = styled.table`
   border-collapse: separate;
@@ -197,7 +258,7 @@ const Table = styled.table`
   display: inline-block;
   width: 100%;
   margin: 32px 0;
-  font-family: ${font.sans};
+  font-family: ${fonts.sans};
   color: ${colors.body90};
   line-height: 1.7142857;
   margin-bottom: 2em;
@@ -398,7 +459,7 @@ export default function Post({
               <Text
                 kerning="0.05rem"
                 color={colors.body50}
-                size={font.fontSizeN2}
+                size={fonts.fontSizeN2}
                 weight={600}
                 monospace
               >
@@ -407,26 +468,10 @@ export default function Post({
                   "MMM yyyy"
                 ).toUpperCase()}
               </Text>
-              {frontmatter.readingTime && (
-                <>
-                  <Text color={colors.body30} size={font.fontSize0} weight={400} monospace>
-                    {" • "}
-                  </Text>
-                  <Text
-                    kerning="0.05rem"
-                    color={colors.body50}
-                    size={font.fontSizeN2}
-                    weight={600}
-                    monospace
-                  >
-                    {`${Math.floor(frontmatter.readingTime.minutes)} MINUTES`}
-                  </Text>
-                </>
-              )}
-              <Text color={colors.body30} size={font.fontSize0} weight={400} monospace>
+              <Text color={colors.body30} size={fonts.fontSize0} weight={400} monospace>
                 {" • "}
               </Text>
-              <Text kerning="0.05rem" weight={600} size={font.fontSizeN2} monospace>
+              <Text kerning="0.05rem" weight={600} size={fonts.fontSizeN2} monospace>
                 <TextLink
                   weight={600}
                   color={colors.body50}
@@ -438,31 +483,51 @@ export default function Post({
                   {`davesnx`.toUpperCase()}
                 </TextLink>
               </Text>
+
+              {frontmatter.readingTime && (
+                <>
+                  <Text color={colors.body30} size={fonts.fontSize0} weight={400} monospace>
+                    {" • "}
+                  </Text>
+                  <Text
+                    kerning="0.05rem"
+                    color={colors.body50}
+                    size={fonts.fontSizeN2}
+                    weight={600}
+                    monospace
+                  >
+                    {`${Math.floor(frontmatter.readingTime.minutes)} MINUTES`}
+                  </Text>
+                </>
+              )}
             </Row>
           </>
         }
       >
-        <Component
-          components={{
-            strong: Strong,
-            h1: H1,
-            h2: H2,
-            h3: H3,
-            h4: H4,
-            h5: H5,
-            h6: H6,
-            p: Content,
-            a: A,
-            li: Li,
-            ol: OrderList,
-            ul: UnorderList,
-            hr: Hr,
-            blockquote: Blockquote,
-            img: Image,
-            pre: Pre,
-            table: Table,
-          }}
-        />
+        <BlogContent>
+          <Component
+            components={{
+              strong: Strong,
+              h1: H1,
+              h2: H2,
+              h3: H3,
+              h4: H4,
+              h5: H5,
+              h6: H6,
+              p: Content,
+              a: A,
+              li: Li,
+              ol: OrderList,
+              ul: UnorderList,
+              hr: Hr,
+              blockquote: Blockquote,
+              img: Image,
+              pre: Pre,
+              code: Code,
+              table: Table,
+            }}
+          />
+        </BlogContent>
 
         {frontmatter.slug !== "hello" && (
           <>

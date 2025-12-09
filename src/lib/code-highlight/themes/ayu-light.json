@@ -93,7 +93,7 @@
     "tab.inactiveForeground": "#8a9199",
     "tab.unfocusedActiveForeground": "#8a9199",
     "tab.unfocusedInactiveForeground": "#8a9199",
-    "editor.background": "#f8f9fa",
+    "editor.background": "#F5F5F5",
     "editor.foreground": "#5c6166",
     "editorLineNumber.foreground": "#8a919966",
     "editorLineNumber.activeForeground": "#8a9199cc",
@@ -233,7 +233,7 @@
   "tokenColors": [
     {
       "settings": {
-        "background": "#f8f9fa",
+        "background": "#F5F5F5",
         "foreground": "#5c6166"
       }
     },

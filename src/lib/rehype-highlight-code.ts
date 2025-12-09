@@ -2,7 +2,7 @@
 
 import { toString } from "hast-util-to-string";
 import rangeParser from "parse-numeric-range";
-import { refractor } from "refractor";
+import refractor from "refractor";
 import { visit } from "unist-util-visit";
 import type { Element, Root } from "hast";
 
@@ -29,7 +29,9 @@ function visitor(node: Element, _index: number | undefined, parent: Element | Ro
 
   const lineProp = node.properties.line as string | undefined;
   const linesToHighlight = rangeParser(lineProp || "0");
-  const highlighted = highlightLine(result, linesToHighlight);
+  // Wrap the result in a Root node for highlightLine
+  const rootNode: Root = { type: "root", children: result };
+  const highlighted = highlightLine(rootNode, linesToHighlight);
   /* result = highlightWord(result); */
 
   node.children = highlighted as Element["children"];

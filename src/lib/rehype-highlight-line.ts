@@ -1,9 +1,9 @@
 // Inspired by https://github.com/j0lv3r4/mdx-prism
 
 import { toHtml } from "hast-util-to-html";
+import type { Root } from "hast";
 import parse from "rehype-parse";
 import { unified } from "unified";
-import type { RefractorRoot } from "refractor";
 
 type LineNode = {
   type: string;
@@ -110,7 +110,7 @@ const wrapLines = function wrapLines(ast: LineNode[], linesToHighlight: number[]
 // https://github.com/gatsbyjs/gatsby/pull/26161/files
 const MULTILINE_TOKEN_SPAN = /<span class="token ([^"]+)">[^<]*\n[^<]*<\/span>/g;
 
-const applyMultilineFix = (ast: RefractorRoot): LineNode[] => {
+const applyMultilineFix = (ast: Root): LineNode[] => {
   // AST to HTML
   let html = toHtml(ast);
 
@@ -127,7 +127,7 @@ const applyMultilineFix = (ast: RefractorRoot): LineNode[] => {
   return hast.children as LineNode[];
 };
 
-function rehypeHighlightLine(ast: RefractorRoot, lines: number[]): LineNode[] {
+function rehypeHighlightLine(ast: Root, lines: number[]): LineNode[] {
   const formattedAst = applyMultilineFix(ast);
   const numbered = lineNumberify(formattedAst).nodes;
 

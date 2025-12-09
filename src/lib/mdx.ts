@@ -9,7 +9,7 @@ import rehypeAutolinkHeadings from "rehype-autolink-headings";
 import rehypePrettyCode from "rehype-pretty-code";
 import rehypeSlug from "rehype-slug";
 import remarkGfm from "remark-gfm";
-import { BUNDLED_LANGUAGES, getHighlighter } from "shiki";
+import { createHighlighter } from "shiki";
 
 import type { Frontmatter } from "./frontmatter";
 import rehypeHighlightCode from "./rehype-highlight-code";
@@ -17,6 +17,39 @@ import rehypeMetaAttribute from "./rehype-meta-attribute";
 
 const cwd = process.cwd();
 const DATA_PATH = path.join(cwd, "src", "content", "posts");
+
+const loadGrammar = (grammarPath: string) => {
+  return JSON.parse(
+    fs.readFileSync(path.resolve(grammarPath), "utf-8")
+  );
+};
+
+const customLanguages = [
+  {
+    ...loadGrammar("./src/lib/code-highlight/syntaxes/rescript.json"),
+    name: "rescript",
+  },
+  {
+    ...loadGrammar("./src/lib/code-highlight/syntaxes/reason.json"),
+    name: "reason",
+  },
+  {
+    ...loadGrammar("./src/lib/code-highlight/syntaxes/ocaml.json"),
+    name: "ocaml",
+  },
+  {
+    ...loadGrammar("./src/lib/code-highlight/syntaxes/mlx.json"),
+    name: "mlx",
+  },
+  {
+    ...loadGrammar("./src/lib/code-highlight/syntaxes/dune.json"),
+    name: "dune",
+  },
+  {
+    ...loadGrammar("./src/lib/code-highlight/syntaxes/cram.json"),
+    name: "cram",
+  },
+];
 
 export const getAllFrontmatter = () => {
   const paths = globbySync(`${path.join(DATA_PATH)}/*.mdx`);
@@ -33,74 +66,81 @@ export const getAllFrontmatter = () => {
     } as Frontmatter;
   });
 };
+
+const ayuDarkTheme = {
+  ...JSON.parse(
+    fs.readFileSync(
+      path.join(cwd, "src", "lib", "./code-highlight/themes/ayu-mirage.json"),
+      "utf-8",
+    ),
+  ),
+  name: "ayu-dark",
+};
+
+const ayuLightTheme = {
+  ...JSON.parse(
+    fs.readFileSync(
+      path.join(cwd, "src", "lib", "./code-highlight/themes/ayu-light.json"),
+      "utf-8",
+    ),
+  ),
+  name: "ayu-light",
+};
+
 const codeHighlightOptions = {
   theme: {
-    dark: JSON.parse(
-      fs.readFileSync(
-        path.join(cwd, "src", "lib", "./code-highlight/themes/ayu-mirage.json"),
-        "utf-8",
-      ),
-    ),
-    light: JSON.parse(
-      fs.readFileSync(
-        path.join(cwd, "src", "lib", "./code-highlight/themes/ayu-light.json"),
-        "utf-8",
-      ),
-    ),
+    dark: "ayu-dark",
+    light: "ayu-light",
   },
-  getHighlighter: (options: Parameters<typeof getHighlighter>[0]) =>
-    getHighlighter({
-      ...options,
+  getHighlighter: async () => {
+    const highlighter = await createHighlighter({
+      themes: [ayuDarkTheme, ayuLightTheme],
       langs: [
-        ...BUNDLED_LANGUAGES,
-        {
-          id: "rescript",
-          scopeName: "source.rescript",
-          path: path.resolve("./src/lib/code-highlight/syntaxes/rescript.json"),
-        },
-        {
-          id: "reason",
-          scopeName: "source.reason",
-          path: path.resolve("./src/lib/code-highlight/syntaxes/reason.json"),
-        },
-        {
-          id: "ocaml",
-          scopeName: "source.ocaml",
-          path: path.resolve("./src/lib/code-highlight/syntaxes/ocaml.json"),
-        },
-        {
-          id: "mlx",
-          scopeName: "source.mlx",
-          path: path.resolve("./src/lib/code-highlight/syntaxes/mlx.json"),
-        },
-        {
-          id: "dune",
-          scopeName: "source.dune",
-          path: path.resolve("./src/lib/code-highlight/syntaxes/dune.json"),
-        },
-        {
-          id: "cram",
-          scopeName: "source.cram",
-          path: path.resolve("./src/lib/code-highlight/syntaxes/cram.json"),
-        },
+        "javascript",
+        "typescript",
+        "jsx",
+        "tsx",
+        "json",
+        "bash",
+        "shell",
+        "markdown",
+        "css",
+        "html",
+        "yaml",
+        "toml",
+        "diff",
+        "c",
+        "rust",
+        "python",
+        "ruby",
+        "go",
+        "sql",
+        "graphql",
+        "xml",
+        "swift",
+        "kotlin",
+        "java",
+        "php",
+        "scss",
+        "less",
+        "make",
+        "dockerfile",
+        ...customLanguages,
       ],
-    }),
-  /* // Or your own JSON theme
-  theme: JSON.parse(
-    Fs.readFileSync(require.resolve('./themes/dark.json'), 'utf-8')
-  ), */
+    });
+    return highlighter;
+  },
+  grid: true,
   onVisitLine(node: { children: { type: string; value: string }[] }) {
-    // Prevent lines from collapsing in `display: grid` mode, and
-    // allow empty lines to be copy/pasted
+    // Prevent lines from collapsing in `display: grid` mode, and allow empty lines to be copy/pasted
     if (node.children.length === 0) {
       node.children = [{ type: "text", value: " " }];
     }
   },
-  // Feel free to add classNames that suit your docs
   onVisitHighlightedLine(node: { properties: { className: string[] } }) {
     node.properties.className.push("highlighted");
   },
-  onVisitHighlightedWord(node: { properties: { className: string[] } }) {
+  onVisitHighlightedChars(node: { properties: { className: string[] } }) {
     node.properties.className = ["word"];
   },
 };
