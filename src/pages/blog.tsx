@@ -101,7 +101,7 @@ const Blog = ({ frontmatters }: { frontmatters: Array<Frontmatter> }) => {
               <YearSection key={year}>
                 <YearHeader>{year}</YearHeader>
                 <Stack gap={6} align="left" fullWidth>
-                  {postsByYear[year].map((frontmatter: Frontmatter) => (
+                  {(postsByYear[year] ?? []).map((frontmatter: Frontmatter) => (
                     <PostLink
                       hoverColor={colors.primary}
                       color={colors.body50}

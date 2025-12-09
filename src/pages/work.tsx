@@ -14,7 +14,8 @@ import Text from "../components/text";
 import constants from "../theme/constants";
 import font from "../theme/fonts";
 import { colors } from "../theme/theme";
-import { type GitHubRepo, getLanguageColor } from "../lib/github";
+import type { GitHubRepo } from "../lib/github";
+import { getLanguageColor } from "../lib/github";
 
 const OpenSourceSection = styled.div`
   width: 100vw;
@@ -116,7 +117,7 @@ const Job = ({
             <Text weight={500} color={colors.body50} size={font.fontSize1}>
               {company.name}
             </Text>
-            )}
+          )}
           <HideOnDesktop>
             <Spacer top={0.5} />
             <DateRange date={date} />

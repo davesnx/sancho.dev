@@ -48,7 +48,7 @@ const codeHighlightOptions = {
       ),
     ),
   },
-  getHighlighter: (options) =>
+  getHighlighter: (options: Parameters<typeof getHighlighter>[0]) =>
     getHighlighter({
       ...options,
       langs: [
@@ -89,7 +89,7 @@ const codeHighlightOptions = {
   theme: JSON.parse(
     Fs.readFileSync(require.resolve('./themes/dark.json'), 'utf-8')
   ), */
-  onVisitLine(node) {
+  onVisitLine(node: { children: { type: string; value: string }[] }) {
     // Prevent lines from collapsing in `display: grid` mode, and
     // allow empty lines to be copy/pasted
     if (node.children.length === 0) {
@@ -97,10 +97,10 @@ const codeHighlightOptions = {
     }
   },
   // Feel free to add classNames that suit your docs
-  onVisitHighlightedLine(node) {
+  onVisitHighlightedLine(node: { properties: { className: string[] } }) {
     node.properties.className.push("highlighted");
   },
-  onVisitHighlightedWord(node) {
+  onVisitHighlightedWord(node: { properties: { className: string[] } }) {
     node.properties.className = ["word"];
   },
 };

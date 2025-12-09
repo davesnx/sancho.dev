@@ -8,11 +8,13 @@ import fonts from "../theme/fonts";
 import { colors } from "../theme/theme";
 
 type AnchorProps = {
-  color: string;
-  hoverColor: string;
-  decorationColor: string;
+  color?: string;
+  hoverColor?: string;
+  decorationColor?: string;
   weight?: number;
   monospace?: boolean;
+  underline?: boolean;
+  underlined?: boolean;
 };
 
 const Anchor = (props: AnchorProps) => css`

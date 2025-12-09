@@ -4,6 +4,7 @@ import styled from "@emotion/styled";
 
 import font from "../theme/fonts";
 import { colors } from "../theme/theme";
+import constants from "../theme/constants";
 import Github from "./../components/svgs/github";
 import Web from "./../components/svgs/web";
 import YouTube from "./../components/svgs/youtube";
@@ -14,7 +15,6 @@ import { Row, Stack } from "./taco";
 import Text from "./text";
 
 const GithubIcon = ({
-  href,
   size,
 }: {
   href: string;
@@ -23,7 +23,6 @@ const GithubIcon = ({
   <Icon
     padded
     size={size}
-    href={href}
     svg={Github}
     bg={colors.grey}
     color="#181717"
@@ -31,7 +30,6 @@ const GithubIcon = ({
 );
 
 const WebIcon = ({
-  href,
   size,
 }: {
   href: string;
@@ -40,7 +38,6 @@ const WebIcon = ({
   <Icon
     padded
     size={size}
-    href={href}
     svg={Web}
     bg={colors.grey}
     color={colors.primary}
@@ -48,7 +45,6 @@ const WebIcon = ({
 );
 
 const YouTubeIcon = ({
-  href,
   size,
 }: {
   href: string;
@@ -57,7 +53,6 @@ const YouTubeIcon = ({
   <Icon
     padded
     size={size}
-    href={href}
     svg={YouTube}
     bg={colors.grey}
     color={colors.r}
@@ -70,7 +65,7 @@ export const Kind = {
   YouTube: "YouTube",
 } as const;
 
-type Icon = ({
+type IconComponent = ({
   href,
   size,
 }: {
@@ -78,7 +73,7 @@ type Icon = ({
   size: number;
 }) => JSX.Element;
 
-const KindToIcon: Record<keyof typeof Kind, Icon> = {
+const KindToIcon: Record<keyof typeof Kind, IconComponent> = {
   Web: WebIcon,
   Github: GithubIcon,
   YouTube: YouTubeIcon,
@@ -93,8 +88,12 @@ const Box = styled.div`
   cursor: pointer;
 
   text-decoration: none;
-
   padding: 3rem;
+
+  @media (max-width: ${constants.mobile.width}px) {
+    padding: 2rem;
+  }
+
   border-radius: 0.5rem;
   border: 2px solid ${colors.contrastCodeBackground};
   background-color: ${colors.contrastCodeBackground30};
@@ -126,7 +125,7 @@ export const Item = ({
   kind: string;
   link: string;
 }) => {
-  const Icon: Icon = KindToIcon[kind as keyof typeof Kind] || KindToIcon["Web"];
+  const IconEl: IconComponent = KindToIcon[kind as keyof typeof Kind] || KindToIcon["Web"];
 
   return (
     <Row fullWidth align="center" distribute="between" gap={2}>
@@ -136,7 +135,7 @@ export const Item = ({
             <Text color={colors.body30} size={font.fontSize1} weight={700}>
               {meta}
             </Text>
-            <Icon href={link} size={16} />
+            <IconEl href={link} size={16} />
           </Row>
           <Stack align="left" gap={1}>
             <H4>{title}</H4>

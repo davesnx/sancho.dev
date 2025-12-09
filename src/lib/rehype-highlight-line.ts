@@ -3,25 +3,42 @@
 import { toHtml } from "hast-util-to-html";
 import parse from "rehype-parse";
 import { unified } from "unified";
+import type { RefractorRoot } from "refractor";
 
-const lineNumberify = function lineNumberify(ast, lineNum = 1) {
+type LineNode = {
+  type: string;
+  value?: string;
+  lineNumber?: number;
+  children?: LineNode[];
+  tagName?: string;
+  properties?: Record<string, unknown>;
+};
+
+type LineResult = {
+  nodes: LineNode[];
+  lineNumber: number;
+};
+
+const lineNumberify = function lineNumberify(ast: LineNode[], lineNum = 1): LineResult {
   let lineNumber = lineNum;
-  return ast.reduce(
+  return ast.reduce<LineResult>(
     (result, node) => {
       if (node.type === "text") {
-        if (node.value.indexOf("\n") === -1) {
+        const nodeValue = node.value ?? "";
+        if (nodeValue.indexOf("\n") === -1) {
           node.lineNumber = lineNumber;
           result.nodes.push(node);
           return result;
         }
 
-        const lines = node.value.split("\n");
+        const lines = nodeValue.split("\n");
         for (let i = 0; i < lines.length; i++) {
           if (i !== 0) ++lineNumber;
-          if (i === lines.length - 1 && lines[i].length === 0) continue;
+          const currentLine = lines[i];
+          if (i === lines.length - 1 && currentLine?.length === 0) continue;
           result.nodes.push({
             type: "text",
-            value: i === lines.length - 1 ? lines[i] : `${lines[i]}\n`,
+            value: i === lines.length - 1 ? (currentLine ?? "") : `${currentLine ?? ""}\n`,
             lineNumber,
           });
         }
@@ -46,25 +63,27 @@ const lineNumberify = function lineNumberify(ast, lineNum = 1) {
   );
 };
 
-const wrapLines = function wrapLines(ast, linesToHighlight) {
+const wrapLines = function wrapLines(ast: LineNode[], linesToHighlight: number[]): LineNode[] {
   const highlightAll = linesToHighlight.length === 1 && linesToHighlight[0] === 0;
-  const allLines = Array.from(new Set(ast.map((x) => x.lineNumber)));
+  const allLines = Array.from(new Set(ast.map((x: LineNode) => x.lineNumber)));
   let i = 0;
-  const wrapped = allLines.reduce((nodes, marker) => {
+  const wrapped = allLines.reduce<LineNode[]>((nodes, marker) => {
     const line = marker;
-    const children = [];
+    const children: LineNode[] = [];
     for (; i < ast.length; i++) {
-      if (ast[i].lineNumber < line) {
-        nodes.push(ast[i]);
+      const currentNode = ast[i];
+      if (!currentNode) break;
+      if ((currentNode.lineNumber ?? 0) < (line ?? 0)) {
+        nodes.push(currentNode);
         continue;
       }
 
-      if (ast[i].lineNumber === line) {
-        children.push(ast[i]);
+      if (currentNode.lineNumber === line) {
+        children.push(currentNode);
         continue;
       }
 
-      if (ast[i].lineNumber > line) {
+      if ((currentNode.lineNumber ?? 0) > (line ?? 0)) {
         break;
       }
     }
@@ -76,7 +95,7 @@ const wrapLines = function wrapLines(ast, linesToHighlight) {
         dataLine: line,
         className: "highlight-line",
         dataHighlighted:
-          linesToHighlight.includes(line) || highlightAll ? "true" : "false",
+          linesToHighlight.includes(line as number) || highlightAll ? "true" : "false",
       },
       children,
       lineNumber: line,
@@ -91,7 +110,7 @@ const wrapLines = function wrapLines(ast, linesToHighlight) {
 // https://github.com/gatsbyjs/gatsby/pull/26161/files
 const MULTILINE_TOKEN_SPAN = /<span class="token ([^"]+)">[^<]*\n[^<]*<\/span>/g;
 
-const applyMultilineFix = (ast) => {
+const applyMultilineFix = (ast: RefractorRoot): LineNode[] => {
   // AST to HTML
   let html = toHtml(ast);
 
@@ -105,10 +124,10 @@ const applyMultilineFix = (ast) => {
     .use(parse, { emitParseErrors: true, fragment: true })
     .parse(html);
 
-  return hast.children;
+  return hast.children as LineNode[];
 };
 
-function rehypeHighlightLine(ast, lines) {
+function rehypeHighlightLine(ast: RefractorRoot, lines: number[]): LineNode[] {
   const formattedAst = applyMultilineFix(ast);
   const numbered = lineNumberify(formattedAst).nodes;
 

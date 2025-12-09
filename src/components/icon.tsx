@@ -16,6 +16,12 @@ const Logo = styled.div`
   transition: all 100ms ease-in;
 `;
 
+type SvgIconProps = {
+  fill?: string;
+  size?: number;
+  color?: string;
+};
+
 const Icon = ({
   svg: Svg,
   size,
@@ -23,7 +29,7 @@ const Icon = ({
   bg,
   padded,
 }: {
-  svg: React.FC;
+  svg: React.FC<SvgIconProps>;
   size: number;
   color: string;
   bg: string;
@@ -32,7 +38,7 @@ const Icon = ({
   const fill = color || colors.body;
   return (
     <Logo padded={padded} color={bg}>
-      <Svg size={size} fill={fill} />
+      <Svg size={size} fill={fill} color={fill} />
     </Logo>
   );
 };
