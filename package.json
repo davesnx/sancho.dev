@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "build-stats": "cross-env ANALYZE=true npm run build",
-    "export": "next export && node scripts/postbuild.mjs",
+    "export": "node scripts/postbuild.mjs",
     "build-clean-prod": "npm run clean && npm run build && npm run export",
     "build-prod": "npm run build && npm run export",
     "clean": "rimraf .next out",
