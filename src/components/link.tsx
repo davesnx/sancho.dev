@@ -42,7 +42,19 @@ const Anchor = (props: AnchorProps) => css`
   }
 `;
 
-const StyledA = styled.a`
+// Prevent custom styling props from being passed to DOM (avoids React warnings)
+const shouldForwardProp = (prop: string) =>
+  ![
+    "color",
+    "hoverColor",
+    "decorationColor",
+    "weight",
+    "monospace",
+    "underline",
+    "underlined",
+  ].includes(prop);
+
+const StyledNextLink = styled(NextLink, { shouldForwardProp })`
   ${(props: AnchorProps) => Anchor(props)};
 `;
 
@@ -57,19 +69,18 @@ export const TextLink = ({
   const decorationColor = rest.decorationColor || color;
 
   return (
-    <NextLink href={href} shallow legacyBehavior>
-      <StyledA
-        {...rest}
-        href={href}
-        color={color}
-        hoverColor={hoverColor}
-        decorationColor={decorationColor}
-      />
-    </NextLink>
+    <StyledNextLink
+      {...rest}
+      href={href}
+      shallow
+      color={color}
+      hoverColor={hoverColor}
+      decorationColor={decorationColor}
+    />
   );
 };
 
-const UnstyledA = styled.a`
+const UnstyledNextLink = styled(NextLink, { shouldForwardProp })`
   color: currentColor;
   text-decoration: none;
   cursor: pointer;
@@ -82,9 +93,7 @@ export const ButtonLink = ({
   href: string;
 } & React.AnchorHTMLAttributes<HTMLAnchorElement>) => {
   return (
-    <NextLink href={href} shallow legacyBehavior>
-      <UnstyledA href={href} {...rest} />
-    </NextLink>
+    <UnstyledNextLink href={href} shallow {...rest} />
   );
 };
 
