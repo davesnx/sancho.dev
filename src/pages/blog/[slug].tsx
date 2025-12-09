@@ -22,9 +22,9 @@ import breakpoints from "../../theme/constants";
 import fonts from "../../theme/fonts";
 import { colors } from "../../theme/theme";
 
+/* Inline code styling */
 const BlogContent = styled.div`
-  /* Inline code styling */
-  :not(pre) > code {
+  *:not(pre) > code {
     font-family: ${fonts.mono};
     white-space: normal;
     border-radius: 4px;
@@ -215,6 +215,15 @@ const Oversized = styled.span`
   margin: 1rem 0 3rem 0;
 `;
 
+const ImageCaption = styled.div`
+  margin-top: 0.25rem;
+  text-align: left;
+  font-family: ${fonts.sans};
+  font-size: ${fonts.fontSizeN1};
+  color: ${colors.body50};
+  font-style: italic;
+`;
+
 const Pre = styled.pre`
   display: block;
   margin: 1rem 0 3rem 0;
@@ -315,9 +324,11 @@ const Table = styled.table`
 `;
 
 const Image = (props: any) => {
+  const { alt, ...imageProps } = props;
   return (
     <Oversized>
-      <ZoomableImage {...props} />
+      <ZoomableImage {...imageProps} alt={alt} />
+      {alt && <ImageCaption>{alt}</ImageCaption>}
     </Oversized>
   );
 };
