@@ -215,7 +215,8 @@ const Oversized = styled.span`
   margin: 1rem 0 3rem 0;
 `;
 
-const ImageCaption = styled.div`
+const ImageCaption = styled.span`
+  display: block;
   margin-top: 0.25rem;
   text-align: left;
   font-family: ${fonts.sans};
@@ -251,7 +252,6 @@ const Code = styled.code`
   font-family: ${fonts.mono};
   font-weight: 400;
   text-align: left;
-  white-space: pre;
   word-spacing: normal;
   word-break: normal;
   word-wrap: normal;
@@ -264,7 +264,7 @@ const Table = styled.table`
   border-spacing: 0 0;
   overflow-x: auto;
   max-width: 100%;
-  display: inline-block;
+  display: inline-table;
   width: 100%;
   margin: 32px 0;
   font-family: ${fonts.sans};
@@ -320,6 +320,10 @@ const Table = styled.table`
   }
   tr:last-child td:last-child {
     border-bottom-right-radius: 0.375rem;
+  }
+
+  @media screen and (max-width: ${breakpoints.mobile.width}px) {
+    display: block;
   }
 `;
 
@@ -401,6 +405,8 @@ const A = (props: any) => {
   return (
     <TextLink
       {...props}
+      target="_blank"
+      rel="noopener noreferrer"
       weight={500}
       color={colors.body}
       hoverColor={colors.primary}

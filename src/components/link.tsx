@@ -58,6 +58,9 @@ const StyledNextLink = styled(NextLink, { shouldForwardProp })`
   ${(props: AnchorProps) => Anchor(props)};
 `;
 
+const isExternalLink = (href: string) =>
+  href.startsWith("http://") || href.startsWith("https://");
+
 export const TextLink = ({
   href,
   ...rest
@@ -68,9 +71,14 @@ export const TextLink = ({
   const hoverColor = rest.hoverColor || colors.primary;
   const decorationColor = rest.decorationColor || color;
 
+  const externalProps = isExternalLink(href)
+    ? { target: "_blank" as const, rel: "noopener noreferrer" }
+    : {};
+
   return (
     <StyledNextLink
       {...rest}
+      {...externalProps}
       href={href}
       shallow
       color={color}

@@ -1,6 +1,6 @@
 ---
-title: "Integrating Tailwind CSS with dune and Melange"
-publishedAt: "2025-10-12"
+title: "Integrating Tailwind CSS with dune"
+publishedAt: "2025-12-11"
 isDraft: true
 tags:
   - "Melange"
@@ -10,7 +10,9 @@ tags:
 description: "A practical guide to integrating Tailwind CSS into your Melange project with dune rules"
 ---
 
-If you're building web applications with Melange, you'll eventually want to style them, and it's possible you want to use Tailwind CSS. Despite not being a great fan, for some reasons, it's an extremely good and popular choice for utility-first styling. Integrating it into your Melange project is surprisingly straightforward with dune.
+Tailwind, [despite not being a great fan](/blog/tailwind-and-design-systems), it's an extremely good and popular choice for styling. If you're building web applications with Melange or some other sistem with dune, it's very possible you want to use it.
+
+Integrating it into your Melange project is surprisingly straightforward with `dune`.
 
 This tutorial shows you how to set up Tailwind in your Melange project so that `dune build` handles both the JavaScript compilation and the CSS generation in one go.
 
@@ -18,31 +20,39 @@ This tutorial shows you how to set up Tailwind in your Melange project so that `
 
 Before we start, you'll need:
 
-1. A Melange project with dune
+1. A Melange project with dune. If you're starting from scratch, the easiest way is to use [create-melange-app](https://github.com/melange-re/melange-opam-template):
+
+    ```bash
+    npx create-melange-app my-app
+    cd my-app
+    ```
+
 2. Tailwind CSS installed via npm
 
-If you're starting from scratch, the easiest way is to use [create-melange-app](https://github.com/melange-re/melange-opam-template):
+    ```bash
+    npm install -D @tailwindcss/cli
+    ```
 
-```bash
-npx create-melange-app my-app
-cd my-app
-```
+3. A CSS entrypoint file (`styles.css`) with your Tailwind directives
 
-Then install Tailwind:
+    ```css
+    @import "tailwindcss";
 
-```bash
-npm install -D @tailwindcss/cli
-```
-
-You should also have a CSS entrypoint (`styles.css`) file with your Tailwind directives. If you need help setting those up, check the [Tailwind documentation](https://tailwindcss.com/docs/installation).
+    @theme {
+      --font-display: "Satoshi", "sans-serif";
+    }
+    ```
+    Check the [Tailwind documentation](https://tailwindcss.com/docs/installation) for the complete customization.
 
 ## Setting up the dune rules
 
-The trick to making Tailwind work seamlessly with Melange is to use dune's `install` and `rule` stanzas. Here's what you need to add to your `dune` file:
+The trick to making Tailwind work seamlessly with Melange is to use dune's `install` and `rule` stanzas. The `rule` lets you define custom build steps that integrate with dune's dependency tracking and caching.
+
+Here's what you need to add to your `dune` file:
 
 ```dune
 (install
- ; This tells dune where to install the tailwind executable
+ ; This tells `dune` where to install the tailwind executable
  ; "sections" are predefined installation locations within a package (like `bin` for executables, `lib` for libraries, `share` for data files and `docs`)
  (section bin)
 
@@ -60,8 +70,6 @@ The trick to making Tailwind work seamlessly with Melange is to use dune's `inst
 
  ; Dependencies that this rule needs to run
  (deps
-  ; If you are using Tailwind v3, where a config file is needed, you might need a `(:config ./tailwind.config.js)` as a named dependency for the action and pass it `run tailwind -c %{config} -i %{input} -o %{target}`
-
   ; :input is your source CSS file with Tailwind directives
   (:input ./styles.css)
 
@@ -72,6 +80,8 @@ The trick to making Tailwind work seamlessly with Melange is to use dune's `inst
  (action
   (run tailwind -i %{input} -o %{target})))
 ```
+
+For more details about rules, check the [dune documentation on rules](https://dune.readthedocs.io/en/stable/reference/dune/rule.html).
 
 Now you can generate your CSS with:
 
@@ -85,20 +95,11 @@ Or if you want to rebuild on changes:
 dune build --watch output.css
 ```
 
-The generated `output.css` will be in `_build/default/output.css` and will contain all the Tailwind utilities you're actually using in your project.
-
-## Understanding dune rules
-
-The `rule` stanza is one of dune's most powerful features. It lets you define custom build steps that integrate with dune's dependency tracking and caching.
-
-In our case, we're telling dune:
-- **What to build** (`target output.css`)
-- **What it depends on** (`styles.css` and all source files)
-- **How to build it** (run the tailwind CLI)
+The generated `output.css` will be in `_build/default/output.css` (relative to your dune file's location) and will contain only the Tailwind utilities you're actually using in your project.
 
 Dune will only rebuild `output.css` when one of its dependencies changes, making your builds fast and efficient.
 
-For more details about rules, check the [dune documentation on rules](https://dune.readthedocs.io/en/stable/reference/dune/rule.html).
+`dune build` would also run the rule.
 
 ## Specifying dependencies
 
@@ -131,11 +132,13 @@ With the rule above, your `output.css` will be in `_build/default/output.css`. Y
 </html>
 ```
 
-This works, but referencing files in `_build` can feel a bit awkward. That's where promotion comes in.
+This works, but knwoing the file structure under `_build` can feel a bit awkward. That's where promotion comes in.
 
 ## Promotion
 
-By default, dune generates files in the `_build` directory. In this case, you might want the generated `output.css` to appear in your source tree (so you can reference it directly in your HTML). That's called "promotion" enabled by adding `(mode promote)` to the rule:
+By default, dune generates files in the `_build` directory by replicating your folder structure and store build metadata.
+
+In this case, you want the generated `output.css` to appear in your source tree (so you can reference it directly in your HTML). That's "promotion" (promote the file to your source code). Enabled with `(mode promote)` into to a rule:
 
 ```dune
 (rule
@@ -163,8 +166,28 @@ Now when you run `dune build`, the `output.css` will be copied to your source di
 
 The promoted `output.css` file will be regenerated whenever your Tailwind config or input styles change, keeping your styling in sync with your code.
 
-## That's it
+## Production builds
 
-You now have Tailwind CSS fully integrated into your Melange build process. Just `dune build` and tailwind will run, so no separate watch processes, no manual build steps.
+For production, you'll want the `--minify` flag to reduce file size. You can use dune aliases to have separate development and production builds:
+
+```dune
+(rule
+ (target output.min.css)
+ (alias prod)
+ (deps
+  (:input ./styles.css)
+  (source_tree .))
+ (action
+  (run tailwind -i %{input} -o %{target} --minify))
+ (mode promote))
+```
+
+During development, run `dune build --watch`. For production, run `dune build @prod` which generates a minified `output.min.css`.
+
+Aliases are just one way to handle this. You could also use [`enabled_if`](https://dune.readthedocs.io/en/stable/reference/dune/rule.html#enabled-if) to conditionally enable rules based on environment variables or other conditions.
+
+---
+
+That's the setup: `dune build` now handles your Melange compilation and Tailwind CSS generation together, with proper dependency tracking and caching.
 
 Happy hacking with Melange!
