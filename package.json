@@ -54,7 +54,7 @@
     "shiki": "^3.19.0",
     "unified": "^11.0.5",
     "unist-util-visit": "^5.0.0",
-    "wrangler": "^4.47.0"
+    "wrangler": "^4.59.1"
   },
   "devDependencies": {
     "@biomejs/biome": "2.3.7",
