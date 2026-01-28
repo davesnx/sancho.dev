@@ -158,5 +158,35 @@
     "language": "JavaScript",
     "url": "https://github.com/davesnx/learn-ramda",
     "ownerAvatar": "https://avatars.githubusercontent.com/u/3763599?v=4"
+  },
+  {
+    "owner": "ocaml-mlx",
+    "name": "ocamlformat-mlx",
+    "fullName": "ocaml-mlx/ocamlformat-mlx",
+    "description": "Auto-formatter for OCaml .mlx code",
+    "stars": 7,
+    "language": "OCaml",
+    "url": "https://github.com/ocaml-mlx/ocamlformat-mlx",
+    "ownerAvatar": "https://avatars.githubusercontent.com/u/166814964?v=4"
+  },
+  {
+    "owner": "ml-in-barcelona",
+    "name": "react-rules-of-hooks-ppx",
+    "fullName": "ml-in-barcelona/react-rules-of-hooks-ppx",
+    "description": "A ppx that validates the rules of React hooks in reason-react components",
+    "stars": 42,
+    "language": "OCaml",
+    "url": "https://github.com/ml-in-barcelona/react-rules-of-hooks-ppx",
+    "ownerAvatar": "https://avatars.githubusercontent.com/u/71291184?v=4"
+  },
+  {
+    "owner": "davesnx",
+    "name": "sirocco",
+    "fullName": "davesnx/sirocco",
+    "description": "An experimental JavaScript runtime built with OxCaml and JavaScriptCore",
+    "stars": 89,
+    "language": "OCaml",
+    "url": "https://github.com/davesnx/sirocco",
+    "ownerAvatar": "https://avatars.githubusercontent.com/u/3763599?v=4"
   }
 ]
