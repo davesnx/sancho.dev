@@ -29,6 +29,9 @@ const repoUrls = [
   "https://github.com/davesnx/dune-release-action",
   "https://github.com/davesnx/awesome-ppx-deriving",
   "https://github.com/davesnx/learn-ramda",
+  "https://github.com/ocaml-mlx/ocamlformat-mlx",
+  "https://github.com/ml-in-barcelona/react-rules-of-hooks-ppx",
+  "https://github.com/davesnx/sirocco",
 ];
 
 class ParseError {

@@ -1,4 +1,4 @@
-/* This file can't have any dependency, we inject it outside of the app and react. During SSR. */
+/* This file can't have any dependency, we inject it outside of the app during SSR */
 
 /**
  * @typedef {Object} CommonValues

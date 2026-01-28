@@ -18,6 +18,7 @@ import MetaData from "../../components/site-metadata";
 import Spacer from "../../components/spacer";
 import Text from "../../components/text";
 import { ZoomableImage } from "../../components/zoomable-image";
+import { MelangePlayground } from "../../components/melange-playground";
 import breakpoints from "../../theme/constants";
 import fonts from "../../theme/fonts";
 import { colors } from "../../theme/theme";
@@ -542,6 +543,7 @@ export default function Post({
               pre: Pre,
               code: Code,
               table: Table,
+              MelangePlayground,
             }}
           />
         </BlogContent>
