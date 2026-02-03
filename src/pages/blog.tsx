@@ -12,6 +12,7 @@ import { NavigateButton } from "../components/link";
 import Page from "../components/page";
 import { Row, Stack } from "../components/taco";
 import Text from "../components/text";
+import { TextLink } from "../components/link";
 import constants from "../theme/constants";
 import font from "../theme/fonts";
 import { colors } from "../theme/theme";
@@ -98,13 +99,13 @@ const Blog = ({ frontmatters }: { frontmatters: Array<Frontmatter> }) => {
         <Spacer bottom={4}>
           <Text color={colors.body50} size={font.fontSize1}>
             Subscribe via{" "}
-            <NavigateButton
+            <TextLink
               href="/rss.xml"
               color={colors.primary80}
               hoverColor={colors.primary}
             >
               RSS
-            </NavigateButton>
+            </TextLink>
           </Text>
         </Spacer>
         <Spacer bottom={16}>

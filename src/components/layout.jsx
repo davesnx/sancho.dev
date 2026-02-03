@@ -382,14 +382,6 @@ export default function Layout({ children }) {
                   weight={600}
                   color={colors.body30}
                   hoverColor={colors.body50}
-                  href="/rss.xml"
-                  monospace
-                >{`RSS`}</TextLink>
-                {` · `}
-                <TextLink
-                  weight={600}
-                  color={colors.body30}
-                  hoverColor={colors.body50}
                   href="https://github.com/davesnx/sancho.dev"
                   monospace
                 >{`Source`}</TextLink>
