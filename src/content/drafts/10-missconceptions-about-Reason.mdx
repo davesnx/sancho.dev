@@ -11,7 +11,11 @@ quirks of reason/ocaml that you might face when trying it out:
 
 - unit at the end
 - how ppxes work
+- what does let%blbalbla even do?
+- where are those infix operators? How can I read the interface?
 - label arguments / optional arguments
 - why `~f` appears in standard libraries (Containers, Js, etc)
     - [https://www.javierchavarri.com/data-first-and-data-last-a-comparison](https://www.javierchavarri.com/data-first-and-data-last-a-comparison/)
-- rigidness (nominal stuff)
+- nominal typing: variants vs polyvariants vs open polyvariants
+- moar nominal typing: records vs objects (very rarely used but still)
+- inference direction (from bottom to top). Showcase the simplest example, but later showcase the classic match statement that infers a more complex type such as `data list result`

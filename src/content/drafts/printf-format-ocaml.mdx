@@ -1,0 +1,540 @@
+---
+title: "A complete guide to Printf and Format in OCaml"
+summary: "From Printf.sprintf to understand one of OCaml's most elegant type system tricks"
+publishedAt: "2026-02-13"
+isDraft: true
+tags:
+  - "OCaml"
+---
+
+I've struggled with Printf and Format more times than I'd like to admit (even thought I had some vague memory from my C years on uni. [libc `printf()`](https://man7.org/linux/man-pages/man3/printf.3.html)). Every time I needed to do something beyond basic printing, I'd find myself searching for examples, copying snippets I didn't fully understand, and treating the whole thing as a black box.
+
+I couldn't find a longer expanation for newbies and, more importantly, *why* things work the way they do. So I wrote this blog post.
+
+We'll start with "how do I print a string?" and end with understanding the elegant type system trick that makes it all work.
+
+## The basics
+
+The simplest way to print something in OCaml:
+
+<MelangePlayground>
+{`(* Just text, no variables *)
+let () = Printf.printf "Hello, world!\\n"
+
+(* Adding a string variable with %s *)
+let () = Printf.printf "Hello, %s!\\n" "David"
+
+(* A number with %d *)
+let () = Printf.printf "I have %d apples\\n" 5
+
+(* A decimal number with %f *)
+let () = Printf.printf "Pi is approximately %f\\n" 3.14159
+
+(* Multiple values in order *)
+let () = Printf.printf "%s has %d apples\\n" "David" 5`}
+</MelangePlayground>
+
+**The basic format specifiers:**
+
+| Specifier | Type | Example |
+|-----------|------|---------|
+| `%s` | string | `"hello"` |
+| `%d` or `%i` | int | `42` |
+| `%f` | float | `3.14` |
+| `%b` | bool | `true` |
+| `%c` | char | `'x'` |
+| `%%` | literal `%` | (no argument) |
+
+Each `%` in the format string expects a corresponding argument of the right type. Miss one, or get the type wrong, and the compiler tells you—not at runtime, but at compile time.
+
+---
+
+## 2. Beyond stdout: The Printf Family
+
+Printf isn't just one function—it's a family. Understanding the naming convention unlocks the whole module.
+
+<MelangePlayground>
+{`(* To stdout (what we've been using) *)
+let () = Printf.printf "Hello\\n"
+
+(* To stderr—for errors and diagnostics *)
+let () = Printf.eprintf "Error: something went wrong\\n"
+
+(* To a string—returns the result instead of printing *)
+let message = Printf.sprintf "User %s logged in" "alice"
+let () = Printf.printf "Message: %s\\n" message
+
+(* To a buffer—useful for building strings incrementally *)
+let buf = Buffer.create 256
+let () = Printf.bprintf buf "Part 1: %d\\n" 42
+let () = Printf.bprintf buf "Part 2: %s\\n" "hello"
+let () = Printf.printf "%s" (Buffer.contents buf)`}
+</MelangePlayground>
+
+**Quick reference:**
+
+| Function | Output destination | Returns |
+|----------|-------------------|---------|
+| `printf` | stdout | `unit` |
+| `eprintf` | stderr | `unit` |
+| `fprintf` | any channel | `unit` |
+| `sprintf` | new string | `string` |
+| `bprintf` | buffer | `unit` |
+
+The pattern: the prefix tells you where the output goes.
+
+---
+
+## 3. Format Specifiers: The Full Picture
+
+Going beyond `%s` and `%d`. Width, precision, alignment, and number formatting.
+
+<MelangePlayground>
+{`(* Width: minimum number of characters *)
+let () = Printf.printf "[%10s]\\n" "hi"       (* [        hi] - right-aligned *)
+let () = Printf.printf "[%-10s]\\n" "hi"      (* [hi        ] - left-aligned with - *)
+
+(* Precision for floats: digits after decimal *)
+let () = Printf.printf "%.2f\\n" 3.14159      (* 3.14 *)
+let () = Printf.printf "%.0f\\n" 3.14159      (* 3 *)
+
+(* Width AND precision combined *)
+let () = Printf.printf "[%10.2f]\\n" 3.14159  (* [      3.14] *)
+
+(* Zero-padding for integers *)
+let () = Printf.printf "%05d\\n" 42           (* 00042 *)
+
+(* Different bases *)
+let () = Printf.printf "%x\\n" 255            (* ff - hexadecimal lowercase *)
+let () = Printf.printf "%X\\n" 255            (* FF - hexadecimal uppercase *)
+let () = Printf.printf "%o\\n" 255            (* 377 - octal *)
+
+(* Strings with max length *)
+let () = Printf.printf "%.3s\\n" "hello"      (* hel - truncated to 3 chars *)`}
+</MelangePlayground>
+
+**The format specifier syntax:** `%[flags][width][.precision]type`
+
+| Component | Meaning | Examples |
+|-----------|---------|----------|
+| Flags | `-` left-align, `+` force sign, `0` zero-pad | `%-10s`, `%+d`, `%05d` |
+| Width | Minimum characters | `%10s`, `%5d` |
+| Precision | Decimal places (floats) or max length (strings) | `%.2f`, `%.5s` |
+| Type | What kind of value | `s`, `d`, `f`, `x`, etc. |
+
+---
+
+## 4. The First Surprise: Format Strings Have Types
+
+Here's where OCaml diverges from every other language. The compiler knows what arguments your format string expects.
+
+<MelangePlayground>
+{`(* This compiles and runs fine *)
+let () = Printf.printf "%s is %d years old\\n" "Alice" 30
+
+(* Try uncommenting this - it's a COMPILE ERROR, not runtime! *)
+(* let () = Printf.printf "%s is %d years old\\n" 30 "Alice" *)
+(* Error: This expression has type int but expected string *)`}
+</MelangePlayground>
+
+In C, Python, or JavaScript, you'd discover this bug when running the code (or worse, in production). In OCaml, the compiler catches it immediately.
+
+How? The format string itself has a type that encodes what arguments it expects:
+
+<MelangePlayground>
+{`(* You can give format strings a name *)
+let my_format : _ = "Hello %s, you have %d items\\n"
+(* Inferred type: (string -> int -> unit, out_channel, unit) format *)
+
+(* And use them later *)
+let () = Printf.printf my_format "Alice" 5`}
+</MelangePlayground>
+
+Don't worry about understanding this type yet—we'll break it down later. The point is: format strings aren't just strings in OCaml. They're typed values that the compiler understands.
+
+---
+
+## 5. Why Format Exists: The Pretty-Printing Problem
+
+Printf is great for simple output, but it falls apart for structured data.
+
+Imagine printing a nested data structure:
+
+<MelangePlayground>
+{`(* With Printf: everything on one line, or awkward manual line breaks *)
+let () = Printf.printf "{ name = %s; age = %d; city = %s }\\n"
+  "Alice" 30 "Boston"
+
+(* What if the terminal is narrow? What if the data is deeply nested?
+   Printf doesn't help—you'd have to manually calculate where to break lines. *)`}
+</MelangePlayground>
+
+**What we actually want:**
+
+```
+{ name = "Alice"
+; age = 30
+; address =
+    { street = "123 Main St"
+    ; city = "Boston"
+    }
+}
+```
+
+The output should adapt to the available width, break lines intelligently, and maintain proper indentation. That's what the Format module does.
+
+---
+
+## 6. Enter Format: Boxes and Break Hints
+
+The Format module's core concepts—boxes for grouping and break hints for line-breaking decisions.
+
+<MelangePlayground>
+{`open Format
+
+(* Basic usage looks similar to Printf *)
+let () = Format.printf "Hello %s!@." "world"
+(* Note: @. instead of \\n—we'll explain why *)
+
+(* Format adds "boxes" for grouping content *)
+let () = Format.printf "@[<hov 2>This is some text that@ might need to@ wrap across lines@]@."`}
+</MelangePlayground>
+
+**Key concepts:**
+
+| Syntax | Meaning |
+|--------|---------|
+| `@[` | Open a box (start grouping) |
+| `@]` | Close a box (end grouping) |
+| `@ ` | Break hint: space that *might* become a newline |
+| `@,` | Break hint: nothing or newline (no space) |
+| `@.` | End of output: flush the formatter |
+
+**Box types control how content wraps:**
+
+| Box | Name | Behavior |
+|-----|------|----------|
+| `@[<h>` | horizontal | Never breaks—everything on one line |
+| `@[<v>` | vertical | Always breaks—each item on its own line |
+| `@[<hov>` | horizontal-or-vertical | One line if it fits, otherwise break all |
+| `@[<hv>` | horizontal-vertical | Break only where necessary |
+| `@[<b>` | box (default) | Smart breaking with indentation |
+
+The number after the box type (like `<hov 2>`) sets the indentation for wrapped lines.
+
+---
+
+## 7. Format in Practice: Printing a Table
+
+A complete, practical example—pretty-printing a table of data that adapts to terminal width.
+
+<MelangePlayground>
+{`open Format
+
+type person = {
+  name: string;
+  age: int;
+  city: string;
+}
+
+let people = [
+  { name = "Alice"; age = 30; city = "Boston" };
+  { name = "Bob"; age = 25; city = "New York" };
+  { name = "Charlie"; age = 35; city = "San Francisco" };
+]
+
+(* Pretty-print a single person *)
+let pp_person fmt p =
+  fprintf fmt "@[<hov 2>{ name = %S;@ age = %d;@ city = %S }@]"
+    p.name p.age p.city
+
+(* Pretty-print a list of people *)
+let pp_people fmt people =
+  fprintf fmt "@[<v 0>%a@]"
+    (pp_print_list ~pp_sep:pp_print_cut pp_person) people
+
+(* Print it! *)
+let () = printf "People:@.%a@." pp_people people`}
+</MelangePlayground>
+
+**Output (with enough width):**
+```
+People:
+{ name = "Alice"; age = 30; city = "Boston" }
+{ name = "Bob"; age = 25; city = "New York" }
+{ name = "Charlie"; age = 35; city = "San Francisco" }
+```
+
+**Output (narrow terminal):**
+```
+People:
+{ name = "Alice";
+  age = 30;
+  city = "Boston" }
+{ name = "Bob";
+  age = 25;
+  city = "New York" }
+{ name = "Charlie";
+  age = 35;
+  city = "San Francisco" }
+```
+
+The same code produces different output depending on available width. That's the power of Format.
+
+---
+
+## 8. The Secret Weapon: %a
+
+The `%a` specifier is what makes Format truly powerful—it enables composable pretty-printers.
+
+<MelangePlayground>
+{`open Format
+
+type person = { name: string; age: int }
+
+(* The printer function has this signature: *)
+(* formatter -> 'a -> unit *)
+let pp_person fmt p =
+  fprintf fmt "%s (%d)" p.name p.age
+
+let alice = { name = "Alice"; age = 30 }
+let bob = { name = "Bob"; age = 25 }
+let charlie = { name = "Charlie"; age = 35 }
+
+(* %a takes TWO arguments: a printer function and a value *)
+let () = printf "User: %a@." pp_person alice
+
+(* A printer for lists, parameterized by element printer *)
+let pp_list pp_elem fmt lst =
+  fprintf fmt "[@[<hov>%a@]]"
+    (pp_print_list ~pp_sep:(fun fmt () -> fprintf fmt ",@ ") pp_elem)
+    lst
+
+(* Now you can print a list of ANYTHING *)
+let () = printf "%a@." (pp_list pp_person) [alice; bob; charlie]
+let () = printf "%a@." (pp_list pp_print_int) [1; 2; 3; 4; 5]`}
+</MelangePlayground>
+
+This is the pattern used throughout the OCaml ecosystem. When you see `pp_something` in a library, it's a function of type `Format.formatter -> something -> unit` that you can use with `%a`.
+
+---
+
+## 9. Beyond Format: The Fmt Library
+
+If you find Format's escape sequences (`@[<hov 2>`, `@,`, etc.) hard to read, check out the [Fmt library](https://github.com/dbuenzli/fmt). It provides the same functionality using composable combinators:
+
+```ocaml
+(* Format style *)
+Format.fprintf fmt "@[<hov>%a@]"
+  (Format.pp_print_list ~pp_sep:(fun fmt () -> Format.fprintf fmt ",@ ")
+     Format.pp_print_int)
+  [1; 2; 3]
+
+(* Fmt style—same output, cleaner syntax *)
+Fmt.pr "%a" Fmt.(list ~sep:comma int) [1; 2; 3]
+```
+
+The key insight: `'a Fmt.t` is just an alias for `Format.formatter -> 'a -> unit`, so Fmt printers work anywhere Format printers do.
+
+I've written a [separate guide on Fmt](/blog/fmt-pretty-printing-combinators) if you want to explore the combinator approach.
+
+---
+
+## 10. Choosing Between Printf and Format
+
+| Use case | Recommendation |
+|----------|----------------|
+| Quick debugging / logging | `Printf.printf` |
+| Building strings | `Printf.sprintf` |
+| Structured data / pretty-printing | `Format` |
+| Library APIs | `Format` (provides `pp_*` functions) |
+| Error messages | `Printf.eprintf` |
+
+**Rules of thumb:**
+
+1. **For simple one-liners:** Use `Printf.printf`—it's in the standard library and everyone knows it.
+
+2. **For complex data structures:** Use Format's boxes and break hints.
+
+3. **For library code:** Provide `pp_*` functions so users can compose them with their own printers.
+
+---
+
+## 11. Curious How This Works?
+
+> **A note before we continue:** The rest of this guide dives into *how* format strings are implemented using GADTs (Generalized Algebraic Data Types). This is advanced material.
+>
+> If you just want to *use* Printf and Format effectively, you now have everything you need. The sections above are complete.
+>
+> But if you're curious about the type system magic that makes type-safe format strings possible—read on. Understanding this will deepen your appreciation for OCaml's type system and might change how you think about compile-time guarantees.
+
+---
+
+## 12. The Magic Revealed: Format String Types
+
+Remember earlier when we saw format strings have types? Let's look closer:
+
+<MelangePlayground>
+{`let fmt : _ = "Hello %s, you have %d items"
+(* Inferred type: (string -> int -> 'a, 'b, 'a) format *)
+
+(* The full type is actually format6 with SIX type parameters! *)
+(* type ('a, 'b, 'c, 'd, 'e, 'f) format6 *)
+
+let () = Printf.printf fmt "Alice" 5`}
+</MelangePlayground>
+
+Let's decode what each parameter means:
+
+| Parameter | Meaning | In `"Hello %s, you have %d items"` |
+|-----------|---------|-----------------------------------|
+| `'a` | Type of the arguments → result | `string -> int -> 'f` |
+| `'b` | Type of the "input" (channel/formatter) | varies by function |
+| `'c` | Type of the result | `unit` for printf |
+| `'d` | Type for `%a` and `%t` formatters | same as `'c` usually |
+| `'e` | Type for `%{fmt%}` | same as `'c` usually |
+| `'f` | Final result type | `unit` for printf |
+
+The key insight: **the format string's type encodes what arguments it expects**. The compiler checks this at compile time, not runtime.
+
+---
+
+## 13. GADTs: The Engine Behind Format Strings
+
+Here's a simplified version of what happens internally:
+
+<MelangePlayground>
+{`(* A GADT that encodes format specifiers *)
+type ('a, 'result) fmt =
+  | Lit : string * ('a, 'result) fmt -> ('a, 'result) fmt
+  (* Literal text—doesn't change the type *)
+
+  | String : ('a, 'result) fmt -> (string -> 'a, 'result) fmt
+  (* %s: adds "string ->" to the argument type *)
+
+  | Int : ('a, 'result) fmt -> (int -> 'a, 'result) fmt
+  (* %d: adds "int ->" to the argument type *)
+
+  | End : ('result, 'result) fmt
+  (* End of format string *)
+
+(* "Hello %s, you have %d items" becomes something like: *)
+let example_fmt : (string -> int -> unit, unit) fmt =
+  Lit ("Hello ", String (Lit (", you have ", Int (Lit (" items", End)))))
+
+(* Each constructor transforms the type! *)
+let () = print_endline "GADT example compiled successfully"`}
+</MelangePlayground>
+
+Look at those type annotations! Each constructor *transforms* the type:
+
+- `End` has type `('result, 'result) fmt`—no arguments needed
+- `Int End` has type `(int -> 'result, 'result) fmt`—needs one int
+- `String (Int End)` has type `(string -> int -> 'result, 'result) fmt`—needs string then int
+
+The GADT **encodes the function type in the structure itself**. The compiler knows statically that this format needs a string and an int.
+
+---
+
+## 14. How the Compiler Parses Format Strings
+
+Format strings are parsed at compile time by OCaml itself—they're not regular strings.
+
+When you write:
+
+```ocaml
+Printf.printf "Hello %s, you are %d years old"
+```
+
+The OCaml compiler:
+
+1. Recognizes `"..."` as a format string (from context)
+2. Parses the format specifiers at compile time
+3. Converts it to the GADT representation
+4. Infers the type from the structure
+
+This happens in [`CamlinternalFormatBasics`](https://github.com/ocaml/ocaml/blob/trunk/stdlib/camlinternalFormatBasics.ml) and related modules. The actual types are more complex (handling width, precision, flags, etc.), but the principle is the same.
+
+This is why format strings can't be computed at runtime—they must be literal strings that the compiler can analyze.
+
+<MelangePlayground>
+{`(* This works—literal string *)
+let name = "Alice"
+let () = Printf.printf "Hello %s" name
+
+(* This doesn't work—computed format string *)
+(* Uncomment to see the error: *)
+(* let fmt = if true then "Hello %s" else "Goodbye %s" in
+   Printf.printf fmt name *)
+(* Error: This expression has type string but expected format *)`}
+</MelangePlayground>
+
+---
+
+## 15. Why This Design Matters
+
+**Type safety at compile time:** Format string bugs are caught before your code runs. No more "TypeError: cannot read property of undefined" in production because you passed the wrong argument.
+
+**Zero runtime overhead:** The types are erased after compilation. The actual execution is as fast as hand-written code.
+
+**Composability:** The `%a` specifier and the `formatter -> 'a -> unit` pattern enable building complex printers from simple ones.
+
+**A showcase of OCaml's type system:** GADTs enable what looks like dependent typing—the type of `printf` depends on the *value* of the format string. This is the kind of thing that makes type theorists smile.
+
+---
+
+## Appendix: Quick Reference
+
+### Printf Format Specifiers
+
+| Specifier | Type | Notes |
+|-----------|------|-------|
+| `%s` | string | |
+| `%S` | string | Quoted with escapes |
+| `%d`, `%i` | int | Decimal |
+| `%u` | int | Unsigned decimal |
+| `%x`, `%X` | int | Hexadecimal |
+| `%o` | int | Octal |
+| `%f` | float | Decimal notation |
+| `%e`, `%E` | float | Scientific notation |
+| `%g`, `%G` | float | Shortest of %f or %e |
+| `%b` | bool | |
+| `%c` | char | |
+| `%a` | `(fmt -> 'a -> unit) -> 'a` | Custom printer |
+| `%t` | `(fmt -> unit)` | Thunked printer |
+| `%%` | — | Literal % |
+
+### Format Box Types
+
+| Box | Behavior |
+|-----|----------|
+| `@[<h>` | Horizontal (never breaks) |
+| `@[<v>` | Vertical (always breaks) |
+| `@[<hov N>` | Horizontal-or-vertical with indent N |
+| `@[<hv N>` | Break where necessary with indent N |
+| `@[<b>` | Default boxing |
+
+### Format Escapes
+
+| Escape | Meaning |
+|--------|---------|
+| `@[` | Open box |
+| `@]` | Close box |
+| `@ ` | Space or newline |
+| `@,` | Zero-width break |
+| `@.` | Flush output |
+| `@@` | Literal @ |
+
+### Source Code Links
+
+- [Printf.ml](https://github.com/ocaml/ocaml/blob/trunk/stdlib/printf.ml) — Printf implementation
+- [Format.ml](https://github.com/ocaml/ocaml/blob/trunk/stdlib/format.ml) — Format implementation
+- [CamlinternalFormatBasics.ml](https://github.com/ocaml/ocaml/blob/trunk/stdlib/camlinternalFormatBasics.ml) — The GADT definitions
+
+### Related
+
+- [Fmt: Pretty-Printing with Combinators](/blog/fmt-pretty-printing-combinators) — A modern, combinator-based alternative
+
+---
+
+*Found this guide helpful? I'd love to hear from you. Found an error? Please let me know so I can fix it.*

@@ -1,71 +1,478 @@
 ---
-title: "Infix operations in Melange"
-publishedAt: "2025-10-12"
+title: "A Complete Guide to Infix Operators in Melange"
+publishedAt: "2025-01-15"
 isDraft: true
 tags:
   - "Melange"
   - "OCaml"
   - "Reason"
+description: "Learn how infix operators work in OCaml, how to define your own, and how to use let* and let+ to write elegant promise handling in Melange"
 ---
 
-# Title
+If you've written any JavaScript that deals with async operations, you know the pain. Promises are powerful, but chaining them quickly turns into a nested mess that's hard to read and harder to maintain.
 
-??
-
-```prolog
-let (>>=) = bind: 'a t -> ('a -> 'b t) -> 'b t
-
-let (>|=) = map: 'a t -> ('a -> 'b) -> 'b t
-
-let (<&>) = join: 'a t -> 'b t -> ('a * 'b) t
-
-```
-
-# Content
-
-### Describe what infix operators are, how are used in ReasonML/OCaml.
-
-OCaml has this feature which is somewhat obscure and not always (or very briefly) mentioned in books and tutorials. Depending on the first character of a function, it can behave as an infix operator. This is a core feature of OCaml and many developers exploit it in order to achieve their goals.
-
-- Explained in the manual [here](http://caml.inria.fr/pub/docs/manual-ocaml/expr.html) and [here](http://caml.inria.fr/pub/docs/manual-ocaml/lex.html#sec82).
-
-So anyone can define such a function like this:
-
-**`let** ( ***>** ) param1 param2 **=** calc_something param1 param2`
-
-Which can later be used like `param1 *> param2`
-
-Try to make sense of this concept before proceeding, as otherwise you will have a very hard time.
-
-Try do explain what's possible now in ReasonML, and what can we do with Melange
-https://jobjo.github.io/2019/04/24/ocaml-has-some-new-shiny-syntax.html
-
-- Create basic operators for Promise in a branch/repo
--
-
-Try lwt?
-
-https://github.com/mzp/bs-lwt
-
-# async/await
-
-A little history “One of the most requested features from Reason/BuckleScript”.
-
-`let%` or `async/await` for promises
-
-https://github.com/anmonteiro/gh-feed-reader/blob/master/src/let_syntax.ml
-
-Other use-cases:
-
-- File path (`/`)
-
-```css
-let (===) = (a, b) => Expect.expect a |> Expect.toEqual b;
-
-describe("formatFloat", () => {
-  test("0.05", () => Format.orgTraffic(0.05) === toBe("0"));
+```reason
+/* The callback hell we want to escape */
+let fetchUserData = (userId) => {
+  Js.Promise.then_(user => {
+    Js.Promise.then_(posts => {
+      Js.Promise.then_(comments => {
+        Js.Promise.resolve((user, posts, comments))
+      }, fetchComments(posts))
+    }, fetchPosts(user.id))
+  }, fetchUser(userId))
 };
 ```
 
-- bind/then/flatMap
-- Examplify the problems that might introduce? parsing combinators?  https://reasonml.chat/t/a-gentle-introduction-to-parser-combinators-and-angstrom/2546/3
+By the end of this guide, you'll transform code like this into something that reads almost like synchronous code—no special syntax, no compiler magic, just a pattern that OCaml has supported for years.
+
+```reason
+let fetchUserData = (userId) => {
+  let* user = fetchUser(userId);
+  let* posts = fetchPosts(user.id);
+  let+ comments = fetchComments(posts);
+  (user, posts, comments)
+};
+```
+
+Let's build up to this step by step.
+
+## What Are Infix Operators?
+
+Before we dive into the fancy stuff, let's make sure we're on the same page about operators.
+
+Most operators you use daily are **infix**—they sit between their operands:
+
+```ocaml
+1 + 2       (* + sits between 1 and 2 *)
+"hello" ^ " world"   (* ^ sits between two strings *)
+x == y      (* == sits between x and y *)
+```
+
+This is different from **prefix** notation, where the function comes first:
+
+```ocaml
+(* Prefix: function comes first *)
+add 1 2
+concat "hello" " world"
+```
+
+Here's the key insight: in OCaml, `+` is just a function. The only difference is that OCaml lets you write it between its arguments instead of before them.
+
+```ocaml
+(* These are equivalent *)
+let result = 1 + 2
+let result = (+) 1 2  (* treating + as a regular function *)
+
+(* You can even pass + to higher-order functions *)
+let sum = List.fold_left (+) 0 [1; 2; 3; 4; 5]
+(* => 15 *)
+```
+
+The parentheses around `+` tell OCaml "treat this operator as a normal function." This works with any operator.
+
+## OCaml's Secret: Operators Are Just Functions
+
+So what makes `+` special? Why can you write `1 + 2` but not `1 add 2`?
+
+The answer is surprisingly simple: OCaml looks at the **first character** of a function name. If it starts with certain symbols, OCaml treats it as an infix operator.
+
+The magic characters are:
+
+```
+= < > @ ^ | & + - * / $ % ! ? ~ # . :
+```
+
+Any function whose name starts with one of these characters becomes infix automatically.
+
+```ocaml
+(* Regular function - must be called prefix style *)
+let concat a b = a ^ b
+let result = concat "hello" "world"
+
+(* Operator function - can be called infix style *)
+let (++) a b = a ^ " " ^ b
+let result = "hello" ++ "world"  (* => "hello world" *)
+```
+
+That's it. No special declarations, no macros, no compiler plugins. Just name your function with the right starting character.
+
+### Common Conventions
+
+The OCaml community has developed conventions for what different operators mean:
+
+| Operator | Common meaning | Example |
+|----------|---------------|---------|
+| `\|>` | Pipe / forward application | `x \|> f` means `f x` |
+| `>>` | Function composition | `f >> g` means `fun x -> g (f x)` |
+| `>>=` | Bind / flatMap | Chaining monadic operations |
+| `>>\|` | Map | Transform value inside container |
+| `<\|>` | Alternative / choice | Try first, fallback to second |
+| `<*>` | Apply | Apply wrapped function to wrapped value |
+
+You don't need to memorize these. The point is that when you see `>>=` in OCaml code, experienced developers immediately know what it does—just like seeing `+` tells you it's addition.
+
+## Your First Custom Operator
+
+Let's create a simple operator to get comfortable with the syntax.
+
+Say we want a safer division that returns `None` instead of crashing on division by zero:
+
+```ocaml
+(* Step 1: Start with a regular function *)
+let safe_div a b =
+  if b = 0 then None else Some (a / b)
+
+let result = safe_div 10 2   (* Some 5 *)
+let oops = safe_div 10 0     (* None *)
+
+(* Step 2: Give it an operator name *)
+let (/?) a b =
+  if b = 0 then None else Some (a / b)
+
+(* Step 3: Use it infix *)
+let result = 10 /? 2   (* Some 5 *)
+let oops = 10 /? 0     (* None *)
+```
+
+The operator version reads more naturally—`10 /? 2` looks like division with a question mark, which hints at its "maybe it works, maybe it doesn't" behavior.
+
+### Associativity and Precedence
+
+One thing to be aware of: operators have precedence (which binds tighter) and associativity (left-to-right or right-to-left). These are determined by the operator's first character.
+
+For example, `*` binds tighter than `+`, so `1 + 2 * 3` means `1 + (2 * 3)`.
+
+The full rules are in the [OCaml manual](https://v2.ocaml.org/manual/expr.html#ss:precedence-and-associativity), but for most custom operators, you can rely on parentheses to make your intent clear.
+
+## A Word of Caution
+
+Before we go further, let's be honest about the tradeoffs.
+
+Custom operators can make code **harder to read** for people unfamiliar with your conventions. Unlike functions with descriptive names, operators are terse symbols that require prior knowledge to understand.
+
+Some languages take operator overloading too far. In Ruby, you can literally write `true = false`. In C++, you can make `+` do subtraction. This leads to code that's clever but incomprehensible.
+
+OCaml's approach is more constrained—you can't change what `+` does for integers, and the first-character rule means operators at least *look* like operators. But you can still create confusion with too many custom symbols.
+
+**The operators we'll build in this guide follow established OCaml conventions.** `let*` and `let+` aren't arbitrary symbols we invented—they're standardized syntax that OCaml added in version 4.08, with specific meanings the community agrees on.
+
+When you see `let*` in any OCaml codebase, it means the same thing. That's the key difference from arbitrary operator overloading.
+
+## Enter Binding Operators: `let*` and `let+`
+
+OCaml 4.08 introduced **binding operators**—a special syntax for a pattern so common that it deserved first-class support.
+
+The community has converged on clear conventions:
+
+```ocaml
+(* let* = bind / flatMap / andThen *)
+(* "Unwrap this value, then run a computation that returns another wrapped value" *)
+(* Type: 'a t -> ('a -> 'b t) -> 'b t *)
+
+(* let+ = map / fmap / transform *)
+(* "Unwrap this value, transform it, wrap the result" *)
+(* Type: 'a t -> ('a -> 'b) -> 'b t *)
+
+(* and* = product / parallel / combine *)
+(* "Combine two wrapped values" *)
+(* Type: 'a t -> 'b t -> ('a * 'b) t *)
+```
+
+When an OCaml programmer sees `let*`, they immediately know what's happening. It's as recognizable as `|>` for piping. This isn't arbitrary symbol soup—these operators have **semantic meaning** that the entire community agrees on.
+
+The pattern works across different types:
+
+```ocaml
+(* Option: "if this has a value, continue..." *)
+let* x = Some 42 in
+let* y = Some 10 in
+Some (x + y)
+
+(* Result: "if this succeeded, continue..." *)
+let* config = load_config () in
+let* db = connect_database config in
+Ok db
+
+(* Promise: "when this resolves, continue..." *)
+let* user = fetch_user () in
+let* posts = fetch_posts user.id in
+resolve posts
+
+(* List: "for each element, continue..." *)
+let* x = [1; 2; 3] in
+let* y = [10; 20] in
+[(x, y)]  (* => [(1,10); (1,20); (2,10); (2,20); (3,10); (3,20)] *)
+```
+
+The `*` suffix signals "this operation might produce more structure" (another Option, another Promise). The `+` suffix signals "this is the final transformation"—you're done chaining and just want to transform the result.
+
+## Building Promise Operators for Melange
+
+Now let's apply this to the real world: JavaScript promises in Melange.
+
+The `Js.Promise` module gives us the building blocks:
+
+```reason
+/* Js.Promise.t('a) is our effect type - a promise that resolves to 'a */
+/* Js.Promise.then_ chains operations */
+/* Js.Promise.resolve wraps a value in a resolved promise */
+```
+
+Here's how we define the binding operators:
+
+```reason
+module Promise_syntax = {
+  /* The bind operator - chains promises that return promises */
+  let (let*) = (promise, fn) => {
+    Js.Promise.then_(fn, promise)
+  };
+
+  /* The map operator - transforms the resolved value */
+  let (let+) = (promise, fn) => {
+    Js.Promise.then_(
+      value => Js.Promise.resolve(fn(value)),
+      promise
+    )
+  };
+
+  /* For parallel execution - wait for both */
+  let (and*) = (p1, p2) => {
+    Js.Promise.all2((p1, p2))
+  };
+};
+```
+
+That's it. About 15 lines of code, and we've unlocked a completely different way of writing async code.
+
+## The Transformation: Before and After
+
+Let's see the payoff. Here's the nested callback version:
+
+```reason
+/* BEFORE: Nested callbacks */
+let fetchUserData = (userId) => {
+  Js.Promise.then_(user => {
+    Js.Promise.then_(posts => {
+      Js.Promise.then_(comments => {
+        Js.Promise.resolve((user, posts, comments))
+      }, fetchComments(posts))
+    }, fetchPosts(user.id))
+  }, fetchUser(userId))
+};
+```
+
+And here's the same logic with binding operators:
+
+```reason
+/* AFTER: Sequential, readable flow */
+open Promise_syntax;
+
+let fetchUserData = (userId) => {
+  let* user = fetchUser(userId);
+  let* posts = fetchPosts(user.id);
+  let+ comments = fetchComments(posts);
+  (user, posts, comments)
+};
+```
+
+The code now reads top-to-bottom, like the sequence of operations it represents. No nesting, no callbacks, no wrestling with argument order.
+
+Notice the last binding uses `let+` instead of `let*`. That's because we're not returning another promise—we're transforming into the final tuple value. The `let+` automatically wraps our tuple in `Js.Promise.resolve`.
+
+## Practical Patterns
+
+### Parallel Execution with `and*`
+
+Sometimes you want to fetch multiple things at once, not sequentially:
+
+```reason
+open Promise_syntax;
+
+let fetchDashboard = (userId) => {
+  let* user = fetchUser(userId)
+  and* notifications = fetchNotifications(userId)
+  and* settings = fetchSettings(userId);
+
+  let+ recentPosts = fetchRecentPosts(user.id);
+
+  { user, notifications, settings, recentPosts }
+};
+```
+
+The `and*` operator runs the promises in parallel. Only after all three resolve do we continue to fetch recent posts.
+
+### Error Handling
+
+Promises can reject. Here's how to handle that:
+
+```reason
+let fetchWithFallback = (userId) => {
+  let* user = fetchUser(userId);
+  let* posts =
+    fetchPosts(user.id)
+    |> Js.Promise.catch(_ => Js.Promise.resolve([]));
+
+  Js.Promise.resolve((user, posts))
+};
+```
+
+You can use `Js.Promise.catch` at any point in the chain to handle rejections.
+
+### Module Organization
+
+I recommend putting your operators in a dedicated module:
+
+```reason
+/* Promise_syntax.re */
+let (let*) = (promise, fn) => Js.Promise.then_(fn, promise);
+
+let (let+) = (promise, fn) =>
+  Js.Promise.then_(value => Js.Promise.resolve(fn(value)), promise);
+
+let (and*) = Js.Promise.all2;
+```
+
+Then open it where needed:
+
+```reason
+/* UserService.re */
+open Promise_syntax;
+
+let getUser = id => {
+  let* response = fetch("/api/users/" ++ id);
+  let+ json = response->Response.json;
+  User.decode(json)
+};
+```
+
+## Beyond Promises: The Pattern Everywhere
+
+The beauty of this pattern is that it works identically for any "container" or "effect" type. Once you understand `let*` and `let+`, you can read code using them regardless of what type they're defined for.
+
+### Option: Safe Null Handling
+
+```ocaml
+module Option_syntax = struct
+  let (let*) = Option.bind
+  let (let+) = Option.map
+end
+
+open Option_syntax
+
+let safe_computation input =
+  let* x = parse_int input in
+  let* y = lookup_value x in
+  let+ result = if y > 0 then Some (y * 2) else None in
+  result
+```
+
+### Result: Error Handling
+
+```ocaml
+module Result_syntax = struct
+  let (let*) = Result.bind
+  let (let+) = Result.map
+end
+
+open Result_syntax
+
+let process config_path =
+  let* config = read_config config_path in
+  let* validated = validate config in
+  let+ processed = transform validated in
+  processed
+```
+
+## Advanced: Parser Combinators
+
+Parser combinators are where binding operators truly shine. A parser is a function that might consume input and produce a value—or fail. Sound familiar? It's the same pattern as `Option` or `Result`.
+
+```ocaml
+(* A parser: string -> (value * remaining_string) option *)
+(* If parsing fails, return None *)
+(* If parsing succeeds, return the value and leftover input *)
+
+module Parser = struct
+  type 'a t = string -> ('a * string) option
+
+  let (let*) (p : 'a t) (f : 'a -> 'b t) : 'b t = fun input ->
+    match p input with
+    | None -> None
+    | Some (value, remaining) -> f value remaining
+
+  let (let+) (p : 'a t) (f : 'a -> 'b) : 'b t = fun input ->
+    match p input with
+    | None -> None
+    | Some (value, remaining) -> Some (f value, remaining)
+
+  let (and+) (p1 : 'a t) (p2 : 'b t) : ('a * 'b) t = fun input ->
+    match p1 input with
+    | None -> None
+    | Some (a, remaining) ->
+      match p2 remaining with
+      | None -> None
+      | Some (b, final) -> Some ((a, b), final)
+end
+```
+
+Now building parsers becomes declarative:
+
+```ocaml
+open Parser
+
+(* Primitive parsers *)
+let char c input =
+  if String.length input > 0 && input.[0] = c
+  then Some (c, String.sub input 1 (String.length input - 1))
+  else None
+
+let digit input =
+  if String.length input > 0 && input.[0] >= '0' && input.[0] <= '9'
+  then
+    let n = Char.code input.[0] - Char.code '0' in
+    Some (n, String.sub input 1 (String.length input - 1))
+  else None
+
+(* Compose them with let* and let+ *)
+let parse_point =
+  let* _ = char '(' in
+  let* x = digit in
+  let* _ = char ',' in
+  let* y = digit in
+  let+ _ = char ')' in
+  (x, y)
+
+(* Usage *)
+let result = parse_point "(3,7)rest"
+(* => Some ((3, 7), "rest") *)
+
+let failed = parse_point "invalid"
+(* => None *)
+```
+
+Compare this to writing the same parser with explicit pattern matching. The `let*` version reads like a **specification** of what you're parsing, not the mechanics of how you're parsing it.
+
+This is why libraries like [Angstrom](https://github.com/inhabitedtype/angstrom) use binding operators extensively. Once you understand the pattern, you can read parser combinator code fluently.
+
+## Conclusion
+
+Custom operators in OCaml aren't magic—they're just functions with special naming rules. The binding operators `let*` and `let+` take this further with dedicated syntax for a pattern so common it appears everywhere: Options, Results, Promises, Parsers, and more.
+
+The key points to remember:
+
+1. **Operators are functions** whose names start with special characters
+2. **`let*` means bind**—unwrap, compute, the computation returns a wrapped value
+3. **`let+` means map**—unwrap, transform, automatically rewrap
+4. **These conventions are standard**—when you see them, you know what they do
+
+The promise operators we built are just the beginning. The same 15 lines of code that made promise handling readable can be adapted for any container type you work with.
+
+Once you've seen this pattern, you'll recognize it everywhere in OCaml code. And you'll wonder how you ever lived without it.
+
+## Further Reading
+
+- [OCaml Manual: Binding Operators](https://v2.ocaml.org/manual/bindingops.html)
+- [OCaml Manual: Operator Precedence](https://v2.ocaml.org/manual/expr.html#ss:precedence-and-associativity)
+- [Angstrom Parser Combinators](https://github.com/inhabitedtype/angstrom)
+- [A Gentle Introduction to Parser Combinators](https://jobjo.github.io/2019/04/24/ocaml-has-some-new-shiny-syntax.html)

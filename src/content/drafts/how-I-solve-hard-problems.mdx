@@ -7,13 +7,121 @@ tags:
   - "Learning"
 ---
 
-Watch https://www.youtube.com/watch?v=D95rCKo8vac
+Not every problem is a hard problem. A hard problem isn't just something that takes a long time—it's something where you don't even know what questions to ask yet. You're staring at a system, a codebase, or a concept, and you can't even articulate what you don't understand.
 
-- write down questions
-- collect/read/study
-- answer questions
-- implement a basic
-- answer more questions
-- explain to someone who doesn’t know anything
-- implement more
-- talk to an expert
+I've developed a process for these situations. It's not revolutionary—pieces of it come from the Feynman technique, from debugging methodologies, from watching how researchers approach unfamiliar domains. But having it explicit, written down, has made me noticeably better at tackling things that used to paralyze me.
+
+## The trap: diving in too fast
+
+The instinct when facing something hard is to start coding. Open the editor, try something, see what breaks. This works for familiar problems where you have good intuition. For genuinely hard problems, it's a trap.
+
+You end up thrashing. You implement something, realize you misunderstood a fundamental concept, throw it away, start over. Repeat. Each cycle feels like progress because you're typing, but you're not actually converging on understanding.
+
+When I started implementing React Server Components in OCaml, my first instinct was to read the React source code and start porting. I would have wasted weeks. The RSC protocol isn't just "React but on the server"—it's a streaming serialization format, a component model, a bundler integration pattern, and a mental model for where computation happens. Diving into code before understanding these layers would have been like trying to implement TCP by reading packet captures.
+
+## The method
+
+Here's what actually works for me.
+
+### Write down questions
+
+Before anything else, I open a blank document and start listing every question I have. Not organized, not filtered—just a brain dump of confusion.
+
+For RSC, my list started like this:
+- What actually gets sent over the wire?
+- How does the client know which components are server vs client?
+- What happens when a server component renders a client component?
+- How does streaming work?
+- What's the bundler's role in all this?
+
+These questions are mostly wrong or poorly framed. That's fine. The point isn't to have good questions—it's to externalize your confusion so you can see it.
+
+I never delete questions from this list. As I learn, I add answers below each question, or I realize a question was based on a misunderstanding and note that. The document becomes a map of my learning journey.
+
+When questions start clustering—several related to streaming, several about the wire format—I group them. These clusters often become the sections of my eventual understanding.
+
+### Collect, read, study
+
+Now I go hunting for information. RFCs, blog posts, source code, conference talks, documentation. I'm not trying to understand everything yet—I'm trying to find material that might answer my questions.
+
+For RSC, this meant:
+- The original RFC and follow-up discussions
+- Dan Abramov's explanations on Twitter and GitHub
+- The React Flight protocol implementation
+- Talks from React Conf
+
+I read with my questions open in a split screen. When something addresses a question, I note it. When something raises new questions, I add them to the list.
+
+### Implement a basic version
+
+At some point, reading stops being productive. You understand the concepts well enough to be dangerous, but you haven't internalized them. Time to build something.
+
+The goal here isn't production code—it's a prototype that forces you to confront your remaining misunderstandings. For RSC, this was a minimal server that could render a single server component and send it to a client that could hydrate it. No streaming, no nested client components, no error handling.
+
+This prototype will be ugly. It will hardcode things. It will skip edge cases. That's the point. You're testing your mental model, not building software.
+
+### Answer more questions
+
+The prototype reveals gaps. Things you thought you understood turn out to be more nuanced. New questions appear that you couldn't have asked before because you didn't know enough to be confused about them.
+
+Back to the document. Add the new questions. Go find answers. Update your understanding.
+
+### Explain to someone who doesn't know anything
+
+This is the Feynman technique, and it's the most powerful step. Find someone—a colleague, a rubber duck, a blank document—and explain what you've learned from scratch.
+
+The places where you stumble, where you wave your hands, where you say "and then somehow"—those are the gaps in your understanding. You can't fake this. Either you can explain it clearly or you can't.
+
+I often write draft blog posts at this stage, even if I never publish them. The act of writing for an audience forces clarity in a way that thinking alone doesn't.
+
+### Implement more
+
+Now you build for real. The prototype taught you what you didn't know. The explanation forced you to organize your knowledge. You're ready to write code that actually works.
+
+This is still iterative—you'll hit new problems, go back to studying, update your questions document. But you're no longer thrashing. You're building on solid understanding.
+
+### Talk to an expert
+
+At some point, you'll hit questions that no amount of reading can answer. The documentation is ambiguous, the source code is unclear, the blog posts contradict each other.
+
+This is when you find someone who actually knows. If you're an online nerd like me, this means Twitter or Discord. The key is asking the right questions—specific, showing you've done your homework, not asking them to explain the whole thing.
+
+"I'm implementing RSC and I'm confused about X. I've read Y and Z, and my understanding is [specific claim]. Is that right, or am I missing something?"
+
+Questions like this get answers. Vague "how does RSC work?" questions get ignored.
+
+## The hardest part
+
+The hardest part of this process isn't any single step. It's the mental burden of being a newbie.
+
+When I was deep in the RSC implementation, I couldn't turn it off. I'd be out running, skiing, or biking—supposedly disconnecting—and my head was obsessing over unknowns. What if my mental model is completely wrong? What if I'm wasting weeks on a dead end? What if everyone else finds this obvious and I'm just slow?
+
+This is the real cost of hard problems. Not the hours of study, but the weight of uncertainty you carry everywhere.
+
+I don't have a solution for this. Awareness helps—recognizing that the discomfort is part of the process, not a sign you're failing. Having a method helps too—when anxiety spikes, I can look at my questions document and see concrete progress, even if the destination is still unclear.
+
+But mostly, you just have to accept that hard problems are hard. The discomfort is the price of learning something genuinely new.
+
+## The meta-skill
+
+This process is a learnable skill. I'm better at it now than I was five years ago, not because I'm smarter, but because I've practiced the steps enough that they're automatic.
+
+When I hit something hard now, I don't panic. I open a document, start writing questions, and trust the process. The uncertainty is still uncomfortable, but it's familiar. I know it leads somewhere.
+
+That's the real value of having a method: not that it makes hard problems easy, but that it makes them approachable. You stop asking "can I figure this out?" and start asking "how long will it take?"
+
+The answer is usually longer than you'd like. But at least you know you'll get there.
+
+---
+
+## TL;DR checklist
+
+1. **Write down questions** — Brain dump every point of confusion into a document. Don't organize, don't filter.
+2. **Collect and study** — Hunt for material that might answer your questions. Note what you find.
+3. **Implement a prototype** — Build the ugliest, most minimal version that tests your mental model.
+4. **Answer new questions** — The prototype will reveal gaps. Update your document.
+5. **Explain it to someone** — If you can't explain it clearly, you don't understand it yet.
+6. **Implement for real** — Now build on solid understanding, not guesswork.
+7. **Talk to an expert** — When you're stuck, ask specific questions that show you've done the work.
+
+Never delete questions. Group them as you learn. Trust the process.

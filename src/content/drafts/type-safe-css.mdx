@@ -7,121 +7,131 @@ tags:
   - "Type Safety"
   - "styled-ppx"
   - "OCaml"
+description: "CSS has a type system hidden in the spec"
 ---
 
-[https://css-tricks.com/css-is-a-strongly-typed-language](https://css-tricks.com/css-is-a-strongly-typed-language/)
+Last week I typo'd `display: flexbox` instead of `display: flex`. The browser didn't complain. The page rendered. The layout was just... wrong. I spent twenty minutes checking my JavaScript before opening DevTools and spotting the issue.
 
-https://nerdy.dev/cant-break-this-design-system
+If you've written TypeScript, you know the feeling of `const x: number = "hello"` lighting up red before you even save the file. The compiler catches your mistake. You fix it. You move on.
 
-https://andreipfeiffer.dev/blog/2022/scalable-css-evolution/part8-type-safe-css
+CSS doesn't work that way. Write `color: rde` instead of `color: red`, and nothing happens. No error. No warning. The browser silently ignores your broken declaration and moves on. This is by design—CSS prioritizes resilience. Content must be shown at all costs, even if your styles implode.
 
-https://github.com/pveyes/theme-in-css
+But here's the thing: CSS actually has types. The browser knows them and won't tell you when you get them wrong.
 
-### Check how people search for the terms to define the title
+## The spec defines the types
 
-- [How to create bindings for @Emotion/styled](https://forum.rescript-lang.org/t/how-to-create-bindings-for-emotion-styled/2995)
-- styled-components rescript/reason
-- emotion rescript
+Open the [CSS spec for the `display` property](https://drafts.csswg.org/css-display/#the-display-properties) and you'll find something like this:
 
-Use this https://easy-peasy.ai/workflows/blog-post?
+```
+display: [ <display-outside> || <display-inside> ] | <display-listitem> | <display-internal> | <display-box> | <display-legacy>
+```
 
-I like the introduction https://en.andros.dev/blog/e9ded1a5/sass-the-css-preprocessor-that-survived-the-apocalypse/
+That's not documentation—it's a grammar. It defines exactly which values are valid. `flex` is valid. `flexbox` is not. `block` is valid. `blokc` is not.
 
-Give an opinion about CSS-in-JS and examplify styled-ppx like [https://jfmengels.net/disable-comments](https://jfmengels.net/disable-comments/) for elm-review.
+Every CSS property has one of these definitions. `color` accepts `<color>` values. `margin` accepts `<length>` or `<percentage>` or specific keywords like `auto`. The spec is rigorous about this.
 
----
+The browser parses your CSS against these grammars. When something doesn't match, it discards the declaration. But it does this silently, at runtime, after you've already shipped the code. The type system exists—it's just enforced too late to help you.
 
-- [ ]  Explain styled-ppx
-- [ ]  Why and a bit of how
-    - Get this from 2 presentations and Lisboa talk or from
+TypeScript moved type checking from runtime to authoring time. The same idea applies to CSS—validate styles when you write them, not when the browser parses them.
 
-        [Why](https://www.notion.so/Why-ba52b14e2a6349f9aae95a94b7a88211?pvs=21)
+## What this looks like in practice
 
-
-# Type-safe CSS
-
-https://andreipfeiffer.dev/blog/2022/scalable-css-evolution/part8-type-safe-css
-
-Imagine CSS but safer to write.
-
-Image that it doesn't allow you to have invalid properties or invalid values on properties, that it yells at you when you have incorrect format for media-queries, selectors.
-
-from [https://css-tricks.com/css-is-a-strongly-typed-language](https://css-tricks.com/css-is-a-strongly-typed-language/)
-
-Unlike other programming languages where code largely exists under the hood, CSS is highly visual. You won’t see warnings or errors in the console if you use an invalid value for a property declaration, but you will get visuals that don’t update the way you anticipated.
-
-The reason for this is that CSS is resilient. When visuals don’t update because of a misconstructed declaration, CSS is prioritizing, **ensuring content can be shown at all costs** and will render every other valid declaration it possibly can. This is in keeping with [the design principles of the language](https://www.w3.org/TR/CSS22/intro.html#design-principles), the [principles of the platform](https://www.w3.org/TR/design-principles/), and the overarching goals of [the web’s mission](https://www.w3.org/Consortium/mission).
-
-## How
-
-- Imagine that all CSS properties are functions
-- Imagine all CSS values are, values.
-- Imagine all rules are lists
-
-color: red
-
-- color(red)
+Imagine writing styles and seeing errors before you refresh:
 
 ```css
-.classname {
-  color: red;
+.button {
+  color: rde;           /* Error: "rde" is not a valid <color> */
+  display: flexbox;     /* Error: expected "flex", "block", "grid", ... */
+  margin: 10 px;        /* Error: unexpected space in "10 px" */
+  background: url(;     /* Error: unclosed url() */
 }
 ```
 
-let classname = [color(red)];
+Not linting rules you configure. Not "best practices" someone decided. Actual validation against the CSS specification.
 
-If we ever want to make this typesafe, we would say:
+## Turning the spec into a type checker
 
-the color fn can only accept colors, duh, but in reality the spec say:
+The CSS spec isn't just documentation—it's a formal grammar. And formal grammars can be transformed into validators.
 
-blalblabla | lbablal | ‘currentColor’ | etc…
+Take a simple property like `display`. The spec says it accepts values like `block`, `flex`, `grid`, `inline`, `none`, and a few others. In a typed language, you'd model this as:
 
-we could define the
+```reason
+type display_value =
+  | Block
+  | Flex
+  | Grid
+  | Inline
+  | None
+  /* ... */
+```
 
-// Explain the problem
+Now `display` becomes a function that only accepts `display_value`. Pass it `"flexbox"` and the compiler rejects it. Pass it `Flex` and it works.
 
-CSS has a few quirks, one of them is the possibility to be defined with invalid syntax or invalid values. Similarly to HTML, the browser will ignore those and won’t let you know if there’s something broken (unless you open DevTools and inspect it properly)
+The real spec is more complex. It uses combinators:
 
-- Example I: invalid URL
-- Example II: invalid syntax
+- `|` means "one of these options"
+- `||` means "one or more in any order"
+- `&&` means "all of these in order"
+- `?` means "optional"
+- `+` means "one or more"
+- `*` means "zero or more"
 
-// Explain that it’s an issue since I started frontend back in 2010? When backbone + jQuery was the way to go. SCSS or SASS was the hotness and gulp was much better than grump. (??)
+These map directly to parser combinators—small functions that combine to parse complex grammars. The CSS spec is essentially a big parser combinator definition waiting to be implemented.
 
-// We ensure CSS is parsable
+So that's what I did. I took the spec and transformed it into a type checker. Each property becomes a function. Each value type (`<length>`, `<color>`, `<percentage>`) becomes a parser. The combinators wire them together.
 
-// Aside from type-safety, it ensures CSS validity. Our parser will ensure that
+When you write `margin: 10px 20px`, the type checker:
 
-Type-safety is one of the biggest difference between all CSS-in-JS libs out there. Since we are in a language that encourages type soundness (explain this in simpler terms), made sense to push for correctness in your style definitions.
+1. Parses `10px` as a valid `<length>`
+2. Parses `20px` as a valid `<length>`
+3. Confirms that `margin` accepts one to four `<length>` values
+4. Passes
 
-## What does even mean?
+When you write `margin: 10 px` (with a space), step 1 fails. `10` alone isn't a valid `<length>`. You get an error at compile time, not a silent failure at runtime.
 
-Type-safety in CSS means a few different things, but mostly making sure the styles follow the spec. (link to the spec, explain the spec a bit)
+The same approach works for selectors and media queries.
 
-- Ensuring properties and values make sense (following the spec)
-- Ensure media-queries being correct (right properties)
-- Ensure selectors are correct
+Selectors have their own grammar. `.class` is valid. `..class` is not. `div > p` is valid. `div >> p` is not. The type checker validates selector syntax before you ship broken CSS that silently matches nothing.
 
-// Examples of error messages
+Media queries too. `@media (min-width: 768px)` is valid. `@media (min-width: 768)` is not—you need a unit. Every layer of CSS has structure that can be validated.
 
-## How does it work?
+## styled-ppx
 
-We transformed the spec into a type-checker
+I built this as [styled-ppx](https://github.com/davesnx/styled-ppx), a tool for writing CSS in Reason and OCaml. It's a compile-time preprocessor that validates your styles against the CSS spec and generates the runtime code.
 
-- from `display: block | flex` to a function that accepts "block" or "flex"
-- from `margin: <length>` to a function that accepts
+Here's what an error looks like:
 
-The CSS Spec, in a nutshell, is a big list of rules defined by “variants” as values (`<length>`, `’block’`, etc) with “combinators” (such as `||` `[]` `[]` ) and a few `modifiers` (`?` `+` `*` , etc).
+```
+Error: Property "display" has an invalid value: "flexbox"
 
-// Image of example
+  1 | let button = [%css {|
+  2 |   display: flexbox;
+    |            ^^^^^^^
+  3 | |}]
 
-Which map perfectly as a parser combinator. (rephrase this) and it’s relatively simple to implement in Reason, thanks to the pattern match and function application (Do I need to be much explicit here?)
+Hint: Did you mean "flex"?
+```
 
-## The entire pipeline
+The error points to the exact location. It tells you what's wrong. It even suggests what you might have meant. This happens when you compile, not when a user visits your page.
 
-- Parse the style with our CSS parser which ensures structure such as selectors, properties, media-queries and overall structure of
-- We run those type-checkers for each property from the declarations
-- Report back if there’s any error, if not, code-gen starts.
+styled-ppx uses [Emotion](https://emotion.sh) under the hood for the runtime—hashing class names, injecting styles, caching. The type checking is purely a compile-time layer that ensures what you write is valid CSS before it ever runs.
 
-## Code generation
+## Why Reason/OCaml?
 
-styled-ppx generates a ReasonReact (or @rescript/react component) given it’s styles, using bs-css as a backend to generate emotion calls and delegate all logic from CSS-in-JS to emotion (hashing styles, appending those to the head, keeping them in a cache, etc). Link to more resources.
+There's an obvious question: why isn't this a TypeScript tool?
+
+Two reasons. First, TypeScript's type system can't express CSS's grammar. You'd need dependent types or something more powerful to validate that `margin` accepts `<length>` values while `color` accepts `<color>` values—and that `10px` is a `<length>` but `10` alone isn't.
+
+Second, I work in Reason and OCaml. The pattern matching and parser combinator libraries made this tractable. Building the same thing in TypeScript would require a different approach—probably a custom compiler plugin or a build-time validator rather than types.
+
+If you're not in the Reason/OCaml ecosystem, styled-ppx isn't directly useful to you. But the concept is portable. Someone could build CSS validation into ESLint, or into a TypeScript transformer, or into a VS Code extension. The spec is public.
+
+CSS-in-JS libraries like styled-components, Emotion, and vanilla-extract offer autocomplete for property names—but autocomplete isn't validation. You can still typo a value, forget a unit, or use a property that doesn't exist. The styles compile. They just don't work.
+
+Type-safe CSS closes that gap. If it compiles, the styles are valid according to the spec. One less category of silent failures to worry about.
+
+---
+
+If you're curious, [styled-ppx is on GitHub](https://github.com/davesnx/styled-ppx). It's been running in production at [Ahrefs](https://ahrefs.com) for years. The documentation covers installation, usage, and the full list of supported CSS features.
+
+And if you're not in the Reason/OCaml world but the idea resonates—maybe it's worth building something similar for your stack. The CSS spec isn't going anywhere.

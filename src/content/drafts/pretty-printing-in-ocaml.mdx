@@ -1,0 +1,380 @@
+---
+title: "Fmt: Pretty-printing in OCaml"
+summary: "A modern, combinator-based approach to pretty-printing in OCaml"
+publishedAt: "2025-01-13"
+isDraft: true
+tags:
+  - "OCaml"
+---
+
+## Why Fmt?
+
+If you've used OCaml's `Format` module, you know it's powerful but verbose. Building printers with format strings like `"@[<hov 2>%a@]"` works, but it's not exactly elegant.
+
+[Fmt](https://github.com/dbuenzli/fmt) by Daniel Bünzli takes a different approach: instead of format strings with escape sequences, you compose printers using combinators. The result is often cleaner and more readable.
+
+```ocaml
+(* Format style *)
+Format.fprintf fmt "@[<hov>%a@]"
+  (Format.pp_print_list ~pp_sep:(fun fmt () -> Format.fprintf fmt ",@ ")
+     Format.pp_print_int)
+  [1; 2; 3]
+
+(* Fmt style *)
+Fmt.pr "%a" Fmt.(list ~sep:comma int) [1; 2; 3]
+```
+
+Same output, less ceremony.
+
+---
+
+## The Core Insight: `'a Fmt.t`
+
+The key to understanding Fmt is this type alias:
+
+```ocaml
+type 'a t = Format.formatter -> 'a -> unit
+```
+
+That's it. An `'a Fmt.t` is just a function that takes a formatter and a value, and prints it. This is the same signature used by `Format`'s `%a` specifier, so Fmt combinators work seamlessly with standard Format code.
+
+```ocaml
+(* Any Fmt printer works with Format.fprintf %a *)
+let pp_my_list = Fmt.(list ~sep:comma int)
+
+Format.fprintf fmt "Numbers: %a" pp_my_list [1; 2; 3]
+(* Or with Fmt directly *)
+Fmt.pr "Numbers: %a" pp_my_list [1; 2; 3]
+```
+
+---
+
+## Basic Printers
+
+Fmt provides printers for all the standard types:
+
+```ocaml
+Fmt.pr "%a@." Fmt.int 42              (* 42 *)
+Fmt.pr "%a@." Fmt.string "hello"      (* hello *)
+Fmt.pr "%a@." Fmt.float 3.14          (* 3.14 *)
+Fmt.pr "%a@." Fmt.bool true           (* true *)
+Fmt.pr "%a@." Fmt.char 'x'            (* x *)
+```
+
+The `@.` at the end flushes the output—same as in Format.
+
+**Building strings instead of printing:**
+
+```ocaml
+let s = Fmt.str "%a" Fmt.int 42       (* "42" *)
+let s = Fmt.str "%a, %a" Fmt.int 1 Fmt.int 2  (* "1, 2" *)
+```
+
+---
+
+## Combinators: Building Complex Printers
+
+Here's where Fmt shines. Instead of writing format strings, you compose printers:
+
+### Lists
+
+```ocaml
+(* Default: space-separated *)
+Fmt.pr "%a@." Fmt.(list int) [1; 2; 3]
+(* Output: 1 2 3 *)
+
+(* With custom separator *)
+Fmt.pr "%a@." Fmt.(list ~sep:comma int) [1; 2; 3]
+(* Output: 1, 2, 3 *)
+
+Fmt.pr "%a@." Fmt.(list ~sep:semi int) [1; 2; 3]
+(* Output: 1; 2; 3 *)
+
+Fmt.pr "%a@." Fmt.(list ~sep:sp int) [1; 2; 3]
+(* Output: 1 2 3 *)
+
+Fmt.pr "%a@." Fmt.(list ~sep:cut int) [1; 2; 3]
+(* Output: 123 — cut means "no separator, possible line break" *)
+```
+
+### Options
+
+```ocaml
+Fmt.pr "%a@." Fmt.(option int) (Some 42)
+(* Output: 42 *)
+
+Fmt.pr "%a@." Fmt.(option int) None
+(* Output: (nothing) *)
+
+(* With custom "none" text *)
+Fmt.pr "%a@." Fmt.(option ~none:(any "<none>") int) None
+(* Output: <none> *)
+```
+
+### Pairs and Tuples
+
+```ocaml
+Fmt.pr "%a@." Fmt.(pair int string) (42, "answer")
+(* Output: (42, answer) *)
+
+Fmt.pr "%a@." Fmt.(pair ~sep:(any ": ") string int) ("answer", 42)
+(* Output: answer: 42 *)
+```
+
+### Results
+
+```ocaml
+Fmt.pr "%a@." Fmt.(result ~ok:int ~error:string) (Ok 42)
+(* Output: 42 *)
+
+Fmt.pr "%a@." Fmt.(result ~ok:int ~error:string) (Error "oops")
+(* Output: oops *)
+```
+
+---
+
+## Custom Separators with `any`
+
+The `Fmt.any` combinator creates a printer that ignores its input and prints a constant string:
+
+```ocaml
+let arrow = Fmt.any " -> "
+let pipe = Fmt.any " | "
+
+Fmt.pr "%a@." Fmt.(list ~sep:arrow int) [1; 2; 3]
+(* Output: 1 -> 2 -> 3 *)
+
+Fmt.pr "%a@." Fmt.(list ~sep:pipe string) ["a"; "b"; "c"]
+(* Output: a | b | c *)
+```
+
+---
+
+## Brackets and Delimiters
+
+Wrap output with brackets, braces, or custom delimiters:
+
+```ocaml
+Fmt.pr "%a@." Fmt.(brackets (list ~sep:semi int)) [1; 2; 3]
+(* Output: [1; 2; 3] *)
+
+Fmt.pr "%a@." Fmt.(braces (list ~sep:comma int)) [1; 2; 3]
+(* Output: {1, 2, 3} *)
+
+Fmt.pr "%a@." Fmt.(parens (list ~sep:comma int)) [1; 2; 3]
+(* Output: (1, 2, 3) *)
+
+Fmt.pr "%a@." Fmt.(quote string) "hello"
+(* Output: "hello" *)
+```
+
+---
+
+## Pretty-Printing with Boxes
+
+Fmt wraps Format's box system with cleaner combinators:
+
+```ocaml
+(* Horizontal box - never breaks *)
+Fmt.pr "%a@." Fmt.(hbox (list ~sep:comma int)) [1; 2; 3; 4; 5]
+
+(* Vertical box - always breaks *)
+Fmt.pr "%a@." Fmt.(vbox (list ~sep:cut int)) [1; 2; 3]
+(* Output:
+   1
+   2
+   3
+*)
+
+(* Horizontal-or-vertical - one line if it fits, otherwise break all *)
+Fmt.pr "%a@." Fmt.(hvbox (list ~sep:comma int)) [1; 2; 3; 4; 5]
+
+(* With indentation *)
+Fmt.pr "%a@." Fmt.(vbox ~indent:2 (list ~sep:cut int)) [1; 2; 3]
+(* Output:
+     1
+     2
+     3
+*)
+```
+
+---
+
+## Styled Output (Colors and Formatting)
+
+Fmt makes terminal styling easy:
+
+```ocaml
+(* Enable styled output first *)
+Fmt.set_style_renderer Fmt.stdout `Ansi_tty
+
+(* Now use styles *)
+Fmt.pr "%a@." Fmt.(styled `Bold string) "Important!"
+Fmt.pr "%a@." Fmt.(styled `Underline string) "Click here"
+Fmt.pr "%a@." Fmt.(styled (`Fg `Red) string) "Error"
+Fmt.pr "%a@." Fmt.(styled (`Fg `Green) string) "Success"
+Fmt.pr "%a@." Fmt.(styled (`Bg `Yellow) string) "Warning"
+
+(* Combine styles *)
+Fmt.pr "%a@." Fmt.(styled `Bold (styled (`Fg `Red) string)) "CRITICAL"
+```
+
+**Available styles:**
+- `Bold`, `Italic`, `Underline`
+- `` `Fg `color `` — foreground color
+- `` `Bg `color `` — background color
+- Colors: `` `Black``, `` `Red``, `` `Green``, `` `Yellow``, `` `Blue``, `` `Magenta``, `` `Cyan``, `` `White``
+
+---
+
+## Building Record Printers
+
+For records, you can use `Fmt.record` with field definitions:
+
+```ocaml
+type person = {
+  name: string;
+  age: int;
+  email: string option;
+}
+
+let pp_person = Fmt.(
+  record [
+    field "name" (fun p -> p.name) string;
+    field "age" (fun p -> p.age) int;
+    field "email" (fun p -> p.email) (option string);
+  ]
+)
+
+let alice = { name = "Alice"; age = 30; email = Some "alice@example.com" }
+
+Fmt.pr "%a@." pp_person alice
+(* Output: {name=Alice; age=30; email=alice@example.com} *)
+```
+
+---
+
+## Using with `%a`
+
+Since `'a Fmt.t` is just `Format.formatter -> 'a -> unit`, all Fmt printers work with the standard `%a` specifier:
+
+```ocaml
+(* Build a complex printer *)
+let pp_numbers = Fmt.(brackets (list ~sep:comma int))
+
+(* Use with Format *)
+Format.printf "Numbers: %a\n" pp_numbers [1; 2; 3]
+
+(* Use with Fmt *)
+Fmt.pr "Numbers: %a@." pp_numbers [1; 2; 3]
+
+(* Use with Printf (via Fmt.str) *)
+let s = Fmt.str "Numbers: %a" pp_numbers [1; 2; 3]
+Printf.printf "%s\n" s
+```
+
+---
+
+## Fmt.pr vs Fmt.epr vs Fmt.str
+
+| Function | Output | Returns |
+|----------|--------|---------|
+| `Fmt.pr` | stdout | `unit` |
+| `Fmt.epr` | stderr | `unit` |
+| `Fmt.str` | string | `string` |
+| `Fmt.kstr` | string (CPS) | `'a` |
+
+```ocaml
+(* Print to stdout *)
+Fmt.pr "Hello %a@." Fmt.string "world"
+
+(* Print to stderr *)
+Fmt.epr "Error: %a@." Fmt.string "something went wrong"
+
+(* Build a string *)
+let msg = Fmt.str "Hello %a" Fmt.string "world"
+
+(* Build a string, then do something with it *)
+Fmt.kstr failwith "Error: %a" Fmt.string "details"
+```
+
+---
+
+## Practical Example: Error Messages
+
+```ocaml
+type error =
+  | NotFound of string
+  | InvalidInput of { field: string; value: string; reason: string }
+  | Multiple of error list
+
+let rec pp_error ppf = function
+  | NotFound path ->
+    Fmt.pf ppf "File not found: %a" Fmt.(styled (`Fg `Yellow) string) path
+  | InvalidInput { field; value; reason } ->
+    Fmt.pf ppf "@[<v 0>Invalid input for %a:@,  value: %S@,  reason: %s@]"
+      Fmt.(styled `Bold string) field value reason
+  | Multiple errors ->
+    Fmt.pf ppf "@[<v 0>Multiple errors:@,%a@]"
+      Fmt.(list ~sep:cut (fun ppf e -> Fmt.pf ppf "- %a" pp_error e)) errors
+
+let () =
+  Fmt.set_style_renderer Fmt.stderr `Ansi_tty;
+  Fmt.epr "%a@." pp_error (NotFound "/etc/config.yaml")
+```
+
+---
+
+## Installation
+
+```bash
+opam install fmt
+```
+
+Then in your dune file:
+
+```lisp
+(library
+ (name mylib)
+ (libraries fmt))
+```
+
+---
+
+## Quick Reference
+
+### Basic Printers
+`Fmt.int`, `Fmt.string`, `Fmt.float`, `Fmt.bool`, `Fmt.char`, `Fmt.nop`
+
+### Combinators
+- `Fmt.list ~sep:_ pp` — list with separator
+- `Fmt.option ~none:_ pp` — optional value
+- `Fmt.pair ~sep:_ pp1 pp2` — pair
+- `Fmt.result ~ok:_ ~error:_` — result type
+
+### Separators
+`Fmt.comma`, `Fmt.semi`, `Fmt.sp`, `Fmt.cut`, `Fmt.any "..."`
+
+### Delimiters
+`Fmt.brackets`, `Fmt.braces`, `Fmt.parens`, `Fmt.quote`
+
+### Boxes
+`Fmt.hbox`, `Fmt.vbox`, `Fmt.hvbox`, `Fmt.hovbox`, `Fmt.box`
+
+### Styles
+`Fmt.styled style pp` where style is `` `Bold``, `` `Italic``, `` `Fg `color``, etc.
+
+### Output
+`Fmt.pr`, `Fmt.epr`, `Fmt.str`, `Fmt.pf` (like fprintf)
+
+---
+
+## Links
+
+- [Fmt on GitHub](https://github.com/dbuenzli/fmt)
+- [Fmt documentation](https://erratique.ch/software/fmt/doc/Fmt/index.html)
+- [Format module](https://ocaml.org/api/Format.html) — the underlying system
+
+---
+
+*Fmt makes pretty-printing pleasant. Once you get used to combinators, you'll wonder why you ever wrote `@[<hov 2>` by hand.*

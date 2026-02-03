@@ -1,0 +1,109 @@
+---
+title: "React.cache in server-reason-react"
+summary: "How React.cache works in Server components"
+publishedAt: "2026-02-13"
+isDraft: true
+tags:
+  - "OCaml"
+---
+
+
+# React.cache in RSC (OCaml): A Small Deep Dive
+
+When we added `React.cache` for Server Components in our OCaml runtime, the goal was not just "memoization." The goal was **React-accurate request-scoped caching**: cached results are shared across a single render request, and *only* that request. Anything beyond that (global caching, cross-request reuse) is explicitly not what React does, so we did not implement it.
+
+This post explains how our OCaml implementation works and why it matches React's behavior.
+
+## The Mental Model
+
+React's `cache` is request-local. That means:
+
+- Two calls to a cached function with the same arguments in **one** render request should reuse the same value.
+- The cache must reset between requests.
+- Errors are cached too, and re-thrown for the same input during the same request.
+
+Those three points show up directly in our tests, which are the spec we anchored on.
+
+## The Core Data Model
+
+We implemented a tiny request cache in `React.Cache`:
+
+- `current` is a request-local cache stored in a ref.
+- Each `cache` call gets a unique `fn_id`.
+- Each cached function has its own `fn_cache` (a `Hashtbl`) keyed by argument identity.
+
+At a high level, it looks like this:
+
+```
+request_cache: Map<fn_id, fn_cache>
+fn_cache: Map<arg_key, Ok(result) | Error(exn)>
+```
+
+Why per-function and per-argument? Because React's `cache` is scoped to the *call site*, not just the input values. Two separate `cache` wrappers should not share results, even if they call the same underlying function. That is what the `fn_id` enforces.
+
+## Request Scope: The Critical Piece
+
+The request-local boundary is established by `with_request_cache` and `with_request_cache_async`.
+
+The async version is what the server renderer uses, because RSC rendering is `Lwt`-driven. The function:
+
+1. Creates a fresh request cache.
+2. Runs the render.
+3. Restores the previous cache even if the render suspends or throws.
+
+That "set then restore" pattern is the key to avoiding leaks across requests while still allowing async rendering to reuse cached results in a single request.
+
+## How `React.cache` Works
+
+`React.cache` itself is a higher-order function:
+
+- It assigns a unique `fn_id` to the cached function.
+- On each call, it checks if there is a current request cache.
+  - If no request is active, it just runs the function.
+  - If a request is active, it looks up `fn_id` and `arg_key`.
+
+We use `Obj.repr` to create a stable key for arguments. For OCaml this is a pragmatic tradeoff: it keeps the implementation simple and aligns with the "single argument (use tuples for multi-arg)" pattern.
+
+The cached entry stores **either** a value or an exception:
+
+- If the function returns a value, we store `Ok`.
+- If it throws, we store `Error` and re-raise immediately.
+- Subsequent calls with the same arguments re-raise the *same* exception instance.
+
+That last point is important because React's cache re-throws the original error object. We mirror that behavior and test it explicitly.
+
+## The Tests as a Behavioral Spec
+
+We treated the tests in `packages/react/test/test_react.ml` as a contract with React semantics:
+
+- Cache hits within a request
+- Cache resets between requests
+- Errors are cached and re-thrown
+- Errors are cached per-argument
+- Errors and successes can coexist in the same request
+- The same exception instance is returned for repeated failures
+
+That gives us high confidence that our behavior matches the real React `cache`, not just a "close enough" memoizer.
+
+## Differences from React.js
+
+There are a few intentional differences due to language/runtime constraints:
+
+- React uses a WeakMap/Map trie for multi-argument support. We currently support one argument; users can pass tuples or records for multi-arg functions.
+- React's cache uses a dispatcher to discover the current request. We use an explicit request-local ref (`Cache.current`), which is simpler and works well for our render pipeline.
+
+These are implementation details, not semantic differences. The observable behavior inside a request matches React.
+
+## Why This Matters for RSC
+
+Server Components render trees often call the same data function from multiple places. Without `cache`, that creates redundant I/O and unnecessary latency. By faithfully implementing React's request-scoped cache, we get:
+
+- Deduped data fetches during a render.
+- Predictable reset between requests.
+- Error behavior that mirrors React's runtime.
+
+That is the exact contract React expects, and it's what we now provide in OCaml.
+
+## Takeaway
+
+The trick to "getting React.cache right" is not the memoization itself. It's **scoping** and **error semantics**. We built the cache around request boundaries and validated the behavior with tests that reflect React's documented semantics. That keeps the OCaml RSC runtime aligned with React, which is the whole point.

@@ -1,0 +1,481 @@
+---
+title: "Typed Routing in OCaml: A Complete Guide to the routes Library"
+publishedAt: "2025-01-13"
+isDraft: true
+tags:
+  - "OCaml"
+  - "Routing"
+  - "Tutorial"
+---
+
+## Introduction: Why Typed Routing?
+
+OCaml gives you a powerful type system. When you define a function that takes an `int`, the compiler guarantees you'll never accidentally pass a `string`. When you pattern match on a variant, it tells you if you forgot a case. This safety isn't just nice to have—it's why you chose OCaml in the first place.
+
+But here's the problem: **your program has boundaries**, and those boundaries are where type safety typically dies.
+
+A URL is a boundary. It arrives as a string from the outside world—from a browser, a mobile app, another service. The moment you parse that string manually, you're back to hoping things work out at runtime:
+
+```ocaml
+(* A typical untyped approach *)
+let handle_request path =
+  match String.split_on_char '/' path with
+  | [""; "users"; id] ->
+      (* Is `id` actually a number? We'll find out at 3am when production crashes *)
+      let user_id = int_of_string id in
+      get_user user_id
+  | [""; "users"; id; "posts"] ->
+      (* Copy-pasted the same fragile parsing... *)
+      let user_id = int_of_string id in
+      get_user_posts user_id
+  | _ -> not_found ()
+```
+
+This code compiles. It might even work most of the time. But it has problems the compiler can't see:
+
+- What if someone visits `/users/abc`? Runtime exception.
+- What if you refactor `get_user` to take a `user_id` type instead of `int`? You'll need to find every place you parsed a user ID from a URL. Manually. And hope you didn't miss one.
+- What if the posts route should be `/users/:id/posts` but you typed `/user/:id/posts`? You'll find out from a bug report.
+
+**Typed routing extends your type safety to the boundary.** Instead of parsing strings and hoping, you declare what shape your URLs have and what types they contain. The compiler then ensures your handlers match your routes:
+
+```ocaml
+open Routes
+
+(* Declare the shape: "/users/" followed by an integer *)
+let user_route = s "users" / int /? nil
+
+(* The type system knows this route produces an int *)
+(* Your handler MUST accept an int—or it won't compile *)
+let handler =
+  let+ user_id = user_route in
+  get_user user_id
+```
+
+If `get_user` expects a `user_id` type and you're passing an `int`, the compiler tells you. If you change your route from `/users/:id` to `/accounts/:id`, you change it in one place. If you forget to handle the integer your route captures, the compiler complains.
+
+The [`routes`](https://github.com/anuragsoni/routes) library makes this possible. It gives you combinators to describe URL patterns, and it threads the types through so the compiler can verify everything fits together.
+
+The rest of this guide will teach you how to use it—starting with the syntax that makes it all readable.
+
+## Prerequisites & Setup
+
+You'll need OCaml and opam installed. If you're starting fresh, [the OCaml website](https://ocaml.org/install) has instructions.
+
+Install the routes library:
+
+```bash
+opam install routes -y
+```
+
+If you're adding it to an existing project, update your dune file:
+
+```dune
+(library
+ (name my_app)
+ (libraries routes))
+```
+
+To follow along interactively, you can use `utop`:
+
+```bash
+opam install utop -y
+utop
+```
+
+Then load the library:
+
+```ocaml
+#require "routes";;
+open Routes;;
+```
+
+### What `routes` does (and doesn't do)
+
+Before we dive in, let's set expectations:
+
+**`routes` handles path matching.** Given a URL path like `/users/42/posts`, it matches against patterns you define and extracts typed values.
+
+**`routes` does not handle:**
+
+- **Query parameters** — The `?page=2&sort=name` part of a URL is outside its scope. Your web framework (Dream, Eio, etc.) typically parses these separately, or you can use a library like `uri`.
+- **HTTP methods** — GET vs POST vs DELETE is handled at the framework level. `routes` only cares about the path.
+- **Request/response handling** — It's a routing library, not a web framework. It tells you *which* handler to call and *what arguments* to pass. Actually calling it is up to you.
+
+This narrow focus is intentional. It means `routes` composes well with whatever framework you're using.
+
+## Interlude: Understanding Binding Operators
+
+Before we dive into `routes`, we need to cover a piece of OCaml syntax that might be unfamiliar: **binding operators**. The `routes` library uses them heavily, and if you don't know what `let+` means, the examples will look like magic.
+
+This section explains binding operators using simple examples—no routing yet. Once you understand them here, the `routes` API will click immediately.
+
+### What Are Binding Operators?
+
+You know the regular `let`:
+
+```ocaml
+let x = 5 in
+let y = 10 in
+x + y
+(* 15 *)
+```
+
+Binding operators are **custom versions of `let`** that library authors can define. They look like `let*`, `let+`, or `let@something`. When you write:
+
+```ocaml
+let+ x = some_expression in
+(* ... *)
+```
+
+You're not using OCaml's built-in `let`. You're calling a function that the library defined, named `( let+ )`. The compiler transforms your code to use that function.
+
+Why would you want this? Because different contexts need different "plumbing" between expressions. Let's see what that means.
+
+### `let*` — Chaining Computations That Might Fail
+
+Imagine you're writing code that might fail at any step:
+
+```ocaml
+(* Without binding operators: nested pattern matching nightmare *)
+let compute a b c =
+  match divide a b with
+  | None -> None
+  | Some x ->
+    match divide x c with
+    | None -> None
+    | Some y ->
+      match divide y 2 with
+      | None -> None
+      | Some z -> Some (z + 1)
+```
+
+Every step might return `None`, and you have to manually check each one. This gets ugly fast.
+
+Now let's define a binding operator:
+
+```ocaml
+(* Define let* for options *)
+let ( let* ) opt f =
+  match opt with
+  | None -> None
+  | Some x -> f x
+```
+
+This says: "If `opt` is `None`, stop and return `None`. If it's `Some x`, continue with `f x`."
+
+Now the same code becomes:
+
+```ocaml
+let compute a b c =
+  let* x = divide a b in
+  let* y = divide x c in
+  let* z = divide y 2 in
+  Some (z + 1)
+```
+
+Much cleaner. Each `let*` handles the `None` checking for you. If any step fails, the whole computation short-circuits to `None`.
+
+**The `*` in `let*` is a convention** — it typically means "bind" or "chain dependent computations."
+
+### `let+` — Transforming the Final Value
+
+`let*` is for chaining, where each step depends on the previous result. But sometimes you just want to transform a value at the end:
+
+```ocaml
+(* Define let+ for options *)
+let ( let+ ) opt f =
+  match opt with
+  | None -> None
+  | Some x -> Some (f x)
+```
+
+The difference: `let*` expects `f` to return an `option`. `let+` expects `f` to return a plain value, and wraps it in `Some` for you.
+
+```ocaml
+(* Using let+ *)
+let result =
+  let+ x = Some 5 in
+  x * 2
+(* result = Some 10 *)
+
+(* Compare to let* — you'd have to write: *)
+let result =
+  let* x = Some 5 in
+  Some (x * 2)  (* Manual wrapping *)
+```
+
+Use `let+` when you're at the final transformation and don't need to chain further.
+
+**The `+` in `let+` is a convention** — it typically means "map" or "transform."
+
+### `and+` — Combining Independent Values
+
+Sometimes you have multiple values that don't depend on each other:
+
+```ocaml
+(* Define and+ for options *)
+let ( and+ ) a b =
+  match a, b with
+  | Some x, Some y -> Some (x, y)
+  | _ -> None
+```
+
+This lets you combine independent computations:
+
+```ocaml
+let result =
+  let+ x = Some 5
+  and+ y = Some 10
+  and+ z = Some 3 in
+  x + y + z
+(* result = Some 18 *)
+
+(* If any one is None, the whole thing is None *)
+let result =
+  let+ x = Some 5
+  and+ y = None
+  and+ z = Some 3 in
+  x + y + z
+(* result = None *)
+```
+
+The `and+` keyword combines values in parallel (conceptually—they're both evaluated, then combined). It pairs with `let+` for the final transformation.
+
+### Why Libraries Define These
+
+Different libraries define these operators to mean different things:
+
+| Library/Context | `let*` means | `let+` means |
+|----------------|--------------|--------------|
+| `Option` | Chain, short-circuit on `None` | Transform the `Some` value |
+| `Result` | Chain, short-circuit on `Error` | Transform the `Ok` value |
+| `Lwt`/`Async` | Chain async operations | Transform async result |
+| `routes` | Sequence path segments | Extract and transform captures |
+
+The syntax stays the same—`let+`, `let*`, `and+`—but the behavior changes based on which operators are in scope.
+
+### The Transformation Under the Hood
+
+When you write:
+
+```ocaml
+let+ x = expr1 in
+expr2
+```
+
+The compiler transforms it to:
+
+```ocaml
+( let+ ) expr1 (fun x -> expr2)
+```
+
+And when you write:
+
+```ocaml
+let+ x = expr1
+and+ y = expr2 in
+expr3
+```
+
+It becomes:
+
+```ocaml
+( let+ ) (( and+ ) expr1 expr2) (fun (x, y) -> expr3)
+```
+
+You don't need to think about this transformation while writing code, but knowing it exists helps when you're debugging or reading library implementations.
+
+### Quick Reference
+
+```ocaml
+(* let* — chain dependent computations *)
+let ( let* ) = Option.bind
+
+let* x = may_fail () in   (* If None, stop here *)
+let* y = use x in         (* Depends on x *)
+Some (y + 1)              (* Final result *)
+
+(* let+ — transform the final value *)
+let ( let+ ) opt f = Option.map f opt
+
+let+ x = Some 5 in        (* Unwrap *)
+x * 2                     (* Transform, auto-wrapped to Some 10 *)
+
+(* and+ — combine independent values *)
+let ( and+ ) a b = match a, b with
+  | Some x, Some y -> Some (x, y)
+  | _ -> None
+
+let+ x = Some 5
+and+ y = Some 10 in       (* Both must be Some *)
+x + y                     (* Combined result: Some 15 *)
+```
+
+### Onward to Routes
+
+Now you know what `let+` and `and+` mean in general. When you see them in `routes`:
+
+```ocaml
+let handler =
+  let+ user_id = s "users" / int /? nil in
+  show_user user_id
+```
+
+You'll understand: this is extracting `user_id` from the path and passing it to the handler. The `routes` library defined what `let+` means for routes—we just use the syntax.
+
+Let's see how.
+
+## The Core Types of `routes`
+
+{/* TODO: Build intuition for the type signatures */}
+
+## Building Your First Route
+
+{/* TODO: Hands-on first route */}
+
+## Composing Multiple Routes
+
+{/* TODO: one_of and multiple routes */}
+
+## How Route Matching Works
+
+You've seen how to define routes and compose them. But what happens when you call `match'`? Understanding the internals helps you write better routes and debug issues faster.
+
+### The Trie Structure
+
+When you combine routes with `one_of`, the library doesn't store them as a list to check one by one. Instead, it compiles them into a **trie** (prefix tree)—a data structure that shares common prefixes.
+
+Consider these routes:
+
+```ocaml
+let router = one_of [
+  (let+ () = s "users" /? nil in `UserList);
+  (let+ id = s "users" / int /? nil in `UserDetail id);
+  (let+ id = s "users" / int / s "posts" /? nil in `UserPosts id);
+  (let+ () = s "health" /? nil in `HealthCheck);
+]
+```
+
+Internally, this becomes a tree structure:
+
+```
+root
+├── "users"
+│     ├── (end) ────────────────→ UserList
+│     └── <int>
+│           ├── (end) ──────────→ UserDetail
+│           └── "posts"
+│                 └── (end) ────→ UserPosts
+└── "health"
+      └── (end) ────────────────→ HealthCheck
+```
+
+### Why This Matters
+
+When a request comes in for `/users/42/posts`, the matcher walks the tree:
+
+1. Split path into segments: `["users"; "42"; "posts"]`
+2. At root, find child "users" → found, descend
+3. At "users", try to parse "42" as int → succeeds, descend with value `42`
+4. At int node, find child "posts" → found, descend
+5. At "posts", check for end marker → found, return `UserPosts 42`
+
+The key insight: **matching is O(number of path segments), not O(number of routes)**. Whether you have 5 routes or 500, matching `/users/42` takes the same time—you're walking a tree, not scanning a list.
+
+This matters when you're handling thousands of requests per second. No regex backtracking, no linear scans.
+
+### When Matching Fails
+
+The `match'` function returns an `option`. When no route matches, you get `None`:
+
+```ocaml
+let result = match' router ~target:"/unknown/path"
+(* result = None *)
+
+let result = match' router ~target:"/users/not-a-number"
+(* result = None — "not-a-number" failed to parse as int *)
+
+let result = match' router ~target:"/users/42/comments"
+(* result = None — no "comments" child under the int node *)
+```
+
+Notice that `routes` doesn't tell you *why* matching failed. Was the path completely wrong? Did an int parser fail? Was there a typo in a segment? You just get `None`.
+
+This is a deliberate design choice:
+
+- **Simplicity** — No complex error types to handle
+- **Performance** — No allocation for error messages on the hot path
+- **Security** — Your 404 handler decides what to reveal to users
+
+### Debugging Routes
+
+When a route isn't matching and you're not sure why, test the pieces in isolation:
+
+```ocaml
+(* Test the full route *)
+let user_posts_route = s "users" / int / s "posts" /? nil
+
+let _ = match' user_posts_route ~target:"/users/42/posts"
+(* Some 42 — works! *)
+
+let _ = match' user_posts_route ~target:"/users/42/posts/"
+(* None — trailing slash! routes is exact by default *)
+
+let _ = match' user_posts_route ~target:"users/42/posts"
+(* None — missing leading slash *)
+```
+
+Common gotchas:
+
+- **Trailing slashes** — `/users/42` and `/users/42/` are different paths
+- **Leading slashes** — The target should start with `/`
+- **Case sensitivity** — `"Users"` won't match `"users"`
+- **Order in `one_of`** — More specific routes should come first (though the trie usually handles this correctly)
+
+### A Note on Trailing Slashes
+
+If you want to accept both `/users` and `/users/`, you have a few options:
+
+```ocaml
+(* Option 1: Define both routes *)
+let router = one_of [
+  (let+ () = s "users" /? nil in `UserList);
+  (let+ () = s "users" / s "" /? nil in `UserList);  (* trailing slash *)
+]
+
+(* Option 2: Normalize paths before matching *)
+let normalize path =
+  if String.length path > 1 && path.[String.length path - 1] = '/' then
+    String.sub path 0 (String.length path - 1)
+  else
+    path
+
+let result = match' router ~target:(normalize "/users/")
+```
+
+### Looking at the Source
+
+The matching logic lives in [`routes.ml`](https://github.com/anuragsoni/routes/blob/main/src/routes.ml). The key types to look for:
+
+- `'a t` — The route type that carries type information
+- `one_of` — Where the trie construction happens
+- `match'` — The recursive tree walk
+
+Reading library source code is one of the best ways to deepen your OCaml skills. The `routes` codebase is small (~500 lines) and well-structured—worth an afternoon of exploration.
+
+## Advanced Technique #1: Custom Path Segments
+
+{/* TODO: Creating custom typed segments */}
+
+## Advanced Technique #2: Bidirectional Routing
+
+{/* TODO: URL generation from routes */}
+
+## Putting It All Together
+
+{/* TODO: Complete working example */}
+
+## Conclusion & Next Steps
+
+{/* TODO: Wrap up and resources */}

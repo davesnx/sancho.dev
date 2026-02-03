@@ -11,6 +11,18 @@ const __dirname = Path.dirname(__filename);
 
 const GITHUB_API_BASE = "https://api.github.com";
 const OUTPUT_FILE = Path.join(__dirname, "../src/data/github-repos.json");
+const CACHE_MAX_AGE_MS = 60 * 60 * 1000; // 1 hour
+
+const forceRefresh = process.argv.includes("--force");
+
+const isCacheValid = () => {
+  if (forceRefresh) return false;
+  if (!Fs.existsSync(OUTPUT_FILE)) return false;
+
+  const stats = Fs.statSync(OUTPUT_FILE);
+  const age = Date.now() - stats.mtimeMs;
+  return age < CACHE_MAX_AGE_MS;
+};
 
 const repoUrls = [
   "https://github.com/davesnx/styled-ppx",
@@ -141,6 +153,12 @@ const writeReposToFile = (repos) =>
   });
 
 const main = Effect.gen(function* (_) {
+  if (isCacheValid()) {
+    yield* _(Console.log("✓ Using cached github-repos.json (< 1 hour old)"));
+    yield* _(Console.log("  Run with --force to refresh"));
+    return;
+  }
+
   yield* _(Console.log("🔄 Fetching GitHub repository data...\n"));
 
   const results = yield* _(

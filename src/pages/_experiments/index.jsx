@@ -45,7 +45,7 @@ const Swing = ({ color, translateX, translateY, children, blur = 0 }) => {
         mixBlendMode: "screen",
         filter: `blur(${blur}px)`,
         color: `${color}`,
-        transform: xy.interpolate((x, y) => `translate3d(${x}px, ${y}px, 0px)`),
+        transform: xy.to((x, y) => `translate3d(${x}px, ${y}px, 0px)`),
       }}
     >
       {children}

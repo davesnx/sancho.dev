@@ -315,8 +315,8 @@ export default function Layout({ children }) {
                   <MobileMenuOverlay onClick={close} />
                   <MobileMenuPopup
                     style={{
-                      transform: scale.interpolate((s) => `scale(${s})`),
-                      opacity: opacity.interpolate((o) => o),
+                      transform: scale.to((s) => `scale(${s})`),
+                      opacity: opacity.to((o) => o),
                     }}
                   >
                     <Stack gap={0}>
@@ -377,7 +377,7 @@ export default function Layout({ children }) {
               </Text>
             </div>
             <div>
-              <Text weight={600} size={font.fontSizeN2} monospace>
+              <Text weight={600} size={font.fontSizeN2} monospace color={colors.body30}>
                 <TextLink
                   weight={600}
                   color={colors.body30}

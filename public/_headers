@@ -1,0 +1,7 @@
+/*
+  X-Llms-Txt: /llms.txt
+  Link: </llms.txt>; rel="llms-txt"
+
+/blog/*.md
+  Content-Type: text/markdown; charset=utf-8
+  X-Robots-Tag: noindex, nofollow

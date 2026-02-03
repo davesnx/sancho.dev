@@ -95,6 +95,18 @@ const Blog = ({ frontmatters }: { frontmatters: Array<Frontmatter> }) => {
     <>
       <MetaData title="Blog" />
       <Page title={<H1>Blog</H1>}>
+        <Spacer bottom={4}>
+          <Text color={colors.body50} size={font.fontSize1}>
+            Subscribe via{" "}
+            <NavigateButton
+              href="/rss.xml"
+              color={colors.primary80}
+              hoverColor={colors.primary}
+            >
+              RSS
+            </NavigateButton>
+          </Text>
+        </Spacer>
         <Spacer bottom={16}>
           <Stack gap={10} align="left" fullWidth>
             {years.map((year) => (

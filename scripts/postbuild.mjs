@@ -3,12 +3,13 @@ import { fileURLToPath } from "url";
 import Fs from "fs/promises";
 import { generateRSS } from "./rss.mjs";
 import { generateSitemap } from "./sitemap.mjs";
-import { generateLLMsTxt } from "./llms.mjs";
+import { generateLLMsTxt, generateMarkdownFiles } from "./llms.mjs";
 const root = Path.dirname(fileURLToPath(import.meta.url));
 
 (async function postbuild() {
-  const sitemap_path = Path.join(root, "..", "out/sitemap.xml");
-  const rss_path = Path.join(root, "..", "out/rss.xml");
+  const out_dir = Path.join(root, "..", "out");
+  const sitemap_path = Path.join(out_dir, "sitemap.xml");
+  const rss_path = Path.join(out_dir, "rss.xml");
   let sitemap;
   try {
     sitemap = await generateSitemap();
@@ -34,7 +35,7 @@ const root = Path.dirname(fileURLToPath(import.meta.url));
     process.exit(1);
   }
 
-  const llms_path = Path.join(root, "..", "out/llms.txt");
+  const llms_path = Path.join(out_dir, "llms.txt");
   let llmsTxt;
   try {
     llmsTxt = await generateLLMsTxt();
@@ -47,6 +48,14 @@ const root = Path.dirname(fileURLToPath(import.meta.url));
     await Fs.writeFile(llms_path, llmsTxt);
   } catch (e) {
     console.log("llms.txt can't be generate");
+    console.error(e);
+    process.exit(1);
+  }
+
+  try {
+    await generateMarkdownFiles(out_dir);
+  } catch (e) {
+    console.log("can't generate markdown files");
     console.error(e);
     process.exit(1);
   }

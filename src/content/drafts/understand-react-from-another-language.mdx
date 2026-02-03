@@ -1,0 +1,975 @@
+---
+title: "React from Another Universe"
+publishedAt: "2025-01-13"
+isDraft: true
+tags:
+  - "React"
+  - "Reason"
+  - "OCaml"
+  - "Conference Talk"
+description: "Conference talk for React Miami 2026 - What React looks like when reimplemented in OCaml"
+---
+
+{/*
+  Conference Talk: React from Another Universe
+  Event: React Miami 2026
+  Duration: 40 minutes
+
+  Summary: React introduced a generation of developers to functional programming.
+  For me, it was the start of an obsession that sent me down the rabbit hole of
+  learning a new paradigm, working with different languages (Elm/ReasonML/OCaml),
+  shipping a few compilers, implementing a type system, and eventually reimplementing React.
+*/}
+
+---
+
+## Act 1: The Portal Opens
+
+### Opening Hook
+
+React taught a generation of JavaScript developers to think functionally. Immutability. Pure functions. Composition. But here's the thing—React was always holding back. It was born in JavaScript, so it had to compromise.
+
+Tonight, I want to show you what React looks like without those compromises.
+
+I used React for years. I built apps, learned hooks, understood the mental model—or so I thought. Then I fell down a rabbit hole. I started learning functional programming languages. First Elm, then Reason, then OCaml. Somewhere along the way, I stopped just using React. I started reimplementing it.
+
+What I found on the other side changed how I understand not just React, but every abstraction I use.
+
+### The Hidden History
+
+Here's something most React developers don't know: Jordan Walke created both React AND Reason. That's not a coincidence.
+
+React's concepts came from ML family languages—Standard ML, OCaml. The first React prototype was actually written in Standard ML. Components, immutability, pure render functions—these aren't JavaScript ideas. They're functional programming ideas that Jordan smuggled into JavaScript.
+
+React has always been a functional programming idea trapped in a JavaScript body.
+
+What if it wasn't trapped? What if React had been born in a language that actually supports these concepts natively?
+
+### Entering the Alternate Universe
+
+Let me introduce you to OCaml. Or rather, Reason—a syntax for OCaml that looks familiar to JavaScript developers.
+
+```reason
+// Reason (alternate universe JavaScript)
+let greeting = name => "Hello, " ++ name;
+```
+
+```javascript
+// JavaScript (our universe)
+const greeting = (name) => "Hello, " + name;
+```
+
+It's not alien. It's JavaScript with a better type system and pattern matching.
+
+The key differences that matter for our journey:
+
+**Types are inferred.** You don't write annotations everywhere—the compiler figures it out:
+
+```reason
+let add = (a, b) => a + b;
+// Compiler knows: (int, int) => int
+```
+
+**Pattern matching instead of switch/if chains:**
+
+```reason
+let describe = value =>
+  switch (value) {
+  | Some(x) => "Got " ++ string_of_int(x)
+  | None => "Nothing here"
+  };
+```
+
+**Variants instead of strings or enums:**
+
+```reason
+type status =
+  | Loading
+  | Success(data)
+  | Error(string);
+```
+
+This isn't about syntax preferences. These features let us see React's true structure.
+
+---
+
+## Act 2: React Without Compromises
+
+### Components: Same Idea, Stronger Foundation
+
+Let's look at a component in this alternate universe:
+
+```reason
+[@react.component]
+let make = (~name, ~onClick) => {
+  <div className="greeting" onClick>
+    {React.string("Hello, " ++ name)}
+  </div>
+};
+```
+
+Looks familiar, right? JSX works. Props work. But notice what's different:
+
+- `~name` is a labeled argument. You literally cannot forget to pass it—the compiler stops you.
+- The type of `onClick` is inferred. If you pass a string where a function is expected, compilation fails.
+- No runtime prop-types. No `PropTypes.string.isRequired`. The compiler catches everything before your code ever runs.
+
+{/* DEMO IDEA: Show a prop typo caught at compile time vs runtime crash in JS */}
+
+In JavaScript, you find out about prop mistakes when your app crashes in production. In this universe, you find out before you save the file.
+
+### The Rosetta Stone: What is an Element, Really?
+
+This is the core insight of the talk.
+
+In JavaScript React, elements are opaque objects. You create them with JSX, you pass them around, but what ARE they? React hides this behind Symbols and fiber nodes and internal structures.
+
+In OCaml, we can see exactly what they are:
+
+```reason
+type element =
+  | Empty                                        (* null *)
+  | Text(string)                                 (* "hello" *)
+  | Fragment(list(element))                      (* <></> *)
+  | Component(unit => element)                   (* <YourComponent /> *)
+  | Html_element(string, attributes, children)   (* <div> *)
+  | Provider(element)                            (* <Context.Provider> *)
+  | Consumer(element)                            (* <Context.Consumer> *)
+  | Suspense({ children: element, fallback: element })  (* <Suspense> *)
+```
+
+This is the Rosetta Stone. Every React element you've ever written fits into one of these cases:
+
+- `Empty` → That's `null` in React
+- `Text(string)` → Text nodes, like `{React.string("hello")}`
+- `Fragment(element)` → `<React.Fragment>` or `<>`
+- `Html_element(string, attributes, list(element))` → Every `<div>`, `<span>`, `<button>`
+- `Component(unit => element)` → Your components—they're just functions that return elements
+- `Provider(element)` and `Consumer(element)` → Context
+- `Suspense({ children: element, fallback: element })` → Look how simple this is!
+
+React in JavaScript hides this structure. In OCaml, the types ARE the documentation.
+
+When you understand this, React stops being magic. It's a tree. A recursive data structure. That's it.
+
+### Hooks: Functions All The Way Down
+
+Hooks work the same way, but the types make things explicit:
+
+```reason
+let (count, setCount) = React.useState(() => 0);
+
+// The compiler KNOWS:
+// - count is int
+// - setCount is (int => int) => unit
+```
+
+You can't call `setCount("hello")`. You can't forget that `useState` takes a function. The types guide you.
+
+Here's why `useState` returns what it returns. In JavaScript, it returns an array:
+
+```javascript
+const [count, setCount] = useState(0);
+```
+
+Why an array? Because JavaScript doesn't have typed tuples. An array was the compromise.
+
+In OCaml, we have proper tuples:
+
+```reason
+let (count, setCount) = React.useState(() => 0);
+// Type: (int, (int => int) => unit)
+```
+
+The tuple has a precise type. Each position means something specific. The array in JavaScript was always a tuple in disguise.
+
+### Suspense Spotlight: The Elegant Truth
+
+This is where we blow minds.
+
+In our universe, Suspense works by throwing promises. Yes, throwing. Like exceptions. It's a hack:
+
+```javascript
+// JavaScript React internals (simplified)
+function readData(resource) {
+  if (!resource.loaded) {
+    throw resource.promise; // Yes, throwing a promise
+  }
+  return resource.data;
+}
+```
+
+React catches this thrown promise, renders the fallback, waits for the promise to resolve, then tries again. It works, but it's weird. You're using the exception system for control flow.
+
+In the alternate universe, Suspense is just data:
+
+```reason
+| Suspense({ children: element, fallback: element })
+```
+
+That's it. A node with two branches: what to show when ready, what to show while waiting.
+
+On the server, rendering Suspense is trivial:
+
+```reason
+let rec render_to_string = element =>
+  switch (element) {
+  | Empty => ""
+  | Text(s) => Html.encode(s)
+  | Fragment(child) => render_to_string(child)
+  | Html_element(tag, attrs, children) =>
+      "<" ++ tag ++ render_attributes(attrs) ++ ">" ++
+      String.concat("", List.map(render_to_string, children)) ++
+      "</" ++ tag ++ ">"
+  | Component(f) => render_to_string(f())
+
+  (* ↓↓↓ THIS IS THE KEY LINE ↓↓↓ *)
+  | Suspense({ fallback, _ }) => render_to_string(fallback)
+  (* On server: just render the fallback. That's it! *)
+  };
+```
+
+Suspense isn't magic. It's a node type with two branches. The "magic" is just the runtime deciding which branch to render.
+
+Now here's where it gets interesting. In OCaml 5, we have real algebraic effects. Imagine Suspense without throwing:
+
+```reason
+(* OCaml 5 effects - this is real, not hypothetical *)
+effect Suspend : promise('a) => 'a
+
+let readData = resource =>
+  if (!resource.loaded) {
+    (* Component pauses here, runtime handles it *)
+    perform Suspend(resource.promise)
+  } else {
+    resource.data
+  }
+
+(* No throwing. No try/catch.
+   The component actually suspends and resumes. *)
+```
+
+Components can actually pause and resume. No hacks. No throwing promises. That's not sci-fi—that's what React is trying to approximate with generators and async iteration.
+
+---
+
+## Act 3: What They Built in This Universe
+
+### server-reason-react: SSR Done Right
+
+I didn't just study this. I built it.
+
+At Ahrefs, we had a problem. Our React app needed server-side rendering, but we're an OCaml shop. We didn't want to run Node.js in production just to render HTML.
+
+The traditional solutions didn't work for us:
+
+- **Pre-rendering with Node** coupled our build process to runtime in weird ways
+- **Running Node in production** meant learning a new operational model, dealing with single-threaded constraints, and duplicating authentication logic
+
+So we asked: what if we could use the exact same React components on the server, but compiled to native code instead of JavaScript?
+
+That's server-reason-react. Same components, two runtimes:
+
+{/* Show architecture diagram here */}
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│                    Your React Components                     │
+│                      (written in Reason)                     │
+└─────────────────────────────────────────────────────────────┘
+                              │
+              ┌───────────────┴───────────────┐
+              │                               │
+              ▼                               ▼
+┌─────────────────────────┐     ┌─────────────────────────┐
+│       Melange           │     │   server-reason-react   │
+│   (compiles to JS)      │     │   (native OCaml)        │
+└─────────────────────────┘     └─────────────────────────┘
+              │                               │
+              ▼                               ▼
+┌─────────────────────────┐     ┌─────────────────────────┐
+│       Browser           │     │     Native Server       │
+│   (hydrates, interactive)│     │   (renders HTML)        │
+└─────────────────────────┘     └─────────────────────────┘
+```
+
+The results speak for themselves:
+
+| Stack | Requests/sec | Avg Latency |
+|-------|-------------|-------------|
+| Node.js (Express) | 7,200 | 30.98ms |
+| Bun | 10,300 | 24.32ms |
+| server-reason-react | 64,800 | 6.21ms |
+
+Ten times faster than Node. Six times faster than Bun.
+
+But here's the thing: 10x isn't about OCaml being magic. It's about doing less work because we understand what work actually needs to happen. When you see the element type, you see what rendering actually is: pattern matching on a tree and concatenating strings. No virtual DOM diffing on the server. No fiber scheduler. Just direct transformation.
+
+### Live Demo: The Same Component, Two Universes
+
+{/* DEMO: Show a component compiling to both targets */}
+
+Let me show you a real component:
+
+```reason
+module Card = {
+  [@react.component]
+  let make = (~title, ~children) => {
+    <article className="card">
+      <header className="card-header">
+        <h2>{React.string(title)}</h2>
+      </header>
+      <div className="card-body">
+        children
+      </div>
+    </article>
+  };
+};
+```
+
+When I compile this with Melange, I get JavaScript that runs in your browser.
+
+When I compile this with native OCaml and server-reason-react, I get a binary that renders HTML.
+
+Same source. Two outputs. Type-safe on both sides.
+
+{/* DEMO: Side-by-side terminals showing both compilations and outputs */}
+
+### RSC: The Natural Evolution
+
+React Server Components take this further. Components that run only on the server. Never shipped to the client. Can access your database directly.
+
+The RSC wire format looks like this:
+
+```
+0:["$","div",null,{"children":[
+  ["$","h1",null,{"children":"Hello"}],
+  ["$","$Suspense",null,{"fallback":"Loading...","children":"$L1"}]
+]}]
+1:["$","UserProfile",null,{"data":{"name":"David","role":"Engineer"}}]
+```
+
+Look familiar? It's serialized elements. The same structure we saw in our type definition, but as JSON.
+
+The `$L1` is a reference—"this part isn't ready yet, I'll send it later." That's streaming. That's Suspense on the wire.
+
+In OCaml, RSC makes perfect sense because it's exactly what functional programmers call partial evaluation. Compute what you can on the server, send instructions for the rest. We've been doing this for decades.
+
+{/* DEMO if time: Show RSC streaming in server-reason-react */}
+
+---
+
+## Act 4: Bringing Gifts Back
+
+### What You Can Apply Tomorrow
+
+You don't need to learn OCaml. But you can take these insights back to your JavaScript React:
+
+**1. Think in types first.**
+
+Before writing a component, sketch its type signature. What props does it take? What does it return? Are any props optional? What are the valid values?
+
+```typescript
+// Do this before writing the component
+type CardProps = {
+  title: string;
+  variant: 'default' | 'highlighted';
+  children: React.ReactNode;
+  onClose?: () => void;
+};
+```
+
+This isn't just TypeScript busywork. It's designing your API before implementing it.
+
+**2. Suspense is just branching.**
+
+When you wrap something in Suspense, you're saying "show this OR that." There's no magic scheduler making decisions—there's a condition being checked. Understanding this simplifies your mental model.
+
+```jsx
+<Suspense fallback={<Skeleton />}>
+  <UserProfile />  {/* if ready, show this */}
+</Suspense>        {/* else, show fallback */}
+```
+
+**3. Understand your abstractions.**
+
+The element type shows that React is simpler than it appears. Components, elements, fragments—they're all the same recursive structure. A component is just a function. An element is just data. A tree is just nested data.
+
+**4. Streaming is sequential rendering.**
+
+It's not parallel magic. It's "render what you can, send it, render more, send that." Understanding this helps you structure your components for better streaming behavior.
+
+### The Future
+
+OCaml 5 shipped with algebraic effects. This opens possibilities that React can only approximate:
+
+- Suspense without throwing promises
+- True concurrent rendering with proper continuations
+- Components that can pause, resume, and interleave
+
+React is converging toward ideas that OCaml has had for 30 years. The React team knows this—they've talked about it in conferences. We're not predicting the future; we're implementing it in a language that already has the primitives.
+
+### Closing
+
+I went down the rabbit hole to learn React. I came back understanding that the best way to learn any technology is to rebuild it in a language that forces you to be explicit.
+
+You don't need OCaml. But you do need to look behind the curtain. Find abstractions you use daily and ask: what is this, really? What would this look like if I had to implement it myself?
+
+The answers might surprise you. And you'll never use those abstractions the same way again.
+
+Thank you.
+
+---
+
+## Appendix: Resources
+
+- [server-reason-react on GitHub](https://github.com/ml-in-barcelona/server-reason-react)
+- [html_of_jsx on GitHub](https://github.com/davesnx/html_of_jsx)
+- [Melange documentation](https://melange.re)
+- [My blog post: Server-side rendering React in OCaml](/blog/server-side-rendering-react-in-ocaml)
+- [My blog post: Making html_of_jsx 10x faster](/blog/making-html-of-jsx-10x-faster)
+
+## Appendix: Slides Checklist
+
+1. Title slide with "alternate universe" visual
+2. Jordan Walke + ML history timeline
+3. Reason vs JavaScript syntax comparison
+4. Component comparison (Reason vs JS)
+5. The `element` variant type (THE key slide)
+6. Hooks comparison showing tuple types
+7. Suspense in JS (throwing promises code)
+8. Suspense in OCaml (just a type)
+9. Architecture diagram (client/server compilation)
+10. Benchmark results table
+11. RSC payload format
+12. "What to apply tomorrow" summary (4 points)
+13. Thank you + contact info + QR code to resources
+
+## Appendix: Detailed Slide Content
+
+### Slide 1: Title
+**Visual:** Split screen - left side normal React logo, right side React logo but subtly different (maybe inverted colors, or slightly warped like a mirror universe)
+
+```
+React from Another Universe
+
+David Sancho
+@davesnx
+
+React Miami 2026
+```
+
+**Speaker note:** "What if React had been born in a different language?"
+
+---
+
+### Slide 2: The Hidden History
+**Visual:** Timeline with photos
+
+```
+The React Family Tree
+
+1996 ─── OCaml created (INRIA, France)
+         │
+2011 ─── Jordan Walke experiments with SML + React ideas
+         │
+2013 ─── React announced at JSConf
+         │
+2016 ─── Reason syntax created (by Jordan Walke)
+         │
+2023 ─── server-reason-react ships at Ahrefs
+         │
+2026 ─── You're here
+```
+
+**Speaker note:** "Jordan created both React AND Reason. Not a coincidence."
+
+---
+
+### Slide 3: Same Language, Different Syntax
+**Visual:** Side by side code comparison
+
+```
+┌─────────────────────────────────┬─────────────────────────────────┐
+│           Reason                │          JavaScript             │
+├─────────────────────────────────┼─────────────────────────────────┤
+│ let greeting = name =>          │ const greeting = (name) =>      │
+│   "Hello, " ++ name;            │   "Hello, " + name;             │
+├─────────────────────────────────┼─────────────────────────────────┤
+│ let add = (a, b) => a + b;      │ const add = (a, b) => a + b;    │
+│ // Compiler knows: int → int    │ // Who knows? 🤷                │
+└─────────────────────────────────┴─────────────────────────────────┘
+```
+
+**Speaker note:** "It's not alien. It's JavaScript with superpowers."
+
+---
+
+### Slide 4: Components Look Familiar
+**Visual:** Full-screen code
+
+```reason
+[@react.component]
+let make = (~name, ~onClick) => {
+  <div className="greeting" onClick>
+    {React.string("Hello, " ++ name)}
+  </div>
+};
+```
+
+**Speaker note:** "JSX works. Props work. But notice the `~` — that's a labeled argument. You can't forget it."
+
+---
+
+### Slide 5: THE KEY SLIDE - The Element Type
+**Visual:** Code with each line highlighting progressively
+
+```reason
+type element =
+  | Empty                                    ← null
+  | Text(string)                             ← "hello"
+  | Fragment(element)                        ← <>...</>
+  | Html_element(string, attrs, children)    ← <div>
+  | Component(unit => element)               ← <YourComponent />
+  | Provider(element)                        ← Context.Provider
+  | Consumer(element)                        ← Context.Consumer
+  | Suspense({ children, fallback })         ← <Suspense>
+```
+
+**Speaker note:** "This is the Rosetta Stone. Every React element you've ever written fits into one of these cases. In JavaScript, React hides this. In OCaml, the types ARE the documentation."
+
+---
+
+### Slide 6: Hooks - Tuples Not Arrays
+**Visual:** Side by side comparison
+
+```
+JavaScript:                      Reason:
+
+const [count, setCount]         let (count, setCount)
+  = useState(0);                  = React.useState(() => 0);
+
+// Array - any types             // Tuple - precise types
+// count: any                    // count: int
+// setCount: any                 // setCount: (int => int) => unit
+```
+
+**Speaker note:** "JavaScript uses arrays because it doesn't have typed tuples. Arrays were the compromise."
+
+---
+
+### Slide 7: Suspense in JavaScript
+**Visual:** Code with the `throw` highlighted in red/warning color
+
+```javascript
+// How Suspense actually works in React
+
+function readData(resource) {
+  if (!resource.loaded) {
+    throw resource.promise;  // ← Yes, throwing a promise
+  }
+  return resource.data;
+}
+
+// React catches this, shows fallback,
+// waits for promise, tries again
+```
+
+**Speaker note:** "This is real. React uses the exception system for control flow. It works, but it's a hack."
+
+---
+
+### Slide 8: Suspense in OCaml
+**Visual:** Clean code, no warnings
+
+```reason
+| Suspense({ children: element, fallback: element })
+
+// Rendering on server:
+| Suspense({ fallback, _ }) => render_element(fallback)
+```
+
+**Speaker note:** "In OCaml, Suspense is just data. A node with two branches. The 'magic' is just deciding which branch to render."
+
+---
+
+### Slide 9: Architecture Diagram
+**Visual:** The ASCII diagram from the talk, but prettier
+
+```
+        ┌─────────────────────────────────┐
+        │     Your React Components       │
+        │        (Reason/OCaml)           │
+        └───────────────┬─────────────────┘
+                        │
+          ┌─────────────┴─────────────┐
+          │                           │
+          ▼                           ▼
+   ┌─────────────┐             ┌─────────────┐
+   │  Melange    │             │   Native    │
+   │  → JS       │             │   → Binary  │
+   └──────┬──────┘             └──────┬──────┘
+          │                           │
+          ▼                           ▼
+   ┌─────────────┐             ┌─────────────┐
+   │  Browser    │             │   Server    │
+   │  (hydrate)  │             │   (render)  │
+   └─────────────┘             └─────────────┘
+```
+
+**Speaker note:** "Same source code. Two compilation targets. Type-safe on both sides."
+
+---
+
+### Slide 10: The Benchmark
+**Visual:** Bar chart or table with dramatic contrast
+
+```
+┌────────────────────────┬──────────────┬─────────────┐
+│ Stack                  │ Requests/sec │ vs Node     │
+├────────────────────────┼──────────────┼─────────────┤
+│ Node.js (Express)      │     7,200    │    1x       │
+│ Bun                    │    10,300    │   1.4x      │
+│ server-reason-react    │    64,800    │   9x        │
+└────────────────────────┴──────────────┴─────────────┘
+```
+
+**Speaker note:** "10x isn't about OCaml being magic. It's about doing less work because we understand what work needs to happen."
+
+---
+
+### Slide 11: RSC Wire Format
+**Visual:** Annotated JSON
+
+```
+0:["$","div",null,{"children":[        ← Initial shell
+    ["$","h1",null,{"children":"Hello"}],
+    ["$","$Suspense",null,{
+      "fallback":"Loading...",
+      "children":"$L1"                  ← "I'll send this later"
+    }]
+  ]}]
+
+1:["$","UserProfile",null,{            ← Streamed when ready
+    "data":{"name":"David"}
+  }]
+```
+
+**Speaker note:** "RSC is partial evaluation. Compute what you can, send instructions for the rest. Functional programmers have been doing this forever."
+
+---
+
+### Slide 12: What to Apply Tomorrow
+**Visual:** Four quadrants or numbered list
+
+```
+1. Think in types first
+   → Sketch the type signature before coding
+
+2. Suspense is just branching
+   → "Show this OR that" — no magic
+
+3. Understand your abstractions
+   → Components are functions, elements are data
+
+4. Streaming is sequential
+   → Render, send, render more, send more
+```
+
+**Speaker note:** "You don't need OCaml. But you can take these mental models back to your JavaScript React."
+
+---
+
+### Slide 13: Thank You
+**Visual:** Contact info + QR code
+
+```
+Thank you!
+
+@davesnx
+sancho.dev
+
+[QR code to resources page]
+
+github.com/ml-in-barcelona/server-reason-react
+github.com/davesnx/html_of_jsx
+```
+
+**Speaker note:** "I went down the rabbit hole to learn React. I came back understanding that the best way to learn any technology is to rebuild it. Thank you."
+
+## Appendix: Demo Prep
+
+- [ ] Simple `Card` component that works in both reason-react and server-reason-react
+- [ ] Terminal setup with two panes: one for Melange, one for native
+- [ ] Browser tab ready to show client-side hydration
+- [ ] Benchmark numbers on a slide (never run benchmarks live)
+- [ ] RSC payload example as static slide
+- [ ] Backup: pre-recorded 2-minute demo video
+
+## Appendix: Demo Code (Ready to Use)
+
+### Demo 1: Basic Component Comparison
+
+**File: `Greeting.re`** (works in both reason-react and server-reason-react)
+
+```reason
+/* Greeting.re - A simple component to show the basics */
+
+[@react.component]
+let make = (~name, ~excited=false) => {
+  let message = "Hello, " ++ name ++ (excited ? "!" : ".");
+
+  <div className="greeting">
+    <span className="greeting-text">
+      {React.string(message)}
+    </span>
+  </div>
+};
+
+/*
+  Usage:
+  <Greeting name="React Miami" />
+  <Greeting name="React Miami" excited=true />
+
+  The type system knows:
+  - name is required (string)
+  - excited is optional (bool, defaults to false)
+  - You can't do <Greeting name=42 /> - compiler error!
+*/
+```
+
+### Demo 2: The Card Component (Main Demo)
+
+**File: `Card.re`**
+
+```reason
+/* Card.re - The component we compile to both targets */
+
+module Card = {
+  [@react.component]
+  let make = (~title, ~variant=`Default, ~children) => {
+    let variantClass = switch (variant) {
+      | `Default => "card--default"
+      | `Highlighted => "card--highlighted"
+      | `Warning => "card--warning"
+    };
+
+    <article className={"card " ++ variantClass}>
+      <header className="card-header">
+        <h2 className="card-title">
+          {React.string(title)}
+        </h2>
+      </header>
+      <div className="card-body">
+        children
+      </div>
+    </article>
+  };
+};
+
+/*
+  The variant type is checked at compile time.
+  <Card title="Hello" variant=`Highlighted>...</Card>  // OK
+  <Card title="Hello" variant=`Invalid>...</Card>      // Compiler error!
+*/
+```
+
+### Demo 3: Type Error Demo
+
+**File: `TypeError.re`** (intentional errors to show compiler catching mistakes)
+
+```reason
+/* Show this file and the compiler errors side by side */
+
+/* Error 1: Wrong prop type */
+let wrong1 = <Greeting name=42 />;
+/* Error: This expression has type int but expected string */
+
+/* Error 2: Missing required prop */
+let wrong2 = <Greeting />;
+/* Error: The required argument ~name is missing */
+
+/* Error 3: Typo in prop name */
+let wrong3 = <Greeting naem="David" />;
+/* Error: The record field naem does not belong to type Greeting.props */
+
+/* Error 4: Wrong variant */
+let wrong4 = <Card title="Test" variant=`Invalid>children</Card>;
+/* Error: This variant expression is expected to have type
+   [ `Default | `Highlighted | `Warning ]
+   The constructor `Invalid does not belong to type ... */
+```
+
+### Demo 4: useState Types
+
+**File: `Counter.re`**
+
+```reason
+/* Counter.re - Show how hooks are typed */
+
+[@react.component]
+let make = () => {
+  let (count, setCount) = React.useState(() => 0);
+  /*
+    Inferred types:
+    count: int
+    setCount: (int => int) => unit
+  */
+
+  let increment = _ => setCount(c => c + 1);
+  let decrement = _ => setCount(c => c - 1);
+
+  <div className="counter">
+    <button onClick=decrement>
+      {React.string("-")}
+    </button>
+    <span className="counter-value">
+      {React.string(string_of_int(count))}
+    </span>
+    <button onClick=increment>
+      {React.string("+")}
+    </button>
+  </div>
+};
+
+/*
+  Try this and watch the compiler complain:
+  setCount("hello")  // Error: expected int => int, got string
+  setCount(c => c ++ "!")  // Error: can't use ++ on int
+*/
+```
+
+### Demo 5: Suspense Implementation (Server-Side)
+
+**File: `render.re`** (simplified server-reason-react rendering)
+
+```reason
+/* Simplified render_to_string to show during the talk */
+
+type element =
+  | Empty
+  | Text(string)
+  | Fragment(element)
+  | Html_element(string, list((string, string)), list(element))
+  | Component(unit => element)
+  | Suspense({ children: element, fallback: element });
+
+let rec render_to_string = (element) =>
+  switch (element) {
+  | Empty => ""
+
+  | Text(s) => Html.encode(s)
+
+  | Fragment(child) => render_to_string(child)
+
+  | Html_element(tag, attrs, children) =>
+      let attr_str = attrs
+        |> List.map(((k, v)) => k ++ "=\"" ++ v ++ "\"")
+        |> String.concat(" ");
+      let children_str = children
+        |> List.map(render_to_string)
+        |> String.concat("");
+      "<" ++ tag ++ " " ++ attr_str ++ ">" ++
+      children_str ++
+      "</" ++ tag ++ ">"
+
+  | Component(f) => render_to_string(f())
+
+  (* ⭐ THE KEY INSIGHT ⭐ *)
+  | Suspense({ fallback, _ }) => render_to_string(fallback)
+  (* On server: just render the fallback. Done! *)
+  };
+
+(*
+  That's it. That's server-side Suspense rendering.
+  No promise throwing. No try/catch.
+  Just pattern matching on a variant.
+*)
+```
+
+### Demo 6: RSC Payload Example
+
+```
+// What a Server Component sends over the wire
+// Line 0: The initial shell with a Suspense boundary
+0:["$","div",{"className":"page"},[
+  ["$","header",null,[
+    ["$","h1",null,"Welcome"]
+  ]],
+  ["$","$Suspense",null,{
+    "fallback":["$","div",{"className":"skeleton"},"Loading..."],
+    "children":"$L1"
+  }]
+]]
+
+// Line 1: Streamed later when data is ready
+1:["$","UserDashboard",null,{
+  "user":{
+    "name":"David",
+    "email":"david@example.com",
+    "stats":{"posts":42,"followers":1337}
+  }
+}]
+
+// The client receives line 0, renders the skeleton,
+// then receives line 1 and replaces "$L1" with the real content.
+// That's streaming. That's Suspense on the wire.
+```
+
+### Terminal Commands for Demo
+
+```bash
+# Terminal 1: Compile to JavaScript (Melange)
+cd demo-project
+dune build @melange
+
+# Show the output
+cat _build/default/src/output/Card.js
+
+# Terminal 2: Compile to Native (server-reason-react)
+dune build @native
+
+# Run the server
+./_build/default/src/server.exe
+
+# In another terminal, make a request
+curl http://localhost:8080/card
+
+# Output:
+# <article class="card card--default">
+#   <header class="card-header">
+#     <h2 class="card-title">Hello from OCaml</h2>
+#   </header>
+#   <div class="card-body">This is server-rendered!</div>
+# </article>
+```
+
+### Backup Demo Script (if live demo fails)
+
+If the live demo doesn't work, walk through these pre-captured outputs:
+
+**1. Show the Reason source:**
+"Here's our Card component. Notice the variant type for `variant` prop."
+
+**2. Show Melange JavaScript output:**
+"This compiles to clean JavaScript. See how the variant becomes a string check."
+
+**3. Show native HTML output:**
+"Same component, but this is native OCaml generating HTML directly. No JavaScript runtime."
+
+**4. Show the benchmark slide:**
+"The native version handles 64,800 requests per second. Node does 7,200. Same components, 10x performance difference."
+
+## Appendix: Anticipated Q&A
+
+**"Why not just use TypeScript?"**
+TypeScript bolts types onto JavaScript after the fact. The types are optional and can be bypassed. OCaml's types are structural—they're not an afterthought, they're how the language thinks. But more importantly: this talk isn't about convincing you to switch languages. It's about what you learn when you see React's ideas expressed in their natural habitat.
+
+**"Is server-reason-react production-ready?"**
+It's running at Ahrefs, serving millions of requests. So yes, at that scale. But the ecosystem is smaller than Node's. You need to be comfortable with OCaml and with maintaining more infrastructure yourself.
+
+**"Do I need to learn OCaml to benefit from this?"**
+No. The point is the mental model. If this talk makes you curious about what `useState` really does, or why Suspense works the way it does, it succeeded. Whether you explore that in OCaml, by reading React's source, or by building your own mini-React in JavaScript—that's up to you.
+
+**"What about Next.js/Remix/Astro?"**
+Great tools solving real problems. This exploration is about something different: what becomes possible when you own the entire stack, from type system to server runtime. It's research as much as production tooling.

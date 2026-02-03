@@ -13,6 +13,7 @@ export let generateRSS = async () => {
     copyright: `${new Date().getFullYear()} sancho.dev`,
     language: "en",
     pubDate: new Date(),
+    generator: false,
   });
 
   blog
