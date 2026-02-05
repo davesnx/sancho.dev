@@ -18,10 +18,6 @@ import type { GitHubRepo } from "../lib/github";
 import { getLanguageColor } from "../lib/github";
 
 const OpenSourceSection = styled.div`
-  width: 100vw;
-  max-width: 1400px;
-  margin-left: 50%;
-  transform: translateX(-50%);
   padding: 0 2rem;
 
   @media screen and (max-width: ${constants.mobile.width}px) {
@@ -33,10 +29,6 @@ const Gallery = styled.div`
   display: grid;
   grid-template-columns: 1fr;
   gap: 1rem;
-
-  @media screen and (min-width: ${constants.mobile.width}px) {
-    grid-template-columns: repeat(2, 1fr);
-  }
 `;
 
 const CompanyLogo = styled.div`
@@ -432,7 +424,7 @@ const Work = ({ repos }: { repos: GitHubRepo[] }) => (
             from: "2011",
             to: "2012",
           }}
-          role="Backend Developer"
+          role="Backend developer"
         ></Job>
       </Stack>
       <Spacer top={3} />
