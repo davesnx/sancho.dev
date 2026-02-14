@@ -18,17 +18,16 @@ import type { GitHubRepo } from "../lib/github";
 import { getLanguageColor } from "../lib/github";
 
 const OpenSourceSection = styled.div`
-  padding: 0 2rem;
-
-  @media screen and (max-width: ${constants.mobile.width}px) {
-    padding: 0 1rem;
-  }
 `;
 
 const Gallery = styled.div`
   display: grid;
-  grid-template-columns: 1fr;
+  grid-template-columns: repeat(2, 1fr);
   gap: 1rem;
+
+  @media screen and (max-width: ${constants.mobile.width}px) {
+    grid-template-columns: 1fr;
+  }
 `;
 
 const CompanyLogo = styled.div`
@@ -135,7 +134,7 @@ const OrgAvatar = styled.img`
 const OpenSourceItem = styled.a`
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
+  gap: 0.25rem;
   width: 100%;
   cursor: pointer;
 
@@ -172,6 +171,7 @@ const RepoFooter = styled.div`
   display: flex;
   align-items: center;
   gap: 1rem;
+  justify-content: space-between;
   margin-top: auto;
 `;
 
@@ -198,8 +198,14 @@ const LanguageDot = ({ color }: { color: string }) => (
   </svg>
 );
 
-const StarIcon = ({ color }: { color: string }) => (
-  <svg width="14" height="14" viewBox="0 0 24 24" fill={color}>
+const StarIcon = () => (
+  <svg
+    width="14"
+    height="14"
+    viewBox="0 0 24 24"
+    fill="#f1c40f"
+    style={{ filter: "grayscale(1)", transition: "filter 0.2s ease" }}
+  >
     <path d="M12 1.75C12.311 1.75 12.5898 1.94201 12.7007 2.23263L15.0587 8.41234L21.5366 8.72913C21.8418 8.74406 22.1074 8.94263 22.2081 9.23111C22.3088 9.5196 22.2244 9.84032 21.9947 10.0419L17.0648 14.3695L18.8767 21.3106C18.9558 21.6135 18.8383 21.9338 18.5821 22.1137C18.3258 22.2937 17.9848 22.2956 17.7266 22.1183L12 18.1875L6.27335 22.1183C6.01519 22.2956 5.67409 22.2937 5.41785 22.1137C5.1616 21.9338 5.04413 21.6135 5.12323 21.3106L6.93517 14.3695L2.0052 10.0419C1.77557 9.84032 1.69118 9.5196 1.79186 9.23111C1.89253 8.94263 2.15815 8.74406 2.46334 8.72913L8.94127 8.41234L11.2992 2.23263C11.4101 1.94201 11.6889 1.75 12 1.75Z" />
   </svg>
 );
@@ -215,9 +221,7 @@ const OpenSource = ({ repo }: { repo: GitHubRepo }) => (
     <Text size={font.fontSizeN1} color={colors.body}>
       {repo.description}
     </Text>
-    <Text size={font.fontSize0} color={colors.body50}>
-      {"github.com/" + repo.owner + "/" + repo.name}
-    </Text>
+    <Spacer top={1} />
     <RepoFooter>
       {repo.language && (
         <StatItem>
@@ -228,7 +232,7 @@ const OpenSource = ({ repo }: { repo: GitHubRepo }) => (
         </StatItem>
       )}
       <StatItem>
-        <StarIcon color={colors.body50} />
+        <StarIcon />
         <Text monospace weight={600} size={font.fontSize0} color={colors.body50}>
           {repo.stars.toLocaleString()}
         </Text>
