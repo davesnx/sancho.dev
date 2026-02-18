@@ -153,6 +153,20 @@ const writeReposToFile = (repos) =>
   });
 
 const main = Effect.gen(function* (_) {
+  if (process.env.SKIP_GITHUB_FETCH === "1") {
+    if (!Fs.existsSync(OUTPUT_FILE)) {
+      yield* _(
+        Console.log(
+          "SKIP_GITHUB_FETCH=1 set but cache missing, writing empty file."
+        )
+      );
+      yield* _(writeReposToFile([]));
+    } else {
+      yield* _(Console.log("Skipping GitHub repo fetch (SKIP_GITHUB_FETCH=1)."));
+    }
+    return;
+  }
+
   if (isCacheValid()) {
     yield* _(Console.log("✓ Using cached github-repos.json (< 1 hour old)"));
     yield* _(Console.log("  Run with --force to refresh"));

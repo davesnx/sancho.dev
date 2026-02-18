@@ -1,6 +1,6 @@
 ---
-title: "Safer languages might be the future of AI-driven development"
-publishedAt: "2025-10-12"
+title: "Safer languages might be the future"
+publishedAt: "2026-10-12"
 isDraft: true
 tags:
   - "AI"
@@ -9,6 +9,89 @@ tags:
   - "Type Safety"
 description: "Why LLMs might benefit from maximally-safe programming languages, and why even current languages aren't enough"
 ---
+
+# Safer Languages Blog - Research & Notes
+
+## Reading List
+
+- [ ] https://x.com/ashpreetbedi/status/2023563296440267176?s=46
+- [ ] Read https://chreke.com/posts/little-languages
+- [ ] Read https://martinfowler.com/articles/2025-nature-abstraction.html
+- [ ] Watch https://www.youtube.com/watch?v=hh0axmFH1j8&t=670s&ab_channel=TheHaskellFoundation
+- [ ] Read and quote https://kirancodes.me/posts/log-lang-design-llms.html ✅ (integrated)
+  - **The LLM Problem, or, rather, Everything is Easier in Python**
+  - LLMs have substantially higher efficacy when operating in programming languages well-represented in their training set
+- [ ] https://zed.dev/blog/why-llms-cant-build-software ✅ (integrated)
+- [ ] https://harper.blog/2025/02/16/my-llm-codegen-workflow-atm
+- [x] Read the future of web dev https://protoship.io/blog/rails-on-ocaml
+- [x] Read https://cdsmith.wordpress.com/2011/01/09/an-old-article-i-wrote ✅ (integrated)
+  - Good notes about different type-systems
+- [x] Watch https://x.com/sundeep/status/1914002310973526127
+  - "I know how I'm going to do it and go and doing it" - It's AIs job now
+- [ ]  t
+- [https://dafny.org](https://dafny.org/)
+- Reference Reinforcement Learning from Verifiable Rewards (RLVR) https://x.com/karpathy/status/2002118205729562949
+
+## Other Links
+
+- https://manus.im/app/hxFiEUMqYQqOgLVf6h26f1
+- https://world.hey.com/joaoqalves/five-opinions-i-ve-kept-let-go-and-picked-up-as-a-software-builder-and-leader-5ab3b919
+
+## Alternative Titles Considered
+
+- Safer languages in the Age of AI
+- Safer language may be the future of programming in the AI age
+- **Choosing programming language in the AI age: an opportunity to safer languages?**
+- LLMs may change our preferred programming language
+- LLMs Might Prefer Much Safer Languages
+- **Safer languages might be the future of AI-driven development** (final choice)
+
+## Cut Content
+
+### Cursor vs Claude Code (save for another post)
+
+I have been thinking more as to how it is possible that a tool change made me flip mind between 'llm are cool for code but currently not helpful enough' to 'llm are cool for code'.
+
+The thing is, cursor was already very good at helping writing new code. But as a developer, what is hard is to edit code not to write new ones. And basically I find cursor very lacking in this area. It has agents yes, but the agents require a lot of hand holding. Most often you really need to tell it look at this file, look at this function, and so you still need to do most of the hard job.
+
+And obviously doing the hard job is hard, so most of the time as a human you want to remain quite generic, which means you gave it broad instruction. Which means big context and then the model basically gets lost a bit.
+
+What Claude code does differently is that it tries to automate this part. Basically when it has a task, it will first use normal tools to discover the information. Look for small chunks of code or files, and it seems to do a lot of work in the background on compressing the context or rebuilding the prompts from information it gathers with those tools. It seems to be a very fine grained agents
+
+And the result is that, the code edits are a lot more precise, because the context is cleaner, probably. And in practice it is a big difference.
+
+And I guess what it means is that, when you are trying to build agents, the really hard question is the how. The workflow. Not the technical how, I mean the how you would actually do something. I mean most of the time as humans we focus on the what, the outcome, or when we focus on the how it is to teach some beginner so it is simple and basic how. But really, to build a good agent I think you need to understand in general the workflow of an expert, not the basic workflow, how an expert achievez tasks, break it down into good process that works most of the time, and turn it into a pipeline.
+
+It's pretty hard at least for me to think about that tbh most of the time when someone asks me 'how do I do x' as a workflow question, my answer is basically 'just figure it out' :D
+
+### Incomplete "Why" Section Ideas
+
+- Maintainability does decrease a bit
+- if the machine can eventually understand your entire program, or write tests for you or even debug it for you, and then explain/change the code
+- and the idea of an agent playing with a compiler and forking
+
+### Incomplete "How" Section
+
+Simplify this post https://harper.blog/2025/02/16/my-llm-codegen-workflow-atm and explain what will be the workflow of "forking"
+
+## Notes on OCaml's Limitations (for the twist)
+
+OCaml isn't safe enough because you can't express EVERYTHING in types/modules:
+- Memory safety (GC helps but not like Rust's guarantees)
+- Race-free data ops (no ownership model)
+- IO issues (side effects anywhere, not tracked)
+- Dependent-types kind of stuff (can't prove arbitrary properties)
+
+## The Ideal Language = Lean + Haskell + Rust
+
+- Rust's memory safety: Ownership and borrowing
+- Haskell's purity: Effects tracked in types (IO monad)
+- Lean's dependent types: Prove properties about your code
+
+
+---
+
+Agentic AI represents a significant transformation in software development, comparable to the advent of high-level languages in the 1950s
 
 The rapid evolution of LLMs is reshaping software development. We see them assisting in code generation, debugging, and even architectural design. But there's something odd happening: ask an LLM to solve a problem (without specifying the language), and it almost always reaches for Python or TypeScript.
 
@@ -159,3 +242,4 @@ Imagine a future where you describe what you want in natural language, and an LL
 That future isn't here yet. Today's LLMs [still get stuck in loops](https://zed.dev/blog/why-llms-cant-build-software), repeat mistakes, and need manual intervention. The safer languages have smaller communities and less training data. But the trajectory seems clear.
 
 Maybe we should stop asking "what languages are LLMs good at?" and start asking "what languages would make LLMs better?" The answer might not be Python.
+

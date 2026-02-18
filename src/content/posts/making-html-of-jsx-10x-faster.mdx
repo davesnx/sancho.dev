@@ -17,7 +17,7 @@ This post explains how static analysis can eliminate runtime overhead, making `h
 
 ## What is html_of_jsx
 
-html_of_jsx is an OCaml/Reason library that lets you write JSX and render it to HTML strings for server-side rendering:
+html_of_jsx is an OCaml/Reason library that lets you write JSX, create your components and finally render as HTML, mostly for server-rendered applications, static sites or even HTML emails.
 
 ```mlx
 let page =
@@ -32,8 +32,6 @@ let html = JSX.render page
 ```
 
 *Examples in this post use [mlx](https://github.com/ocaml-mlx/mlx), an OCaml syntax extension that enables JSX.*
-
-It's designed for building server-rendered applications, static sites or even HTML emails.
 
 ## The baseline: building trees at runtime
 
