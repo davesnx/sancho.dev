@@ -6,6 +6,303 @@ tags:
   - "OCaml"
   - "Effect"
   - "query-json"
+description: "Four effect declarations handle all control flow in a 3,600-line interpreter"
 ---
 
-{/* TODO: Write content */}
+A few years ago I wrote about [query-json](/posts/cross-compile-query-json), a re-implementation of jq in OCaml. Back then, the interpreter was straightforward: a recursive function that took an AST node and a JSON value, and returned a JSON value. Pretty simple.
+
+Since then, query-json grew. It went from supporting basic field access and filters to implementing most of jq's language: `reduce`, `foreach`, `try/catch`, `while`, `limit`, user-defined functions, and more. And with that growth came a problem.
+
+jq is not just a query language. It's a programming language with real control flow. Expressions can produce zero, one, or many results. They can fail. They can halt the program. They can break out of loops. They can signal errors that propagate up to `try/catch`. The old "take an expression, return a value" model couldn't handle most of this properly.
+
+This post is about how I rewrote the interpreter using OCaml 5's effect system to handle all of these control flow patterns elegantly. If you've ever implemented `try/catch` in a language, you already know what I'm talking about. If not, don't worry — I'll walk you through it.
+
+## What makes jq a real language
+
+Most jq expressions are **generators** and they can produce multiple outputs from a single input:
+
+```bash
+query-json '.users[]' '{"users": ["Alice", "Bob", "Charlie"]}'
+# "Alice"
+# "Bob"
+# "Charlie"
+```
+
+The `.users[]` expression iterates over the array and produces three separate results. These results then flow downstream through pipes. This is fundamental to how jq works: every expression is potentially a generator.
+
+And there's more. Expressions need to:
+
+- **Yield multiple values**: `.[]` iterates, producing one output per element.
+- **Yield nothing**: `empty` produces zero outputs, and `select(.age > 30)` drops values that don't match.
+- **Break out of loops**: `label-break` exits a `foreach` early.
+- **Halt the program**: `halt` and `halt_error` terminate execution immediately, with an exit code.
+- **Signal errors**: `error("message")` raises a user-facing error that can be caught by `try/catch`.
+
+These aren't just features bolted onto a query language. They're control flow primitives. And they require an interpreter that can do more than "call a function, get a value back."
+
+## The interpreter at a high level
+
+The interpreter is a single recursive function called `interp`. It takes a context, an AST node, and a JSON value. It looks at the node and decides what to do: if it's a key access, look up the key; if it's a pipe, run the left side and feed each result into the right side; if it's a literal, just produce that literal.
+
+The unusual part is what "produce" means. The function doesn't _return_ JSON values. Its return type is `unit` — it returns nothing. Instead, when it wants to output a result, it calls `yield`. When it needs to gather all results from a sub-expression, it calls `collect`. When it wants to stop execution, it performs `break` or `halt`. When something goes wrong, it performs an error.
+
+These are all **effects**.
+
+Here's what that looks like in code:
+
+```ocaml
+let rec interp ~ctx expression json : unit =
+  match expression with
+  | Identity -> yield json
+  | Key key -> yield (member ~ctx key json)
+  | Pipe (left, right) -> pipe ~ctx left right json
+  | Comma (left, right) ->
+    interp ~ctx left json;
+    interp ~ctx right json
+  | Literal (Int i) -> yield (`Int i)
+  | List (Some expr) ->
+    let results = collect ~ctx expr json in
+    yield (`List results)
+  | Optional expr ->
+    swallow_errors
+      (fun () -> interp ~ctx expr json)
+      ~on_fail:(fun () -> yield `Null)
+  (* ... hundreds more cases ... *)
+```
+
+## Effects, in plain words
+
+If you've used `try/catch`, you already understand the core idea.
+
+When you `throw` an error, execution jumps out of the current function, skipping all the intermediate code, until it reaches a matching `catch` block somewhere up the call stack. The functions in between don't need to know about errors at all — they don't pass error codes, they don't check return values. The error just propagates automatically.
+
+Dan Abramov wrote a [fantastic explanation](https://overreacted.io/algebraic-effects-for-the-rest-of-us/) of algebraic effects using this exact analogy. The key insight is:
+
+> Things in the middle don't need to concern themselves with error handling... Unlike error codes, with `try / catch`, you don't have to manually pass errors through every intermediate layer.
+
+Effects work the same way, but more general. Instead of only throwing errors, you can perform _any_ kind of signal. And the crucial difference: **the handler can resume execution** where the effect was performed.
+
+Think of it as a resumable `throw`. You perform an effect, control jumps to the handler, the handler does something (maybe collects a value, maybe checks a condition), and then it can choose to jump _back_ and continue where you left off.
+
+In OCaml 5, you declare effects as extensible variant types and perform them with `Effect.perform`:
+
+```ocaml
+type _ Effect.t +=
+  | Yield : Json.t -> unit Effect.t
+  | Break : unit Effect.t
+  | Halt : int -> unit Effect.t
+  | User_error : Json.t -> unit Effect.t
+```
+
+These four effects are the entire control flow concepts of the query-json interpreter. Every interesting thing the interpreter does goes thought one of thoses:
+
+- Yield —> producing results
+- Break -> stopping loops
+- Halt -> terminating the program
+- User_error -> raising errors from the users program
+
+## How Yield works
+
+Consider what happens when you write `[.users[] | select(.active) | .name]` in a query. The `.users[]` iterates over the array, `select(.active)` drops the ones that don't match, `.name` extracts a field, and the surrounding `[ ]` collects all surviving results into a new array. Each stage can produce zero, one, or many outputs, and the collector at the top needs to gather them all. But how does it know when the pipeline is done? How does it accumulate results that are produced one at a time, deep inside a recursive evaluation?
+
+If you're not familiar with this syntax, try it yourself in the [query-json playground](https://query-json.pages.dev).
+
+This is what `Yield` solves. Every time the interpreter wants to produce a result, it calls:
+
+```ocaml
+let yield v = Effect.perform (Yield v)
+```
+
+This doesn't return the value to a caller. It _performs_ the Yield effect, which suspends execution and hands the value to whichever handler is wrapping the current computation.
+
+The collector is `run_and_collect_results`, which catches every `Yield` and accumulates values into a list:
+
+```ocaml
+let run_and_collect_results fn =
+  let acc = ref [] in
+  (match fn () with
+  | () -> ()
+  | effect Yield v, k ->
+    acc := v :: !acc;
+    Effect.Deep.continue k ());
+  List.rev !acc
+```
+
+When a `Yield` is caught, the handler gets two things: the yielded value `v` and a **continuation** `k`. The continuation is the rest of the computation — everything that would have happened after the `yield` call. By calling `Effect.Deep.continue k ()`, the handler resumes execution right where it left off, then prepends `v` to whatever else gets yielded.
+
+The interpreter wraps this in a function called `collect`:
+
+```ocaml
+and collect ~ctx expr json =
+  run_and_collect_results (fun () -> interp ~ctx expr json)
+```
+
+So `[.users[] | select(.active) | .name]` calls `collect`, which runs `interp` on the inner pipeline. Each surviving name yields one by one, and `collect` gathers them all into a list.
+
+## How Pipe uses Yield
+
+Pipes are the backbone of jq. The expression `a | b` means "run `a`, and for each result it produces, run `b`." This is where the generator model becomes powerful.
+
+Here's the implementation:
+
+```ocaml
+and pipe ~ctx left right json =
+  on_yield
+    (fun () -> interp ~ctx left json)
+    ~then_:(fun json -> interp ~ctx right json)
+```
+
+`on_yield` is a helper that installs a Yield handler:
+
+```ocaml
+let on_yield fn ~then_ =
+  match fn () with
+  | () -> ()
+  | effect Yield v, k ->
+    then_ v;
+    Effect.Deep.continue k ()
+```
+
+Each time the left side yields a value, the handler intercepts it and calls `then_` — which runs the right side with that value as input. Then it resumes the left side to get the next value. The right side might itself yield multiple values — those propagate up to whatever handler is above.
+
+This means `.users[] | .name` naturally does the right thing: `.users[]` yields each user object, and for each one, `.name` yields the name field. No explicit loops, no intermediate lists, no manual plumbing.
+
+## How Break works
+
+Some constructs need to stop producing values early. The `limit(n; expr)` function runs `expr` but only takes the first `n` results:
+
+```bash
+query-json 'limit(2; .users[])' '{"users": ["Alice", "Bob", "Charlie"]}'
+# "Alice"
+# "Bob"
+```
+
+The implementation installs a Yield handler that can choose _not_ to continue:
+
+```ocaml
+and limit ~ctx n expr json =
+  let count = ref 0 in
+  match (fun () -> interp ~ctx expr json) () with
+  | () -> ()
+  | effect Yield v, k ->
+    if !count < n then (
+      incr count;
+      yield v;
+      Effect.Deep.continue k ())
+```
+
+When the count reaches `n`, the handler simply doesn't call `continue`. The continuation — and everything it would have done — is discarded. Execution resumes at the point after the `match`.
+
+`Break` works similarly but at a different level. It's used by `break` inside loops to exit early:
+
+```ocaml
+let break () = Effect.perform Break
+```
+
+The top-level `execute` function catches unhandled `Break` effects and reports them as errors (since `break` outside a loop is meaningless):
+
+```ocaml
+let execute ~colorize ~verbose ?(env = []) expr json =
+  let ctx = { colorize; verbose; env; fns = [] } in
+  match collect ~ctx expr json with
+  | results -> Ok results
+  | effect Break, _ ->
+    let err =
+      Error.context_error ~message:"break used outside of loop context"
+    in
+    Error (Error.format ~colorize err)
+  | effect Halt exit_code, _ -> Halt exit_code
+  (* ... *)
+```
+
+You could implement `limit` with exceptions — throw a `Limit_reached` exception and catch it at the right level. But consider what that does to `pipe`. In `a | b`, the left side is a generator that yields values one at a time. With effects, `limit` simply stops calling `continue` and the generator disappears. With exceptions, you'd need to throw _through_ the pipe handler, which is also trying to catch yields, and somehow not confuse "I'm done producing values" with "something went wrong." Every intermediate handler becomes responsible for re-raising exceptions it doesn't own. Effects avoid this entirely because each effect type is distinct — a `Break` passes transparently through a `Yield` handler without any explicit forwarding.
+
+## How Halt works
+
+`halt` terminates the entire program immediately with an exit code. It's the nuclear option:
+
+```ocaml
+let halt ?(code = 0) () = Effect.perform (Halt code)
+```
+
+The top-level handler catches it and returns it as a result:
+
+```ocaml
+  | effect Halt exit_code, _ -> Halt exit_code
+```
+
+Notice that the continuation `_` is completely ignored. There's nothing to resume — the program is done. This is one case where an effect is genuinely one-directional, like a `throw` with no `catch`.
+
+This _could_ be an exception. In fact, `Halt` behaves exactly like one — it never resumes, it just unwinds the stack. But making it an effect keeps it in the same system as `Yield`, `Break`, and `User_error`. The `execute` function handles all four in one `match` expression, with one uniform mechanism. If `Halt` were an exception while `Yield` was an effect, the top-level handler would need to mix two different error-handling styles. Keeping everything as effects means one mental model for all control flow.
+
+`halt_error(n)` is a variant that lets the query specify the exit code:
+
+```ocaml
+| Halt_error_n -> (
+  match collect ~ctx expr json with
+  | [ `Int n ] -> halt ~code:n ()
+  | _ -> (* ... error handling ... *))
+```
+
+## How User_error works
+
+`error("message")` in the query language raises a user-facing error:
+
+```ocaml
+let user_error value =
+  Effect.perform (User_error value);
+  assert false
+```
+
+NOTE The `assert false` after `perform` is dead code — it never runs because `User_error` is never resumed. It exists to satisfy the type checker (the function's return type needs to be `'a`, so it can be used in any position).
+
+User errors interact with `try/catch`. Here's the `try_catch` implementation:
+
+```ocaml
+and try_catch ~ctx expr handler finally_expr json =
+  let handle_error error_json input_for_handler =
+    match handler with
+    | None -> yield `Null
+    | Some handler_expr ->
+      let ctx_with_error =
+        { ctx with env = ("error", error_json) :: ctx.env }
+      in
+      interp ~ctx:ctx_with_error handler_expr input_for_handler
+  in
+  catch_errors
+    (fun () -> interp ~ctx expr json)
+    ~on_user_error:(fun value ->
+      let error_json =
+        `Assoc
+          [
+            ("kind", `String "user_error");
+            ("message", `String (Json.to_string value));
+            ("value", value);
+          ]
+      in
+      handle_error error_json value)
+    ~on_runtime_error:(fun err ->
+      handle_error (Runtime_error.to_json err) (Runtime_error.to_json err));
+  (* ... *)
+```
+
+`catch_errors` installs an effect handler via `Effect.Deep.try_with` that intercepts specific effects. When `User_error` or `Runtime_error.Fail` is performed inside the `try` body, the handler catches it, discards the continuation (the error is not resumable), and runs the catch handler instead.
+
+The catch handler gets the error as a JSON object bound to the `$error` variable, so you can inspect it:
+
+```bash
+query-json 'try error("boom") catch "caught: " + .message' 'null'
+# "caught: boom"
+```
+
+Effects that the handler doesn't recognize (like `Yield` or `Break`) pass through transparently, bubbling up to the next handler. This composability is what makes the whole thing work.
+
+## Where effects actually matter
+
+I should be honest about where effects pull their weight. Most of the interpreter — `map`, `sort_by`, `group_by`, `keys`, math operations — eagerly collects results into lists via `collect` and then works on those lists directly. These functions could just return `Json.t list` and be fine.
+
+Effects are load-bearing for about 20% of the interpreter: `pipe`, `comma`, `select`, `limit`, `try/catch`, `alternative` — the compositional glue that connects expressions. That's where the generator model matters, where values flow lazily from one stage to the next, where early termination and error propagation need to cross boundaries cleanly.
+
+But that 20% is the hard part. It's the part that was painful to implement with explicit result types, the part where every intermediate function had to participate in the plumbing. The other 80% was always straightforward — call `collect`, get a list, work on the list. Effects didn't change those functions much. They changed the connective tissue between them, and that made all the difference.
+
+If you want to explore the code yourself, [query-json is on GitHub](https://github.com/davesnx/query-json) and the interpreter lives in a single file: [`source/Interpreter.ml`](https://github.com/davesnx/query-json/blob/main/source/Interpreter.ml).

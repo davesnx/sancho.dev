@@ -1,111 +1,109 @@
 ---
 title: "Learnings after 4 years at ahrefs"
-publishedAt: "2024-05-09"
+publishedAt: "2024-10-12"
 isDraft: true
 tags:
-  - "ahrefs"
-  - "Open Source"
-  - "Work"
+- "ahrefs"
+- "Work"
+- "Open Source"
 ---
 
-I have been working at ahrefs for the past four years, and it truly feels like I've found my dream job. While the concept of a dream job sounds idealistic and silly, far from a perfect job, this looks like the job I always wanted.
+I've been at Ahrefs for four years. It's the strangest job I've ever had, and easily the best. I get to build Open Source software with OCaml, tackle big problems with complete autonomy, and work on projects driven by genuine curiosity. Some of my closest friends are on the team, and together we've been building a community around Melange, OCaml, and Reason.
 
-I work on projects that don't feel like work, challenging big problems with complete autonomy, and everything is Open Source and build with "the community" in mind.
+We're a fully remote company across the world, which has also changed my life. I can spend the winter season in the Pyrenees, locked in with the peace of the mountains, skiing and enjoying nature, while the rest of the year I'm closer to family in Barcelona, running and cycling.
 
-We're fully remote across the world, which has completely changed my life. I spend the winter in the Pyrenees, locked in, skiing and peacfully enjoying nature, while the summers are for trail running and cycling closer to family in Barcelona (Spain).
+I want to take a moment to reflect on what I've learned. If I ever feel sad or nostalgic because it ended, I could return to this post and smile.
 
-I want to take a moment to reflect and share what I have learned here, since it's one of the most unusual companies I've encountered, and I want to explain what I mean by that in this post and share my learnings.
+# What's ahrefs?
 
-If I ever feel a bit sad or nostalgic because it ended, I could eventually return to this post and smile.
+Mostly marketing people, SEO specialists, and OCaml fans have heard of [ahrefs.com](https://ahrefs.com).
 
-## What's ahrefs?
-
-Let me explain first, what's the company about and why is it a rare place. Eventually I will get to the learnings.
-
-Only marketing people, SEO specialists and OCaml fans have heard of [ahrefs.com](http://ahrefs.com).
-
-We're one of the top SEO tools in the world, helping users improve their search rankings on Google, Bing, YouTube, Amazon, and now OpenAI and co. To show off a bit the numbers, ~45% of the S&P 500 use us and we have ~50.000 clients between them Facebook, NIKE, Adobe, IBM or Pinterest.
-
-In short, we actually crawl the entire web and organise all that raw data into useful insights via different tools and reports. Those tools are used by people to analyze: the world, their own web, their competitor's web, rankings, authority, and a million other things; and eventually get more traffic from search engines.
-
-{/* image of "web scale bro" */}
-
-Lately we released Web analytics <https://ahrefs.com/web-analytics>, we have our own search engine called [Yep.com](http://Yep.com), which is still in beta and building other small AI projects such as Wordcount ([wordcount.com](http://wordcount.com)) or Brand radar.
+We're one of the top SEO tools in the world, helping our users improve their search rankings on Google, Bing, YouTube, Amazon, and now AI search. In MBA numbers and to show off a bit: about 45% of the S&P 500 use us, including Facebook, Nike, Adobe, IBM, and Pinterest.
 
 {/* image of "ahrefs dashboard" */}
 
-It's worth noting that as with any powerful tool, there are bad actors. Some practitioners employ SEO tactics that prioritize clickbait over substance, crafting those awful headlines like "Top 10 moments from last night's event, you won't believe number 7!". They're honestly one of the worst things about the internet. But we've built something genuinely useful for anyone seeking to establish a meaningful presence online. How our tools are used ultimately reflects the intentions of those who use them.
+How do we do it? By crawling the entire web and organizing all that raw data into useful insights via different tools and reports. Those tools are used by people to analyze their own web, their competitor's web, rankings, authority, and a million other things, to eventually get more traffic.
 
-## The underdog company
+We run one of the most active crawlers in the world, processing around 6 billion pages daily and storing petabytes of web data. Despite this genuinely staggering scale, we maintain the agility that only comes from staying deliberately small and being extremely good at our craft. Companies tackling internet-scale problems usually have thousands of engineers. Google has tens of thousands. We have about 120, and we have no plans to grow beyond that.
 
-Before joining, I only knew that the company was doing "*SEO with OCaml stuff*" with just a few people and competing directly with tech giants like Google, Bing and XXX in crawling.
+# Lessons
 
-Most of those companies (tackling internet-scale problems) have thousands of engineers. We are ~120 and have no plans to grow above that line. This caught my attention immediately. Staying small seemed challenging but fascinating.
+## A niche tech stack is a multiplier, not a constraint.
 
-{/* image of "scraping the internet is no joke" */}
+Everything at Ahrefs is written in OCaml. The backend, frontend, crawler, devops, internal tools, and even the CI.
 
-We run one of the most active crawlers (source), processing around 6 billion pages daily and storing XX petabytes of web data. Despite this genuinely staggering scale, we maintain the agility and focus that only comes from staying deliberately small, being extremly good at our craft and choosing the right tech.
+As with everything at Ahrefs, it started pragmatically: the team needed an expressive and performant language for the crawler, and as [Louis](https://github.com/Khady) explained, "it went extremely well... so well that it spread across the entire backend and eventually the frontend." On the frontend, we chose Reason (essentially OCaml with JavaScript-friendly syntax) over TypeScript or Flow.
 
-## The tech
+The result: our REST endpoints share the exact same type definitions as our frontend. Our SSR server reuses the same React components as the client. Change a type on our SQL layer and the compiler catches mismatches across the entire stack, all the way to the UI. One package manager (opam), one build system (dune), one LSP, one deployment pipeline.
 
-Our secret? Everything is written in OCaml. The backend, frontend, crawler, devops, internal tools, and even the CI.
+But the real compounding benefit isn't type-safety or even shared code: it's cognitive. One language to learn, one mental model to master. A newcomer joins the team, learns a single way of thinking, and suddenly they can contribute anywhere.
 
-The short answer for why OCaml (and as brief as I can be, since I'm not entitled enough) was that we needed an expressive and performant language on the crawler and it went extremely well, so well, that it spread across the entire backend and eventually the frontend.
+## Own your software
 
-Originally, we had PHP as our backend, but after using OCaml for our crawler, it quickly took over the entire backend stack. On the frontend, we were using React, and at that point we had to choose between TypeScript (or Flow, remember that?) and Reason. Since Reason is essentially OCaml with JavaScript-friendly syntax sharing the same type system, semantics, tooling, and ecosystem.. adopting it was a no-brainer.
+Aside from the unusual language choice, there's another particularity: we build almost everything ourselves.
 
-This gave us something powerful: a truly unified tech stack.
+In a small ecosystem like OCaml, building for the long term means owning your dependencies. We use some third-party tools like ClickHouse and Buildkite, but most critical pieces are built in-house.
 
-Our REST endpoints share the exact same type definitions as our frontend. Our SSR server reuses the same React components as the client. Our data validation logic runs identically on both sides. This creates a single source of truth: change a type definition once, and the compiler catches mismatches across the entire stack.
+It sounds extreme, but I'd rather modify and maintain code I understand than trust a black-box library that breaks at 3 AM. The distinction that matters isn't "build vs buy": it's knowing which dependencies you can afford to outsource and which ones sit on your critical path. If it breaks and you can't fix it, you don't own it. You're renting, and the landlord doesn't answer the phone at night.
 
-But this isn't just about type-safety or sharing code. We use the same package manager (opam), the same build system (dune), the same LSP for our editor, and deploy everything through a single pipeline. One language to learn, one mental model to master. It lowers the learning and the context switching. A newcomer joins the team, learns a single way of thinking, and suddenly they can contribute anywhere.
+## Profitability buys freedom. Freedom buys taste.
 
-While Reason is the language of choice for the frontend, we use Melange to compile to JavaScript. We're actually one of Melange's main sponsors, and I'm part of the core team - but more on that later.
+Ahrefs is bootstrapped. No VCs, no board meetings, no arbitrary growth metrics to hit.
 
-Aside from the unusual language of choice, there's another particularity that didn't surprise me when I met the team. The engineering team is pretty much NIH maxxing.
+I've been at companies where entire roadmaps got shaped by investor anxiety, constantly conflicting with the CEO's actual vision. At Ahrefs, that conflict doesn't exist. Our CEO makes decisions based on his view of the company, the market and the world. He appears in technical discussions, shares his quiet view, and pushes products forward without external pressure.
 
-In a small ecosystem like OCaml, building for the long term means owning your dependencies. We use some third-party tools like ClickHouse and buildkite, but most pieces are built in-house. It sounds extreme, but I'd rather modify and maintain code I understand than trust something I can't control.
+Being profitable also means we can invest in sponsoring conferences like ICFP, fun-ocaml, and React Alicante. We're one of the main sponsors of Melange (the compiler we use for our frontend), xxx and just opened a xxx program and I'm part of its core team. We can take long-term bets on technology because we don't have to justify every decision to someone optimizing for the next funding round.
 
-{/* Photo of the swag */}
+Leadership here is technical. They're in the codebase, reviewing PRs, debating architecture in Slack threads. When the people making decisions have taste and the financial independence to act on it, it changes what kind of company you get to work at.
 
-## Learnings
+## Direct feedback feels harsh until you realize polite feedback wastes more time.
 
-Finally, the learnings. Might be highly personal and contextual but still somehow applicable in other places.
+The culture at Ahrefs is rooted in its Ukrainian founders: direct communication, pragmatism, rationality over anything else.
 
-### Bootstrap companies rock
+Coming from Spain, having worked at two US-culture companies before, this caught me completely off guard. There, feedback came wrapped in compliment sandwiches and party emojis. The Spanish way? We soften criticism with warmth. At Ahrefs? Pure, unfiltered directness.
 
-The CEO makes decisions based on his view of the company, the market. Appears in technical discussions, shares his quiet view. Pushes products and pushes the team forward without external pressure. Previously I have been in companies where entire roadmaps gets shaped by investors opinions, which conflicted with CEO's vision of companies.
+If your solution has problems, someone will simply write "This won't scale. Try approach B instead." No emoji cushioning, no "great effort but...", no paragraph explaining how valued you are before the critique. In most places, even terrible solutions get celebrated with "Good start!" followed by gentle suggestions.
 
-### Remote but not strangers
+At first, this felt harsh. But after a few months, I realized it's incredibly effective. The solution isn't attached to your identity or personality: it's just code or decisions that can be improved. Once you internalize this, you iterate faster with actually valuable feedback instead of spending energy decoding what people really think.
 
-There's a clear personal barrier with remote working. The person who has been reviewing your code for years, it's only an avatar and luckly they have their face.
+Being async-first reinforces this. Private messages are actively discouraged: they're greyed out in the interface as a reminder that conversations belong in public channels. You're expected to figure things out yourself before asking, and when you do ask, you ask in the open where anyone can benefit from the answer. Discussions happen in public threads that might run for weeks. Everything is written, searchable, and thoughtful. With less than 1 hour of meetings per week, I can actually focus on solving hard problems instead of talking about solving them.
 
-This could be isolating and counter-productive, but ahrefs does something clever here. Being profitable (very profitable, actually) and tech-focus means we can invest in sponsoring events such as (ICFP)[link], (fun-ocaml)[link] or (React Alicante)[link] and bringing the team together. Also, we do one ski retreat per year and other hacking-together events.
+This is the part of Ahrefs that's genuinely strange. Not strange as in wrong; strange as in unlike anywhere else I've worked. The radical transparency, the expectation of self-reliance, the absence of social lubrication. It takes getting used to. But once you do, the noise drops to almost zero, and what's left is the work.
 
-These gatherings transform our remote culture. Back home, when someone challenges your PR, you hear their actual voice in your head, not some imagined critical tone. You know they're coming from a place of wanting the best solution because you've seen them fight just as hard for their own ideas at 3 AM in some conference hotel lobby.
+## Remote works when you invest in the in-between.
 
-### The culture can be daunting
+There's a clear personal barrier with remote working. The person who has been reviewing your code for years is only an avatar, and you're lucky if they have their face as the picture.
 
-The culture is a mix of international people but with eastern european roots, inherit from our Ukrainian founders. Direct communication, pragmatism, rationality over anything else.
+This could be isolating for some, but at Ahrefs we invest heavily in bringing people together. The conferences we sponsor aren't just about the OCaml ecosystem: they're about creating reasons for the team to be in the same room. Add a yearly ski retreat and other hacking-together events, and the picture changes.
 
-Being async-first shapes everything. Discussions happen in public threads that might run for weeks. No quick Slack DMs or hallway conversations - everything is written, searchable, and thoughtful. This forces precise communication and builds trust across time zones.
+These gatherings transform remote culture. Back home, when someone challenges your PR, you hear their actual voice in your head, not some imagined critical tone. You know they're coming from a place of wanting the best solution because you've seen them fight just as hard for their own ideas at 3 AM in some conference hotel lobby.
 
-Coming from Spain, this caught me completely off guard. I'd worked at two US-culture companies before, where feedback came wrapped in compliment sandwiches and party emojis. The Spanish way? We soften criticism with warmth. At Ahrefs? Pure, unfiltered directness.
+Remote-first isn't "no office." It's deliberate relationship-building on a different cadence.
 
-Here's what I mean: If your solution has problems, someone will simply write "This won't scale. Try approach B instead." No emoji cushioning, no "great effort but...", no paragraph explaining how valued you are before the critique. In most places, even terrible solutions get celebrated with "Good start! 🎉" followed by gentle suggestions.
+## Passionate people in the same ecosystem create compounding energy.
 
-At first, this felt harsh. But after a few months, I could confidently say it's incredibly effective. The solution isn't attached to your identity neither personality, it's just code or decisions that can be improved. Once you internalize this, you iterate faster with actually valuable feedback instead of decoding what people really think.
+By focusing on OCaml, Ahrefs attracts a specific kind of engineer: people who care deeply about their craft, who chose a niche language not because it was the safe career move but because they believe in it.
 
-This efficiency extends everywhere. With less than 1 hour of meetings per week, I can actually focus on solving hard problems instead of talking about solving them.
+When you bring these people together, something happens that you can't hire for: emergent energy. Projects like server-reason-react were born out of that passion, to face a big challenge that eventually paid off. Nobody assigned that project. It grew from a team that had the autonomy and the curiosity to pursue hard problems.
 
-### Being technology first
+The humbling counterpart: people with that level of drive are far rarer than I assumed. I used to think most engineers would jump at the chance to go the extra mile: to contribute to open source, to push beyond what's strictly required. The reality is that genuine, sustained passion for the craft is uncommon. That's not a complaint, just something I had to recalibrate. It means when you find it, you should recognize it for what it is: not the default, but the exception.
 
-Our CEO codes, our CTO codes. By focusing in OCaml, we are able to hire talented people.
+If you hire for passion, not just skill, you get compounding returns. Passionate people attract other passionate people. They push each other. They start side projects that turn into critical infrastructure. You can't manufacture that with OKRs.
 
-By bringing passionate people together it generates great solutions and great energy. server-reason-react was born out of passion and to face a big challenge, that eventually payed off.
+## A prototype is 10% of the work. Shipping it is the other 90%.
 
-### There's a mile between prototyping and engineering
+I've lost count of the times I built something that worked beautifully in isolation (a clean abstraction, a clever solution to a hard problem), only to watch it fall apart when it met reality. The integration didn't fit. The edge cases multiplied. Explaining the idea to teammates revealed assumptions I hadn't questioned. The prototype was 10% of the work; the other 90% was where the idea actually got tested.
 
-Real engineering is done when the integration, edge cases, errors and a teaching the team is made. Meanwhile this doesn't happen, everything is still beta and lives in the world of ideas.
+This has been my most recurring failure at Ahrefs. I'd get excited about an approach, invest days into a proof of concept, and then discover during integration that the domain didn't bend the way I expected. The lesson I keep relearning: an idea isn't validated when it compiles or when the demo works. It's validated when it survives the unglamorous work: the edge cases, the error messages users will actually see, the migration path from the old system, the explanation that makes your teammate say "ah, I get it."
 
-We got hired to solve issues, engineering does that. Prototyping or ideating or even researching it's just the 10% needed, but half of the half of the job.
+It took me embarrassingly long to realize that the agile people were right about one thing: a definition of done matters. Not the ceremonies, not the sprints, not the standup rituals — but the simple discipline of deciding upfront what "finished" looks like. When I skip that step, I end up in a loop where the prototype keeps shapeshifting and the goalposts drift with every new insight. When I write down what done means before I start — integrated, tested, documented, explained — the 90% becomes tractable instead of infinite.
+
+The difference between a prototype and a product is the willingness to do that last 90%. I'm still getting better at it.
+
+---
+
+If I had to compress four years into a single takeaway, it would be this: bet on software.
+
+Bet that a small team with the right language and full ownership of their stack can outperform organizations ten times their size. Bet that building things yourself, even when it's slower at first, compounds into speed later. Bet that hiring people who genuinely care about their craft matters more than hiring at scale.
+
+Most companies bet on process, on headcount, on the next framework. Ahrefs bets on software: on the belief that if you get the engineering right, everything else follows. After four years in, I think that's the right bet.

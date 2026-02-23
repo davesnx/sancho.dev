@@ -7,17 +7,21 @@ tags:
   - "Learning"
 ---
 
-Not every problem is a hard problem. A hard problem isn't just something that takes a long time—it's something where you don't even know what questions to ask yet. You're staring at a system, a codebase, or a concept, and you can't even articulate what you don't understand.
+Not every problem is a hard problem. A hard problem isn't something that takes a long time. It's something where you don't even know what questions to ask yet. You're staring at a system, a codebase, or a concept, and you can't articulate what you don't understand.
 
-I've developed a process for these situations. It's not revolutionary—pieces of it come from the Feynman technique, from debugging methodologies, from watching how researchers approach unfamiliar domains. But having it explicit, written down, has made me noticeably better at tackling things that used to paralyze me.
+I've had a process for these situations for years. Looking at it now, it's basically the Feynman technique: study, explain, find gaps, repeat. I never thought of it that way until I sat down to write this. But the resemblance is obvious, so here it is, annotated with how I actually apply it.
 
 ## The trap: diving in too fast
 
-The instinct when facing something hard is to start coding. Open the editor, try something, see what breaks. This works for familiar problems where you have good intuition. For genuinely hard problems, it's a trap.
+The instinct when facing something hard is to start too early. Open the editor, try something, see what breaks. This works for familiar problems where you have good intuition. For genuinely hard problems, it's a trap.
 
-You end up thrashing. You implement something, realize you misunderstood a fundamental concept, throw it away, start over. Repeat. Each cycle feels like progress because you're typing, but you're not actually converging on understanding.
+You end up thrashing and realize you misunderstood a fundamental concept, throw it away, start over. Repeat. Each cycle feels like progress because you're typing, but you're not converging on understanding.
 
-When I started implementing React Server Components in OCaml, my first instinct was to read the React source code and start porting. I would have wasted weeks. The RSC protocol isn't just "React but on the server"—it's a streaming serialization format, a component model, a bundler integration pattern, and a mental model for where computation happens. Diving into code before understanding these layers would have been like trying to implement TCP by reading packet captures.
+When I started implementing React Server Components (RSC) in OCaml, my first instinct was to read the React source code and port it. I would have wasted weeks and wouldn't . RSC isn't just "React but on the server." It's a streaming protocol between client and server for serializing UI state, a component model, a bundler integration pattern, and a mental model for where computation happens. Diving into code before understanding these layers would have been like trying to implement TCP by reading packet captures.
+
+The same trap shows up everywhere. Want to build your own programming language? You could start writing a parser immediately. But without understanding how lexing, parsing, type-checking, and code generation relate to each other, you'll rewrite the parser three times before you get to the interesting parts. Want to implement an HTTP server from scratch? You could start reading bytes off a socket. But the protocol has layers: connection management, request parsing, content negotiation, chunked encoding. Each one builds on the previous.
+
+The pattern is always the same. Hard problems have layers. If you skip straight to code, you're guessing at the layers instead of understanding them.
 
 ## The method
 
@@ -25,7 +29,7 @@ Here's what actually works for me.
 
 ### Write down questions
 
-Before anything else, I open a blank document and start listing every question I have. Not organized, not filtered—just a brain dump of confusion.
+Before anything else, I open a blank document and start listing every question I have. Not organized, not filtered. A brain dump of confusion.
 
 For RSC, my list started like this:
 - What actually gets sent over the wire?
@@ -34,31 +38,51 @@ For RSC, my list started like this:
 - How does streaming work?
 - What's the bundler's role in all this?
 
-These questions are mostly wrong or poorly framed. That's fine. The point isn't to have good questions—it's to externalize your confusion so you can see it.
+If I were building a programming language, the list might look like:
+- How do I represent the AST?
+- What's the difference between parsing and type-checking?
+- How do I handle operator precedence (actuall, what's that)?
+- When do I need a symbol table?
+
+These questions are mostly wrong or poorly framed. That's fine. The point isn't to have good questions. It's to externalize your confusion so you can see it.
 
 I never delete questions from this list. As I learn, I add answers below each question, or I realize a question was based on a misunderstanding and note that. The document becomes a map of my learning journey.
 
-When questions start clustering—several related to streaming, several about the wire format—I group them. These clusters often become the sections of my eventual understanding.
+When questions start clustering (several related to streaming, several about the wire format) I group them. These clusters often become the sections of my eventual understanding.
 
 ### Collect, read, study
 
-Now I go hunting for information. RFCs, blog posts, source code, conference talks, documentation. I'm not trying to understand everything yet—I'm trying to find material that might answer my questions.
+Now I go hunting for information. RFCs, blog posts, source code, conference talks, documentation. I'm not trying to understand everything yet. I'm trying to find material that might answer my questions.
 
-For RSC, this meant:
-- The original RFC and follow-up discussions
-- Dan Abramov's explanations on Twitter and GitHub
-- The React Flight protocol implementation
-- Talks from React Conf
+For RSC, this meant the original RFC, Dan Abramov's explanations on GitHub, the React Flight protocol implementation, and talks from React Conf. For a programming language, it might mean Crafting Interpreters, the Dragon Book, or studying how a language you admire handles the same problem.
 
 I read with my questions open in a split screen. When something addresses a question, I note it. When something raises new questions, I add them to the list.
 
-### Implement a basic version
+### Implement the hardest thing first
 
 At some point, reading stops being productive. You understand the concepts well enough to be dangerous, but you haven't internalized them. Time to build something.
 
-The goal here isn't production code—it's a prototype that forces you to confront your remaining misunderstandings. For RSC, this was a minimal server that could render a single server component and send it to a client that could hydrate it. No streaming, no nested client components, no error handling.
+Here's the key: go straight for the hardest part. Don't start with the easy stuff to "warm up." That's procrastination disguised as progress.
 
-This prototype will be ugly. It will hardcode things. It will skip edge cases. That's the point. You're testing your mental model, not building software.
+For RSC, this was a minimal server that could render a single server component and send it to a client that could hydrate it. No streaming, no nested client components, no error handling. For a language, this might mean getting a single expression to parse, type-check, and evaluate. Skip modules, imports, error recovery. All of that can come later.
+
+Building the minimum boilerplate helps identify all the pilars of the problem. With those in place, you can compare/match
+
+The prototype will be ugly. It should be ugly. Hardcode things. Skip edge cases. Write the nastiest code you can get away with. You're not building software, you're shaping the clay.
+
+One caveat about LLMs: if your mental model isn't clear yet, don't reach for them. An LLM will happily generate plausible-looking code that you can't evaluate. That's worse than writing bad code yourself, because bad code you wrote reveals what you don't understand. Generated code hides it.
+
+### Find a buddy
+
+At some point, you'll hit questions that no amount of reading can answer. The documentation is ambiguous, the source code is unclear, the blog posts contradict each other. You may need another point of view.
+
+Someone you can discuss things with over lunch, sit down with at a laptop, or go to the drawing board with.
+
+Here's the cruelty of knowledge: someone who's way ahead of you might not even understand your problems anymore. They've forgotten what it's like to not know. Someone who's only two steps ahead understands your confusion perfectly, but might not give you the best overall picture. A buddy is someone close enough to your level that you can think together.
+
+When you talk to your buddy, squeeze everything you can out of the conversation. Express your understanding, your confusion, your wrong assumptions out loud. Don't complain about how hard it is. Use the time to learn.
+
+And come prepared. "I'm implementing RSC and I'm confused about X. I've read Y and Z, and my understanding is [specific claim]. Is that right, or am I missing something?" Questions like this get answers. Vague "how does RSC work?" questions get ignored.
 
 ### Answer more questions
 
@@ -68,60 +92,48 @@ Back to the document. Add the new questions. Go find answers. Update your unders
 
 ### Explain to someone who doesn't know anything
 
-This is the Feynman technique, and it's the most powerful step. Find someone—a colleague, a rubber duck, a blank document—and explain what you've learned from scratch.
+This is the Feynman technique at its purest, and the most powerful step. Find someone (a colleague, a rubber duck, a blank document) and explain what you've learned from scratch.
 
-The places where you stumble, where you wave your hands, where you say "and then somehow"—those are the gaps in your understanding. You can't fake this. Either you can explain it clearly or you can't.
+The places where you stumble, where you wave your hands, where you say "and then somehow": those are the gaps in your understanding. You can't fake this. Either you can explain it clearly or you can't.
 
-I often write draft blog posts at this stage, even if I never publish them. The act of writing for an audience forces clarity in a way that thinking alone doesn't.
+I often write draft blog posts at this stage, even if I never publish them. Writing for an audience forces clarity in a way that thinking alone doesn't.
 
-### Implement more
+### Implement for real
 
 Now you build for real. The prototype taught you what you didn't know. The explanation forced you to organize your knowledge. You're ready to write code that actually works.
 
-This is still iterative—you'll hit new problems, go back to studying, update your questions document. But you're no longer thrashing. You're building on solid understanding.
+This is still iterative. You'll hit new problems, go back to studying, update your questions document. But you're no longer thrashing. You're building on solid understanding.
 
-### Talk to an expert
+## The beginner's mindset
 
-At some point, you'll hit questions that no amount of reading can answer. The documentation is ambiguous, the source code is unclear, the blog posts contradict each other.
+The hardest part of this process isn't any single step. It's accepting that you're a beginner.
 
-This is when you find someone who actually knows. If you're an online nerd like me, this means Twitter or Discord. The key is asking the right questions—specific, showing you've done your homework, not asking them to explain the whole thing.
+When I was deep in the RSC implementation, I couldn't turn it off. I'd be out running or biking, supposedly disconnecting, and my head was obsessing over unknowns. What if my mental model is completely wrong? What if I'm wasting weeks on a dead end? What if everyone else finds this obvious?
 
-"I'm implementing RSC and I'm confused about X. I've read Y and Z, and my understanding is [specific claim]. Is that right, or am I missing something?"
+I love the person who shows up to their first day at the gym with new shoes, new clothes, a water bottle, and a printed sheet with all the exercises. There's something courageous about that. They've decided to be a beginner, fully committed, unashamed. Not everybody who walks into the gym succeeds. But the ones who flip that mental switch, the ones who embrace "I don't know anything yet" as a starting point rather than a weakness: those are the ones who stick with it.
 
-Questions like this get answers. Vague "how does RSC work?" questions get ignored.
+The same applies here. The discomfort of not knowing isn't a sign you're failing. It's the starting position. When you flip your relationship with that discomfort, from something to hide to something to embrace, you learn faster and you learn better.
 
-## The hardest part
+## The process is the skill
 
-The hardest part of this process isn't any single step. It's the mental burden of being a newbie.
-
-When I was deep in the RSC implementation, I couldn't turn it off. I'd be out running, skiing, or biking—supposedly disconnecting—and my head was obsessing over unknowns. What if my mental model is completely wrong? What if I'm wasting weeks on a dead end? What if everyone else finds this obvious and I'm just slow?
-
-This is the real cost of hard problems. Not the hours of study, but the weight of uncertainty you carry everywhere.
-
-I don't have a solution for this. Awareness helps—recognizing that the discomfort is part of the process, not a sign you're failing. Having a method helps too—when anxiety spikes, I can look at my questions document and see concrete progress, even if the destination is still unclear.
-
-But mostly, you just have to accept that hard problems are hard. The discomfort is the price of learning something genuinely new.
-
-## The meta-skill
-
-This process is a learnable skill. I'm better at it now than I was five years ago, not because I'm smarter, but because I've practiced the steps enough that they're automatic.
+I'm better at this now than five years ago. Not because I'm smarter, but because I've practiced the steps enough that they're automatic.
 
 When I hit something hard now, I don't panic. I open a document, start writing questions, and trust the process. The uncertainty is still uncomfortable, but it's familiar. I know it leads somewhere.
 
-That's the real value of having a method: not that it makes hard problems easy, but that it makes them approachable. You stop asking "can I figure this out?" and start asking "how long will it take?"
+That's the real value of having a method: not that it makes hard problems easy, but that it makes them approachable. You stop asking "can I figure this out?" and start asking "what don't I know yet?"
 
-The answer is usually longer than you'd like. But at least you know you'll get there.
+And then you write it down.
 
 ---
 
-## TL;DR checklist
+## TL;DR
 
-1. **Write down questions** — Brain dump every point of confusion into a document. Don't organize, don't filter.
-2. **Collect and study** — Hunt for material that might answer your questions. Note what you find.
-3. **Implement a prototype** — Build the ugliest, most minimal version that tests your mental model.
-4. **Answer new questions** — The prototype will reveal gaps. Update your document.
-5. **Explain it to someone** — If you can't explain it clearly, you don't understand it yet.
-6. **Implement for real** — Now build on solid understanding, not guesswork.
-7. **Talk to an expert** — When you're stuck, ask specific questions that show you've done the work.
+1. **Write down questions.** Brain dump every point of confusion. Don't organize, don't filter.
+2. **Collect and study.** Hunt for material that answers your questions. Note what you find.
+3. **Implement the hardest thing first.** Build the ugliest, most minimal version that tests your mental model.
+4. **Find a buddy.** Find someone to think with. Come prepared. Don't complain.
+5. **Answer new questions.** The prototype reveals gaps. Update your document.
+6. **Explain it to someone.** If you can't explain it clearly, you don't understand it yet.
+7. **Implement for real.** Build on solid understanding, not guesswork.
 
-Never delete questions. Group them as you learn. Trust the process.
+Never delete questions. Group them as you learn. Embrace being the beginner.

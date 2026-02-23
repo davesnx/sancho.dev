@@ -9,11 +9,9 @@ tags:
 description: "A practical guide to parser combinators"
 ---
 
+I was very interested in learning how to write a parser, mostly by hand and avoid a grammar generation (such as yacc or menhir) Since I can't help myself and love Functional programming, Parser combinators had been on my radar for a while. I mostly bounced off a few times from Haskell tutorials because of the monad explanations (and not being an expert in Haskell lol).
 
-
-You've probably heard of parser combinators. Maybe someone mentioned them when you complained about a gnarly regex, or you stumbled across them in a Haskell tutorial and bounced off the monad explanations. The concept sounds useful, but the explanations always seem to assume you already understand.
-
-Let me fix that.
+When I finally break thought and learned them, I was surprised how simple the core idea is. This post is what I wish someone had shown me, from PROBLEM -> IDEA -> IMPLEMENTATION.
 
 ## The problem: regex hell
 
@@ -23,7 +21,7 @@ Say you're building a tool that reads a custom log format. Each line looks like 
 [2024-03-15 14:32:01] INFO server: Request completed in 234ms (user_id=42, path="/api/users")
 ```
 
-You need to extract: timestamp, level, source, message, and those key-value pairs in parentheses. The key-value pairs are optional, and there can be any number of them.
+You need to extract the timestamp, level, source, message, and those key-value pairs in parentheses. The key-value pairs are optional, and there can be any number of them.
 
 Here's what a regex might look like:
 
@@ -31,53 +29,33 @@ Here's what a regex might look like:
 let pattern = {|\[(\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2})\] (\w+) (\w+): (.+?)(?:\s+\((.+)\))?$|}
 ```
 
-Quick—what does `(?:\s+\((.+)\))?$` match? Even if you wrote this yesterday, you'd need to trace through it character by character. The regex is *write-only code*: easy enough to write when you're in the zone, nearly impossible to read later.
+Quick: what does `(?:\s+\((.+)\))?$` match? Even if you wrote this yesterday, you'd need to trace through it character by character and probably open an online playground. This is *write-only code*. Easy enough to produce when you're in the zone, nearly impossible to read later.
 
-And that's before we try to enhance it:
-- Add support for nested parentheses in values
-- Handle escaped quotes in string values
-- Make the timestamp format flexible
-- Add meaningful error messages when parsing fails
+And it only gets worse. Add support for nested parentheses in values, handle escaped quotes, make the timestamp format flexible, add meaningful error messages when parsing fails. Each change means editing that dense string and hoping you don't break something else. There's no way to test the "timestamp part" in isolation. It's all or nothing. When it fails, you get "no match." Good luck figuring out *where* it went wrong.
 
-Each change means editing that dense string, hoping you don't break something else. There's no way to test the "timestamp part" in isolation—it's all or nothing. And when it fails? You get "no match." Good luck figuring out *where* it went wrong.
+If you've ever tried to parse HTML with regex, you've probably seen [this legendary Stack Overflow answer](https://stackoverflow.com/questions/1732348/regex-match-open-tags-except-xhtml-self-contained-tags). A dramatic reminder that regex fundamentally can't handle nested structures. Our log format isn't as bad as HTML, but the moment you need recursive patterns, regex falls apart.
 
-If you've ever tried to parse HTML with regex, you've probably seen [this legendary Stack Overflow answer](https://stackoverflow.com/questions/1732348/regex-match-open-tags-except-xhtml-self-contained-tags)—a dramatic reminder that regex fundamentally can't handle nested structures. Our log format isn't as bad as HTML, but the moment you need nested parentheses or recursive patterns, regex falls apart.
+## The core idea
 
-## The core insight
-
-Parser combinators fixes this, by divide-and-conquer: instead of writing one big regexp that matches everything, you write tiny parsers that each do one thing and eventually compose them.
+Parser combinators fix this with divide-and-conquer. Instead of one big regex that matches everything, you write tiny parsers that each handle one thing, then compose them together.
 
 Think of it like functions. You wouldn't write one giant function that does everything. You write small functions and compose them. Parser combinators are the same idea applied to parsing.
 
-Here's the mental model:
+A parser is a function that takes some input (a string), tries to match something at the current position, and either succeeds or fails. When it succeeds, it returns what it matched *plus the remaining input*. That remaining input is what makes composition possible: one parser consumes its piece, then hands the rest to the next parser.
 
-```
-A parser is a function that:
-  1. Takes some input (a string)
-  2. Tries to match something at the current position
-  3. Returns what it matched + the remaining input (so other parsers can carry over)
-  4. Or fails with an error
-```
+{/* image: Diagram showing a string "[2024-03-15] INFO server:" flowing through three connected boxes labeled "timestamp", "level", and "source". Each box consumes its portion and passes the rest forward. Arrow from input string enters "timestamp" box, shorter string exits and enters "level" box, even shorter string exits and enters "source" box. */}
 
-The magic is in how you compose them:
-
-- **Sequence**: "parse A, then parse B"
-- **Choice**: "try A, if it fails try B"
-- **Repetition**: "parse A zero or more times"
-
-That's it. Everything else is built from these three operations.
+There are three ways to compose parsers. **Sequence**: parse A, then parse B. **Choice**: try A, if it fails try B. **Repetition**: parse A zero or more times. Everything else is built from these three.
 
 ## Enter Angstrom
 
 [Angstrom](https://github.com/inhabitedtype/angstrom) is OCaml's go-to parser combinator library. It's fast, memory-efficient, and has a clean API.
 
-Let's install it:
-
 ```bash
 opam install angstrom
 ```
 
-And add it to your dune file:
+And in your dune file:
 
 ```lisp
 (library
@@ -85,42 +63,19 @@ And add it to your dune file:
   (libraries angstrom))
 ```
 
-## Your first parser
+## Building blocks
 
-Let's start simple. A parser that matches a single digit:
+Let's start small. A parser that matches one or more digits and turns them into an integer:
 
 ```ocaml
 open Angstrom
 
-let digit = satisfy (function '0'..'9' -> true | _ -> false)
+let integer =
+  take_while1 (function '0'..'9' -> true | _ -> false)
+  >>| int_of_string
 ```
 
-`satisfy` takes a predicate and returns a parser that matches any character where the predicate returns true. If the next character is a digit, it succeeds and returns that character. Otherwise, it fails.
-
-To run it:
-
-```ocaml
-let result = parse_string ~consume:All digit "5"
-(* Ok '5' *)
-
-let result = parse_string ~consume:All digit "abc"
-(* Error ": satisfy: '5'" *)
-```
-
-## Combining parsers
-
-Now let's parse multiple digits and turn them into an integer:
-
-```ocaml
-let digits = take_while1 (function '0'..'9' -> true | _ -> false)
-
-let integer = digits >>| int_of_string
-```
-
-Two new things here:
-
-- `take_while1` keeps consuming characters while the predicate is true (the `1` means "at least one")
-- `>>|` (pronounced "map") transforms the result. It's like `List.map` but for parsers
+`take_while1` keeps consuming characters while the predicate is true. The `1` means "at least one": if there are zero digits, it fails. The `>>|` operator (pronounced "map") transforms the result, like `List.map` but for parsers. This reads: "take one or more digits, then convert the string to an int."
 
 ```ocaml
 parse_string ~consume:All integer "42"
@@ -130,9 +85,9 @@ parse_string ~consume:All integer "abc"
 (* Error ": take_while1" *)
 ```
 
-## Sequencing: parse this, then that
+## Composing parsers
 
-Let's parse a simple key-value pair like `name=david`:
+Now let's parse a key-value pair like `name=david`. We need three things in sequence: an identifier, an equals sign, and another identifier.
 
 ```ocaml
 let identifier =
@@ -147,9 +102,7 @@ let key_value =
   return (key, value)
 ```
 
-The `>>=` operator (pronounced "bind") sequences parsers. It says: "run the first parser, take its result, and use it to decide what to do next."
-
-This works, but it's verbose. Angstrom provides cleaner syntax:
+The `>>=` operator sequences parsers. It says: "run the first parser, take its result, and feed it to the next one." This works, but it's verbose. Angstrom supports `let*` syntax which reads much better:
 
 ```ocaml
 let key_value =
@@ -159,7 +112,7 @@ let key_value =
   return (key, value)
 ```
 
-Or even more concise with applicative operators:
+Same thing, but it looks like regular OCaml code. There's also a more concise style with applicative operators:
 
 ```ocaml
 let key_value =
@@ -168,25 +121,30 @@ let key_value =
     identifier
 ```
 
-Here:
-- `lift2` takes a function and two parsers, runs both parsers, and applies the function to their results
-- `<*` means "parse both, but only keep the left result" (so we parse the `=` but throw it away)
-- `*>` is the opposite: "parse both, keep the right result"
+`lift2` takes a function and two parsers, runs both, and applies the function to their results. The `<*` operator means "parse both sides, keep the left result." Its mirror `*>` keeps the right. So `identifier <* char '='` parses an identifier followed by `=`, but only returns the identifier.
 
-## Choice: try this, or that
+I tend to use `let*` for anything with more than two parsers, and `lift2`/`lift3` for short combinations. Pick whichever reads best for the situation.
 
-What if values can be either identifiers or quoted strings?
+## Choices and alternatives
+
+What if values can be either identifiers or quoted strings? First, a parser for quoted strings:
 
 ```ocaml
 let quoted_string =
   char '"' *>
   take_while (fun c -> c <> '"') <*
   char '"'
+```
 
+This reads left to right: consume a `"`, take everything that isn't a `"`, consume the closing `"`. The `*>` and `<*` operators throw away the quotes and keep only the content between them.
+
+Now we can offer a choice:
+
+```ocaml
 let value = quoted_string <|> identifier
 ```
 
-The `<|>` operator (pronounced "or" / "alternative") tries the first parser. If it fails *without consuming input*, it tries the second.
+The `<|>` operator tries the first parser. If it fails without consuming input, it tries the second.
 
 ```ocaml
 parse_string ~consume:All value {|"hello world"|}
@@ -196,7 +154,7 @@ parse_string ~consume:All value "simple"
 (* Ok "simple" *)
 ```
 
-## Repetition: parse many things
+## Repetition
 
 To parse multiple key-value pairs separated by commas:
 
@@ -204,28 +162,24 @@ To parse multiple key-value pairs separated by commas:
 let pairs = sep_by (char ',' *> skip_many (char ' ')) key_value
 ```
 
-`sep_by` takes a separator parser and an item parser, returning a list of items.
+`sep_by` takes a separator parser and an item parser, returning a list. Other useful repetition combinators: `many` for zero or more, `many1` for one or more, `count n` for exactly n times.
 
 ```ocaml
 parse_string ~consume:All pairs "a=b, c=d, e=f"
 (* Ok [("a", "b"); ("c", "d"); ("e", "f")] *)
 ```
 
-Other useful repetition combinators:
-- `many p` — zero or more
-- `many1 p` — one or more
-- `sep_by1 sep p` — one or more, separated by `sep`
-- `count n p` — exactly n times
-
 ## Putting it together: the log parser
 
-Now let's tackle that log format from the beginning:
+Now let's tackle that log format from the beginning. Here's the structure, broken down:
 
-```
-[2024-03-15 14:32:01] INFO server: Request completed in 234ms (user_id=42, path="/api/users")
-```
+{/* image: The log line with each segment annotated, showing which parser handles it:
 
-First, define the types:
+[2024-03-15 14:32:01]  INFO  server:  Request completed in 234ms  (user_id=42, path="/api/users")
+└──── timestamp ─────┘  level └source┘  └────── message ───────┘  └──────── metadata ─────────┘
+*/}
+
+First, the types:
 
 ```ocaml
 type log_entry = {
@@ -237,7 +191,7 @@ type log_entry = {
 }
 ```
 
-Build it piece by piece:
+Then, piece by piece:
 
 ```ocaml
 let timestamp =
@@ -255,7 +209,7 @@ let source =
 let spaces = skip_many (char ' ')
 
 let metadata_value =
-  (char '"' *> take_while (fun c -> c <> '"') <* char '"')
+  quoted_string
   <|> take_while1 (fun c -> c <> ',' && c <> ')')
 
 let metadata_pair =
@@ -268,14 +222,14 @@ let metadata =
   sep_by (char ',' *> spaces) metadata_pair <*
   char ')'
 
-let message_without_metadata =
+let message_text =
   take_while (fun c -> c <> '(' && c <> '\n')
 
 let log_entry =
   let* ts = timestamp <* spaces in
   let* lvl = level <* spaces in
   let* src = source <* spaces in
-  let* msg = message_without_metadata in
+  let* msg = message_text in
   let* meta = option [] (spaces *> metadata) in
   return {
     timestamp = ts;
@@ -286,6 +240,8 @@ let log_entry =
   }
 ```
 
+Notice that `metadata_value` reuses the `quoted_string` parser we wrote earlier. That's the whole point of this approach: small parsers snap together into bigger ones.
+
 Let's test it:
 
 ```ocaml
@@ -293,25 +249,19 @@ let input = {|[2024-03-15 14:32:01] INFO server: Request completed in 234ms (use
 
 let result = parse_string ~consume:All log_entry input
 (* Ok {
-     timestamp = "2024-03-15 14:32:01";
-     level = "INFO";
-     source = "server";
-     message = "Request completed in 234ms";
-     metadata = [("user_id", "42"); ("path", "/api/users")]
-   } *)
+  timestamp = "2024-03-15 14:32:01";
+  level = "INFO";
+  source = "server";
+  message = "Request completed in 234ms";
+  metadata = [("user_id", "42"); ("path", "/api/users")]
+} *)
 ```
 
-Compare this to the regex from earlier. The combinator version is longer, yes—but look at what you get:
-
-- **Readable**: `timestamp`, `level`, `source`, `metadata_pair`—the names tell you what each piece does
-- **Testable**: You can test `metadata_pair` alone, without running the full parser
-- **Evolvable**: Adding a new field means adding a new parser and slotting it in
-
-The regex was 80 characters of cryptic symbols. This is 40 lines of self-documenting code. When your coworker (or future you) needs to modify it, they'll thank you.
+Compare this to the regex. Yes, it's more code. But read it out loud. `timestamp`, `level`, `source`, `metadata_pair`. You know what each piece does. You can test `metadata_pair` by itself without running the full parser. When you need to add a new field next week, you write a small parser and slot it in. Try doing that to a regex without breaking something.
 
 ## Error handling
 
-One of the best things about parser combinators is error handling. Unlike regex, you can provide meaningful error messages:
+One of the best things about parser combinators: error messages. The `<?>` operator attaches a label to a parser. When it fails, the error message uses this label instead of a cryptic internal name:
 
 ```ocaml
 let level =
@@ -319,14 +269,14 @@ let level =
   <?> "log level (e.g., INFO, ERROR, DEBUG)"
 ```
 
-The `<?>` operator attaches a label to a parser. When it fails, the error message includes this label:
-
 ```ocaml
 parse_string ~consume:All log_entry "[2024-03-15] info server: test"
 (* Error ": log level (e.g., INFO, ERROR, DEBUG)" *)
 ```
 
-For more control, use `fail`:
+Compare that to regex's "no match." You actually know what went wrong and where.
+
+For validation beyond syntax, use `fail` to reject values that parse correctly but aren't valid:
 
 ```ocaml
 let valid_level =
@@ -337,35 +287,16 @@ let valid_level =
     fail (Printf.sprintf "unknown log level: %s" l)
 ```
 
-## When to use parser combinators
+## When to reach for them
 
-Parser combinators shine when:
+Parser combinators shine when the format has structure: nested brackets, recursive patterns, context-sensitive parsing. They're worth it when you need good error messages, when the format will evolve, or when you want to test pieces in isolation.
 
-- **The format has structure**: Nested brackets, recursive patterns, context-sensitive parsing
-- **You need good error messages**: Regex gives you "no match"; combinators tell you *where* and *why*
-- **The format might evolve**: Adding a new field is adding a new combinator, not rewriting a regex
-- **You want to test incrementally**: Each small parser can be tested in isolation
+Stick with regex when the pattern is genuinely simple. Email validation, phone numbers, search-and-replace. No point writing a combinator for something `String.split` can handle.
 
-Stick with regex when:
-
-- The pattern is genuinely simple (email validation, phone numbers)
-- You're doing search/replace, not structured extraction
-- Performance is critical and you've benchmarked both approaches
-
-For complex grammars (programming languages, configuration formats with includes), consider parser generators like [Menhir](http://gallium.inria.fr/~fpottier/menhir/) instead—they handle ambiguity and generate efficient parsers, but require learning a separate grammar syntax.
-
-## Going further
-
-We've covered the fundamentals. From here you can:
-
-- **Parse more complex formats**: JSON, TOML, or your own DSL
-- **Handle streaming input**: Angstrom supports incremental parsing for large files
-- **Build an AST**: Return structured types instead of strings
-
-If you want to understand how parser combinators work under the hood, [this implementation](https://gist.github.com/yawaramin/75f0a35ece0cc7cf208d6c04e6e82bb9) builds one from scratch in ~150 lines of OCaml.
-
-The [Angstrom documentation](https://ocaml.org/p/angstrom/latest/doc/Angstrom/index.html) is excellent, and the [source code](https://github.com/inhabitedtype/angstrom) is surprisingly readable if you want to see how the sausage is made.
+For full programming language grammars, consider parser generators like [Menhir](http://gallium.inria.fr/~fpottier/menhir/) instead. They handle ambiguity and produce efficient parsers, but require learning a separate grammar syntax.
 
 ---
 
-Parser combinators aren't magic. They're just small functions that compose well. Once you internalize that, you'll start seeing parsing problems differently—not as "what regex matches this?" but as "what are the pieces, and how do they fit together?"
+Parser combinators aren't magic. They're small functions that compose well. Once that clicks, you start seeing parsing problems differently. Not "what regex matches this?" but "what are the pieces, and how do they fit together?"
+
+The [Angstrom documentation](https://ocaml.org/p/angstrom/latest/doc/Angstrom/index.html) is thorough, and if you want to see how they work under the hood, [this implementation](https://gist.github.com/yawaramin/75f0a35ece0cc7cf208d6c04e6e82bb9) builds one from scratch in about 150 lines of OCaml.
