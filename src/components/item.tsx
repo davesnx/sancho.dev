@@ -24,7 +24,7 @@ const GithubIcon = ({
     padded
     size={size}
     svg={Github}
-    bg={colors.grey}
+    bg={colors.primary90}
     color="#181717"
   />
 );
@@ -39,7 +39,7 @@ const WebIcon = ({
     padded
     size={size}
     svg={Web}
-    bg={colors.grey}
+    bg={colors.primary90}
     color={colors.primary}
   />
 );
@@ -54,7 +54,7 @@ const YouTubeIcon = ({
     padded
     size={size}
     svg={YouTube}
-    bg={colors.grey}
+    bg={colors.primary90}
     color={colors.r}
   />
 );
@@ -96,7 +96,7 @@ const Box = styled.div`
 
   border-radius: 0.5rem;
   border: 2px solid ${colors.contrastCodeBackground};
-  background-color: ${colors.contrastCodeBackground30};
+  background-color: ${colors.backgroundSecondary};
 
   svg {
     filter: grayscale(1);

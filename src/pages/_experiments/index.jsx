@@ -73,7 +73,7 @@ const ButtonWrapper = styled.a`
   padding: 1rem 1.5rem;
   justify-content: space-evenly;
   border-radius: 4px;
-  background-color: ${colors.contrast};
+  background-color: ${colors.backgroundPrimary};
   color: ${colors.body};
   font-family: "${font.sans}";
 
@@ -98,7 +98,7 @@ const OverlapWrapper = styled.div`
   justify-content: center;
   align-items: center;
 
-  background: ${colors.contrast};
+  background: ${colors.backgroundPrimary};
   border-radius: 4px;
 `;
 

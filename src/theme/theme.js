@@ -39,10 +39,8 @@ const commonValues = {
  * @typedef {Object} ThemeValues
  * @property {string} body - Body text color
  * @property {string} contrast - Contrast background color
- * @property {string} overlay - Overlay background color
- * @property {string} codeBackground - Code block background color
+ * @property {string} backgroundSecondary - Code block background color
  * @property {string} contrastCodeBackground - Contrasting code background color
- * @property {string} contrastCodeBackground30 - Contrasting code background color
  * @property {string} contrastCodeBackground80 - Contrasting code background color
  * @property {string} primary - Primary accent color
  * @property {string} inverted - Inverted text color
@@ -50,35 +48,54 @@ const commonValues = {
  * @property {string} primary80 - Primary accent color
  * @property {string} body - Body text color
  * @property {string} body90 - Body text color
- * @property {string} body80 - Body text color
  * @property {string} body50 - Body text color
  * @property {string} body30 - Body text color
  * @property {string} body10 - Body text color
- * @property {string} grey - Grey color
  */
+
+const navyScale = {
+  navy100: "#CFD2D6",
+  navy200: "#B9BDC3",
+  navy300: "#999FA8",
+  navy400: "#78818C",
+  navy500: "#4C586A",
+  navy600: "#384456",
+  navy700: "#233044",
+  navy800: "#293039",
+  navy900: "#121A24"
+};
+
+const greyScale = {
+  grey100: "#FAFAFA",
+  grey200: "#F5F5F5",
+  grey300: "#F0F0F0",
+  grey400: "#E3E3E3",
+  grey500: "#CCCCCC",
+  grey600: "#848686",
+  grey700: "#4C4D4D",
+  grey800: "#272727",
+  grey900: "#171717",
+  grey1000: "#141414"
+};
 
 /**
  * Light theme specific color values
  * @type {ThemeValues}
  */
 const lightValues = {
-  grey: "#E5E5E5",
-  primary: "#121A24",
-  inverted: "#1A1A1A",
-  primary90: "#293039",
-  primary80: "#40474F",
-  body: "#233044",
-  body90: "#384456",
-  body80: "#4C586A",
-  body50: "#78818C",
-  body30: "#B9BDC3",
-  body10: "#CFD2D6",
-  contrast: "#FAFAFA",
-  overlay: "#FFFFFF",
-  codeBackground: "#F5F5F5",
-  contrastCodeBackground: "#EEEEEE",
-  contrastCodeBackground30: "#F6F6F6",
-  contrastCodeBackground80: "#F0F0F0",
+  inverted: greyScale.grey900,
+  primary: navyScale.navy900,
+  primary90: navyScale.navy800,
+  primary80: navyScale.navy500,
+  body: navyScale.navy700,
+  body90: navyScale.navy600,
+  body50: navyScale.navy400,
+  body30: navyScale.navy200,
+  body10: navyScale.navy100,
+  backgroundPrimary: greyScale.grey100,
+  backgroundSecondary: greyScale.grey200,
+  contrastCodeBackground: greyScale.grey400,
+  contrastCodeBackground80: greyScale.grey300,
 };
 
 /**
@@ -86,24 +103,19 @@ const lightValues = {
  * @type {ThemeValues}
  */
 const darkValues = {
-  grey: "#E5E5E5",
-  primary: "#FAFAFA",
-  primary90: "#E3E3E3",
-  primary80: "#CCCCCC",
-  body: "#CED0D2",
-  /* body90: "#BCBEBF", */
-  body90: "#999FA8",
-  body80: "#A9ABAD",
-  body50: "#848686",
-  body30: "#4C4D4D",
-  body10: "#272727",
-  contrast: "#141414",
-  overlay: "#111111",
-  codeBackground: "#171717",
-  contrastCodeBackground: "#262626",
-  contrastCodeBackground80: "#222222",
-  contrastCodeBackground30: "#191919",
-  inverted: "#1A1A1A",
+  backgroundPrimary: greyScale.grey1000,
+  backgroundSecondary: greyScale.grey900,
+  inverted: greyScale.grey900,
+  primary: greyScale.grey100,
+  primary90: greyScale.grey300,
+  primary80: greyScale.grey500,
+  body: navyScale.navy100,
+  body90: navyScale.navy300,
+  body50: greyScale.grey600,
+  body30: greyScale.grey700,
+  body10: greyScale.grey800,
+  contrastCodeBackground: greyScale.grey800,
+  contrastCodeBackground80: greyScale.grey800,
 };
 
 /** @type {CommonValues & ThemeValues} */

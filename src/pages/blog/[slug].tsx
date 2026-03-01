@@ -32,7 +32,7 @@ const BlogContent = styled.div`
     padding: 3px 6px;
     margin: 0px 2px;
     color: ${colors.body};
-    background: ${colors.contrastCodeBackground30};
+    background: ${colors.backgroundSecondary};
   }
 
   p > code:first-of-type {
@@ -56,7 +56,7 @@ const BlogContent = styled.div`
 `;
 
 const ThanksContainer = styled.div`
-  background-color: ${colors.codeBackground};
+  background-color: ${colors.backgroundSecondary};
   padding: 2rem;
   border-radius: 8px;
 `;
@@ -65,7 +65,7 @@ const TwitterButton = styled.a`
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  background-color: ${colors.overlay};
+  background-color: ${colors.backgroundSecondary};
   color: ${colors.body};
   padding: 10px 16px;
   border-radius: 10px;
@@ -236,7 +236,7 @@ const Pre = styled.pre`
   padding: 2rem;
   border-radius: 6px;
   margin: 0;
-  background: ${colors.codeBackground};
+  background: ${colors.backgroundSecondary};
 
   font-family: ${fonts.mono};
   font-weight: 400;
@@ -292,7 +292,7 @@ const Table = styled.table`
   }
 
   th {
-    background-color: ${colors.codeBackground};
+    background-color: ${colors.backgroundSecondary};
     border-color: ${colors.body10};
     border-bottom-width: 1px;
     border-left-width: 1px;
@@ -360,7 +360,7 @@ const Blockquote = styled.blockquote`
   }
 
   & > code {
-    background-color: ${colors.grey} !important;
+    background-color: ${colors.primary90} !important;
   }
 `;
 

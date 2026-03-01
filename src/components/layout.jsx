@@ -17,7 +17,7 @@ import { colors } from '../theme/theme';
 
 const Root = styled.div`
   min-height: 100vh;
-  background-color: ${colors.contrast};
+  background-color: ${colors.backgroundPrimary};
   display: flex;
   flex-direction: column;
 `;
@@ -179,7 +179,7 @@ const MobileMenuOverlay = styled.div`
   bottom: 0;
   left: 0;
   right: 0;
-  background-color: ${colors.overlay};
+  background-color: ${colors.backgroundSecondary};
   filter: blur(4px);
   opacity: 0.9;
   display: flex;
@@ -198,7 +198,7 @@ const MobileMenuPopup = styled(animated.div)`
   padding: 0;
   margin: 10%;
   margin-top: 20%;
-  background-color: ${colors.contrast};
+  background-color: ${colors.backgroundPrimary};
   border-radius: 12px;
   transition: ease 300ms;
   padding: 1rem 0;

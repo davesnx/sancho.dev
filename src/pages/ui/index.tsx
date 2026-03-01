@@ -22,7 +22,7 @@ const TableWrap = styled.div`
   border: 1px solid ${colors.body10};
   border-radius: 12px;
   overflow: auto;
-  background: ${colors.overlay};
+  background: ${colors.backgroundSecondary};
 `;
 
 const TokenTable = styled.table`
@@ -38,7 +38,7 @@ const HeaderCell = styled.th`
   letter-spacing: 0.05em;
   text-transform: uppercase;
   color: ${colors.primary80};
-  background: ${colors.contrastCodeBackground30};
+  background: ${colors.backgroundSecondary};
   padding: 12px 14px;
   border-bottom: 1px solid ${colors.body10};
 `;

@@ -15,7 +15,7 @@ const CodeBlock = styled.pre`
   padding-top: 3rem;
   border-radius: 6px;
   margin: 0;
-  background: ${colors.codeBackground};
+  background: ${colors.backgroundSecondary};
 
   font-family: ${fonts.mono};
   font-weight: 400;
@@ -44,13 +44,13 @@ const PlaygroundLink = styled.a`
   font-size: 0.7rem;
   font-weight: 600;
   text-decoration: none;
-  color: ${colors.body90};
-  background: ${colors.overlay};
+  color: ${colors.primary80};
+  background: ${colors.backgroundSecondary};
   transition: all 0.15s ease;
 
   &:hover {
     color: ${colors.body};
-    background: ${colors.contrastCodeBackground30};
+    background: ${colors.backgroundSecondary};
   }
 
   svg {

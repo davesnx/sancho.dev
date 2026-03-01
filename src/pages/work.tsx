@@ -143,7 +143,7 @@ const OpenSourceItem = styled.a`
   padding: 1rem;
   border-radius: 0.5rem;
   border: 1px solid ${colors.contrastCodeBackground};
-  background-color: ${colors.contrastCodeBackground30};
+  background-color: ${colors.backgroundSecondary};
 
   transition: all 0.2s ease;
 
