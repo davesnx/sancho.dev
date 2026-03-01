@@ -91,7 +91,8 @@ const darkValues = {
   primary90: "#E3E3E3",
   primary80: "#CCCCCC",
   body: "#CED0D2",
-  body90: "#BCBEBF",
+  /* body90: "#BCBEBF", */
+  body90: "#999FA8",
   body80: "#A9ABAD",
   body50: "#848686",
   body30: "#4C4D4D",

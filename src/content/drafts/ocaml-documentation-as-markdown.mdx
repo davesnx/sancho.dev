@@ -8,6 +8,47 @@ tags:
   - "Documentation"
 ---
 
+{/*
+ASSESSMENT
+
+1) Opinion on quality and voice
+- The core topic is very strong and useful for the OCaml ecosystem. The practical motivation from Melange gives it authenticity.
+- Voice is mostly clear and explanatory, and the historical context is good.
+- The post has the ingredients of a high-impact ecosystem writeup, but it needs editorial cleanup before publishing.
+
+2) What's missing or weak
+- The file currently contains structural issues: duplicate frontmatter, extra separators, and a leftover "PROMPT" planning block.
+- This breaks narrative flow and makes it feel like merged notes rather than a final article.
+- Some claims would benefit from concrete artifacts (before/after screenshots, generated file examples, integration steps).
+- The "LLM" angle is promising but could be tighter and less generic by tying directly to retrieval/indexing workflows.
+
+3) How I would finish it
+- First, do a cleanup pass:
+  - keep exactly one frontmatter block,
+  - remove duplicated metadata and planning notes,
+  - ensure a clean intro -> problem -> history -> solution -> impact -> call to action flow.
+- Strengthen with one practical migration section:
+  - how to plug generated markdown into VitePress/Docusaurus,
+  - handling cross-links,
+  - search indexing strategy.
+- Add one "what still needs work" section for credibility (edge cases, link semantics, rendering quirks).
+- Expand ending into an action-oriented close:
+  - try `dune build @doc-markdown`,
+  - report bugs,
+  - share examples so maintainers can prioritize.
+- Add one short quote block from the discuss thread or PR context for narrative texture.
+
+4) Hero image and visual concepts
+- Hero image options:
+  - Before/after split: "HTML-only API docs" vs "Unified markdown docs in one SSG".
+  - Pipeline diagram: OCaml comments -> odoc -> markdown -> VitePress/Docusaurus site.
+  - Documentation map visual showing guides and API refs merged into one navigation tree.
+- In-article visuals:
+  - Screenshot pair of fragmented navigation vs unified docs UX.
+  - Search result comparison (old split index vs new unified index).
+  - Timeline graphic: issue #121 -> PR #791 -> discuss momentum -> backend landing.
+*/}
+
 ---
 
 ---
@@ -173,4 +214,3 @@ Another big use case for Markdown generation is Github, or any markdown renderer
 ## Step 2: Organise structure and start drawing the storytelling
 
 ## Step 3: Polish the blog post with formal links, quotes, images and final touches.
-

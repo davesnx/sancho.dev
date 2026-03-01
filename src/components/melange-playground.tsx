@@ -28,7 +28,7 @@ const CodeBlock = styled.pre`
   tab-size: 2;
   hyphens: none;
   line-height: 1.6;
-  color: ${colors.body90};
+  color: ${colors.primary80};
 `;
 
 const PlaygroundLink = styled.a`
@@ -44,7 +44,7 @@ const PlaygroundLink = styled.a`
   font-size: 0.7rem;
   font-weight: 600;
   text-decoration: none;
-  color: ${colors.body80};
+  color: ${colors.body90};
   background: ${colors.overlay};
   transition: all 0.15s ease;
 

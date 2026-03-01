@@ -10,6 +10,47 @@ tags:
 description: "Why LLMs may push us toward stricter, safer languages"
 ---
 
+{/*
+ASSESSMENT
+
+1) Opinion on quality and voice
+- Strong op-ed quality. The thesis is clear, current, and provocative without sounding purely hype-driven.
+- Voice is confident and well referenced; it balances personal intuition with links to research and industry signals.
+- The structure reads well as a long-form argument and has good rhetorical progression.
+
+2) What's missing or weak
+- Counterarguments are underdeveloped: developer velocity, hiring constraints, ecosystem lock-in, and operational complexity need more direct treatment.
+- There is no concrete case study showing the same task solved in two languages with different feedback quality.
+- "Ideal language" section is compelling but slightly speculative-heavy without practical migration advice.
+- Ending lands as a reflection; it could be stronger with explicit, testable predictions for 1-3 years.
+
+3) How I would finish it
+- Add one concrete mini case study section:
+  - task: implement/refactor a non-trivial feature,
+  - compare Python/TS vs Rust/OCaml/Lean feedback loops,
+  - include number of iteration cycles and failure modes caught by compiler.
+- Add a "Steelman the opposite view" section with 3-4 reasons dynamic ecosystems may still dominate.
+- Add "Pragmatic adoption path" guidance:
+  - where to start (type-checking first, strict lints, one safe boundary),
+  - when not to migrate,
+  - what to measure (defect rate, refactor confidence, agent success rate).
+- Convert the ending into explicit predictions:
+  - Near term: typed supersets keep winning.
+  - Mid term: stronger compilers in mainstream workflows.
+  - Long term: proof-carrying components in critical systems.
+- Final paragraph: make one crisp claim and one falsifiable condition for being wrong.
+
+4) Hero image and visual concepts
+- Hero image options:
+  - "Compiler as co-pilot" visual: code loop with diagnostics feeding an agent.
+  - Safety spectrum gradient from dynamic to dependent types with icons.
+  - Editorial chart-style hero: productivity vs correctness under human-only vs agent-assisted workflows.
+- In-article visuals:
+  - Feedback loop diagram: model output -> compiler/linter -> corrected output.
+  - Radar chart comparing languages across safety dimensions.
+  - Timeline of ecosystem shifts toward stricter typing in mainstream languages.
+*/}
+
 Yet when you ask an LLM to solve a problem without naming a language, it almost always chooses Python or TypeScript. As [Kiran Gopinathan notes](https://kirancodes.me/posts/log-lang-design-llms.html), LLMs perform better in languages that are overrepresented in training data.
 
 That makes sense, but it also raises the question I keep coming back to: is training data the only factor as models get better? What would a language built for LLMs look like?

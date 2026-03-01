@@ -30,7 +30,7 @@ const MenuItem = styled(NavigateButton)`
   text-transform: uppercase;
   display: inline-flex;
   letter-spacing: 2px;
-  color: ${colors.body90};
+  color: ${colors.primary80};
 
   &:hover {
     color: ${colors.primary};
@@ -61,7 +61,7 @@ const fadeIn = keyframes`{
 const Svg = styled.svg`
   width: 100%;
   height: 100%;
-  fill: ${(props) => (props.isDark ? colors.primary80 : colors.body80)};
+  fill: ${colors.primary80};
   transition: transform 200ms ease-in-out;
   position: relative;
 `;

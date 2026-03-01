@@ -7,6 +7,44 @@ tags:
   - "OCaml"
 ---
 
+{/*
+ASSESSMENT
+
+1) Opinion on quality and voice
+- Excellent technical teaching draft with rare depth. This is one of the best "from beginner to internals" trajectories in the repo.
+- Voice is generous and pedagogical; examples are practical and progressively layered.
+- The post successfully combines pragmatic usage and type-system curiosity, which is hard to do.
+
+2) What's missing or weak
+- Main risk is length and cognitive load: 500+ lines can lose readers before the strongest sections.
+- Some prose has small typos/grammar issues that can reduce polish for a flagship guide.
+- The transition from practical usage to GADT internals is abrupt for casual readers.
+- There is no explicit "you can stop here" summary checkpoint before advanced internals (you have a note, but it could be stronger with a visual split).
+
+3) How I would finish it
+- Split into two linked posts or clearly separated parts:
+  - Part 1: Practical Printf/Format (daily usage).
+  - Part 2: Type-level internals and GADT implementation model.
+- If kept as one post, add a table of contents and estimated reading times per section.
+- Add "mistakes I still make" section with 5 quick pitfalls (escaping `%`, `%a` arity, box mismatch, flushing, computed format strings).
+- Add one short "library author checklist":
+  - provide `pp_*` printers,
+  - avoid hardcoded stdout in libraries,
+  - keep printer composition testable.
+- Tighten the ending with 3 concrete takeaways and one next-step challenge for readers.
+- Run a copy-edit pass for spelling and consistency (e.g., "thought" -> "thought", "expanation" -> "explanation").
+
+4) Hero image and visual concepts
+- Hero image options:
+  - "Typed format string" concept: `%s` and `%d` tokens morph into a function type.
+  - Split visual: left `Printf` one-liners, right `Format` box-based pretty output.
+  - Chalkboard-style diagram of GADT constructors building function signatures.
+- In-article visuals:
+  - Flow diagram from literal format to inferred function type.
+  - Box model visual for `Format` line-breaking decisions on wide vs narrow terminals.
+  - `%a` composability graph showing printer reuse across nested structures.
+*/}
+
 I've struggled with Printf and Format more times than I'd like to admit (even thought I had some vague memory from my C years on uni. [libc `printf()`](https://man7.org/linux/man-pages/man3/printf.3.html)). Every time I needed to do something beyond basic printing, I'd find myself searching for examples, copying snippets I didn't fully understand, and treating the whole thing as a black box.
 
 I couldn't find a longer expanation for newbies and, more importantly, *why* things work the way they do. So I wrote this blog post.

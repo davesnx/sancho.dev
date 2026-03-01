@@ -9,11 +9,9 @@ import Spacer from "../components/spacer";
 import { Stack } from "../components/taco";
 import Text from "../components/text";
 import fonts from "../theme/fonts";
-import { colors } from "../theme/theme";
 
 const Content = styled.div`
   line-height: 1.7;
-  color: ${colors.body90};
   font-size: ${fonts.fontSize1};
   display: block;
 `;

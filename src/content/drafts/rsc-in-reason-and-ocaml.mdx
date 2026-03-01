@@ -9,6 +9,43 @@ tags:
 - "OCaml"
 ---
 
+{/*
+ASSESSMENT
+
+1) Opinion on quality and voice
+- This is currently a solid outline, not yet a draft article. The topic is great and timely, but the piece needs a full narrative pass.
+- Voice is still neutral/planning mode. It needs your usual concrete "we built this, here is what worked/failed" tone.
+- The structure hints at a strong release post if you turn each bullet into evidence-backed sections.
+
+2) What's missing or weak
+- Missing a clear audience definition: who should care (framework authors, OCaml users, React infra engineers, curious app devs).
+- Missing architecture explanation: how payload format, streaming protocol, and client boundary mapping were implemented.
+- Missing practical proof: demo app screenshots, latency/TTFB observations, or at least one realistic flow.
+- Missing known limitations and non-goals; without these, claims can read over-optimistic.
+- No strong conclusion or call to action beyond a placeholder.
+
+3) How I would finish it
+- Turn it into a release-story format:
+  1. Problem statement: why RSC matters and why existing JS-only tooling was insufficient for your goals.
+  2. Technical deep dive: payload, streaming, server actions, bundler hooks, router compromise.
+  3. Demo walkthrough: one route, one server component, one action mutation, one streamed chunk timeline.
+  4. Limitations: no full router yet, DX rough edges, unsupported React features.
+  5. Roadmap: short-term and medium-term priorities with dates/milestones.
+- Add one "What surprised us" section with 3 findings (e.g., hardest integration point, perf win, protocol edge case).
+- Add one "How to try it" section with minimal install/run commands and a tiny sample app.
+- End with an explicit contributor invitation: specific issues, labels, and where to help first.
+
+4) Hero image and visual concepts
+- Hero image options:
+  - End-to-end pipeline diagram: OCaml server -> RSC stream chunks -> browser hydration boundaries.
+  - Terminal + browser split showing server action roundtrip with streamed UI update.
+  - "React internals meets OCaml" conceptual collage with protocol packets.
+- In-article visuals:
+  - Sequence diagram for one user interaction triggering a server action.
+  - Annotated RSC payload snippet with explanations.
+  - Comparison table: JS ecosystem baseline vs your Reason/OCaml implementation choices.
+*/}
+
 - [ ]  Check intro from https://git.ahrefs.com/ahrefs/monorepo/pull/24942
 - [ ]  Check how others “release” stuff
     - [ ]  https://nextjs.org/blog/turbopack-for-development-stable

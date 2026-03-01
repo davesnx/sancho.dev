@@ -1,5 +1,5 @@
 ---
-title: "The usage of Effect in query-json"
+title: "Using Effects in query-json"
 publishedAt: "2025-01-13"
 isDraft: true
 tags:
@@ -15,7 +15,20 @@ Since then, query-json grew. It went from supporting basic field access and filt
 
 jq is not just a query language. It's a programming language with real control flow. Expressions can produce zero, one, or many results. They can fail. They can halt the program. They can break out of loops. They can signal errors that propagate up to `try/catch`. The old "take an expression, return a value" model couldn't handle most of this properly.
 
-This post is about how I rewrote the interpreter using OCaml 5's effect system to handle all of these control flow patterns elegantly. If you've ever implemented `try/catch` in a language, you already know what I'm talking about. If not, don't worry — I'll walk you through it.
+This post is about how I rewrote the interpreter using OCaml 5's effect system to handle those control-flow patterns in one model. If you've ever implemented `try/catch` in a language, you already know the shape of the problem. If not, don't worry — we'll walk through it step by step.
+
+## Before and after, quickly
+
+Before the refactor, control flow was spread across return values and special-case branching. That worked for a subset of jq, but got brittle as language features expanded.
+
+After the refactor, control flow is represented by four effects:
+
+- `Yield` for producing values (zero, one, many).
+- `Break` for loop exit.
+- `Halt` for terminating program execution with an exit code.
+- `User_error` for user-visible errors caught by `try/catch`.
+
+The main practical change is that interpreter cases stay focused on local semantics, while handlers manage cross-cutting flow concerns.
 
 ## What makes jq a real language
 
@@ -46,7 +59,7 @@ The interpreter is a single recursive function called `interp`. It takes a conte
 
 The unusual part is what "produce" means. The function doesn't _return_ JSON values. Its return type is `unit` — it returns nothing. Instead, when it wants to output a result, it calls `yield`. When it needs to gather all results from a sub-expression, it calls `collect`. When it wants to stop execution, it performs `break` or `halt`. When something goes wrong, it performs an error.
 
-These are all **effects**.
+These are all **effects**, and the handlers are where non-local control flow is defined.
 
 Here's what that looks like in code:
 
@@ -94,12 +107,21 @@ type _ Effect.t +=
   | User_error : Json.t -> unit Effect.t
 ```
 
-These four effects are the entire control flow concepts of the query-json interpreter. Every interesting thing the interpreter does goes thought one of thoses:
+These four effects model the interpreter's control flow:
 
-- Yield —> producing results
-- Break -> stopping loops
-- Halt -> terminating the program
-- User_error -> raising errors from the users program
+- `Yield` -> produce results
+- `Break` -> stop loops
+- `Halt` -> terminate program execution
+- `User_error` -> raise user-program errors
+
+### Visual mental model
+
+If you plan to add a diagram later, this is the shape:
+
+1. A central `interp` loop performs one of four effects.
+2. Nearby handlers catch only what they care about (`Yield` in `pipe`, `User_error` in `try/catch`, etc.).
+3. Unhandled effects bubble to outer handlers.
+4. The top-level `execute` handler is the final boundary.
 
 ## How Yield works
 
@@ -297,12 +319,41 @@ query-json 'try error("boom") catch "caught: " + .message' 'null'
 
 Effects that the handler doesn't recognize (like `Yield` or `Break`) pass through transparently, bubbling up to the next handler. This composability is what makes the whole thing work.
 
+## Why effects over exceptions or result plumbing
+
+I don't think effects are universally better than exceptions or `result`. They are useful _here_ because jq pipelines combine generators, early exits, and catchable user errors in deeply nested interpreter paths.
+
+| Concern | Effects | Exceptions | `result`/sum-return plumbing |
+| --- | --- | --- | --- |
+| Pipeline ergonomics (`a | b`) | `Yield` composes naturally via handlers | Needs careful re-raise discipline around intermediate handlers | Return types balloon quickly and spread through many cases |
+| Selective handling | Handle `Yield` without touching `Break`/`Halt`/`User_error` | Usually one channel unless you build custom hierarchies | Possible, but requires explicit branching in many layers |
+| Resume semantics | Built-in (`Effect.Deep.continue`) | Not resumable | Manual threading only |
+| Error/control-flow distinction | Separate effect constructors | Easy to conflate early-stop vs real error | Explicit but noisy in interpreter glue |
+| Debuggability | Clear once handlers are centralized | Familiar tools, but mixed intent in one mechanism | Explicit at call sites, but hard to read globally |
+
+For this interpreter, effects reduced the amount of cross-function plumbing in control-flow-heavy paths while keeping the top-level model explicit.
+
+## Performance notes from benchmarks
+
+Performance was one of the first questions I had after this refactor, so I leaned on the benchmark suite in the query-json repo (`benchmarks/README.md`). On the published benchmark set (query-json `0.5.52` vs jq `1.8.1`), query-json is generally faster, with reported speedups between roughly `1.5x` and `4.5x` depending on operation and file size.
+
+A few examples from that report:
+
+- Small file (`1.3KB`), `.first.id`: around `3.0x` faster.
+- Medium file (`104KB`), `length`: around `4.5x` faster.
+- Big file (`575KB`), `.[0]`: around `3.3x` faster.
+- Huge file (`97MB`), identity (`.`): around `1.5x` faster.
+
+This does **not** prove effects are the reason for all wins. The benchmark report also points to native compilation, parser/runtime choices, and architecture differences. The practical takeaway for this article is narrower: moving control-flow glue to effects did not block strong performance in real workloads.
+
 ## Where effects actually matter
 
-I should be honest about where effects pull their weight. Most of the interpreter — `map`, `sort_by`, `group_by`, `keys`, math operations — eagerly collects results into lists via `collect` and then works on those lists directly. These functions could just return `Json.t list` and be fine.
+It's worth being explicit about where effects pull their weight. Most of the interpreter — `map`, `sort_by`, `group_by`, `keys`, math operations — eagerly collects results into lists via `collect` and then works on those lists directly. Those functions could return `Json.t list` and be fine.
 
 Effects are load-bearing for about 20% of the interpreter: `pipe`, `comma`, `select`, `limit`, `try/catch`, `alternative` — the compositional glue that connects expressions. That's where the generator model matters, where values flow lazily from one stage to the next, where early termination and error propagation need to cross boundaries cleanly.
 
 But that 20% is the hard part. It's the part that was painful to implement with explicit result types, the part where every intermediate function had to participate in the plumbing. The other 80% was always straightforward — call `collect`, get a list, work on the list. Effects didn't change those functions much. They changed the connective tissue between them, and that made all the difference.
 
-If you want to explore the code yourself, [query-json is on GitHub](https://github.com/davesnx/query-json) and the interpreter lives in a single file: [`source/Interpreter.ml`](https://github.com/davesnx/query-json/blob/main/source/Interpreter.ml).
+If you want to inspect the implementation, [query-json is on GitHub](https://github.com/davesnx/query-json) and the interpreter lives in [`source/Interpreter.ml`](https://github.com/davesnx/query-json/blob/main/source/Interpreter.ml).
+
+If you want to try the language quickly, open the [query-json playground](https://query-json.pages.dev), run a few generator-heavy queries (`.[]`, `limit`, `try/catch`), then read the effect handlers side by side with those queries. That makes the control-flow model click fast.

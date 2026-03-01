@@ -9,6 +9,46 @@ tags:
 description: "A practical guide to parser combinators"
 ---
 
+{/*
+ASSESSMENT
+
+1) Opinion on quality and voice
+- Very strong educational draft. The tone is friendly, practical, and actually beginner-safe without being condescending.
+- The narrative arc (regex pain -> core idea -> building blocks -> full parser) is excellent and easy to follow.
+- Code samples are well chosen and progressive, with enough explanation to teach mental models, not just syntax.
+
+2) What's missing or weak
+- There is no dedicated section on tradeoffs: when parser combinators become awkward, performance caveats, backtracking pitfalls.
+- Error handling is introduced, but debugging strategies (tracing parser position, isolating failing combinator) are still light.
+- The post says "for dummies" but a few terms (applicative/backtracking behavior) might still need one-sentence clarifications.
+- Missing a compact final checklist readers can use when designing their own parser.
+
+3) How I would finish it
+- Add a section "Common gotchas" with concrete cases:
+  - greedy parsers consuming too much,
+  - `<|>` behavior when input is consumed,
+  - whitespace handling,
+  - quoted string escapes.
+- Add one section "Debugging workflow" with a repeatable process:
+  1. test smallest parser first,
+  2. compose incrementally,
+  3. attach `<?>` labels early,
+  4. keep failing input fixtures.
+- Add a tiny benchmark note or practical guidance on when to consider Menhir for full language grammars.
+- End with a "build-your-own" exercise: parse mini-INI/CSV/log format with 3 progressive tasks.
+- Tighten the final paragraph into a memorable ending line + "what to try next this weekend."
+
+4) Hero image and visual concepts
+- Hero image options:
+  - Side-by-side "Regex wall of symbols" vs "Composable parser blocks".
+  - Conveyor belt diagram where chunks of input pass through parser stages.
+  - Whiteboard-style "A | B | many(A)" visual with arrows and highlighted consumed text.
+- In-article visuals:
+  - Annotated log line with color-coded parser responsibility.
+  - State progression strip: remaining input after each combinator.
+  - Flowchart of parser failure paths with improved labeled errors.
+*/}
+
 I was very interested in learning how to write a parser, mostly by hand and avoid a grammar generation (such as yacc or menhir) Since I can't help myself and love Functional programming, Parser combinators had been on my radar for a while. I mostly bounced off a few times from Haskell tutorials because of the monad explanations (and not being an expert in Haskell lol).
 
 When I finally break thought and learned them, I was surprised how simple the core idea is. This post is what I wish someone had shown me, from PROBLEM -> IDEA -> IMPLEMENTATION.

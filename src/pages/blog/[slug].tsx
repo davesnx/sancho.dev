@@ -175,7 +175,7 @@ const H6 = createHeadingWithAnchor(StyledH6, "#");
 const Content = styled.p`
   font-family: ${fonts.sans};
   line-height: 1.85rem;
-  color: ${colors.body90};
+  color: ${colors.primary80};
   font-size: ${fonts.fontSize1};
   font-weight: 400;
   margin-bottom: 1.2rem;
@@ -269,7 +269,7 @@ const Table = styled.table`
   width: 100%;
   margin: 32px 0;
   font-family: ${fonts.sans};
-  color: ${colors.body90};
+  color: ${colors.primary80};
   line-height: 1.7142857;
   margin-bottom: 2em;
   margin-top: 2em;
@@ -493,7 +493,7 @@ export default function Post({
                 <TextLink
                   weight={600}
                   color={colors.body50}
-                  hoverColor={colors.body80}
+                  hoverColor={colors.primary80}
                   decorationColor="transparent"
                   href="/about"
                   monospace
