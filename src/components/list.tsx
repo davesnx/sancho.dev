@@ -5,7 +5,7 @@ import { styles } from "./text";
 
 export const ListItem = styled.li`
   ${(props) => styles(props)};
-  color: ${colors.body};
+  color: ${colors.textDefault};
   margin-top: 0.5em;
   margin-bottom: 0.5em;
   margin-left: 1em;
@@ -13,7 +13,7 @@ export const ListItem = styled.li`
   display: list-item;
 
   ::marker {
-    color: ${colors.body50};
+    color: ${colors.textMuted};
   }
 
   & > a {
@@ -24,19 +24,19 @@ export const ListItem = styled.li`
 export const OrderList = styled.ol`
   margin: 24px 0px;
   padding: 0px;
-  color: ${colors.body};
+  color: ${colors.textDefault};
 `;
 
 export const UnorderList = styled.ul`
   width: 100%;
   margin: 24px 0px;
   padding: 0px;
-  color: ${colors.body};
+  color: ${colors.textDefault};
 `;
 
 export const VisualList = styled.ul`
   margin: 8px 0px;
   padding: 0;
-  color: ${colors.body};
+  color: ${colors.textDefault};
   list-style: none;
 `;

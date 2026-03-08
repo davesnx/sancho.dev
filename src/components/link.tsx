@@ -67,9 +67,9 @@ export const TextLink = ({
 }: AnchorProps & {
   href: string;
 } & React.AnchorHTMLAttributes<HTMLAnchorElement>) => {
-  const color = rest.color || colors.body;
-  const hoverColor = rest.hoverColor || colors.primary;
-  const decorationColor = rest.decorationColor || color;
+  const color = rest.color || colors.textDefault;
+  const hoverColor = rest.hoverColor || colors.textAccent;
+  const decorationColor = rest.decorationColor || colors.textTertiary;
 
   const externalProps = isExternalLink(href)
     ? { target: "_blank" as const, rel: "noopener noreferrer" }

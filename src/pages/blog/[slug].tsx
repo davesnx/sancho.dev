@@ -31,7 +31,7 @@ const BlogContent = styled.div`
     border-radius: 4px;
     padding: 3px 6px;
     margin: 0px 2px;
-    color: ${colors.body};
+    color: ${colors.textDefault};
     background: ${colors.backgroundSecondary};
   }
 
@@ -66,7 +66,7 @@ const TwitterButton = styled.a`
   align-items: center;
   gap: 0.5rem;
   background-color: ${colors.backgroundSecondary};
-  color: ${colors.body};
+  color: ${colors.textDefault};
   padding: 10px 16px;
   border-radius: 10px;
   text-decoration: none;
@@ -75,11 +75,11 @@ const TwitterButton = styled.a`
   font-size: 14px;
 
   &:hover {
-    background-color: ${colors.contrastCodeBackground80};
+    background-color: ${colors.backgroundTertiary};
   }
 
   &:active {
-    background-color: ${colors.contrastCodeBackground80};
+    background-color: ${colors.backgroundTertiary};
   }
 `;
 
@@ -89,10 +89,11 @@ const HeadingContent = styled.span`
 `;
 
 const AnchorLink = styled.a`
+  opacity: 0.2;
   position: absolute;
   right: calc(100% + 1rem);
   top: 0;
-  color: ${colors.contrastCodeBackground80};
+  color: ${colors.textTertiary};
   text-decoration: none;
   font-family: ${fonts.mono};
   font-weight: 800;
@@ -100,7 +101,7 @@ const AnchorLink = styled.a`
   white-space: nowrap;
 
   &:hover {
-    color: ${colors.contrastCodeBackground};
+    color: ${colors.textMuted};
   }
 
   @media screen and (max-width: ${breakpoints.mobile.width}px) {
@@ -175,7 +176,7 @@ const H6 = createHeadingWithAnchor(StyledH6, "#");
 const Content = styled.p`
   font-family: ${fonts.sans};
   line-height: 1.85rem;
-  color: ${colors.primary80};
+  color: ${colors.textProse};
   font-size: ${fonts.fontSize1};
   font-weight: 400;
   margin-bottom: 1.2rem;
@@ -188,12 +189,12 @@ const Content = styled.p`
 
 const Line = {
   horitzontal: css`
-    background-color: ${colors.body10};
+    background-color: ${colors.borderSubtle};
     width: 100%;
     height: 2px;
   `,
   vertical: css`
-    background-color: ${colors.body10};
+    background-color: ${colors.borderSubtle};
     width: 2px;
     height: 100%;
   `,
@@ -222,7 +223,7 @@ const ImageCaption = styled.span`
   text-align: left;
   font-family: ${fonts.sans};
   font-size: ${fonts.fontSizeN1};
-  color: ${colors.body50};
+  color: ${colors.textMuted};
   font-style: italic;
 `;
 
@@ -269,7 +270,7 @@ const Table = styled.table`
   width: 100%;
   margin: 32px 0;
   font-family: ${fonts.sans};
-  color: ${colors.primary80};
+  color: ${colors.textProse};
   line-height: 1.7142857;
   margin-bottom: 2em;
   margin-top: 2em;
@@ -277,7 +278,7 @@ const Table = styled.table`
   text-align: left;
 
   td {
-    border-color: ${colors.body10};
+    border-color: ${colors.borderSubtle};
     border-style: solid;
     border-bottom-width: 1px;
     border-top-width: 0px;
@@ -293,7 +294,7 @@ const Table = styled.table`
 
   th {
     background-color: ${colors.backgroundSecondary};
-    border-color: ${colors.body10};
+    border-color: ${colors.borderSubtle};
     border-bottom-width: 1px;
     border-left-width: 1px;
     border-top-width: 1px;
@@ -304,7 +305,7 @@ const Table = styled.table`
   }
 
   td:last-child {
-    border-color: ${colors.body10};
+    border-color: ${colors.borderSubtle};
     border-right-width: 1px;
   }
 
@@ -360,7 +361,7 @@ const Blockquote = styled.blockquote`
   }
 
   & > code {
-    background-color: ${colors.primary90} !important;
+    background-color: ${colors.textHeading} !important;
   }
 `;
 
@@ -395,7 +396,7 @@ const BlogPostTitle = styled(H1)`
   text-align: center;
   width: 100%;
   line-height: 1.4;
-  color: ${colors.primary90};
+  color: ${colors.textHeading};
 
   @media screen and (max-width: ${breakpoints.mobile.width}px) {
     font-size: 2rem;
@@ -409,8 +410,8 @@ const A = (props: any) => {
       target="_blank"
       rel="noopener noreferrer"
       weight={500}
-      color={colors.body}
-      hoverColor={colors.primary}
+      color={colors.textDefault}
+      hoverColor={colors.textAccent}
     />
   );
 };
@@ -428,7 +429,7 @@ export const getStaticPaths: GetStaticPaths = () => {
 };
 
 const Strong = (props: any) => {
-  return <Text as="strong" weight={600} color={colors.primary} {...props} />;
+  return <Text as="strong" weight={600} color={colors.textAccent} {...props} />;
 };
 
 export const getStaticProps: GetStaticProps = async ({ params }) => {
@@ -476,7 +477,7 @@ export default function Post({
             <Row gap={2}>
               <Text
                 kerning="0.05rem"
-                color={colors.body50}
+                color={colors.textMuted}
                 size={fonts.fontSizeN2}
                 weight={600}
                 monospace
@@ -486,14 +487,14 @@ export default function Post({
                   "MMM yyyy"
                 ).toUpperCase()}
               </Text>
-              <Text color={colors.body30} size={fonts.fontSize0} weight={400} monospace>
+              <Text color={colors.textTertiary} size={fonts.fontSize0} weight={400} monospace>
                 {" • "}
               </Text>
               <Text kerning="0.05rem" weight={600} size={fonts.fontSizeN2} monospace>
                 <TextLink
                   weight={600}
-                  color={colors.body50}
-                  hoverColor={colors.primary80}
+                  color={colors.textMuted}
+                  hoverColor={colors.textProse}
                   decorationColor="transparent"
                   href="/about"
                   monospace
@@ -504,12 +505,12 @@ export default function Post({
 
               {frontmatter.readingTime && (
                 <>
-                  <Text color={colors.body30} size={fonts.fontSize0} weight={400} monospace>
+                  <Text color={colors.textTertiary} size={fonts.fontSize0} weight={400} monospace>
                     {" • "}
                   </Text>
                   <Text
                     kerning="0.05rem"
-                    color={colors.body50}
+                    color={colors.textMuted}
                     size={fonts.fontSizeN2}
                     weight={600}
                     monospace
@@ -563,7 +564,7 @@ export default function Post({
                     target="_blank"
                     rel="noopener noreferrer"
                   >
-                    <Twitter fill={colors.body} size={20} />
+                    <Twitter fill={colors.textDefault} size={20} />
                     <Text monospace>@davesnx</Text>
                   </TwitterButton>
                 </Row>

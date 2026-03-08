@@ -6,14 +6,14 @@
  * @property {string} g - Green color value
  * @property {string} b - Blue color value
  * @property {string} bluesky - Bluesky brand color
- * @property {string} bluesky50 - Bluesky brand color
- * @property {string} bluesky30 - Bluesky brand color
+ * @property {string} bluesky60 - Bluesky brand color
+ * @property {string} bluesky20 - Bluesky brand color
  * @property {string} discord - Discord brand color
- * @property {string} discord50 - Discord brand color
- * @property {string} discord30 - Discord brand color
+ * @property {string} discord60 - Discord brand color
+ * @property {string} discord20 - Discord brand color
  * @property {string} strava - Strava brand color
- * @property {string} strava50 - Strava brand color
- * @property {string} strava30 - Strava brand color
+ * @property {string} strava60 - Strava brand color
+ * @property {string} strava20 - Strava brand color
  */
 
 /**
@@ -24,33 +24,31 @@ const commonValues = {
   r: "#FF211B",
   g: "#17E620",
   b: "#003AEC",
-  bluesky: "#1085FD",
-  bluesky50: "#124D88",
-  bluesky30: "#132537",
-  discord: "#7289DA",
-  discord50: "#434F77",
-  discord30: "#222632",
-  strava: "#FC4C02",
-  strava50: "#88300B",
-  strava30: "#411b0b",
+  bluesky: "rgb(18 133 254)",
+  bluesky60: "rgb(18 133 254 / 60%)",
+  bluesky20: "rgb(18 133 254 / 20%)",
+  discord: "rgb(88 101 242)",
+  discord60: "rgb(88 101 242 / 60%)",
+  discord20: "rgb(88 101 242 / 20%)",
+  strava: "rgb(250 89 1)",
+  strava60: "rgb(250 89 1 / 60%)",
+  strava20: "rgb(250 89 1 / 20%)",
 };
 
 /**
  * @typedef {Object} ThemeValues
- * @property {string} body - Body text color
- * @property {string} contrast - Contrast background color
- * @property {string} backgroundSecondary - Code block background color
- * @property {string} contrastCodeBackground - Contrasting code background color
- * @property {string} contrastCodeBackground80 - Contrasting code background color
- * @property {string} primary - Primary accent color
- * @property {string} inverted - Inverted text color
- * @property {string} primary90 - Primary accent color
- * @property {string} primary80 - Primary accent color
- * @property {string} body - Body text color
- * @property {string} body90 - Body text color
- * @property {string} body50 - Body text color
- * @property {string} body30 - Body text color
- * @property {string} body10 - Body text color
+ * @property {string} backgroundPrimary - Main page background color
+ * @property {string} backgroundSecondary - Secondary surface background (cards, code blocks)
+ * @property {string} backgroundGrey900 - Fixed dark surface background
+ * @property {string} textAccent - Strongest foreground: hover states, emphasis, bold text
+ * @property {string} textHeading - Heading text color (H1-H6, titles)
+ * @property {string} textProse - Long-form content text (paragraphs, nav items, code)
+ * @property {string} textDefault - Default/fallback text color across components
+ * @property {string} textMuted - Secondary info: dates, metadata, descriptions
+ * @property {string} textTertiary - Tertiary text: footer, separators, decorations
+ * @property {string} borderSubtle - Borders, rules, dividers, subtle backgrounds
+ * @property {string} borderStrong - Card borders, interactive element outlines
+ * @property {string} backgroundTertiary - Hover state backgrounds for cards and buttons
  */
 
 const navyScale = {
@@ -83,19 +81,18 @@ const greyScale = {
  * @type {ThemeValues}
  */
 const lightValues = {
-  inverted: greyScale.grey900,
-  primary: navyScale.navy900,
-  primary90: navyScale.navy800,
-  primary80: navyScale.navy500,
-  body: navyScale.navy700,
-  body90: navyScale.navy600,
-  body50: navyScale.navy400,
-  body30: navyScale.navy200,
-  body10: navyScale.navy100,
+  backgroundGrey900: greyScale.grey900,
   backgroundPrimary: greyScale.grey100,
   backgroundSecondary: greyScale.grey200,
-  contrastCodeBackground: greyScale.grey400,
-  contrastCodeBackground80: greyScale.grey300,
+  backgroundTertiary: greyScale.grey300,
+  borderStrong: greyScale.grey400,
+  borderSubtle: navyScale.navy100,
+  textAccent: navyScale.navy900,
+  textDefault: navyScale.navy700,
+  textHeading: navyScale.navy800,
+  textMuted: navyScale.navy400,
+  textProse: navyScale.navy500,
+  textTertiary: navyScale.navy200,
 };
 
 /**
@@ -103,19 +100,18 @@ const lightValues = {
  * @type {ThemeValues}
  */
 const darkValues = {
+  backgroundGrey900: greyScale.grey900,
   backgroundPrimary: greyScale.grey1000,
   backgroundSecondary: greyScale.grey900,
-  inverted: greyScale.grey900,
-  primary: greyScale.grey100,
-  primary90: greyScale.grey300,
-  primary80: greyScale.grey500,
-  body: navyScale.navy100,
-  body90: navyScale.navy300,
-  body50: greyScale.grey600,
-  body30: greyScale.grey700,
-  body10: greyScale.grey800,
-  contrastCodeBackground: greyScale.grey800,
-  contrastCodeBackground80: greyScale.grey800,
+  backgroundTertiary: greyScale.grey800,
+  borderStrong: greyScale.grey800,
+  borderSubtle: greyScale.grey800,
+  textAccent: greyScale.grey100,
+  textDefault: navyScale.navy100,
+  textHeading: greyScale.grey300,
+  textMuted: greyScale.grey600,
+  textProse: greyScale.grey500,
+  textTertiary: greyScale.grey700,
 };
 
 /** @type {CommonValues & ThemeValues} */

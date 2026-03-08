@@ -57,7 +57,7 @@ const Variable = () => {
       <Container>
         <Squared x={mouse.x} text="David Sancho" />
         <Spacer top={4}>
-          <Text align="center" color={colors.body}>
+          <Text align="center" color={colors.textDefault}>
             {isMobile
               ? "Tap into the name to see the "
               : "Move the mouse in the y axis to see the "}

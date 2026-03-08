@@ -28,7 +28,7 @@ const CodeBlock = styled.pre`
   tab-size: 2;
   hyphens: none;
   line-height: 1.6;
-  color: ${colors.primary80};
+  color: ${colors.textProse};
 `;
 
 const PlaygroundLink = styled.a`
@@ -44,12 +44,12 @@ const PlaygroundLink = styled.a`
   font-size: 0.7rem;
   font-weight: 600;
   text-decoration: none;
-  color: ${colors.primary80};
+  color: ${colors.textProse};
   background: ${colors.backgroundSecondary};
   transition: all 0.15s ease;
 
   &:hover {
-    color: ${colors.body};
+    color: ${colors.textDefault};
     background: ${colors.backgroundSecondary};
   }
 

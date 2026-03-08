@@ -12,14 +12,14 @@ const Wrapper = styled.div`
 
 const Intro = styled.p`
   margin: 0;
-  color: ${colors.primary80};
+  color: ${colors.textProse};
   font-size: ${fonts.fontSizeN1};
   font-family: ${fonts.sans};
   line-height: 1.6;
 `;
 
 const TableWrap = styled.div`
-  border: 1px solid ${colors.body10};
+  border: 1px solid ${colors.borderSubtle};
   border-radius: 12px;
   overflow: auto;
   background: ${colors.backgroundSecondary};
@@ -37,25 +37,25 @@ const HeaderCell = styled.th`
   font-size: ${fonts.fontSizeN2};
   letter-spacing: 0.05em;
   text-transform: uppercase;
-  color: ${colors.primary80};
+  color: ${colors.textProse};
   background: ${colors.backgroundSecondary};
   padding: 12px 14px;
-  border-bottom: 1px solid ${colors.body10};
+  border-bottom: 1px solid ${colors.borderSubtle};
 `;
 
 const BodyCell = styled.td`
   padding: 10px 14px;
-  border-bottom: 1px solid ${colors.body10};
+  border-bottom: 1px solid ${colors.borderSubtle};
   vertical-align: middle;
 `;
 
 const TokenName = styled.code`
-  color: ${colors.body};
+  color: ${colors.textDefault};
   font-size: ${fonts.fontSizeN2};
 `;
 
 const Value = styled.code`
-  color: ${colors.primary80};
+  color: ${colors.textProse};
   font-size: ${fonts.fontSizeN2};
 `;
 
@@ -66,7 +66,7 @@ const Swatch = styled.span<{ colorValue: string; textColor: string }>`
   min-width: 116px;
   padding: 4px 10px;
   border-radius: 999px;
-  border: 1px solid ${colors.body10};
+  border: 1px solid ${colors.borderSubtle};
   background: ${(props) => props.colorValue};
   color: ${(props) => props.textColor};
   font-size: ${fonts.fontSizeN2};
@@ -125,7 +125,7 @@ export default function UIColors() {
   return (
     <>
       <MetaData title="UI Color Tokens" />
-      <Page title={<h1 style={{ margin: 0, color: colors.primary }}>UI Color Tokens</h1>}>
+      <Page title={<h1 style={{ margin: 0, color: colors.textAccent }}>UI Color Tokens</h1>}>
         <Wrapper>
           <Intro>
             Theme tokens sourced from <code>src/theme/theme.js</code>, rendered side-by-side for light and dark modes.

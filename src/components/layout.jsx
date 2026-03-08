@@ -30,10 +30,10 @@ const MenuItem = styled(NavigateButton)`
   text-transform: uppercase;
   display: inline-flex;
   letter-spacing: 2px;
-  color: ${colors.primary80};
+  color: ${colors.textProse};
 
   &:hover {
-    color: ${colors.primary};
+    color: ${colors.textAccent};
   }
 `;
 
@@ -61,7 +61,7 @@ const fadeIn = keyframes`{
 const Svg = styled.svg`
   width: 100%;
   height: 100%;
-  fill: ${colors.primary80};
+  fill: ${colors.textProse};
   transition: transform 200ms ease-in-out;
   position: relative;
 `;
@@ -76,8 +76,8 @@ const IconWrapper = styled(animated.div)`
 `;
 
 const ThemeTogglerButton = styled.button`
-  color: ${(props) => (props.floating ? colors.body : 'transparent')};
-  background: ${(props) => (props.floating ? colors.body10 : 'transparent')};
+  color: ${(props) => (props.floating ? colors.textDefault : 'transparent')};
+  background: ${(props) => (props.floating ? colors.borderSubtle : 'transparent')};
   border: none;
   padding: 0;
   cursor: pointer;
@@ -95,7 +95,7 @@ const ThemeTogglerButton = styled.button`
   transition: all 0.2s ease;
 
   &:hover {
-    background: ${(props) => (props.floating ? colors.body20 : 'transparent')};
+    background: ${(props) => (props.floating ? colors.textTertiary : 'transparent')};
   }
 `;
 
@@ -214,7 +214,7 @@ const Icon = styled.span`
 const Bar = styled.span`
   width: 100%;
   height: 3px;
-  background-color: ${colors.primary};
+  background-color: ${colors.textAccent};
   display: block;
 `;
 
@@ -248,11 +248,11 @@ const Logo = styled.div`
   align-items: center;
   justify-content: center;
 
-  color: ${colors.body};
+  color: ${colors.textDefault};
   transition: color 0.15s ease;
 
   &:hover {
-    color: ${colors.primary};
+    color: ${colors.textAccent};
   }
 `;
 
@@ -364,12 +364,12 @@ export default function Layout({ children }) {
         <Spacer top={4} bottom={6}>
           <Footer>
             <div>
-              <Text color={colors.body30} weight={600} size={font.fontSizeN2} monospace>
+              <Text color={colors.textTertiary} weight={600} size={font.fontSizeN2} monospace>
                 David Sancho (
                 <TextLink
                   weight={600}
-                  color={colors.body30}
-                  hoverColor={colors.body50}
+                  color={colors.textTertiary}
+                  hoverColor={colors.textMuted}
                   href="https://x.com/davesnx"
                   monospace
                 >{`@davesnx`}</TextLink>
@@ -377,11 +377,11 @@ export default function Layout({ children }) {
               </Text>
             </div>
             <div>
-              <Text weight={600} size={font.fontSizeN2} monospace color={colors.body30}>
+              <Text weight={600} size={font.fontSizeN2} monospace color={colors.textTertiary}>
                 <TextLink
                   weight={600}
-                  color={colors.body30}
-                  hoverColor={colors.body50}
+                  color={colors.textTertiary}
+                  hoverColor={colors.textMuted}
                   href="https://github.com/davesnx/sancho.dev"
                   monospace
                 >{`Source`}</TextLink>

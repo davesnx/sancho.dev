@@ -29,13 +29,13 @@ export const getStaticProps: GetStaticProps = async () => {
 
 const PostTitle = styled(H3)`
   transition: color 0.2s ease-out;
-  color: ${colors.primary80};
+  color: ${colors.textProse};
 
   width: 100%;
   text-align: left;
 
   &:hover {
-    color: ${colors.primary};
+    color: ${colors.textAccent};
   }
 `;
 
@@ -65,7 +65,8 @@ const YearHeader = styled.h2`
   font-family: ${font.mono};
   font-size: ${font.fontSize3};
   font-weight: 600;
-  color: ${colors.body10};
+  color: ${colors.textTertiary};
+  opacity: 0.5;
   margin: 0;
   user-select: none;
 `;
@@ -97,12 +98,12 @@ const Blog = ({ frontmatters }: { frontmatters: Array<Frontmatter> }) => {
       <MetaData title="Blog" />
       <Page title={<H1>Blog</H1>}>
         <Spacer bottom={4}>
-          <Text color={colors.body50} size={font.fontSize1}>
+          <Text color={colors.textMuted} size={font.fontSize1}>
             Subscribe via{" "}
             <TextLink
               href="/rss.xml"
-              color={colors.primary80}
-              hoverColor={colors.primary}
+              color={colors.textProse}
+              hoverColor={colors.textAccent}
             >
               RSS
             </TextLink>
@@ -116,9 +117,9 @@ const Blog = ({ frontmatters }: { frontmatters: Array<Frontmatter> }) => {
                 <Stack gap={6} align="left" fullWidth>
                   {(postsByYear[year] ?? []).map((frontmatter: Frontmatter) => (
                     <PostLink
-                      hoverColor={colors.primary}
-                      color={colors.body50}
-                      decorationColor={colors.body30}
+                      hoverColor={colors.textAccent}
+                      color={colors.textMuted}
+                      decorationColor={colors.textTertiary}
                       key={frontmatter.title}
                       href={"/blog/" + frontmatter.slug}
                     >
@@ -129,7 +130,7 @@ const Blog = ({ frontmatters }: { frontmatters: Array<Frontmatter> }) => {
                         {frontmatter.description ? (
                           <Spacer top={0.5}>
                             <PostDescription>
-                              <Text color={colors.body50} size={font.fontSize1}>
+                              <Text color={colors.textMuted} size={font.fontSize1}>
                                 {frontmatter.description}
                               </Text>
                             </PostDescription>

@@ -24,7 +24,7 @@ const GithubIcon = ({
     padded
     size={size}
     svg={Github}
-    bg={colors.primary90}
+    bg={colors.textHeading}
     color="#181717"
   />
 );
@@ -39,8 +39,8 @@ const WebIcon = ({
     padded
     size={size}
     svg={Web}
-    bg={colors.primary90}
-    color={colors.primary}
+    bg={colors.textHeading}
+    color={colors.textAccent}
   />
 );
 
@@ -54,7 +54,7 @@ const YouTubeIcon = ({
     padded
     size={size}
     svg={YouTube}
-    bg={colors.primary90}
+    bg={colors.textHeading}
     color={colors.r}
   />
 );
@@ -95,7 +95,7 @@ const Box = styled.div`
   }
 
   border-radius: 0.5rem;
-  border: 2px solid ${colors.contrastCodeBackground};
+  border: 2px solid ${colors.borderStrong};
   background-color: ${colors.backgroundSecondary};
 
   svg {
@@ -104,7 +104,7 @@ const Box = styled.div`
   }
 
   &:hover {
-    background-color: ${colors.contrastCodeBackground80};
+    background-color: ${colors.backgroundTertiary};
 
     svg {
       filter: grayscale(0);
@@ -132,7 +132,7 @@ export const Item = ({
       <Box>
         <ButtonLink href={link}>
           <Row distribute="left" align="center" gap={0}>
-            <Text color={colors.body30} size={font.fontSize1} weight={700}>
+            <Text color={colors.textTertiary} size={font.fontSize1} weight={700}>
               {meta}
             </Text>
             <IconEl href={link} size={16} />

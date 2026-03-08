@@ -18,7 +18,7 @@ const Name = styled.h1`
   line-height: 1;
   font-size: 3rem;
   letter-spacing: 1.6px;
-  color: ${colors.primary};
+  color: ${colors.textAccent};
 `;
 
 const Home = () => {
@@ -59,45 +59,45 @@ const Home = () => {
           <TextLink
             underlined
             href="https://github.com/davesnx"
-            color={colors.body50}
-            hoverColor={colors.body}
-            decorationColor={colors.body10}
+            color={colors.textMuted}
+            hoverColor={colors.textDefault}
+            decorationColor={colors.borderSubtle}
           >
             {"Github"}
           </TextLink>
           <TextLink
             underlined
+            href={"https://x.com/davesnx"}
+            color={colors.textMuted}
+            hoverColor={colors.textDefault}
+            decorationColor={colors.borderSubtle}
+          >
+            {"Twitter"}
+          </TextLink>
+          <TextLink
+            underlined
             href={"https://bsky.app/profile/david.sancho.dev"}
-            color={colors.bluesky50}
+            color={colors.bluesky60}
             hoverColor={colors.bluesky}
-            decorationColor={colors.bluesky30}
+            decorationColor={colors.bluesky20}
           >
             {"Bluesky"}
           </TextLink>
           <TextLink
             underlined
-            href={"https://x.com/davesnx"}
-            color={colors.body50}
-            hoverColor={colors.body}
-            decorationColor={colors.body10}
-          >
-            {"𝕏 (Twitter)"}
-          </TextLink>
-          <TextLink
-            underlined
             href="https://discordapp.com/users/122441959414431745"
-            color={colors.discord50}
+            color={colors.discord60}
             hoverColor={colors.discord}
-            decorationColor={colors.discord30}
+            decorationColor={colors.discord20}
           >
             {"Discord"}
           </TextLink>
           <TextLink
             underlined
             href="https://www.strava.com/athletes/davesnx"
-            color={colors.strava50}
+            color={colors.strava60}
             hoverColor={colors.strava}
-            decorationColor={colors.strava30}
+            decorationColor={colors.strava20}
           >
             {"Strava"}
           </TextLink>

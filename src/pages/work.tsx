@@ -34,7 +34,7 @@ const CompanyLogo = styled.div`
   width: 80px;
   height: 80px;
   flex-shrink: 0;
-  background-color: ${colors.inverted};
+  background-color: ${colors.backgroundGrey900};
 
   border-radius: 6px;
   display: flex;
@@ -89,15 +89,15 @@ const Job = ({
     <Stack gap={1} align="left" fullWidth>
       <Row distribute="between" fullWidth>
         <Stack align="left" gap={0}>
-          <Text weight={700} size={font.fontSize2} color={colors.primary90}>
+          <Text weight={700} size={font.fontSize2} color={colors.textHeading}>
             {role}
           </Text>
           {company.url && (
             <TextLink
               target="_blank"
-              color={colors.body50}
-              hoverColor={colors.primary80}
-              decorationColor={colors.body30}
+              color={colors.textMuted}
+              hoverColor={colors.textProse}
+              decorationColor={colors.textTertiary}
               href={company.url}
             >
               {company.url}
@@ -105,7 +105,7 @@ const Job = ({
           )}
 
           {!company.url && (
-            <Text weight={500} color={colors.body50} size={font.fontSize1}>
+            <Text weight={500} color={colors.textMuted} size={font.fontSize1}>
               {company.name}
             </Text>
           )}
@@ -142,13 +142,13 @@ const OpenSourceItem = styled.a`
 
   padding: 1rem;
   border-radius: 0.5rem;
-  border: 1px solid ${colors.contrastCodeBackground};
+  border: 1px solid ${colors.borderStrong};
   background-color: ${colors.backgroundSecondary};
 
   transition: all 0.2s ease;
 
   &:hover {
-    background-color: ${colors.contrastCodeBackground80};
+    background-color: ${colors.backgroundTertiary};
 
     ${OrgAvatar} {
       filter: grayscale(0);
@@ -214,11 +214,11 @@ const OpenSource = ({ repo }: { repo: GitHubRepo }) => (
   <OpenSourceItem href={repo.url} target="_blank">
     <RepoHeader>
       <OrgAvatar src={repo.ownerAvatar} alt={repo.owner} />
-      <Text weight={600} size={font.fontSize1} color={colors.primary90}>
+      <Text weight={600} size={font.fontSize1} color={colors.textHeading}>
         {repo.name}
       </Text>
     </RepoHeader>
-    <Text size={font.fontSizeN1} color={colors.body}>
+    <Text size={font.fontSizeN1} color={colors.textDefault}>
       {repo.description}
     </Text>
     <Spacer top={1} />
@@ -226,14 +226,14 @@ const OpenSource = ({ repo }: { repo: GitHubRepo }) => (
       {repo.language && (
         <StatItem>
           <LanguageDot color={getLanguageColor(repo.language)} />{" "}
-          <Text monospace weight={600} size={font.fontSize0} color={colors.body50}>
+          <Text monospace weight={600} size={font.fontSize0} color={colors.textMuted}>
             {repo.language}
           </Text>
         </StatItem>
       )}
       <StatItem>
         <StarIcon />
-        <Text monospace weight={600} size={font.fontSize0} color={colors.body50}>
+        <Text monospace weight={600} size={font.fontSize0} color={colors.textMuted}>
           {repo.stars.toLocaleString()}
         </Text>
       </StatItem>

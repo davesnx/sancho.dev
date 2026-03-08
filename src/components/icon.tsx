@@ -35,7 +35,7 @@ const Icon = ({
   bg: string;
   padded: boolean;
 }) => {
-  const fill = color || colors.body;
+  const fill = color || colors.textDefault;
   return (
     <Logo padded={padded} color={bg}>
       <Svg size={size} fill={fill} color={fill} />
