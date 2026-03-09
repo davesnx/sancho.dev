@@ -24,7 +24,7 @@ const GithubIcon = ({
     padded
     size={size}
     svg={Github}
-    bg={colors.textHeading}
+    bg={colors.textAccent}
     color="#181717"
   />
 );
@@ -39,7 +39,7 @@ const WebIcon = ({
     padded
     size={size}
     svg={Web}
-    bg={colors.textHeading}
+    bg={colors.textAccent}
     color={colors.textAccent}
   />
 );
@@ -54,7 +54,7 @@ const YouTubeIcon = ({
     padded
     size={size}
     svg={YouTube}
-    bg={colors.textHeading}
+    bg={colors.textAccent}
     color={colors.r}
   />
 );
@@ -79,6 +79,15 @@ const KindToIcon: Record<keyof typeof Kind, IconComponent> = {
   YouTube: YouTubeIcon,
 };
 
+const IconWrapper = styled.div`
+  svg {
+    filter: grayscale(1);
+    transition: filter 0.2s ease;
+  }
+`;
+
+const MetaText = styled(Text)``;
+
 const Box = styled.div`
   display: flex;
   flex-direction: row;
@@ -95,19 +104,28 @@ const Box = styled.div`
   }
 
   border-radius: 0.5rem;
-  border: 2px solid ${colors.borderStrong};
+  border: 1px solid ${colors.borderStrong};
   background-color: ${colors.backgroundSecondary};
 
-  svg {
-    filter: grayscale(1);
-    transition: filter 0.2s ease;
+  transition: all 0.2s ease;
+
+  ${MetaText} {
+    color: ${colors.textTertiary};
+    transition: color 0.2s ease;
   }
 
   &:hover {
     background-color: ${colors.backgroundTertiary};
 
-    svg {
-      filter: grayscale(0);
+    ${IconWrapper} svg {
+      filter: grayscale(0.3);
+    }
+
+    ${MetaText} {
+      color: ${colors.textSecondary};
+    }
+    ${H4} {
+      color: ${colors.textAccent};
     }
   }
 `;
@@ -132,14 +150,16 @@ export const Item = ({
       <Box>
         <ButtonLink href={link}>
           <Row distribute="left" align="center" gap={0}>
-            <Text color={colors.textTertiary} size={font.fontSize1} weight={700}>
+            <MetaText size={font.fontSize1} weight={700}>
               {meta}
-            </Text>
-            <IconEl href={link} size={16} />
+            </MetaText>
+            <IconWrapper>
+              <IconEl href={link} size={16} />
+            </IconWrapper>
           </Row>
           <Stack align="left" gap={1}>
             <H4>{title}</H4>
-            <Text size={font.fontSize0}>{description}</Text>
+            <Text color={colors.textSecondary} size={font.fontSize0}>{description}</Text>
           </Stack>
         </ButtonLink>
       </Box>

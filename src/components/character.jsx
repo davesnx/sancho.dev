@@ -11,7 +11,7 @@ export const Character = styled.span`
   display: flex;
   justify-content: center;
   align-items: center;
-  color: ${colors.textDefault};
+  color: ${colors.textPrimary};
   transition: all 200ms ease-out;
 
   & + & {

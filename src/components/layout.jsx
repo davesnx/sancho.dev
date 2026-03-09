@@ -76,8 +76,8 @@ const IconWrapper = styled(animated.div)`
 `;
 
 const ThemeTogglerButton = styled.button`
-  color: ${(props) => (props.floating ? colors.textDefault : 'transparent')};
-  background: ${(props) => (props.floating ? colors.borderSubtle : 'transparent')};
+  color: ${(props) => (props.floating ? colors.textPrimary : 'transparent')};
+  background: ${(props) => (props.floating ? colors.backgroundTertiary : 'transparent')};
   border: none;
   padding: 0;
   cursor: pointer;
@@ -95,7 +95,7 @@ const ThemeTogglerButton = styled.button`
   transition: all 0.2s ease;
 
   &:hover {
-    background: ${(props) => (props.floating ? colors.textTertiary : 'transparent')};
+    background: ${(props) => (props.floating ? colors.borderSubtle : 'transparent')};
   }
 `;
 
@@ -248,7 +248,7 @@ const Logo = styled.div`
   align-items: center;
   justify-content: center;
 
-  color: ${colors.textDefault};
+  color: ${colors.textPrimary};
   transition: color 0.15s ease;
 
   &:hover {
@@ -369,7 +369,7 @@ export default function Layout({ children }) {
                 <TextLink
                   weight={600}
                   color={colors.textTertiary}
-                  hoverColor={colors.textMuted}
+                  hoverColor={colors.textSecondary}
                   href="https://x.com/davesnx"
                   monospace
                 >{`@davesnx`}</TextLink>
@@ -381,7 +381,7 @@ export default function Layout({ children }) {
                 <TextLink
                   weight={600}
                   color={colors.textTertiary}
-                  hoverColor={colors.textMuted}
+                  hoverColor={colors.textSecondary}
                   href="https://github.com/davesnx/sancho.dev"
                   monospace
                 >{`Source`}</TextLink>

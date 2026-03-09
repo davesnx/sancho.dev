@@ -50,7 +50,7 @@ const BodyCell = styled.td`
 `;
 
 const TokenName = styled.code`
-  color: ${colors.textDefault};
+  color: ${colors.textPrimary};
   font-size: ${fonts.fontSizeN2};
 `;
 

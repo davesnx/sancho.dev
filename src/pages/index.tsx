@@ -59,8 +59,8 @@ const Home = () => {
           <TextLink
             underlined
             href="https://github.com/davesnx"
-            color={colors.textMuted}
-            hoverColor={colors.textDefault}
+            color={colors.textSecondary}
+            hoverColor={colors.textPrimary}
             decorationColor={colors.borderSubtle}
           >
             {"Github"}
@@ -68,11 +68,11 @@ const Home = () => {
           <TextLink
             underlined
             href={"https://x.com/davesnx"}
-            color={colors.textMuted}
-            hoverColor={colors.textDefault}
+            color={colors.textSecondary}
+            hoverColor={colors.textPrimary}
             decorationColor={colors.borderSubtle}
           >
-            {"Twitter"}
+            {"(X) Twitter"}
           </TextLink>
           <TextLink
             underlined

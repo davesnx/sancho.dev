@@ -31,7 +31,7 @@ const BlogContent = styled.div`
     border-radius: 4px;
     padding: 3px 6px;
     margin: 0px 2px;
-    color: ${colors.textDefault};
+    color: ${colors.textPrimary};
     background: ${colors.backgroundSecondary};
   }
 
@@ -66,7 +66,7 @@ const TwitterButton = styled.a`
   align-items: center;
   gap: 0.5rem;
   background-color: ${colors.backgroundSecondary};
-  color: ${colors.textDefault};
+  color: ${colors.textPrimary};
   padding: 10px 16px;
   border-radius: 10px;
   text-decoration: none;
@@ -101,7 +101,7 @@ const AnchorLink = styled.a`
   white-space: nowrap;
 
   &:hover {
-    color: ${colors.textMuted};
+    color: ${colors.textSecondary};
   }
 
   @media screen and (max-width: ${breakpoints.mobile.width}px) {
@@ -189,13 +189,13 @@ const Content = styled.p`
 
 const Line = {
   horitzontal: css`
-    background-color: ${colors.borderSubtle};
+    background-color: ${colors.borderStrong};
     width: 100%;
-    height: 2px;
+    height: 3px;
   `,
   vertical: css`
-    background-color: ${colors.borderSubtle};
-    width: 2px;
+    background-color: ${colors.borderStrong};
+    width: 3px;
     height: 100%;
   `,
 };
@@ -219,11 +219,11 @@ const Oversized = styled.span`
 
 const ImageCaption = styled.span`
   display: block;
-  margin-top: 0.25rem;
+  margin-top: 0;
   text-align: left;
   font-family: ${fonts.sans};
   font-size: ${fonts.fontSizeN1};
-  color: ${colors.textMuted};
+  color: ${colors.textTertiary};
   font-style: italic;
 `;
 
@@ -354,14 +354,16 @@ const Blockquote = styled.blockquote`
     ${Line["vertical"]}
   }
 
-  & p {
+  & ${Content} {
     margin: 0;
     font-style: italic;
     font-weight: 500;
   }
 
+  opacity: 0.6;
+
   & > code {
-    background-color: ${colors.textHeading} !important;
+    background-color: ${colors.textAccent} !important;
   }
 `;
 
@@ -396,25 +398,12 @@ const BlogPostTitle = styled(H1)`
   text-align: center;
   width: 100%;
   line-height: 1.4;
-  color: ${colors.textHeading};
+  color: ${colors.textAccent};
 
   @media screen and (max-width: ${breakpoints.mobile.width}px) {
     font-size: 2rem;
   }
 `;
-
-const A = (props: any) => {
-  return (
-    <TextLink
-      {...props}
-      target="_blank"
-      rel="noopener noreferrer"
-      weight={500}
-      color={colors.textDefault}
-      hoverColor={colors.textAccent}
-    />
-  );
-};
 
 export const getStaticPaths: GetStaticPaths = () => {
   const frontmatters = getAllFrontmatter();
@@ -477,7 +466,7 @@ export default function Post({
             <Row gap={2}>
               <Text
                 kerning="0.05rem"
-                color={colors.textMuted}
+                color={colors.textSecondary}
                 size={fonts.fontSizeN2}
                 weight={600}
                 monospace
@@ -493,7 +482,7 @@ export default function Post({
               <Text kerning="0.05rem" weight={600} size={fonts.fontSizeN2} monospace>
                 <TextLink
                   weight={600}
-                  color={colors.textMuted}
+                  color={colors.textSecondary}
                   hoverColor={colors.textProse}
                   decorationColor="transparent"
                   href="/about"
@@ -510,7 +499,7 @@ export default function Post({
                   </Text>
                   <Text
                     kerning="0.05rem"
-                    color={colors.textMuted}
+                    color={colors.textSecondary}
                     size={fonts.fontSizeN2}
                     weight={600}
                     monospace
@@ -534,7 +523,7 @@ export default function Post({
               h5: H5,
               h6: H6,
               p: Content,
-              a: A,
+              a: TextLink,
               li: Li,
               ol: OrderList,
               ul: UnorderList,
@@ -564,7 +553,7 @@ export default function Post({
                     target="_blank"
                     rel="noopener noreferrer"
                   >
-                    <Twitter fill={colors.textDefault} size={20} />
+                    <Twitter fill={colors.textPrimary} size={20} />
                     <Text monospace>@davesnx</Text>
                   </TwitterButton>
                 </Row>

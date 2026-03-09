@@ -41,10 +41,9 @@ const commonValues = {
  * @property {string} backgroundSecondary - Secondary surface background (cards, code blocks)
  * @property {string} backgroundGrey900 - Fixed dark surface background
  * @property {string} textAccent - Strongest foreground: hover states, emphasis, bold text
- * @property {string} textHeading - Heading text color (H1-H6, titles)
  * @property {string} textProse - Long-form content text (paragraphs, nav items, code)
- * @property {string} textDefault - Default/fallback text color across components
- * @property {string} textMuted - Secondary info: dates, metadata, descriptions
+ * @property {string} textPrimary - Default/fallback text color across components
+ * @property {string} textSecondary - Secondary info: dates, metadata, descriptions
  * @property {string} textTertiary - Tertiary text: footer, separators, decorations
  * @property {string} borderSubtle - Borders, rules, dividers, subtle backgrounds
  * @property {string} borderStrong - Card borders, interactive element outlines
@@ -85,12 +84,11 @@ const lightValues = {
   backgroundPrimary: greyScale.grey100,
   backgroundSecondary: greyScale.grey200,
   backgroundTertiary: greyScale.grey300,
-  borderStrong: greyScale.grey400,
-  borderSubtle: navyScale.navy100,
+  borderStrong: navyScale.navy100,
+  borderSubtle: greyScale.grey400,
   textAccent: navyScale.navy900,
-  textDefault: navyScale.navy700,
-  textHeading: navyScale.navy800,
-  textMuted: navyScale.navy400,
+  textPrimary: navyScale.navy700,
+  textSecondary: navyScale.navy400,
   textProse: navyScale.navy500,
   textTertiary: navyScale.navy200,
 };
@@ -105,11 +103,11 @@ const darkValues = {
   backgroundSecondary: greyScale.grey900,
   backgroundTertiary: greyScale.grey800,
   borderStrong: greyScale.grey800,
-  borderSubtle: greyScale.grey800,
+  borderSubtle: greyScale.grey700,
+  /* borderSubtle: greyScale.grey800, */
   textAccent: greyScale.grey100,
-  textDefault: navyScale.navy100,
-  textHeading: greyScale.grey300,
-  textMuted: greyScale.grey600,
+  textPrimary: navyScale.navy100,
+  textSecondary: greyScale.grey600,
   textProse: greyScale.grey500,
   textTertiary: greyScale.grey700,
 };

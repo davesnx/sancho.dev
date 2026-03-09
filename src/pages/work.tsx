@@ -89,13 +89,13 @@ const Job = ({
     <Stack gap={1} align="left" fullWidth>
       <Row distribute="between" fullWidth>
         <Stack align="left" gap={0}>
-          <Text weight={700} size={font.fontSize2} color={colors.textHeading}>
+          <Text weight={700} size={font.fontSize2} color={colors.textAccent}>
             {role}
           </Text>
           {company.url && (
             <TextLink
               target="_blank"
-              color={colors.textMuted}
+              color={colors.textSecondary}
               hoverColor={colors.textProse}
               decorationColor={colors.textTertiary}
               href={company.url}
@@ -105,7 +105,7 @@ const Job = ({
           )}
 
           {!company.url && (
-            <Text weight={500} color={colors.textMuted} size={font.fontSize1}>
+            <Text weight={500} color={colors.textSecondary} size={font.fontSize1}>
               {company.name}
             </Text>
           )}
@@ -214,11 +214,11 @@ const OpenSource = ({ repo }: { repo: GitHubRepo }) => (
   <OpenSourceItem href={repo.url} target="_blank">
     <RepoHeader>
       <OrgAvatar src={repo.ownerAvatar} alt={repo.owner} />
-      <Text weight={600} size={font.fontSize1} color={colors.textHeading}>
+      <Text weight={600} size={font.fontSize1} color={colors.textAccent}>
         {repo.name}
       </Text>
     </RepoHeader>
-    <Text size={font.fontSizeN1} color={colors.textDefault}>
+    <Text size={font.fontSizeN1} color={colors.textPrimary}>
       {repo.description}
     </Text>
     <Spacer top={1} />
@@ -226,14 +226,14 @@ const OpenSource = ({ repo }: { repo: GitHubRepo }) => (
       {repo.language && (
         <StatItem>
           <LanguageDot color={getLanguageColor(repo.language)} />{" "}
-          <Text monospace weight={600} size={font.fontSize0} color={colors.textMuted}>
+          <Text monospace weight={600} size={font.fontSize0} color={colors.textSecondary}>
             {repo.language}
           </Text>
         </StatItem>
       )}
       <StatItem>
         <StarIcon />
-        <Text monospace weight={600} size={font.fontSize0} color={colors.textMuted}>
+        <Text monospace weight={600} size={font.fontSize0} color={colors.textSecondary}>
           {repo.stars.toLocaleString()}
         </Text>
       </StatItem>

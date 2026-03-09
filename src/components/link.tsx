@@ -67,7 +67,7 @@ export const TextLink = ({
 }: AnchorProps & {
   href: string;
 } & React.AnchorHTMLAttributes<HTMLAnchorElement>) => {
-  const color = rest.color || colors.textDefault;
+  const color = rest.color || colors.textPrimary;
   const hoverColor = rest.hoverColor || colors.textAccent;
   const decorationColor = rest.decorationColor || colors.textTertiary;
 

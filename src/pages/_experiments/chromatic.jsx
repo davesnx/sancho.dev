@@ -120,7 +120,7 @@ const Chromatic = () => {
             </Name>
           </ChromaticText>
           <Spacer top={4}>
-            <Text align="center" color={colors.textDefault}>
+            <Text align="center" color={colors.textPrimary}>
               {isMobile
                 ? "Incline the phone to see the "
                 : "Move the mouse across the screen to see the "}

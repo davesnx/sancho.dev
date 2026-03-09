@@ -74,7 +74,7 @@ const ButtonWrapper = styled.a`
   justify-content: space-evenly;
   border-radius: 4px;
   background-color: ${colors.backgroundPrimary};
-  color: ${colors.textDefault};
+  color: ${colors.textPrimary};
   font-family: "${font.sans}";
 
   user-select: none;

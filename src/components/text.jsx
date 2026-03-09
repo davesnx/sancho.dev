@@ -10,7 +10,7 @@ export const styles = (props) => css`
   font-size: ${props.size ? props.size : font.fontSize1};
   font-family: ${props.monospace ? font.mono : font.sans};
   line-height: 1.7;
-  color: ${props.color || colors.textDefault};
+  color: ${props.color || colors.textPrimary};
   display: inline-block;
   margin: 0;
   letter-spacing: ${props.kerning ? props.kerning : "0.02em"};
@@ -22,7 +22,7 @@ const P = styled.p`
 `;
 
 const Text = ({ children, ...rest }) => {
-  const color = rest.color || colors.textDefault;
+  const color = rest.color || colors.textPrimary;
   return (
     <P {...rest} color={color}>
       {children}

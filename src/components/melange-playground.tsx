@@ -49,7 +49,7 @@ const PlaygroundLink = styled.a`
   transition: all 0.15s ease;
 
   &:hover {
-    color: ${colors.textDefault};
+    color: ${colors.textPrimary};
     background: ${colors.backgroundSecondary};
   }
 

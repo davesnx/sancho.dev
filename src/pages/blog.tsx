@@ -98,7 +98,7 @@ const Blog = ({ frontmatters }: { frontmatters: Array<Frontmatter> }) => {
       <MetaData title="Blog" />
       <Page title={<H1>Blog</H1>}>
         <Spacer bottom={4}>
-          <Text color={colors.textMuted} size={font.fontSize1}>
+          <Text color={colors.textSecondary} size={font.fontSize1}>
             Subscribe via{" "}
             <TextLink
               href="/rss.xml"
@@ -118,7 +118,7 @@ const Blog = ({ frontmatters }: { frontmatters: Array<Frontmatter> }) => {
                   {(postsByYear[year] ?? []).map((frontmatter: Frontmatter) => (
                     <PostLink
                       hoverColor={colors.textAccent}
-                      color={colors.textMuted}
+                      color={colors.textSecondary}
                       decorationColor={colors.textTertiary}
                       key={frontmatter.title}
                       href={"/blog/" + frontmatter.slug}
@@ -130,7 +130,7 @@ const Blog = ({ frontmatters }: { frontmatters: Array<Frontmatter> }) => {
                         {frontmatter.description ? (
                           <Spacer top={0.5}>
                             <PostDescription>
-                              <Text color={colors.textMuted} size={font.fontSize1}>
+                              <Text color={colors.textSecondary} size={font.fontSize1}>
                                 {frontmatter.description}
                               </Text>
                             </PostDescription>
