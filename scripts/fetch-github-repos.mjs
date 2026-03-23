@@ -34,6 +34,8 @@ const repoUrls = [
   "https://github.com/davesnx/ocaml-box",
   "https://github.com/davesnx/taco",
   "https://github.com/davesnx/query-json",
+  "https://github.com/davesnx/parseff",
+  "https://github.com/davesnx/ochre",
   "https://github.com/ml-in-barcelona/quickjs.ml",
   "https://github.com/davesnx/ocaml-toon",
   "https://github.com/ocaml-mlx/mlx",

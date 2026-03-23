@@ -90,6 +90,26 @@
     "ownerAvatar": "https://avatars.githubusercontent.com/u/3763599?v=4"
   },
   {
+    "owner": "davesnx",
+    "name": "parseff",
+    "fullName": "davesnx/parseff",
+    "description": "Direct-style parser combinator library for OCaml 5",
+    "stars": 27,
+    "language": "OCaml",
+    "url": "https://github.com/davesnx/parseff",
+    "ownerAvatar": "https://avatars.githubusercontent.com/u/3763599?v=4"
+  },
+  {
+    "owner": "davesnx",
+    "name": "ochre",
+    "fullName": "davesnx/ochre",
+    "description": "A syntax highlight library and cli using TextMate grammars and custom themes",
+    "stars": 1,
+    "language": "OCaml",
+    "url": "https://github.com/davesnx/ochre",
+    "ownerAvatar": "https://avatars.githubusercontent.com/u/3763599?v=4"
+  },
+  {
     "owner": "ml-in-barcelona",
     "name": "quickjs.ml",
     "fullName": "ml-in-barcelona/quickjs.ml",
