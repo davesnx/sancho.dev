@@ -210,6 +210,40 @@ const StarIcon = () => (
   </svg>
 );
 
+const featuredRepos: GitHubRepo[] = [
+  {
+    owner: "davesnx",
+    name: "parseff",
+    fullName: "davesnx/parseff",
+    description: "Direct-style parser combinator library for OCaml 5",
+    stars: 27,
+    language: "OCaml",
+    url: "https://github.com/davesnx/parseff",
+    ownerAvatar: "https://avatars.githubusercontent.com/u/3763599?v=4",
+  },
+  {
+    owner: "davesnx",
+    name: "ochre",
+    fullName: "davesnx/ochre",
+    description:
+      "A syntax highlight library and cli using TextMate grammars and custom themes",
+    stars: 1,
+    language: "OCaml",
+    url: "https://github.com/davesnx/ochre",
+    ownerAvatar: "https://avatars.githubusercontent.com/u/3763599?v=4",
+  },
+];
+
+const getOpenSourceRepos = (repos: GitHubRepo[]): GitHubRepo[] => {
+  const repoByFullName = new Map(repos.map((repo) => [repo.fullName, repo]));
+  const featuredRepoNames = new Set(featuredRepos.map((repo) => repo.fullName));
+
+  return [
+    ...featuredRepos.map((repo) => repoByFullName.get(repo.fullName) ?? repo),
+    ...repos.filter((repo) => !featuredRepoNames.has(repo.fullName)),
+  ];
+};
+
 const OpenSource = ({ repo }: { repo: GitHubRepo }) => (
   <OpenSourceItem href={repo.url} target="_blank">
     <RepoHeader>
@@ -351,101 +385,105 @@ export const getStaticProps: GetStaticProps = async () => {
   };
 };
 
-const Work = ({ repos }: { repos: GitHubRepo[] }) => (
-  <>
-    <MetaData title="Work" />
-    <Page title={<H1>Work</H1>}>
-      <Stack gap={3} align="left">
-        <Job
-          company={{
-            name: "ahrefs",
-            url: "https://ahrefs.com",
-            logo: <AherfsLogo />,
-          }}
-          date={{
-            from: "2021",
-            to: "curr",
-          }}
-          role="Software engineer"
-        />
-        <Job
-          company={{
-            name: "Draftbit",
-            url: "https://draftbit.com",
-            logo: <DraftbitLogo />,
-          }}
-          date={{
-            from: "2020",
-            to: "2021",
-          }}
-          role="Fullstack engineer"
-        />
-        <Job
-          company={{
-            name: "Typeform",
-            url: "https://typeform.com",
-            logo: <TypeformLogo />,
-          }}
-          date={{
-            from: "2014",
-            to: "2019",
-          }}
-          role="Frontend engineer"
-        />
+const Work = ({ repos }: { repos: GitHubRepo[] }) => {
+  const openSourceRepos = getOpenSourceRepos(repos);
 
-        <Job
-          company={{
-            name: "Freelance",
-            url: null,
-            logo: (
-              <p
-                style={{
-                  fontSize: font.fontSize3,
-                  lineHeight: 1,
-                  margin: 0,
-                  padding: 0,
-                }}
-              >
-                😭
-              </p>
-            ),
-            logoIsDark: false,
-          }}
-          date={{
-            from: "2012",
-            to: "2014",
-          }}
-          role="Web developer"
-        />
+  return (
+    <>
+      <MetaData title="Work" />
+      <Page title={<H1>Work</H1>}>
+        <Stack gap={3} align="left">
+          <Job
+            company={{
+              name: "ahrefs",
+              url: "https://ahrefs.com",
+              logo: <AherfsLogo />,
+            }}
+            date={{
+              from: "2021",
+              to: "curr",
+            }}
+            role="Software engineer"
+          />
+          <Job
+            company={{
+              name: "Draftbit",
+              url: "https://draftbit.com",
+              logo: <DraftbitLogo />,
+            }}
+            date={{
+              from: "2020",
+              to: "2021",
+            }}
+            role="Fullstack engineer"
+          />
+          <Job
+            company={{
+              name: "Typeform",
+              url: "https://typeform.com",
+              logo: <TypeformLogo />,
+            }}
+            date={{
+              from: "2014",
+              to: "2019",
+            }}
+            role="Frontend engineer"
+          />
 
-        <Job
-          company={{
-            name: "Ofertia",
-            url: "https://ofertia.com",
-            logo: <OfertiaLogo />,
-          }}
-          date={{
-            from: "2011",
-            to: "2012",
-          }}
-          role="Backend developer"
-        ></Job>
-      </Stack>
-      <Spacer top={3} />
-      <Spacer top={10} bottom={3}>
-        <H2>Open Source</H2>
-      </Spacer>
-      <Text>{`Open source has been a significant part of my career, and I'm committed to giving back to the community that has given me so much. I actively author, maintain, and contribute to projects ranging from developer tools and languages to libraries that help others build better software. Here are some of the notable projects:`}</Text>
-      <Spacer top={6} />
-      <OpenSourceSection>
-        <Gallery>
-          {repos.map((repo) => (
-            <OpenSource key={repo.fullName} repo={repo} />
-          ))}
-        </Gallery>
-      </OpenSourceSection>
-    </Page>
-  </>
-);
+          <Job
+            company={{
+              name: "Freelance",
+              url: null,
+              logo: (
+                <p
+                  style={{
+                    fontSize: font.fontSize3,
+                    lineHeight: 1,
+                    margin: 0,
+                    padding: 0,
+                  }}
+                >
+                  😭
+                </p>
+              ),
+              logoIsDark: false,
+            }}
+            date={{
+              from: "2012",
+              to: "2014",
+            }}
+            role="Web developer"
+          />
+
+          <Job
+            company={{
+              name: "Ofertia",
+              url: "https://ofertia.com",
+              logo: <OfertiaLogo />,
+            }}
+            date={{
+              from: "2011",
+              to: "2012",
+            }}
+            role="Backend developer"
+          ></Job>
+        </Stack>
+        <Spacer top={3} />
+        <Spacer top={10} bottom={3}>
+          <H2>Open Source</H2>
+        </Spacer>
+        <Text>{`Open source has been a significant part of my career, and I'm committed to giving back to the community that has given me so much. I actively author, maintain, and contribute to projects ranging from developer tools and languages to libraries that help others build better software. Here are some of the notable projects:`}</Text>
+        <Spacer top={6} />
+        <OpenSourceSection>
+          <Gallery>
+            {openSourceRepos.map((repo) => (
+              <OpenSource key={repo.fullName} repo={repo} />
+            ))}
+          </Gallery>
+        </OpenSourceSection>
+      </Page>
+    </>
+  );
+};
 
 export default Work;

@@ -59,11 +59,13 @@ const navyScale = {
   navy600: "#384456",
   navy700: "#233044",
   navy800: "#293039",
-  navy900: "#121A24"
+  /* navy900: "#121A24" */
+  navy900: "#393F48"
 };
 
 const greyScale = {
-  grey100: "#FAFAFA",
+  /* grey100: "#FAFAFA", */
+  grey100: "#DCDCDC",
   grey200: "#F5F5F5",
   grey300: "#F0F0F0",
   grey400: "#E3E3E3",

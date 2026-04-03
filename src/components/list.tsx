@@ -13,7 +13,7 @@ export const ListItem = styled.li`
   display: list-item;
 
   ::marker {
-    color: ${colors.borderStrong};
+    color: ${colors.textSecondary};
   }
 
   & > a {
