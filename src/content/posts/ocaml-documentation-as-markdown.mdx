@@ -12,13 +12,13 @@ tags:
 
 For a while, Melange had two documentation sites. The guides lived in [VitePress](https://vitepress.dev/) while the API reference lived in `odoc`'s generated HTML. It worked, but it was far from a great experience.
 
-That split was the reason I wanted markdown output from `odoc`. With dune 3.22 and odoc 3.1, `dune build @doc-markdown` now turns `.mli` and `.mld` files into Markdown files.
+That split was the reason I wanted markdown output from [`odoc`](https://github.com/ocaml/odoc). With dune 3.22 and odoc 3.1, `dune build @doc-markdown` now turns `.mli` and `.mld` files into Markdown files.
 
 ```bash
 dune build @doc-markdown
 ```
 
-I implemented both the odoc markdown backend and the dune integration because this is the direction I wanted OCaml tooling to move toward: integrated with the rest of the ecosystem and more modern. I built it for Melange first, then started using the same flow in smaller libraries too.
+I implemented both the odoc's markdown backend and the dune integration because this is the direction I wanted OCaml tooling to move toward: integrated with the rest of the world and more modern. I built it for Melange first, then started using the same flow in smaller libraries too.
 
 In this post, I want to explain why, and how you can use it too.
 
@@ -26,11 +26,18 @@ In this post, I want to explain why, and how you can use it too.
 
 In [Melange 5.0.0](https://melange.re/v5.0.0/), we use VitePress to write most of the manual documentation: "What is Melange", "Rationale", "Getting Started", that kind of thing. We use `odoc` for the API reference for built-in libraries such as `Belt`, `Js`, and `Stdlib`.
 
-![belt-odoc-html.png](/images/belt-odoc-html.png)
+![odoc's HTML website for melange.belt](/images/belt-odoc-html.png)
 
-The current approach used `odoc`'s HTML backend, which generates a standalone site linked from our documentation. That worked, but it created a big UX barrier between the two sites. I could not reference `melange.re` articles from inside `.mld` files. Search on `melange.re` could not find anything inside the generated HTML. Users went from a unified experience to a different one: `melange.re` is a SPA, while the generated API docs are a separate MPA with different styling. Navigation was not shared, the sidebars were completely different, and language toggling was awkward because we needed separate HTML artifacts for Reason and OCaml. And then there were all the smaller things: favicon, tracking scripts, syntax highlighting, plus the rest of the features a static site generator gives you.
+The current approach used `odoc`'s HTML backend, which generates a standalone site linked from our documentation. That worked, but it created a big UX barrier between the two sites:
 
-For those reasons, I wanted one documentation site with the API reference inside it. The missing piece was markdown output from `odoc`, so another tool could build the final site from those generated files.
+- Users went from a unified experience to a different one: `melange.re` is a SPA, while the generated API docs are a separate MPA with different styling
+- Navigation was not shared, the sidebars were completely different (both content and design)
+- Search on `melange.re` could not find anything inside the generated HTML
+- Could not reference `melange.re` pages from inside `.mld` files
+- Language toggling was awkward because we needed separate HTML artifacts for Reason and OCaml, and it didn't persist when visiting the API references
+- And then there were all the smaller things: favicon, tracking scripts, syntax highlighting, plus the rest of the features a static site generator gives you
+
+For those reasons, I wanted one documentation site with the API reference inside. The missing piece was markdown output from `odoc`, so another tool could build the final site from those generated files.
 
 In our case, that tool was VitePress, but [there are](https://docusaurus.io/) [plenty](https://www.mkdocs.org/) [of](https://www.sphinx-doc.org/) [options](https://starlight.astro.build/) [for](https://jekyllrb.com/) [this](https://gohugo.io/), or even the GitHub markdown viewer.
 
@@ -38,11 +45,13 @@ Those documentation generators are powerful, and I do not expect `odoc` to match
 
 ## What this looks like at the end
 
-![belt-vitepress.png](/images/belt-vitepress.png)
+![Same documentation as before (melange.belt), but as part of the `melange.re` docs](/images/belt-vitepress.png)
+
+You can visit the result live [https://melange.re/unstable/api.html](https://melange.re/unstable/api.html)
 
 ## How does it work
 
-Running `dune build @doc-markdown` reads your `.mli` and `.mld` files, passes them through `odoc`, and produces markdown files under `_doc/_markdown/<package>/`. One module becomes one file, one `.mld` page becomes one file. The output looks something like this:
+Running `dune build @doc-markdown` reads your `.mli` and `.mld` files, passes them through `odoc`, and produces markdown files under `_build/default/_doc/_markdown/<package>/`. One module becomes one file, one `.mld` page becomes one file. The output looks something like this:
 
 ```
 _doc/_markdown/
@@ -56,7 +65,7 @@ The simplest thing you can do is treat that directory as the thing you publish: 
 
 When you want the markdown wired into a bigger pipeline, you have more options. You can promote generated files into your source tree with `(promote (until-clean))` so a static-site generator sees them as normal files next to your hand-written docs. Running `dune clean` removes the promoted copies, so they do not go stale. This is what I do in [parseff](https://github.com/davesnx/parseff), where a Starlight site consumes the promoted markdown. A simplified promote rule for a single page:
 
-```lisp
+```dune
 (rule
  (alias doc-markdown)
  (mode (promote (until-clean)))
@@ -75,14 +84,11 @@ In [parseff](https://github.com/davesnx/parseff), I use `README.mld` as the sour
 
 The relevant dune setup looks like this:
 
-```lisp
+```dune
 (documentation
  (package parseff)
  (mld_files README))
 
-(mdx
- (files README.mld lib/parseff.mli)
- (libraries parseff))
 
 (rule
  (alias doc-markdown) ; This rule uses a known alias `doc-markdown`,
@@ -90,6 +96,8 @@ The relevant dune setup looks like this:
  (mode (promote (until-clean)))
  (deps %{workspace_root}/_doc/_markdown/parseff/README.md)
  (targets README.md)
+ ; This action adds a header with printf since I wanted to make it clear for users
+ ; but it's not really needed to generate a README.md can use `(copy)`
  (action
   (system
    "printf '<!-- Please do not edit this file directly. Update README.mld instead. -->\\n\\n' > %{targets} && cat %{workspace_root}/_doc/_markdown/parseff/README.md >> %{targets}")))
@@ -99,7 +107,7 @@ The relevant dune setup looks like this:
 
 The next step for me was executable examples. You can combine `odoc` with [`mdx`](https://github.com/realworldocaml/mdx), which lets you execute code blocks as part of your test suite. That keeps the documentation correct and in sync with the real source.
 
-```lisp
+```dune
 (mdx
  (files README.mld lib/your_lib.mli)
  (libraries your_lib))
