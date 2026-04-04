@@ -1,0 +1,157 @@
+---
+title: "Learnings after 4 years at ahrefs"
+description: "TBD"
+publishedAt: "2024-10-12"
+published: false
+tags:
+- "ahrefs"
+- "Work"
+- "Open Source"
+---
+
+- Some touches similar as https://blog.haskell.org/a-couple-million-lines-of-haskell/
+
+{/*
+ASSESSMENT
+
+1) Opinion on quality and voice
+- This is already strong and close to publishable. The voice is confident, personal, and specific enough to feel credible.
+- The strongest parts are the cultural observations (direct feedback, async-first, remote in-between moments) and the product philosophy sections.
+- The pacing works: intro -> context -> lessons -> final thesis. It reads like someone who has done the work, not someone summarizing business memes.
+
+2) What's missing or weak
+- A few placeholders still break momentum: "xxx", image TODOs, and opening notes with links that should not ship.
+- "What's ahrefs?" could use one compact "how this affects me day-to-day" bridge before jumping into scale stats.
+- Some sections would benefit from one concrete anecdote (one PR discussion, one project, one failure/recovery) to anchor claims.
+- The ending is good but could land harder with one practical takeaway for readers choosing teams/stacks.
+
+3) How I would finish it
+- Cut all draft notes at the top and replace with a short framing paragraph: "why write this now" + "who this is for."
+- Add one mini-story in 2-4 paragraphs under these sections:
+  - Direct feedback: a real example of blunt feedback that improved an approach.
+  - Prototype vs shipping: one failed prototype and what changed in the second attempt.
+  - Remote works: one retreat/conference moment that changed collaboration quality after returning async.
+- Fill missing sponsor/program details in "Profitability buys freedom" so claims feel complete and not placeholder-like.
+- Add a short section near the end: "Who should join a company like this (and who probably shouldn't)."
+- Expand the final conclusion with a practical checklist (4-6 bullets) for evaluating engineering culture:
+  - ownership of critical path,
+  - technical leadership proximity,
+  - quality of feedback loops,
+  - async documentation hygiene,
+  - long-term incentives.
+
+4) Hero image and visual concepts
+- Hero image options:
+  - Split scene: Pyrenees winter cabin + code editor + Slack thread overlay (remote life + deep work).
+  - "Small team, internet scale" concept art: tiny crew controlling a massive crawler graph.
+  - Tasteful editorial portrait + headline treatment (personal retrospective style).
+- In-article visuals:
+  - A simple "lesson map" graphic with seven lessons as nodes and arrows showing compounding effects.
+  - One scale chart: team size vs crawl/data footprint.
+  - A timeline ribbon of 4 years with major projects/community milestones.
+*/}
+
+Add a few sections similar as tinybird (where I explain Remote/culture first)
+- https://jordivillar.com/blog/tinybird
+- https://ivanleo.com/blog/three-lessons-manus
+- https://addyosmani.com/blog/21-lessons
+
+I've been at Ahrefs for four years. It's the strangest job I've ever had, and easily the best. I get to build Open Source software with OCaml, tackle big problems with complete autonomy, and work on projects driven by genuine curiosity. Some of my closest friends are on the team, and together we've been building a community around Melange, OCaml, and Reason.
+
+We're a fully remote company across the world, which has also changed my life. I can spend the winter season in the Pyrenees, locked in with the peace of the mountains, skiing and enjoying nature, while the rest of the year I'm closer to family in Barcelona, running and cycling.
+
+I want to take a moment to reflect on what I've learned. If I ever feel sad or nostalgic because it ended, I could return to this post and smile.
+
+# What's ahrefs?
+
+Mostly marketing people, SEO specialists, and OCaml fans have heard of [ahrefs.com](https://ahrefs.com).
+
+We're one of the top SEO tools in the world, helping our users improve their search rankings on Google, Bing, YouTube, Amazon, and now AI search. In MBA numbers and to show off a bit: about 45% of the S&P 500 use us, including Facebook, Nike, Adobe, IBM, and Pinterest.
+
+{/* image of "ahrefs dashboard" */}
+
+How do we do it? By crawling the entire web and organizing all that raw data into useful insights via different tools and reports. Those tools are used by people to analyze their own web, their competitor's web, rankings, authority, and a million other things, to eventually get more traffic.
+
+We run one of the most active crawlers in the world, processing around 6 billion pages daily and storing petabytes of web data. Despite this genuinely staggering scale, we maintain the agility that only comes from staying deliberately small and being extremely good at our craft. Companies tackling internet-scale problems usually have thousands of engineers. Google has tens of thousands. We have about 120, and we have no plans to grow beyond that.
+
+# Lessons
+
+## A niche tech stack is a multiplier, not a constraint.
+
+Everything at Ahrefs is written in OCaml. The backend, frontend, crawler, devops, internal tools, and even the CI.
+
+As with everything at Ahrefs, it started pragmatically: the team needed an expressive and performant language for the crawler, and as [Louis](https://github.com/Khady) explained, "it went extremely well... so well that it spread across the entire backend and eventually the frontend." On the frontend, we chose Reason (essentially OCaml with JavaScript-friendly syntax) over TypeScript or Flow.
+
+The result: our REST endpoints share the exact same type definitions as our frontend. Our SSR server reuses the same React components as the client. Change a type on our SQL layer and the compiler catches mismatches across the entire stack, all the way to the UI. One package manager (opam), one build system (dune), one LSP, one deployment pipeline.
+
+But the real compounding benefit isn't type-safety or even shared code: it's cognitive. One language to learn, one mental model to master. A newcomer joins the team, learns a single way of thinking, and suddenly they can contribute anywhere.
+
+## Own your software
+
+Aside from the unusual language choice, there's another particularity: we build almost everything ourselves.
+
+In a small ecosystem like OCaml, building for the long term means owning your dependencies. We use some third-party tools like ClickHouse and Buildkite, but most critical pieces are built in-house.
+
+It sounds extreme, but I'd rather modify and maintain code I understand than trust a black-box library that breaks at 3 AM. The distinction that matters isn't "build vs buy": it's knowing which dependencies you can afford to outsource and which ones sit on your critical path. If it breaks and you can't fix it, you don't own it. You're renting, and the landlord doesn't answer the phone at night.
+
+## Profitability buys freedom. Freedom buys taste.
+
+Ahrefs is bootstrapped. No VCs, no board meetings, no arbitrary growth metrics to hit.
+
+I've been at companies where entire roadmaps got shaped by investor anxiety, constantly conflicting with the CEO's actual vision. At Ahrefs, that conflict doesn't exist. Our CEO makes decisions based on his view of the company, the market and the world. He appears in technical discussions, shares his quiet view, and pushes products forward without external pressure.
+
+Being profitable also means we can invest in sponsoring conferences like ICFP, fun-ocaml, and React Alicante. We're one of the main sponsors of Melange (the compiler we use for our frontend), xxx and just opened a xxx program and I'm part of its core team. We can take long-term bets on technology because we don't have to justify every decision to someone optimizing for the next funding round.
+
+Leadership here is technical. They're in the codebase, reviewing PRs, debating architecture in Slack threads. When the people making decisions have taste and the financial independence to act on it, it changes what kind of company you get to work at.
+
+## Direct feedback feels harsh until you realize polite feedback wastes more time.
+
+The culture at Ahrefs is rooted in its Ukrainian founders: direct communication, pragmatism, rationality over anything else.
+
+Coming from Spain, having worked at two US-culture companies before, this caught me completely off guard. There, feedback came wrapped in compliment sandwiches and party emojis. The Spanish way? We soften criticism with warmth. At Ahrefs? Pure, unfiltered directness.
+
+If your solution has problems, someone will simply write "This won't scale. Try approach B instead." No emoji cushioning, no "great effort but...", no paragraph explaining how valued you are before the critique. In most places, even terrible solutions get celebrated with "Good start!" followed by gentle suggestions.
+
+At first, this felt harsh. But after a few months, I realized it's incredibly effective. The solution isn't attached to your identity or personality: it's just code or decisions that can be improved. Once you internalize this, you iterate faster with actually valuable feedback instead of spending energy decoding what people really think.
+
+Being async-first reinforces this. Private messages are actively discouraged: they're greyed out in the interface as a reminder that conversations belong in public channels. You're expected to figure things out yourself before asking, and when you do ask, you ask in the open where anyone can benefit from the answer. Discussions happen in public threads that might run for weeks. Everything is written, searchable, and thoughtful. With less than 1 hour of meetings per week, I can actually focus on solving hard problems instead of talking about solving them.
+
+This is the part of Ahrefs that's genuinely strange. Not strange as in wrong; strange as in unlike anywhere else I've worked. The radical transparency, the expectation of self-reliance, the absence of social lubrication. It takes getting used to. But once you do, the noise drops to almost zero, and what's left is the work.
+
+## Remote works when you invest in the in-between.
+
+There's a clear personal barrier with remote working. The person who has been reviewing your code for years is only an avatar, and you're lucky if they have their face as the picture.
+
+This could be isolating for some, but at Ahrefs we invest heavily in bringing people together. The conferences we sponsor aren't just about the OCaml ecosystem: they're about creating reasons for the team to be in the same room. Add a yearly ski retreat and other hacking-together events, and the picture changes.
+
+These gatherings transform remote culture. Back home, when someone challenges your PR, you hear their actual voice in your head, not some imagined critical tone. You know they're coming from a place of wanting the best solution because you've seen them fight just as hard for their own ideas at 3 AM in some conference hotel lobby.
+
+Remote-first isn't "no office." It's deliberate relationship-building on a different cadence.
+
+## Passionate people in the same ecosystem create compounding energy.
+
+By focusing on OCaml, Ahrefs attracts a specific kind of engineer: people who care deeply about their craft, who chose a niche language not because it was the safe career move but because they believe in it.
+
+When you bring these people together, something happens that you can't hire for: emergent energy. Projects like server-reason-react were born out of that passion, to face a big challenge that eventually paid off. Nobody assigned that project. It grew from a team that had the autonomy and the curiosity to pursue hard problems.
+
+The humbling counterpart: people with that level of drive are far rarer than I assumed. I used to think most engineers would jump at the chance to go the extra mile: to contribute to open source, to push beyond what's strictly required. The reality is that genuine, sustained passion for the craft is uncommon. That's not a complaint, just something I had to recalibrate. It means when you find it, you should recognize it for what it is: not the default, but the exception.
+
+If you hire for passion, not just skill, you get compounding returns. Passionate people attract other passionate people. They push each other. They start side projects that turn into critical infrastructure. You can't manufacture that with OKRs.
+
+## A prototype is 10% of the work. Shipping it is the other 90%.
+
+I've lost count of the times I built something that worked beautifully in isolation (a clean abstraction, a clever solution to a hard problem), only to watch it fall apart when it met reality. The integration didn't fit. The edge cases multiplied. Explaining the idea to teammates revealed assumptions I hadn't questioned. The prototype was 10% of the work; the other 90% was where the idea actually got tested.
+
+This has been my most recurring failure at Ahrefs. I'd get excited about an approach, invest days into a proof of concept, and then discover during integration that the domain didn't bend the way I expected. The lesson I keep relearning: an idea isn't validated when it compiles or when the demo works. It's validated when it survives the unglamorous work: the edge cases, the error messages users will actually see, the migration path from the old system, the explanation that makes your teammate say "ah, I get it."
+
+It took me embarrassingly long to realize that the agile people were right about one thing: a definition of done matters. Not the ceremonies, not the sprints, not the standup rituals — but the simple discipline of deciding upfront what "finished" looks like. When I skip that step, I end up in a loop where the prototype keeps shapeshifting and the goalposts drift with every new insight. When I write down what done means before I start — integrated, tested, documented, explained — the 90% becomes tractable instead of infinite.
+
+The difference between a prototype and a product is the willingness to do that last 90%. I'm still getting better at it.
+
+---
+
+If I had to compress four years into a single takeaway, it would be this: bet on software.
+
+Bet that a small team with the right language and full ownership of their stack can outperform organizations ten times their size. Bet that building things yourself, even when it's slower at first, compounds into speed later. Bet that hiring people who genuinely care about their craft matters more than hiring at scale.
+
+Most companies bet on process, on headcount, on the next framework. Ahrefs bets on software: on the belief that if you get the engineering right, everything else follows. After four years in, I think that's the right bet.

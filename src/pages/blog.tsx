@@ -83,15 +83,15 @@ const groupByYear = (frontmatters: Frontmatter[]): PostsByYear => {
     }
     acc[year].push(frontmatter);
     return acc;
-  }, {});
+  }, {})
 };
 
 const Blog = ({ frontmatters }: { frontmatters: Array<Frontmatter> }) => {
   const publishedPosts = frontmatters.filter(
-    (frontmatter: Frontmatter) => frontmatter.isDraft !== true
+    (frontmatter: Frontmatter) => frontmatter.published !== false
   );
   const postsByYear = groupByYear(publishedPosts);
-  const years = Object.keys(postsByYear).sort((a, b) => Number(b) - Number(a));
+  const years = Object.keys(postsByYear).filter((year: string) => year !== "Unknown").sort((a, b) => Number(b) - Number(a));
 
   return (
     <>
