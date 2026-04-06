@@ -1,5 +1,3 @@
-import React from "react";
-
 import { H1 } from "../components/heading";
 import { Item, Kind } from "../components/item";
 import Page from "../components/page";

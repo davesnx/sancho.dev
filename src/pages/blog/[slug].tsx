@@ -1,5 +1,3 @@
-import React from "react";
-
 import { css } from "@emotion/react";
 import styled from "@emotion/styled";
 import { format, parseISO } from "date-fns";
@@ -545,7 +543,7 @@ export default function Post({
                 <Row columnOnMobile distribute="between" align="center" wrap="wrap" gap={2}>
                   <div style={{ flex: 1, minWidth: "280px" }}>
                     <Text>
-                      <Strong>Thanks for reading!</Strong> If something's unclear or you think I'm wrong, tell me. Feedback is appreciated.
+                      <Strong>Thanks for reading!</Strong> <br /> Any feedback is appreciated.
                     </Text>
                   </div>
                   <TwitterButton

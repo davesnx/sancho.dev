@@ -1,5 +1,3 @@
-import React from "react";
-
 import { H1 } from "../components/heading";
 import { NavigateText, TextLink } from "../components/link";
 import Page from "../components/page";

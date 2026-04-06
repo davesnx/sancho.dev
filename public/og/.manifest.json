@@ -1,12 +1,14 @@
 {
-  "better-yarn-npm-run": "48e038b8567dd401ef0904c2a3d437a5",
-  "cram-tests-a-hidden-gem-of-dune": "b135499d87f68bd71cdf58a1605ac13a",
-  "cross-compile-query-json": "d010c78aa5bcff216b5297e8dbd78782",
-  "hello": "3282238247214e25a33971de597d760d",
+  "better-yarn-npm-run": "ec8bc55919f6c1317b26e8a842f53fe0",
+  "cram-tests-a-hidden-gem-of-dune": "cf95c4734481bba35dd5c6ebddfe8d73",
+  "cross-compile-query-json": "60133ea42cfb14ce62f139aba197a0ae",
+  "hello": "aef40f0ff4961c27a1ff2b10c3763d6d",
   "learning-ocaml": "fcc2c447d9aa011cb1bea2055d6585d2",
   "making-html-of-jsx-10x-faster": "35213b1406446b671dfcf8e8aa865d78",
+  "ocaml-documentation-as-markdown": "6d72e82ecdefbb7afb6f06673686e7fa",
   "server-side-rendering-react-in-ocaml": "ab3e35f62d50a48d1255973c5a7a7948",
   "snapshot-tests-for-your-own-ppx": "67aa966dd196150c1498920f26bfac53",
-  "tailwind-and-design-systems": "0cc355f06893da732c6fe732b263f3f0",
-  "whats-possible-with-melange": "fccd5dba7c0bfbc4a3dff783241075e3"
+  "tailwind-and-design-systems": "d26c0d923456cc9dfc27776d67d83d7a",
+  "tailwind-with-dune": "db158d58ac8fabcfe301dd10389d873c",
+  "whats-possible-with-melange": "c7775abb96fb1402e79ac7d897027700"
 }

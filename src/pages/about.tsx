@@ -1,5 +1,4 @@
 import styled from "@emotion/styled";
-import React from "react";
 
 import { H1 } from "../components/heading";
 import { TextLink } from "../components/link";

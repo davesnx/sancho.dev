@@ -1,7 +1,5 @@
 import "../theme/fonts.css";
 
-import React from "react";
-
 import { Global } from "@emotion/react";
 import { ThemeProvider } from "next-themes";
 import type { AppProps } from "next/app";
