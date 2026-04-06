@@ -3,12 +3,15 @@ import NextScript from "next/script";
 
 const config = {
   siteUrl: `https://sancho.dev`,
-  title: `David Sancho`,
+  siteName: `sancho.dev`,
+  authorName: `David Sancho`,
   twitter: `@davesnx`,
   feedUrl: `https://sancho.dev/rss.xml`,
   description:
     "Open Source UI infra at @ahrefs with OCaml. Made styled-ppx and server-reason-react. Working on reason-react / Melange / Reason",
 };
+
+type SchemaType = "article" | "webpage" | "website";
 
 type RequiredProps = {
   title: string;
@@ -16,43 +19,169 @@ type RequiredProps = {
 
 const defaultProps = {
   description: config.description,
-  url: config.siteUrl,
-  schemaType: "website",
-  createdAt: new Date().toISOString(),
+  path: "/",
+  schemaType: "webpage" as SchemaType,
+  publishedAt: undefined as string | undefined,
+  canonicalUrl: undefined as string | undefined,
   slug: undefined as string | undefined,
+  noIndex: false,
 };
 
 type Props = RequiredProps & {
   [key in keyof typeof defaultProps]?: (typeof defaultProps)[key];
 };
 
+const getAbsoluteUrl = (path: string) => new URL(path, config.siteUrl).toString();
+
+const getResolvedPath = ({
+  path,
+  schemaType,
+  slug,
+}: {
+  path?: string;
+  schemaType: SchemaType;
+  slug?: string;
+}) => {
+  if (path) {
+    return path;
+  }
+
+  if (schemaType === "article" && slug) {
+    return `/blog/${slug}`;
+  }
+
+  return defaultProps.path;
+};
+
+const getStructuredData = ({
+  description,
+  image,
+  publishedAt,
+  schemaType,
+  title,
+  url,
+}: {
+  description: string;
+  image: string;
+  publishedAt?: string;
+  schemaType: SchemaType;
+  title: string;
+  url: string;
+}) => {
+  if (schemaType === "article") {
+    return {
+      "@context": "https://schema.org",
+      "@type": "BlogPosting",
+      headline: title,
+      description,
+      url,
+      mainEntityOfPage: url,
+      image: [image],
+      author: {
+        "@type": "Person",
+        name: config.authorName,
+        url: `${config.siteUrl}/about`,
+      },
+      publisher: {
+        "@type": "Person",
+        name: config.authorName,
+        url: config.siteUrl,
+      },
+      ...(publishedAt
+        ? {
+            datePublished: publishedAt,
+            dateModified: publishedAt,
+          }
+        : {}),
+      isPartOf: {
+        "@type": "WebSite",
+        name: config.siteName,
+        url: config.siteUrl,
+      },
+    };
+  }
+
+  if (schemaType === "website") {
+    return {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      name: config.siteName,
+      description,
+      url,
+      author: {
+        "@type": "Person",
+        name: config.authorName,
+        url: `${config.siteUrl}/about`,
+      },
+    };
+  }
+
+  return {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    name: title,
+    description,
+    url,
+    isPartOf: {
+      "@type": "WebSite",
+      name: config.siteName,
+      url: config.siteUrl,
+    },
+  };
+};
+
 const MetaData = (props: Props) => {
-  const subtitle = props.title || "";
-  const title = subtitle + " | sancho.dev";
+  const pageTitle = props.title || "";
+  const title = pageTitle + " | sancho.dev";
   const description = props.description || defaultProps.description;
   const schemaType = props.schemaType || defaultProps.schemaType;
-  const createdAt = props.createdAt || defaultProps.createdAt;
-  const url = props.url || defaultProps.url;
+  const path = getResolvedPath({
+    path: props.path,
+    schemaType,
+    slug: props.slug,
+  });
+  const canonicalUrl = props.canonicalUrl || getAbsoluteUrl(path);
 
   const image = props.slug
     ? `${config.siteUrl}/og/${props.slug}.png`
     : `https://metaimg.xyz/render?design=profile&avatar=https://avatars.githubusercontent.com/u/3763599?v=4&name=David+Sancho&handler=%40davesnx&description=${encodeURIComponent(description)}&backgroundColor=191919&textColor=ced0d2`;
-  const metaTags: Array<{ name: string; content: string }> = [
+
+  const twitterMetaTags: Array<{ name: string; content: string }> = [
     { name: "twitter:card", content: "summary_large_image" },
     { name: "twitter:site", content: config.twitter },
     { name: "twitter:title", content: title },
     { name: "twitter:description", content: description },
     { name: "twitter:creator", content: config.twitter },
     { name: "twitter:image:src", content: image },
-    { name: "twitter:card", content: "summary_large_image" },
-    { name: "og:title", content: title },
-    { name: "og:type", content: schemaType },
-    { name: "og:url", content: url },
-    { name: "og:image", content: image },
-    { name: "og:description", content: description },
-    { name: "og:site_name", content: config.title },
-    { name: "og:published_time", content: createdAt },
   ];
+
+  const openGraphMetaTags: Array<{ property: string; content: string }> = [
+    { property: "og:title", content: title },
+    {
+      property: "og:type",
+      content: schemaType === "article" ? "article" : "website",
+    },
+    { property: "og:url", content: canonicalUrl },
+    { property: "og:image", content: image },
+    { property: "og:description", content: description },
+    { property: "og:site_name", content: config.siteName },
+  ];
+
+  if (schemaType === "article" && props.publishedAt) {
+    openGraphMetaTags.push({
+      property: "article:published_time",
+      content: props.publishedAt,
+    });
+  }
+
+  const structuredData = getStructuredData({
+    description,
+    image,
+    publishedAt: props.publishedAt,
+    schemaType,
+    title: pageTitle,
+    url: canonicalUrl,
+  });
 
   const favicons = [
     {
@@ -96,9 +225,11 @@ const MetaData = (props: Props) => {
     <Head>
       <title>{title}</title>
       <meta name="description" content={description} />
+      <link rel="canonical" href={canonicalUrl} />
       <meta itemProp="name" content={title} />
       <meta itemProp="description" content={description} />
       <meta itemProp="image" content={image} />
+      {props.noIndex ? <meta name="robots" content="noindex, follow" /> : null}
       <link
         rel="alternate"
         type="application/rss+xml"
@@ -108,8 +239,11 @@ const MetaData = (props: Props) => {
       {favicons.map((favicon) => (
         <link key={favicon.href} {...favicon} />
       ))}
-      {metaTags.map(({ name, content }) => (
+      {twitterMetaTags.map(({ name, content }) => (
         <meta key={name} name={name} content={content} />
+      ))}
+      {openGraphMetaTags.map(({ property, content }) => (
+        <meta key={property} property={property} content={content} />
       ))}
       <meta
         name="ahrefs-site-verification"
@@ -123,13 +257,7 @@ const MetaData = (props: Props) => {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            "@context": "http://schema.org",
-            "@type": schemaType,
-            name: title,
-            about: description,
-            url: url,
-          }),
+          __html: JSON.stringify(structuredData),
         }}
       />
     </Head>

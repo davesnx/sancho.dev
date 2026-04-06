@@ -2,6 +2,7 @@ export type Frontmatter = {
   title: string;
   description?: string;
   by?: string;
+  canonicalUrl?: string;
   publishedAt?: string;
   relatedIds?: string[];
   readingTime?: { text: string; minutes: number; time: number; words: number };

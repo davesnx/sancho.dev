@@ -8,7 +8,12 @@ import font from "../theme/fonts";
 
 const Error = () => (
   <>
-    <MetaData title="404" />
+    <MetaData
+      title="Page not found"
+      description="The requested page could not be found."
+      path="/404"
+      noIndex
+    />
     <Page title={<H1>Page not found</H1>}>
       <Text weight={600}>
         If it sounds like it shoud, <br /> please open an issue in{" "}

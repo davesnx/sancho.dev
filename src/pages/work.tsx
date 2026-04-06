@@ -390,7 +390,11 @@ const Work = ({ repos }: { repos: GitHubRepo[] }) => {
 
   return (
     <>
-      <MetaData title="Work" />
+      <MetaData
+        title="Work"
+        description="Work history and open source projects by David Sancho, from ahrefs and Typeform to OCaml tooling and libraries."
+        path="/work"
+      />
       <Page title={<H1>Work</H1>}>
         <Stack gap={3} align="left">
           <Job

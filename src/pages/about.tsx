@@ -82,7 +82,11 @@ const Bio = () => {
 const About = () => {
   return (
     <>
-      <MetaData title="About" />
+      <MetaData
+        title="About"
+        description="About David Sancho: software engineer in Barcelona working on OCaml, developer tooling, and UI infrastructure at ahrefs."
+        path="/about"
+      />
       <Page title={<H1>About</H1>}>
         <Stack align="left" gap={5}>
           <Bio />

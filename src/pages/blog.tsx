@@ -94,7 +94,11 @@ const Blog = ({ frontmatters }: { frontmatters: Array<Frontmatter> }) => {
 
   return (
     <>
-      <MetaData title="Blog" />
+      <MetaData
+        title="Blog"
+        description="davesnx's technical blog about Software Engineering"
+        path="/blog"
+      />
       <Page title={<H1>Blog</H1>}>
         <Spacer bottom={4}>
           <Text color={colors.textSecondary} size={font.fontSize1}>

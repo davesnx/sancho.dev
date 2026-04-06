@@ -23,7 +23,12 @@ const Name = styled.h1`
 const Home = () => {
   return (
     <>
-      <MetaData title="Home" />
+      <MetaData
+        title="David Sancho"
+        description="David Sancho writes about OCaml, Melange, Reason, React infrastructure, and open source software engineering."
+        path="/"
+        schemaType="website"
+      />
       <Page
         title={
           <Row distribute="left" gap={2} align="baseline">

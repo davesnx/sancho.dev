@@ -124,7 +124,11 @@ const tokens = Array.from(new Set(lightKeys.concat(darkKeys))).sort();
 export default function UIColors() {
   return (
     <>
-      <MetaData title="UI Color Tokens" />
+      <MetaData
+        title="UI Color Tokens"
+        description="A reference table of the light and dark theme color tokens used on sancho.dev."
+        path="/ui"
+      />
       <Page title={<h1 style={{ margin: 0, color: colors.textAccent }}>UI Color Tokens</h1>}>
         <Wrapper>
           <Intro>

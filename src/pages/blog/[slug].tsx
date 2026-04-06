@@ -404,7 +404,9 @@ const BlogPostTitle = styled(H1)`
 `;
 
 export const getStaticPaths: GetStaticPaths = () => {
-  const frontmatters = getAllFrontmatter();
+  const frontmatters = getAllFrontmatter().filter(
+    (frontmatter: Frontmatter) => frontmatter.published !== false,
+  );
   const paths = frontmatters.map(({ slug }: Frontmatter) => ({
     params: { slug },
   }));
@@ -423,6 +425,12 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
   if (params?.slug && !Array.isArray(params?.slug)) {
     const { frontmatter, code } = await getMdxBySlug(params.slug);
 
+    if (frontmatter.published === false) {
+      return {
+        notFound: true,
+      };
+    }
+
     return {
       props: {
         frontmatter,
@@ -432,10 +440,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
   }
 
   return {
-    props: {
-      frontmatter: null,
-      code: null,
-    },
+    notFound: true,
   };
 };
 
@@ -451,7 +456,8 @@ export default function Post({
         title={frontmatter.title}
         description={frontmatter.description}
         schemaType="article"
-        createdAt={frontmatter.publishedAt}
+        publishedAt={frontmatter.publishedAt}
+        canonicalUrl={frontmatter.canonicalUrl}
         slug={frontmatter.slug}
       />
       <Page

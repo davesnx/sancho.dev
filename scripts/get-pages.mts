@@ -85,13 +85,15 @@ export const getJsPages = async (): Promise<StaticPage[]> => {
         return null;
       }
 
+      const route = page
+        .replace("src/pages/", "/")
+        .replace(".js", "")
+        .replace(".jsx", "")
+        .replace(".tsx", "")
+        .replace(".ts", "");
+
       return {
-        route: page
-          .replace("src/pages/", "/")
-          .replace(".js", "")
-          .replace(".jsx", "")
-          .replace(".tsx", "")
-          .replace(".ts", ""),
+        route: route === "/index" ? "/" : route.replace(/\/index$/, ""),
       };
     })
     .filter((page): page is StaticPage => page !== null);

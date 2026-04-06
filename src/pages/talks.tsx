@@ -6,7 +6,11 @@ import { Stack } from "../components/taco";
 
 const Talks = () => (
   <>
-    <MetaData title="Talks" />
+    <MetaData
+      title="Talks"
+      description="Talks and recordings by David Sancho about OCaml, Reason, React, and developer tooling."
+      path="/talks"
+    />
     <Page title={<H1>Talks</H1>}>
       <Stack gap={3}>
         <Item
