@@ -28,6 +28,7 @@
     "sourceMap": true,
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
+    "allowImportingTsExtensions": true,
     "allowJs": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
@@ -42,6 +43,7 @@
   ],
   "include": [
     "next-env.d.ts",
+    "**/*.mts",
     "**/*.ts",
     "**/*.tsx",
     "src/*"

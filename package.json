@@ -3,20 +3,17 @@
   "version": "0.1.1",
   "scripts": {
     "dev": "next dev -p 3005",
-    "prebuild": "node scripts/fetch-github-repos.mjs",
+    "prebuild": "SKIP_GITHUB_FETCH=1 node --experimental-strip-types scripts/fetch-github-repos.mts",
     "build": "next build",
     "start": "next start",
     "build-stats": "cross-env ANALYZE=true npm run build",
-    "export": "node scripts/postbuild.mjs",
+    "export": "node --experimental-strip-types scripts/postbuild.mts",
     "build-clean-prod": "npm run clean && npm run build && npm run export",
     "build-prod": "npm run build && npm run export",
     "clean": "rimraf .next out",
     "ts": "tsc --noEmit --pretty --jsx react-jsx",
     "format": "biome format --write src --config-path biome.json",
-    "lint": "biome lint --write src --config-path biome.json",
-    "fetch-repos": "node scripts/fetch-github-repos.mjs",
-    "generate-og": "node scripts/generate-og-images.mjs",
-    "generate-og:all": "node scripts/generate-og-images.mjs --force"
+    "lint": "biome lint --write src --config-path biome.json"
   },
   "dependencies": {
     "@emotion/react": "^11.14.0",
@@ -50,7 +47,6 @@
     "rehype-slug": "^6.0.0",
     "remark-gfm": "^4.0.1",
     "rss": "^1.2.2",
-    "seamless-scroll-polyfill": "^2.3.4",
     "shiki": "^3.19.0",
     "unified": "^11.0.5",
     "unist-util-visit": "^5.0.0",
