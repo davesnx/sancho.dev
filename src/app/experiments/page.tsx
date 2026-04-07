@@ -1,9 +1,9 @@
 import { css } from "@linaria/core";
 
-import { buildMetadata } from "../../lib/site";
-import fonts from "../../theme/fonts";
-import { colors } from "../../theme/theme";
-import { ButtonLink, H1, Page, Text } from "../../components/ui";
+import { ButtonLink, H1, Page, Text } from "@/components/ui";
+import { buildMetadata } from "@/site";
+import fonts from "@/theme/fonts";
+import { colors } from "@/theme/theme";
 
 const gridClass = css`
   display: grid;

@@ -1,6 +1,6 @@
-import { buildMetadata } from "../../lib/site";
-import { TalkItem } from "../../components/talk-item";
-import { H1, Page, Stack } from "../../components/ui";
+import { TalkItem } from "@/components/talk-item";
+import { H1, Page, Stack } from "@/components/ui";
+import { buildMetadata } from "@/site";
 
 const talks = [
   {

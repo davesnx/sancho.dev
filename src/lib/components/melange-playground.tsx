@@ -1,7 +1,7 @@
 import { css } from "@linaria/core";
 
-import fonts from "../theme/fonts";
-import { colors } from "../theme/theme";
+import fonts from "@/theme/fonts";
+import { colors } from "@/theme/theme";
 
 const containerClass = css`
   position: relative;

@@ -3,15 +3,11 @@ import localFont from "next/font/local";
 export const sansFont = localFont({
   variable: "--font-sans",
   display: "swap",
+  preload: false,
   src: [
     {
       path: "../../public/fonts/DMSans.ttf",
       style: "normal",
-      weight: "400 800",
-    },
-    {
-      path: "../../public/fonts/DMSans-Italic.ttf",
-      style: "italic",
       weight: "400 800",
     },
   ],
@@ -20,6 +16,7 @@ export const sansFont = localFont({
 export const monoFont = localFont({
   variable: "--font-mono",
   display: "swap",
+  preload: false,
   src: [
     {
       path: "../../public/fonts/JetBrainsMono.ttf",
@@ -32,6 +29,7 @@ export const monoFont = localFont({
 export const displayFont = localFont({
   variable: "--font-display",
   display: "swap",
+  preload: false,
   src: [
     {
       path: "../../public/fonts/Inter.otf",

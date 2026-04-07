@@ -3,9 +3,9 @@ import type { AnchorHTMLAttributes, CSSProperties, ElementType, HTMLAttributes, 
 import { css } from "@linaria/core";
 import Link from "next/link";
 
-import breakpoints from "../theme/constants";
-import fonts from "../theme/fonts";
-import { colors } from "../theme/theme";
+import breakpoints from "@/theme/constants";
+import fonts from "@/theme/fonts";
+import { colors } from "@/theme/theme";
 
 export const cx = (...classNames: Array<string | false | null | undefined>) =>
   classNames.filter(Boolean).join(" ");

@@ -3,10 +3,10 @@
 import { css } from "@linaria/core";
 import React from "react";
 
-import { TextLink } from "../../../components/ui";
-import { colors } from "../../../theme/theme";
-import { useIsMobile } from "../../../utils/media-query";
-import useMousePosition from "../../../utils/mouse-position";
+import { TextLink } from "@/components/ui";
+import useMousePosition from "@/mouse-position";
+import { useIsMobile } from "@/media-query";
+import { colors } from "@/theme/theme";
 
 const rowClass = css`
   display: flex;

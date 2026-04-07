@@ -1,4 +1,4 @@
-import { buildMetadata } from "../../../lib/site";
+import { buildMetadata } from "@/site";
 import { ChromaticDemo } from "./chromatic-demo";
 
 export const metadata = buildMetadata({

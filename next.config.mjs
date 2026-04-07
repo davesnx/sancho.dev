@@ -4,6 +4,7 @@ import bundleAnalyzer from "@next/bundle-analyzer";
 import createMDX from "@next/mdx";
 import withLinaria from "next-with-linaria";
 
+const libPath = fileURLToPath(new URL("./src/lib", import.meta.url));
 const rehypePrettyCodePluginPath = fileURLToPath(new URL("./src/lib/code-highlight/rehype-pretty-code.mjs", import.meta.url));
 
 const withBundleAnalyzer = bundleAnalyzer({
@@ -33,7 +34,16 @@ const nextConfig = {
   staticPageGenerationTimeout: 15000,
   pageExtensions: ["ts", "tsx", "js", "jsx", "md", "mdx"],
   linaria: {
+    fastCheck: false,
     sourceMap: process.env.NODE_ENV !== "production",
+  },
+  webpack: (config) => {
+    config.resolve.alias = {
+      ...config.resolve.alias,
+      "@": libPath,
+    };
+
+    return config;
   },
 };
 

@@ -1,6 +1,6 @@
 import { css } from "@linaria/core";
 
-import { ZoomableImage } from "./zoomable-image";
+import { ZoomableImage } from "@/components/zoomable-image";
 
 const imageClass = css`
   border-radius: 6px;

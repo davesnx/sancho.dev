@@ -1,4 +1,4 @@
-import { buildMetadata } from "../../../lib/site";
+import { buildMetadata } from "@/site";
 import { VariableDemo } from "./variable-demo";
 
 export const metadata = buildMetadata({

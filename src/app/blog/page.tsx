@@ -1,10 +1,11 @@
 import { css } from "@linaria/core";
-import type { BlogPost } from "../../lib/posts";
-import { getPublishedPosts } from "../../lib/posts";
-import { buildMetadata } from "../../lib/site";
-import fonts from "../../theme/fonts";
-import { colors } from "../../theme/theme";
-import { ButtonLink, H1, H3, Page, Spacer, Stack, Text, TextLink } from "../../components/ui";
+import type { BlogPost } from "@/posts";
+
+import { ButtonLink, H1, H3, Page, Spacer, Stack, Text, TextLink } from "@/components/ui";
+import { getPublishedPosts } from "@/posts";
+import { buildMetadata } from "@/site";
+import fonts from "@/theme/fonts";
+import { colors } from "@/theme/theme";
 
 export const metadata = buildMetadata({
   title: "Blog",

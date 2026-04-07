@@ -1,7 +1,7 @@
 import { css } from "@linaria/core";
 
-import fonts from "../theme/fonts";
-import { assignThemeVariables, darkCSSVariables, lightCSSVariables } from "../theme/theme";
+import fonts from "@/theme/fonts";
+import { assignThemeVariables, darkCSSVariables, lightCSSVariables } from "@/theme/theme";
 
 export const globals = css`
   :global(:root) {
