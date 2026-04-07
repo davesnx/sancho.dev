@@ -1,72 +1,44 @@
+"use client";
+
 import type React from "react";
-import { useEffect, useState, useCallback, useRef } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
-import styled from "@emotion/styled";
-import { keyframes } from "@emotion/react";
 
-const backdropFadeIn = keyframes`
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-`;
+import { css } from "@linaria/core";
 
-const imageZoomIn = keyframes`
-  from {
-    opacity: 0;
-    transform: scale(0.8);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
-`;
-
-const StyledImg = styled.img<{ isZoomed: boolean }>`
+const imageClass = css`
   width: 100%;
   border-radius: 6px;
   margin: 0;
-  cursor: ${(props) => (props.isZoomed ? "default" : "zoom-in")};
+  cursor: zoom-in;
 `;
 
-const Overlay = styled.div`
+const overlayClass = css`
   position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
+  inset: 0;
   background: rgba(0, 0, 0, 0.9);
   z-index: 9999;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: zoom-out;
-  animation: ${backdropFadeIn} 0.25s ease-out;
 `;
 
-const ZoomedImg = styled.img`
+const zoomedImageClass = css`
   max-width: 90vw;
   max-height: 90vh;
   object-fit: contain;
   cursor: zoom-out;
   border-radius: 6px;
   user-select: none;
-  animation: ${imageZoomIn} 0.25s ease-out;
 `;
 
-interface ZoomableImageProps {
+type ZoomableImageProps = {
   src: string;
   alt?: string;
-  [key: string]: any;
-}
+} & Record<string, unknown>;
 
-export const ZoomableImage: React.FC<ZoomableImageProps> = ({
-  src,
-  alt,
-  ...props
-}) => {
+export const ZoomableImage: React.FC<ZoomableImageProps> = ({ src, alt, ...props }) => {
   const [isZoomed, setIsZoomed] = useState(false);
   const isClosingRef = useRef(false);
 
@@ -88,21 +60,18 @@ export const ZoomableImage: React.FC<ZoomableImageProps> = ({
   }, []);
 
   const handleOverlayClick = useCallback(
-    (e: React.MouseEvent) => {
-      if (
-        e.target === e.currentTarget ||
-        (e.target as HTMLElement).tagName === "IMG"
-      ) {
-        e.stopPropagation();
+    (event: React.MouseEvent) => {
+      if (event.target === event.currentTarget || (event.target as HTMLElement).tagName === "IMG") {
+        event.stopPropagation();
         handleClose();
       }
     },
-    [handleClose]
+    [handleClose],
   );
 
   useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "Escape" && isZoomed) {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape" && isZoomed) {
         handleClose();
       }
     };
@@ -120,20 +89,15 @@ export const ZoomableImage: React.FC<ZoomableImageProps> = ({
 
   return (
     <>
-      <StyledImg
-        src={src}
-        alt={alt}
-        isZoomed={isZoomed}
-        onClick={handleImageClick}
-        {...props}
-      />
-      {isZoomed &&
-        createPortal(
-          <Overlay onClick={handleOverlayClick}>
-            <ZoomedImg src={src} alt={alt} />
-          </Overlay>,
-          document.body
-        )}
+      <img className={imageClass} src={src} alt={alt} onClick={handleImageClick} {...props} />
+      {isZoomed
+        ? createPortal(
+            <div className={overlayClass} onClick={handleOverlayClick}>
+              <img className={zoomedImageClass} src={src} alt={alt} />
+            </div>,
+            document.body,
+          )
+        : null}
     </>
   );
 };

@@ -29,8 +29,9 @@ const fonts = {
   fontSize6: calc(fontSize_6),
   globalFontSize,
   globalLineHeight,
-  mono: "Jet Brains Mono, Fira Code, monospace",
-  sans: '"DM Sans", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Ubuntu, "Helvetica Neue", Oxygen, Cantarell, sans-serif',
+  mono: 'var(--font-mono), "JetBrains Mono", monospace',
+  sans: 'var(--font-sans), system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Ubuntu, "Helvetica Neue", Oxygen, Cantarell, sans-serif',
+  display: 'var(--font-display), "Inter", sans-serif',
 };
 
 export default fonts;
