@@ -1,14 +1,14 @@
 {
-  "better-yarn-npm-run": "ec8bc55919f6c1317b26e8a842f53fe0",
-  "cram-tests-a-hidden-gem-of-dune": "cf95c4734481bba35dd5c6ebddfe8d73",
-  "cross-compile-query-json": "60133ea42cfb14ce62f139aba197a0ae",
+  "better-yarn-npm-run": "4fecc8dbdbbcd84cd6ab3eb6b86c91a6",
+  "cram-tests-a-hidden-gem-of-dune": "9ec5ef3f74e911c6c9bd3a40818e2534",
+  "cross-compile-query-json": "72c13bac74cb317ec0b62b357dbed5c1",
   "hello": "aef40f0ff4961c27a1ff2b10c3763d6d",
-  "learning-ocaml": "fcc2c447d9aa011cb1bea2055d6585d2",
-  "making-html-of-jsx-10x-faster": "35213b1406446b671dfcf8e8aa865d78",
-  "ocaml-documentation-as-markdown": "6d72e82ecdefbb7afb6f06673686e7fa",
-  "server-side-rendering-react-in-ocaml": "ab3e35f62d50a48d1255973c5a7a7948",
-  "snapshot-tests-for-your-own-ppx": "67aa966dd196150c1498920f26bfac53",
-  "tailwind-and-design-systems": "d26c0d923456cc9dfc27776d67d83d7a",
-  "tailwind-with-dune": "db158d58ac8fabcfe301dd10389d873c",
-  "whats-possible-with-melange": "c7775abb96fb1402e79ac7d897027700"
+  "learning-ocaml": "d75e59de1ee74c67c7f6689933494d6a",
+  "making-html-of-jsx-10x-faster": "d90ca6425cd6cfc0a96f6fdbb5aae7e6",
+  "ocaml-documentation-as-markdown": "b6c8281c87c1ab8fbeabba1af5057208",
+  "server-side-rendering-react-in-ocaml": "ea4c4b9b4658a217324a684b8fd51f80",
+  "snapshot-tests-for-your-own-ppx": "2a2c22a7065bd29fc4f6591332976399",
+  "tailwind-and-design-systems": "5ea29d29d6cc2301e6fa9d76e1d1dbe9",
+  "tailwind-with-dune": "0c7c8d3592ef8230e09daebc71c09f1c",
+  "whats-possible-with-melange": "75b01a8af7d43bca15e74b5f4aa33b6d"
 }

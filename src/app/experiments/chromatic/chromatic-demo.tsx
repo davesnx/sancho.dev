@@ -3,12 +3,12 @@
 import { css } from "@linaria/core";
 import React from "react";
 
-import { TextLink } from "../../../components/ui";
-import font from "../../../theme/fonts";
-import { colors } from "../../../theme/theme";
-import useDeviceOrientation from "../../../utils/device-orientation";
-import { useIsMobile } from "../../../utils/media-query";
-import useMousePosition from "../../../utils/mouse-position";
+import { TextLink } from "@/components/ui";
+import useDeviceOrientation from "@/device-orientation";
+import { useIsMobile } from "@/media-query";
+import useMousePosition from "@/mouse-position";
+import font from "@/theme/fonts";
+import { colors } from "@/theme/theme";
 
 const overlapClass = css`
   position: relative;

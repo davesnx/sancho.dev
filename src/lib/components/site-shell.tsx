@@ -5,11 +5,11 @@ import { useState } from "react";
 
 import { css } from "@linaria/core";
 
-import breakpoints from "../theme/constants";
-import fonts from "../theme/fonts";
-import { colors } from "../theme/theme";
-import { ButtonLink, ResponsiveSpacer, Row, Spacer, Stack, Text, TextLink } from "./ui";
-import { ThemeToggle } from "./theme-toggle";
+import { ButtonLink, ResponsiveSpacer, Row, Spacer, Stack, Text, TextLink } from "@/components/ui";
+import { ThemeToggle } from "@/components/theme-toggle";
+import breakpoints from "@/theme/constants";
+import fonts from "@/theme/fonts";
+import { colors } from "@/theme/theme";
 
 const rootClass = css`
   min-height: 100vh;

@@ -1,6 +1,6 @@
 import type { MetadataRoute } from "next";
 
-import { getPublishedPosts } from "../lib/posts";
+import { getPublishedPosts } from "@/posts";
 
 export const dynamic = "force-static";
 

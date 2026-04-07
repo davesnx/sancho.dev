@@ -1,10 +1,10 @@
-import type { ComponentType } from "react";
+import type { ComponentType } from 'react';
 
-import { notFound } from "next/navigation";
+import { notFound } from 'next/navigation';
 
-import { BlogPostView } from "../../../components/blog-post-view";
-import { getPostStaticParams, getPublishedPostBySlug, loadPostModule } from "../../../lib/posts";
-import { buildArticleJsonLd, buildMetadata, getSocialImage } from "../../../lib/site";
+import { BlogPostView } from '@/components/blog-post-view';
+import { getPostStaticParams, getPublishedPostBySlug, loadPostModule } from '@/posts';
+import { buildArticleJsonLd, buildMetadata, getSocialImage } from '@/site';
 
 type BlogPageParams = {
   slug: string[];
@@ -22,7 +22,7 @@ export function generateStaticParams() {
 
 const resolvePost = async (paramsPromise: Promise<BlogPageParams>) => {
   const { slug } = await paramsPromise;
-  const joinedSlug = slug.join("/");
+  const joinedSlug = slug.join('/');
   const post = getPublishedPostBySlug(joinedSlug);
 
   if (!post) {
@@ -42,7 +42,7 @@ export async function generateMetadata({ params }: { params: Promise<BlogPagePar
     slug: post.slug,
     publishedAt: post.publishedAt,
     canonicalUrl: post.canonicalUrl,
-    kind: "article",
+    kind: 'article',
   });
 }
 
@@ -50,7 +50,7 @@ export default async function BlogPostPage({ params }: { params: Promise<BlogPag
   const post = await resolvePost(params);
   const module = (await loadPostModule(post)) as PostModule;
   const articleUrl = `${post.canonicalUrl ?? `https://sancho.dev/blog/${post.slug}`}`;
-  const socialImage = getSocialImage({ slug: post.slug, description: post.description });
+  const socialImage = getSocialImage({ slug: post.slug });
   const jsonLd = buildArticleJsonLd({
     title: post.title,
     description: post.description,

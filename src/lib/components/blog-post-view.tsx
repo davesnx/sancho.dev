@@ -1,14 +1,15 @@
 import type { ComponentType } from "react";
 
 import { css } from "@linaria/core";
-import { format, parseISO } from "date-fns";
+import { format } from "date-fns/format";
+import { parseISO } from "date-fns/parseISO";
 
-import type { BlogPost } from "../lib/posts";
-import breakpoints from "../theme/constants";
-import fonts from "../theme/fonts";
-import { colors } from "../theme/theme";
-import { postContentClass } from "./post-content";
-import { H1, Page, Row, Spacer, Text, TextLink } from "./ui";
+import type { BlogPost } from "@/posts";
+import { postContentClass } from "@/components/post-content";
+import { H1, Page, Row, Spacer, Text, TextLink } from "@/components/ui";
+import breakpoints from "@/theme/constants";
+import fonts from "@/theme/fonts";
+import { colors } from "@/theme/theme";
 
 const titleWrapClass = css`
   display: flex;

@@ -1,9 +1,9 @@
 import { css } from "@linaria/core";
 
-import { buildMetadata } from "../lib/site";
-import fonts from "../theme/fonts";
-import { colors } from "../theme/theme";
-import { H1, Page, Row, Spacer, Text, TextLink } from "../components/ui";
+import { H1, Page, Row, Spacer, Text, TextLink } from "@/components/ui";
+import { buildMetadata } from "@/site";
+import fonts from "@/theme/fonts";
+import { colors } from "@/theme/theme";
 
 const nameClass = css`
   font-size: 3rem;

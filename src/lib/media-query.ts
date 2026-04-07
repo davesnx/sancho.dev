@@ -1,7 +1,7 @@
 import type { DependencyList, EffectCallback } from "react";
 import { useEffect, useLayoutEffect, useState } from "react";
 
-import constants from "../theme/constants";
+import constants from "@/theme/constants";
 
 export type Effect = (_effect: EffectCallback, _deps?: DependencyList) => void;
 export type MediaQueryObject = { [key: string]: string | number | boolean };

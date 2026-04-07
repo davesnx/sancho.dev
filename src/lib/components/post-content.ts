@@ -1,8 +1,8 @@
 import { css } from "@linaria/core";
 
-import breakpoints from "../theme/constants";
-import fonts from "../theme/fonts";
-import { colors } from "../theme/theme";
+import breakpoints from "@/theme/constants";
+import fonts from "@/theme/fonts";
+import { colors } from "@/theme/theme";
 
 export const postContentClass = css`
   color: ${colors.textProse};

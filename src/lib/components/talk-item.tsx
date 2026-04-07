@@ -1,9 +1,9 @@
 import { css } from "@linaria/core";
 
-import breakpoints from "../theme/constants";
-import font from "../theme/fonts";
-import { colors } from "../theme/theme";
-import { H4, Row, Stack, Text } from "./ui";
+import { H4, Row, Stack, Text } from "@/components/ui";
+import breakpoints from "@/theme/constants";
+import font from "@/theme/fonts";
+import { colors } from "@/theme/theme";
 
 const iconWrapperClass = css`
   line-height: 0;

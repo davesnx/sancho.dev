@@ -2,7 +2,8 @@ import Fs from "node:fs";
 import Path from "node:path";
 import { cache } from "react";
 
-import { compareDesc, parseISO } from "date-fns";
+import { compareDesc } from "date-fns/compareDesc";
+import { parseISO } from "date-fns/parseISO";
 import { globbySync } from "globby";
 import matter from "gray-matter";
 import readingTime from "reading-time";

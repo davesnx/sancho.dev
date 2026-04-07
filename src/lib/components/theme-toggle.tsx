@@ -6,7 +6,7 @@ import { useEffect, useId, useState } from "react";
 import { css } from "@linaria/core";
 import { useTheme } from "next-themes";
 
-import { colors } from "../theme/theme";
+import { colors } from "@/theme/theme";
 
 const buttonClass = css`
   color: var(--toggle-color, transparent);

@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import Script from "next/script";
 
-import { SiteShell } from "../components/site-shell";
-import { siteConfig } from "../lib/site";
+import { SiteShell } from "@/components/site-shell";
+import { siteConfig } from "@/site";
 import { displayFont, monoFont, sansFont } from "./fonts";
 import "./style.linaria.global";
 import { AppThemeProvider } from "./theme-provider";
@@ -43,7 +43,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" suppressHydrationWarning className={`${sansFont.variable} ${monoFont.variable} ${displayFont.variable}`}>
+    <html lang="en" suppressHydrationWarning className={`${sansFont.variable} ${monoFont.variable} ${displayFont.variable}`} data-scroll-behavior="smooth">
       <body>
         <AppThemeProvider>
           <SiteShell>{children}</SiteShell>

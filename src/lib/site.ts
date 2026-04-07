@@ -1,19 +1,19 @@
-import type { Metadata } from "next";
+import type { Metadata } from 'next';
 
 export const siteConfig = {
-  siteUrl: "https://sancho.dev",
-  siteName: "sancho.dev",
-  authorName: "David Sancho",
-  twitter: "@davesnx",
-  feedUrl: "https://sancho.dev/rss.xml",
+  siteUrl: 'https://sancho.dev',
+  siteName: 'sancho.dev',
+  authorName: 'David Sancho',
+  twitter: '@davesnx',
+  feedUrl: 'https://sancho.dev/rss.xml',
   description:
-    "Open Source UI infra at @ahrefs with OCaml. Made styled-ppx and server-reason-react. Working on reason-react, Melange, Reason.",
+    'Open Source UI infra at @ahrefs with OCaml. Made styled-ppx and server-reason-react. Working on reason-react, Melange, Reason.',
   verification: {
-    ahrefs: "e9ca7385f25c8be91c3030a42bb760b5c9f23a9e43e6dce7a5f3409951c4572d",
+    ahrefs: 'e9ca7385f25c8be91c3030a42bb760b5c9f23a9e43e6dce7a5f3409951c4572d',
   },
 } as const;
 
-export type MetadataKind = "article" | "website" | "webpage";
+export type MetadataKind = 'article' | 'website' | 'webpage';
 
 export type PageMetadataInput = {
   title: string;
@@ -26,37 +26,29 @@ export type PageMetadataInput = {
   noIndex?: boolean;
 };
 
-export const absoluteUrl = (path = "/") => new URL(path, siteConfig.siteUrl).toString();
+export const absoluteUrl = (path = '/') => new URL(path, siteConfig.siteUrl).toString();
 
-export const getSocialImage = ({
-  slug,
-  description,
-}: {
-  slug?: string;
-  description: string;
-}) => {
+export const getSocialImage = ({ slug }: { slug?: string }) => {
   if (slug) {
     return absoluteUrl(`/og/${slug}.png`);
   }
 
-  return `https://metaimg.xyz/render?design=profile&avatar=https://avatars.githubusercontent.com/u/3763599?v=4&name=David+Sancho&handler=%40davesnx&description=${encodeURIComponent(
-    description,
-  )}&backgroundColor=191919&textColor=ced0d2`;
+  return absoluteUrl('/og/default.png');
 };
 
 export const buildMetadata = ({
   title,
   description = siteConfig.description,
-  path = "/",
+  path = '/',
   canonicalUrl,
   slug,
   publishedAt,
-  kind = "webpage",
+  kind = 'webpage',
   noIndex = false,
 }: PageMetadataInput): Metadata => {
   const resolvedCanonical = canonicalUrl ?? absoluteUrl(path);
-  const image = getSocialImage({ slug, description });
-  const isArticle = kind === "article";
+  const image = getSocialImage({ slug });
+  const isArticle = kind === 'article';
 
   return {
     title,
@@ -73,7 +65,7 @@ export const buildMetadata = ({
     authors: [
       {
         name: siteConfig.authorName,
-        url: absoluteUrl("/about"),
+        url: absoluteUrl('/about'),
       },
     ],
     openGraph: {
@@ -81,8 +73,8 @@ export const buildMetadata = ({
       description,
       url: resolvedCanonical,
       siteName: siteConfig.siteName,
-      type: isArticle ? "article" : "website",
-      locale: "en_US",
+      type: isArticle ? 'article' : 'website',
+      locale: 'en_US',
       images: [
         {
           url: image,
@@ -92,7 +84,7 @@ export const buildMetadata = ({
       ...(publishedAt ? { publishedTime: publishedAt } : {}),
     },
     twitter: {
-      card: "summary_large_image",
+      card: 'summary_large_image',
       site: siteConfig.twitter,
       creator: siteConfig.twitter,
       title,
@@ -115,20 +107,20 @@ export const buildArticleJsonLd = ({
   image: string;
   publishedAt?: string;
 }) => ({
-  "@context": "https://schema.org",
-  "@type": "BlogPosting",
+  '@context': 'https://schema.org',
+  '@type': 'BlogPosting',
   headline: title,
   description,
   url,
   mainEntityOfPage: url,
   image: [image],
   author: {
-    "@type": "Person",
+    '@type': 'Person',
     name: siteConfig.authorName,
-    url: absoluteUrl("/about"),
+    url: absoluteUrl('/about'),
   },
   publisher: {
-    "@type": "Person",
+    '@type': 'Person',
     name: siteConfig.authorName,
     url: siteConfig.siteUrl,
   },
@@ -139,7 +131,7 @@ export const buildArticleJsonLd = ({
       }
     : {}),
   isPartOf: {
-    "@type": "WebSite",
+    '@type': 'WebSite',
     name: siteConfig.siteName,
     url: siteConfig.siteUrl,
   },

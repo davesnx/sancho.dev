@@ -1,5 +1,5 @@
-import { buildMetadata } from "../lib/site";
-import { H1, Page, Spacer, Text, TextLink } from "../components/ui";
+import { H1, Page, Spacer, Text, TextLink } from "@/components/ui";
+import { buildMetadata } from "@/site";
 
 export const metadata = buildMetadata({
   title: "404",

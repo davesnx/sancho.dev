@@ -1,9 +1,9 @@
 import { css } from "@linaria/core";
 
-import { buildMetadata } from "../../lib/site";
-import fonts from "../../theme/fonts";
-import { colors, darkCSSVariables, lightCSSVariables } from "../../theme/theme";
-import { H1, Page } from "../../components/ui";
+import { H1, Page } from "@/components/ui";
+import { buildMetadata } from "@/site";
+import fonts from "@/theme/fonts";
+import { colors, darkCSSVariables, lightCSSVariables } from "@/theme/theme";
 
 const wrapperClass = css`
   display: grid;
@@ -135,7 +135,7 @@ export default function UIColorsPage() {
     <Page title={<H1>UI Color Tokens</H1>}>
       <div className={wrapperClass}>
         <p className={introClass}>
-          Theme tokens sourced from <code>src/theme/theme.js</code>, rendered side-by-side for light and dark modes.
+          Theme tokens sourced from <code>src/lib/theme/theme.js</code>, rendered side-by-side for light and dark modes.
         </p>
         <div className={tableWrapClass}>
           <table className={tableClass}>

@@ -1,13 +1,13 @@
 import { css } from "@linaria/core";
 import repos from "../../data/github-repos.json";
 
-import type { GitHubRepo } from "../../lib/github";
-import { getLanguageColor } from "../../lib/github";
-import { buildMetadata } from "../../lib/site";
-import constants from "../../theme/constants";
-import font from "../../theme/fonts";
-import { colors } from "../../theme/theme";
-import { H1, H2, HideOnDesktop, HideOnMobile, Page, Row, Spacer, Stack, Text, TextLink } from "../../components/ui";
+import { H1, H2, HideOnDesktop, HideOnMobile, Page, Row, Spacer, Stack, Text, TextLink } from "@/components/ui";
+import type { GitHubRepo } from "@/github";
+import { getLanguageColor } from "@/github";
+import { buildMetadata } from "@/site";
+import constants from "@/theme/constants";
+import font from "@/theme/fonts";
+import { colors } from "@/theme/theme";
 
 const galleryClass = css`
   display: grid;
