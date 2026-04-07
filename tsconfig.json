@@ -1,18 +1,15 @@
 {
   "compilerOptions": {
+    "target": "ES2022",
     "lib": [
       "dom",
       "dom.iterable",
       "esnext"
     ],
-    "baseUrl": ".",
     "module": "esnext",
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
     "resolveJsonModule": true,
-    "removeComments": true,
-    "preserveConstEnums": true,
     "strict": false,
-    "alwaysStrict": false,
     "strictNullChecks": true,
     "noUncheckedIndexedAccess": true,
     "noImplicitAny": true,
@@ -22,10 +19,6 @@
     "noUnusedParameters": true,
     "allowUnreachableCode": false,
     "noFallthroughCasesInSwitch": true,
-    "target": "es5",
-    "outDir": "out",
-    "declaration": true,
-    "sourceMap": true,
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "allowImportingTsExtensions": true,
@@ -35,17 +28,25 @@
     "jsx": "react-jsx",
     "noEmit": true,
     "isolatedModules": true,
-    "incremental": true
+    "incremental": true,
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ]
   },
   "exclude": [
-    "./out/**/*",
-    "./node_modules/**/*"
+    "node_modules",
+    "out"
   ],
   "include": [
     "next-env.d.ts",
     "**/*.mts",
     "**/*.ts",
     "**/*.tsx",
-    "src/*"
+    "**/*.js",
+    "**/*.jsx",
+    ".next/types/**/*.ts",
+    ".next/dev/types/**/*.ts"
   ]
 }

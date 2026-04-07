@@ -66,7 +66,7 @@ const navyScale = {
 const greyScale = {
   /* grey100: "#FAFAFA", */
   grey100: "#DCDCDC",
-  grey200: "#F5F5F5",
+  grey200: "#F7F7F7",
   grey300: "#F0F0F0",
   grey400: "#E3E3E3",
   grey500: "#CCCCCC",
@@ -83,7 +83,7 @@ const greyScale = {
  */
 const lightValues = {
   backgroundGrey900: greyScale.grey900,
-  backgroundPrimary: greyScale.grey100,
+  backgroundPrimary: "#FFFFFF",
   backgroundSecondary: greyScale.grey200,
   backgroundTertiary: greyScale.grey300,
   borderStrong: navyScale.navy100,
@@ -168,17 +168,25 @@ export const darkCSSVariables = objectToCSSVariable("dark", darkTheme);
 const makeRoot = (str) => `:root { ${str} }`;
 
 /**
+ * Creates theme variable declarations without wrapping them in :root.
+ * This is useful for CSS-in-JS systems that already scope the selector.
+ * @param {'light' | 'dark'} theme - Theme name
+ * @returns {string} CSS variable declarations
+ */
+export const assignThemeVariables = (theme) => {
+  return Object.keys(lightTheme)
+    .map((key) => [`--c-${key}`, `var(--c-${theme}-${key})`])
+    .map(([colorName, themeName]) => `${colorName}: ${themeName};`)
+    .join(" ");
+};
+
+/**
  * Creates a complete theme CSS root rule
  * @param {'light' | 'dark'} theme - Theme name
  * @returns {string} CSS root rule with theme variables
  */
 export const make = (theme) => {
-  return makeRoot(
-    Object.keys(lightTheme)
-      .map((key) => [`--c-${key}`, `var(--c-${theme}-${key})`])
-      .map(([colorName, themeName]) => `${colorName}: ${themeName};`)
-      .join(" "),
-  );
+  return makeRoot(assignThemeVariables(theme));
 };
 
 /**

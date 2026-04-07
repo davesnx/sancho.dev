@@ -1,13 +1,14 @@
-import styled from "@emotion/styled";
+import { css } from "@linaria/core";
+
 import fonts from "../theme/fonts";
 import { colors } from "../theme/theme";
 
-const PlaygroundContainer = styled.div`
+const containerClass = css`
   position: relative;
-  margin: 1rem 0 2rem 0;
+  margin: 1rem 0 2rem;
 `;
 
-const CodeBlock = styled.pre`
+const codeBlockClass = css`
   display: block;
   overflow: auto;
   position: relative;
@@ -16,7 +17,6 @@ const CodeBlock = styled.pre`
   border-radius: 6px;
   margin: 0;
   background: ${colors.backgroundSecondary};
-
   font-family: ${fonts.mono};
   font-weight: 400;
   font-size: 0.9rem;
@@ -31,7 +31,7 @@ const CodeBlock = styled.pre`
   color: ${colors.textProse};
 `;
 
-const PlaygroundLink = styled.a`
+const playgroundLinkClass = css`
   position: absolute;
   top: 0.75rem;
   right: 0.75rem;
@@ -46,14 +46,13 @@ const PlaygroundLink = styled.a`
   text-decoration: none;
   color: ${colors.textProse};
   background: ${colors.backgroundSecondary};
-  transition: all 0.15s ease;
+  transition: color 150ms ease;
 
   &:hover {
     color: ${colors.textPrimary};
-    background: ${colors.backgroundSecondary};
   }
 
-  svg {
+  & svg {
     width: 14px;
     height: 14px;
   }
@@ -72,9 +71,6 @@ type MelangePlaygroundProps = {
 
 function encodeForPlayground(code: string): string {
   const trimmed = code.trim();
-  if (typeof window !== "undefined") {
-    return btoa(trimmed);
-  }
   return Buffer.from(trimmed).toString("base64");
 }
 
@@ -84,9 +80,10 @@ export function MelangePlayground({ children, language = "OCaml" }: MelangePlayg
   const playgroundUrl = `https://melange.re/v4.0.0/playground/?language=${language}&code=${encodeURIComponent(encoded)}&live=off`;
 
   return (
-    <PlaygroundContainer>
-      <CodeBlock>
-        <PlaygroundLink
+    <div className={containerClass}>
+      <pre className={codeBlockClass}>
+        <a
+          className={playgroundLinkClass}
           href={playgroundUrl}
           target="_blank"
           rel="noopener noreferrer"
@@ -94,10 +91,10 @@ export function MelangePlayground({ children, language = "OCaml" }: MelangePlayg
         >
           <PlayIcon />
           Try it
-        </PlaygroundLink>
+        </a>
         {code}
-      </CodeBlock>
-    </PlaygroundContainer>
+      </pre>
+    </div>
   );
 }
 
