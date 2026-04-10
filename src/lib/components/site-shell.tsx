@@ -45,7 +45,7 @@ const menuItemClass = css`
   user-select: none;
   font-size: ${fonts.fontSize0};
   font-family: ${fonts.sans};
-  font-weight: 800;
+  font-weight: 700;
   text-transform: uppercase;
   display: inline-flex;
   letter-spacing: 2px;

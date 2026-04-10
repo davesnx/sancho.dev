@@ -28,7 +28,7 @@ const layerClass = css`
 const nameClass = css`
   font-size: var(--name-size);
   font-family: ${font.sans};
-  font-weight: bold;
+  font-weight: 700;
   margin: 0;
   letter-spacing: 10px;
 `;

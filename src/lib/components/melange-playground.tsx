@@ -42,7 +42,7 @@ const playgroundLinkClass = css`
   border-radius: 4px;
   font-family: ${fonts.mono};
   font-size: 0.7rem;
-  font-weight: 600;
+  font-weight: 700;
   text-decoration: none;
   color: ${colors.textProse};
   background: ${colors.backgroundSecondary};

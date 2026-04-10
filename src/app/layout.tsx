@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
 import Script from "next/script";
+import { preload } from "react-dom";
 
 import { SiteShell } from "@/components/site-shell";
 import { siteConfig } from "@/site";
-import { displayFont, monoFont, sansFont } from "./fonts";
+import { displayFont, monoFont } from "./fonts";
 import "./style.linaria.global";
 import { AppThemeProvider } from "./theme-provider";
 
@@ -42,8 +43,11 @@ export const metadata: Metadata = {
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
+  preload("/fonts/DMSans-400.woff2", { as: "font", type: "font/woff2", crossOrigin: "anonymous" });
+  preload("/fonts/DMSans-700.woff2", { as: "font", type: "font/woff2", crossOrigin: "anonymous" });
+
   return (
-    <html lang="en" suppressHydrationWarning className={`${sansFont.variable} ${monoFont.variable} ${displayFont.variable}`} data-scroll-behavior="smooth">
+    <html lang="en" suppressHydrationWarning className={`${monoFont.variable} ${displayFont.variable}`} data-scroll-behavior="smooth">
       <body>
         <AppThemeProvider>
           <SiteShell>{children}</SiteShell>

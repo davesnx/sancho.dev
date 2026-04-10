@@ -7,9 +7,9 @@ import { colors } from "@/theme/theme";
 
 const nameClass = css`
   font-size: 3rem;
-  font-weight: bold;
+  font-weight: 700;
   line-height: 1;
-  letter-spacing: 1.6px;
+  letter-spacing: 0.6px;
   color: ${colors.textAccent};
 `;
 
@@ -24,9 +24,7 @@ export default function HomePage() {
   return (
     <Page
       title={
-        <Row justify="flex-start" gap={2} align="baseline">
-          <H1 className={nameClass}>David Sancho</H1>
-        </Row>
+        <H1 className={nameClass}>David Sancho</H1>
       }
     >
       <Spacer bottom={10}>

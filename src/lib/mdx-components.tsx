@@ -23,7 +23,7 @@ const anchorLinkClass = css`
   color: ${colors.textTertiary};
   text-decoration: none;
   font-family: ${fonts.mono};
-  font-weight: 800;
+  font-weight: 700;
   line-height: inherit;
   white-space: nowrap;
 
@@ -81,7 +81,7 @@ const blockquoteClass = css`
   & p {
     margin: 0;
     font-style: italic;
-    font-weight: 500;
+    font-weight: 700;
   }
 `;
 

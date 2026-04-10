@@ -27,7 +27,7 @@ const yearHeaderClass = css`
   font-family: ${fonts.mono};
   font-size: ${fonts.fontSize3};
   line-height: 1.3;
-  font-weight: 600;
+  font-weight: 700;
   color: ${colors.textTertiary};
   opacity: 0.5;
   user-select: none;
@@ -92,16 +92,14 @@ export default function BlogIndexPage() {
               <Stack gap={6} align="flex-start" fullWidth>
                 {(postsByYear[year] ?? []).map((post) => (
                   <ButtonLink key={post.slug} href={`/blog/${post.slug}`} className={postLinkClass}>
-                    <Stack gap={1} align="flex-start" fullWidth>
+                    <Stack gap={0.5} align="flex-start" fullWidth>
                       <H3 className={postTitleClass}>{post.title}</H3>
                       {post.description ? (
-                        <Spacer top={0.5}>
-                          <div className={postDescriptionClass}>
-                            <Text color={colors.textSecondary} size={fonts.fontSize1}>
-                              {post.description}
-                            </Text>
-                          </div>
-                        </Spacer>
+                        <div className={postDescriptionClass}>
+                          <Text color={colors.textSecondary} size={fonts.fontSize1}>
+                            {post.description}
+                          </Text>
+                        </div>
                       ) : null}
                     </Stack>
                   </ButtonLink>

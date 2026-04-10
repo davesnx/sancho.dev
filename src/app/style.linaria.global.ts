@@ -4,7 +4,24 @@ import fonts from "@/theme/fonts";
 import { assignThemeVariables, darkCSSVariables, lightCSSVariables } from "@/theme/theme";
 
 export const globals = css`
+  @font-face {
+    font-family: "DM Sans";
+    src: url("/fonts/DMSans-400.woff2") format("woff2");
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+  }
+
+  @font-face {
+    font-family: "DM Sans";
+    src: url("/fonts/DMSans-700.woff2") format("woff2");
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap;
+  }
+
   :global(:root) {
+    --font-sans: "DM Sans";
     ${lightCSSVariables}
     ${darkCSSVariables}
     ${assignThemeVariables("dark")}

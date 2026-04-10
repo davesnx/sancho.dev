@@ -1,5 +1,4 @@
 import type { ComponentType } from 'react';
-
 import { notFound } from 'next/navigation';
 
 import { BlogPostView } from '@/components/blog-post-view';

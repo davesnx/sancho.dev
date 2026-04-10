@@ -1,5 +1,4 @@
 import { Fragment } from "react";
-
 import { css } from "@linaria/core";
 
 import { H1, Page, Spacer, Stack, Text, TextLink } from "@/components/ui";
