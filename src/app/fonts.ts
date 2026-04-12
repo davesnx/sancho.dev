@@ -1,5 +1,22 @@
 import localFont from "next/font/local";
 
+export const sansFont = localFont({
+  variable: "--font-sans",
+  display: "swap",
+  src: [
+    {
+      path: "../../public/fonts/DMSans-400.woff2",
+      style: "normal",
+      weight: "400",
+    },
+    {
+      path: "../../public/fonts/DMSans-700.woff2",
+      style: "normal",
+      weight: "700",
+    },
+  ],
+});
+
 export const monoFont = localFont({
   variable: "--font-mono",
   display: "swap",
