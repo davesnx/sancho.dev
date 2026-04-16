@@ -5,7 +5,7 @@ import createMDX from "@next/mdx";
 import withLinaria from "next-with-linaria";
 
 const libPath = fileURLToPath(new URL("./src/lib", import.meta.url));
-const rehypePrettyCodePluginPath = fileURLToPath(new URL("./src/lib/code-highlight/rehype-pretty-code.mjs", import.meta.url));
+const rehypePrettyCodePluginPath = fileURLToPath(new URL("./src/lib/code-highlight/rehype-pretty-code.mts", import.meta.url));
 
 const withBundleAnalyzer = bundleAnalyzer({
   enabled: process.env.ANALYZE === "true",
