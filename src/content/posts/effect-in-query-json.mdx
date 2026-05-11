@@ -1,6 +1,6 @@
 ---
 title: "Using Effects in query-json"
-description: "Four effect declarations handle all control flow in a 3,600-line interpreter"
+description: "How OCaml effect system is used to handle all control flow for a jq interpreter"
 publishedAt: "2025-01-13"
 published: false
 tags:
@@ -9,11 +9,13 @@ tags:
   - "query-json"
 ---
 
-A few years ago I wrote about [query-json](/posts/cross-compile-query-json), a re-implementation of jq in OCaml. Back then, the interpreter was straightforward: a recursive function that took an AST node and a JSON value, and returned a JSON value.
+A few years ago I wrote [query-json](/posts/cross-compile-query-json), a re-implementation of subset of jq in OCaml. Back then, the interpreter was straightforward: a function that took an jq expression and a JSON, and returned a JSON.
 
-Since then, query-json grew into implementing most of jq's language: `try/catch`, `while`, `limit`, user-defined functions, and more. jq is [Turing-complete](https://github.com/MakeNowJust/bf.jq) (someone wrote a Brainfuck interpreter in it, if you need convincing). Expressions can produce zero, one, or many results. They can fail, halt the program, break out of loops, signal errors that propagate up to `try/catch`. The model I started with ("take an expression, return a value") couldn't handle any of this.
+<!-- add jq notation, example, whatever to give context -->
 
-In this post I want to explain the evolution and implementation to handle those control-flow patterns and how OCaml effect system helped. If you've ever implemented `try/catch` in a language, you already know the shape of the problem. If not, don't worry, we'll walk through it step by step.
+Since then, query-json grew into implementing most of jq's language: `try/catch`, `while`, `limit`, user-defined functions, expressions can produce zero, one, or many results. Those expressions can fail, halt the program, break out of loops, and a long etcetera of a complete programming language. jq is actually [Turing-complete](https://github.com/MakeNowJust/bf.jq) (someone wrote a Brainfuck interpreter in it, if you need convincing). The design I started with ("take an expression, return a value") couldn't handle any of this.
+
+In this post I want to explain the evolution and implementation to handle those control-flow patterns and how OCaml effect system helped. If you know how `try/catch` works in any other language, you don't need anything else to understand effects.
 
 ## What makes jq a real language
 
