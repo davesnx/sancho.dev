@@ -49,3 +49,5 @@ out/
 
 .cursor/
 AGENTS.md
+
+.wrangler/
