@@ -46,7 +46,7 @@ const orgAvatarClass = css`
   border-radius: 50%;
   flex-shrink: 0;
   filter: grayscale(1);
-  transition: filter 0.2s ease;
+  transition: filter 150ms ease;
 `;
 
 const openSourceItemClass = css`
@@ -60,17 +60,21 @@ const openSourceItemClass = css`
   border-radius: 0.5rem;
   border: 1px solid ${colors.borderStrong};
   background-color: ${colors.backgroundSecondary};
-  transition: all 0.2s ease;
+  transition: background-color 150ms ease, transform 120ms ease-out;
 
   &:hover {
     background-color: ${colors.backgroundTertiary};
+  }
+
+  &:active {
+    transform: scale(0.99);
   }
 
   &:hover .repo-avatar {
     filter: grayscale(0);
   }
 
-  &:hover .repo-accent svg {
+  &:hover .repo-accent {
     filter: grayscale(0) !important;
   }
 `;
@@ -231,13 +235,13 @@ const Job = ({
 );
 
 const LanguageDot = ({ color }: { color: string }) => (
-  <svg width="12" height="12" viewBox="0 0 12 12" fill="none" className="repo-accent" style={{ filter: "grayscale(1)", transition: "filter 0.2s ease" }}>
+  <svg width="12" height="12" viewBox="0 0 12 12" fill="none" className="repo-accent" style={{ filter: "grayscale(1)", transition: "filter 150ms ease" }}>
     <circle cx="6" cy="6" r="6" fill={color} />
   </svg>
 );
 
 const StarIcon = () => (
-  <svg width="14" height="14" viewBox="0 0 24 24" fill="#f1c40f" className="repo-accent" style={{ filter: "grayscale(1)", transition: "filter 0.2s ease" }}>
+  <svg width="14" height="14" viewBox="0 0 24 24" fill="#f1c40f" className="repo-accent" style={{ filter: "grayscale(1)", transition: "filter 150ms ease" }}>
     <path d="M12 1.75C12.311 1.75 12.5898 1.94201 12.7007 2.23263L15.0587 8.41234L21.5366 8.72913C21.8418 8.74406 22.1074 8.94263 22.2081 9.23111C22.3088 9.5196 22.2244 9.84032 21.9947 10.0419L17.0648 14.3695L18.8767 21.3106C18.9558 21.6135 18.8383 21.9338 18.5821 22.1137C18.3258 22.2937 17.9848 22.2956 17.7266 22.1183L12 18.1875L6.27335 22.1183C6.01519 22.2956 5.67409 22.2937 5.41785 22.1137C5.1616 21.9338 5.04413 21.6135 5.12323 21.3106L6.93517 14.3695L2.0052 10.0419C1.77557 9.84032 1.69118 9.5196 1.79186 9.23111C1.89253 8.94263 2.15815 8.74406 2.46334 8.72913L8.94127 8.41234L11.2992 2.23263C11.4101 1.94201 11.6889 1.75 12 1.75Z" />
   </svg>
 );

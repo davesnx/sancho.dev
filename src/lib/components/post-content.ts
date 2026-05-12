@@ -9,6 +9,73 @@ export const postContentClass = css`
   font-family: ${fonts.sans};
   width: 100%;
 
+  & p {
+    margin: 0 0 1.35rem;
+    line-height: 1.75;
+    text-wrap: pretty;
+  }
+
+  & h2,
+  & h3,
+  & h4 {
+    color: ${colors.textAccent};
+    line-height: 1.25;
+    text-wrap: balance;
+    scroll-margin-top: 2rem;
+  }
+
+  & h2 {
+    margin: 3rem 0 1rem;
+    font-size: ${fonts.fontSize4};
+  }
+
+  & h3 {
+    margin: 2.25rem 0 0.75rem;
+    font-size: ${fonts.fontSize3};
+  }
+
+  & h4 {
+    margin: 2rem 0 0.5rem;
+    font-size: ${fonts.fontSize2};
+  }
+
+  & ul,
+  & ol {
+    margin: 0 0 1.5rem;
+    padding-left: 1.5rem;
+  }
+
+  & li {
+    margin: 0.45rem 0;
+    line-height: 1.7;
+  }
+
+  & li::marker {
+    color: ${colors.textSecondary};
+  }
+
+  & blockquote {
+    margin: 2rem 0;
+    padding: 0.25rem 0 0.25rem 1.25rem;
+    border-left: 3px solid ${colors.borderStrong};
+    color: ${colors.textSecondary};
+  }
+
+  & blockquote p:last-child,
+  & li p:last-child {
+    margin-bottom: 0;
+  }
+
+  & img {
+    display: block;
+    height: auto;
+    border-radius: 8px;
+  }
+
+  & a {
+    text-underline-offset: 3px;
+  }
+
   & code:not(pre code) {
     font-family: ${fonts.mono};
     white-space: normal;
@@ -17,6 +84,7 @@ export const postContentClass = css`
     margin: 0 2px;
     color: ${colors.textPrimary};
     background: ${colors.backgroundSecondary};
+    font-size: 0.9em;
   }
 
   & p > code:first-of-type {
@@ -38,7 +106,7 @@ export const postContentClass = css`
   }
 
   & [data-rehype-pretty-code-figure] {
-    margin: 0.5rem 0 1.5rem;
+    margin: 0.75rem 0 1.75rem;
   }
 
   & [data-rehype-pretty-code-figure] pre {
@@ -50,6 +118,7 @@ export const postContentClass = css`
     background: ${colors.backgroundSecondary};
     font-family: ${fonts.mono};
     line-height: 1.6;
+    font-size: 0.92rem;
   }
 
   & [data-rehype-pretty-code-figure] code {

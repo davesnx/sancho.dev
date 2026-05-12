@@ -59,6 +59,7 @@ const textBaseClass = css`
   color: ${colors.textPrimary};
   font-family: ${fonts.sans};
   display: inline-block;
+  text-wrap: pretty;
 `;
 
 const headingBaseClass = css`
@@ -68,6 +69,7 @@ const headingBaseClass = css`
   font-weight: 700;
   line-height: 1.3;
   color: ${colors.textAccent};
+  text-wrap: balance;
 `;
 
 const h1Class = css`
@@ -351,6 +353,7 @@ export function Text({
         fontWeight: weight,
         color,
         fontFamily: monospace ? fonts.mono : fonts.sans,
+        fontVariantNumeric: monospace ? "tabular-nums slashed-zero" : undefined,
         letterSpacing: kerning,
         textAlign: align,
         ...style,

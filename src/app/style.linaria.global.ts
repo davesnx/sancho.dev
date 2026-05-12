@@ -26,6 +26,7 @@ export const globals = css`
     -moz-osx-font-smoothing: grayscale;
     -webkit-overflow-scrolling: touch;
     box-sizing: border-box;
+    font-synthesis: none;
   }
 
   :global(html),
@@ -48,6 +49,7 @@ export const globals = css`
     font-family: ${fonts.sans};
     line-height: ${fonts.globalLineHeight};
     text-rendering: optimizeLegibility;
+    font-optical-sizing: auto;
   }
 
   :global(html) {
@@ -77,6 +79,17 @@ export const globals = css`
   :global(pre),
   :global(code) {
     font-family: ${fonts.mono};
+    font-variant-ligatures: contextual;
+    font-feature-settings: "zero" 1, "calt" 1;
+  }
+
+  :global(:focus-visible) {
+    outline: 2px solid var(--c-textAccent);
+    outline-offset: 4px;
+  }
+
+  :global(:target) {
+    scroll-margin-top: 2rem;
   }
 
   :global(summary) {
@@ -90,5 +103,16 @@ export const globals = css`
   :global(::selection) {
     background: var(--c-borderSubtle);
     color: var(--c-textAccent);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    :global(*),
+    :global(*::before),
+    :global(*::after) {
+      scroll-behavior: auto !important;
+      animation-duration: 1ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 1ms !important;
+    }
   }
 `;

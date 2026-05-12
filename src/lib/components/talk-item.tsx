@@ -10,7 +10,7 @@ const iconWrapperClass = css`
 
   svg {
     filter: grayscale(1);
-    transition: filter 0.2s ease;
+    transition: filter 150ms ease;
   }
 `;
 
@@ -26,7 +26,7 @@ const boxClass = css`
   border-radius: 0.5rem;
   border: 1px solid ${colors.borderStrong};
   background-color: ${colors.backgroundSecondary};
-  transition: all 0.2s ease;
+  transition: background-color 150ms ease, transform 120ms ease-out;
 
   @media (max-width: ${breakpoints.mobile.width}px) {
     padding: 2rem;
@@ -34,6 +34,10 @@ const boxClass = css`
 
   &:hover {
     background-color: ${colors.backgroundTertiary};
+  }
+
+  &:active {
+    transform: scale(0.99);
   }
 
   &:hover .talk-meta {
@@ -51,11 +55,11 @@ const boxClass = css`
 
 const metaClass = css`
   color: ${colors.textTertiary};
-  transition: color 0.2s ease;
+  transition: color 150ms ease;
 `;
 
 const titleClass = css`
-  transition: color 0.2s ease;
+  transition: color 150ms ease;
 `;
 
 const youtubeIconClass = css`

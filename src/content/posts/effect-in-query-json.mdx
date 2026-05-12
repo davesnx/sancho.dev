@@ -11,7 +11,7 @@ tags:
 
 A few years ago I wrote [query-json](/posts/cross-compile-query-json), a re-implementation of subset of jq in OCaml. Back then, the interpreter was straightforward: a function that took an jq expression and a JSON, and returned a JSON.
 
-<!-- add jq notation, example, whatever to give context -->
+{/* add jq notation, example, whatever to give context */}
 
 Since then, query-json grew into implementing most of jq's language: `try/catch`, `while`, `limit`, user-defined functions, expressions can produce zero, one, or many results. Those expressions can fail, halt the program, break out of loops, and a long etcetera of a complete programming language. jq is actually [Turing-complete](https://github.com/MakeNowJust/bf.jq) (someone wrote a Brainfuck interpreter in it, if you need convincing). The design I started with ("take an expression, return a value") couldn't handle any of this.
 

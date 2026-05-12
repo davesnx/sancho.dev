@@ -22,10 +22,14 @@ const buttonClass = css`
   align-items: center;
   justify-content: center;
   position: relative;
-  transition: all 0.2s ease;
+  transition: background-color 150ms ease, transform 120ms ease-out;
 
   &:hover {
     background: var(--toggle-hover-background, transparent);
+  }
+
+  &:active {
+    transform: scale(0.96);
   }
 `;
 
@@ -44,7 +48,8 @@ const floatingIconClass = css`
   align-items: center;
   justify-content: center;
   position: absolute;
-  transition: left 200ms ease;
+  left: 0;
+  transition: transform 200ms ease;
 `;
 
 export function ThemeToggle({
@@ -94,14 +99,14 @@ export function ThemeToggle({
           "--toggle-background": floating ? colors.backgroundTertiary : "transparent",
           "--toggle-radius": floating ? "24px" : "50%",
           "--toggle-width": floating ? "48px" : "24px",
-          "--toggle-height": floating ? "24px" : "24px",
+          "--toggle-height": "24px",
           "--toggle-backdrop": floating ? "blur(5px)" : "none",
           "--toggle-hover-background": floating ? colors.borderSubtle : "transparent",
         } as CSSProperties
       }
     >
       {floating ? (
-        <span className={floatingIconClass} style={{ left: `${floatingLeft}px`, width: 16, height: 16 }}>
+        <span className={floatingIconClass} style={{ transform: `translateX(${floatingLeft}px)`, width: 16, height: 16 }}>
           {content}
         </span>
       ) : (

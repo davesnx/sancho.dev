@@ -1,7 +1,7 @@
 "use client";
 
-import type { ReactNode } from "react";
-import { useState } from "react";
+import type { KeyboardEvent, ReactNode } from "react";
+import { useEffect, useId, useRef, useState } from "react";
 
 import { css } from "@linaria/core";
 
@@ -50,9 +50,15 @@ const menuItemClass = css`
   display: inline-flex;
   letter-spacing: 2px;
   color: ${colors.textProse};
+  min-height: 32px;
+  align-items: center;
 
   &:hover {
     color: ${colors.textAccent};
+  }
+
+  &:active {
+    transform: scale(0.98);
   }
 `;
 
@@ -85,13 +91,15 @@ const desktopSwitcherClass = css`
 const mobileMenuOverlayClass = css`
   position: fixed;
   inset: 0;
+  padding: 0;
+  border: 0;
   background-color: ${colors.backgroundSecondary};
-  filter: blur(4px);
-  opacity: 0.9;
+  opacity: 0.86;
   display: flex;
   justify-content: center;
   height: 100%;
   width: 100%;
+  z-index: 10;
   animation: fadeIn 250ms ease;
 
   @keyframes fadeIn {
@@ -107,7 +115,7 @@ const mobileMenuOverlayClass = css`
 
 const mobileMenuPopupClass = css`
   position: fixed;
-  z-index: 1;
+  z-index: 11;
   top: 0;
   left: 0;
   right: 0;
@@ -115,7 +123,6 @@ const mobileMenuPopupClass = css`
   margin-top: 20%;
   background-color: ${colors.backgroundPrimary};
   border-radius: 12px;
-  transition: ease 300ms;
   padding: 1rem 0;
 `;
 
@@ -128,10 +135,14 @@ const mobileMenuItemClass = css`
 `;
 
 const iconClass = css`
-  width: 30px;
-  height: 30px;
+  width: 32px;
+  height: 32px;
   display: grid;
   align-items: center;
+  gap: 8px;
+  padding: 0;
+  border: 0;
+  background: transparent;
   cursor: pointer;
 `;
 
@@ -151,6 +162,18 @@ const logoClass = css`
 
   &:hover {
     color: ${colors.textAccent};
+  }
+`;
+
+const homeLinkClass = css`
+  justify-content: center;
+  align-items: center;
+  display: inline-flex;
+  padding: 8px;
+  margin-left: -8px;
+
+  &:active {
+    transform: scale(0.98);
   }
 `;
 
@@ -176,6 +199,18 @@ const footerMainClass = css`
   }
 `;
 
+const visuallyHiddenClass = css`
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+`;
+
 const navItems = [
   { href: "/blog", label: "blog" },
   { href: "/work", label: "work" },
@@ -191,36 +226,73 @@ const House = () => (
   </div>
 );
 
-const Hamburger = ({ onClick }: { onClick: () => void }) => (
-  <span
+const Hamburger = ({ isOpen, menuId, onClick }: { isOpen: boolean; menuId: string; onClick: () => void }) => (
+  <button
+    type="button"
     className={iconClass}
-    aria-label="menu"
-    role="button"
-    tabIndex={0}
+    aria-label={isOpen ? "Close menu" : "Open menu"}
+    aria-controls={menuId}
     aria-haspopup="menu"
-    aria-expanded="true"
+    aria-expanded={isOpen}
     onClick={onClick}
-    onKeyDown={(event) => {
-      if (event.key === "Enter" || event.key === " ") {
-        event.preventDefault();
-        onClick();
-      }
-    }}
   >
     <span className={barClass} />
     <span className={barClass} />
-  </span>
+  </button>
 );
 
 export function SiteShell({ children }: { children: ReactNode }) {
   const [isOpen, setIsOpen] = useState(false);
+  const menuId = useId();
+  const menuRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!isOpen) return;
+
+    const previousActiveElement = document.activeElement instanceof HTMLElement ? document.activeElement : null;
+    const previousOverflow = document.body.style.overflow;
+
+    document.body.style.overflow = "hidden";
+    menuRef.current?.querySelector<HTMLElement>("a, button")?.focus();
+
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      previousActiveElement?.focus();
+    };
+  }, [isOpen]);
+
+  const closeMenu = () => setIsOpen(false);
+
+  const handleMenuKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
+    if (event.key === "Escape") {
+      event.preventDefault();
+      closeMenu();
+      return;
+    }
+
+    if (event.key !== "Tab" || !menuRef.current) return;
+
+    const focusableItems = Array.from(menuRef.current.querySelectorAll<HTMLElement>("a, button")).filter((item) => !item.hasAttribute("disabled"));
+    if (focusableItems.length === 0) return;
+
+    const firstItem = focusableItems[0]!;
+    const lastItem = focusableItems[focusableItems.length - 1]!;
+
+    if (event.shiftKey && document.activeElement === firstItem) {
+      event.preventDefault();
+      lastItem.focus();
+    } else if (!event.shiftKey && document.activeElement === lastItem) {
+      event.preventDefault();
+      firstItem.focus();
+    }
+  };
 
   return (
     <div className={rootClass}>
       <div className={headerOuterClass}>
         <div className={headerInnerClass}>
           <Row justify="between" fullWidth>
-            <ButtonLink href="/">
+            <ButtonLink href="/" aria-label="Home" className={homeLinkClass}>
               <House />
             </ButtonLink>
             <div className={desktopMenuClass}>
@@ -235,32 +307,37 @@ export function SiteShell({ children }: { children: ReactNode }) {
             <div className={mobileMenuRootClass}>
               {isOpen ? (
                 <>
-                  <div className={mobileMenuOverlayClass} onClick={() => setIsOpen(false)} />
-                  <div className={mobileMenuPopupClass} style={{ transform: "scale(1)", opacity: 1 }}>
+                  <button type="button" className={mobileMenuOverlayClass} aria-label="Close menu" onClick={closeMenu} />
+                  <div
+                    id={menuId}
+                    className={mobileMenuPopupClass}
+                    role="dialog"
+                    aria-modal="true"
+                    aria-labelledby={`${menuId}-title`}
+                    ref={menuRef}
+                    onKeyDown={handleMenuKeyDown}
+                  >
+                    <div id={`${menuId}-title`} className={visuallyHiddenClass}>Navigation menu</div>
                     <Stack gap={0}>
-                      <ButtonLink href="/" className={`${menuItemClass} ${mobileMenuItemClass}`} onClick={() => setIsOpen(false)}>
+                      <ButtonLink href="/" className={`${menuItemClass} ${mobileMenuItemClass}`} onClick={closeMenu}>
                         home
                       </ButtonLink>
                       {navItems.map((item) => (
-                        <ButtonLink key={item.href} href={item.href} className={`${menuItemClass} ${mobileMenuItemClass}`} onClick={() => setIsOpen(false)}>
+                        <ButtonLink key={item.href} href={item.href} className={`${menuItemClass} ${mobileMenuItemClass}`} onClick={closeMenu}>
                           {item.label}
                         </ButtonLink>
                       ))}
-                      <button
-                        type="button"
-                        className={`${menuItemClass} ${mobileMenuItemClass}`}
-                        style={{ background: "transparent", border: "none" }}
-                      >
+                      <div className={`${menuItemClass} ${mobileMenuItemClass}`}>
                         toggle theme
                         <Spacer left={2} />
-                        <ThemeToggle />
-                      </button>
+                        <ThemeToggle onToggle={closeMenu} />
+                      </div>
                     </Stack>
                   </div>
-                  <Hamburger onClick={() => setIsOpen(false)} />
+                  <Hamburger isOpen menuId={menuId} onClick={closeMenu} />
                 </>
               ) : (
-                <Hamburger onClick={() => setIsOpen(true)} />
+                <Hamburger isOpen={false} menuId={menuId} onClick={() => setIsOpen(true)} />
               )}
             </div>
           </Row>
@@ -270,14 +347,14 @@ export function SiteShell({ children }: { children: ReactNode }) {
         </div>
       </div>
       <Spacer bottom={6} />
-      <div className={childrenClass}>
+      <main className={childrenClass} id="main-content">
         <ResponsiveSpacer mobileTop={2} desktopTop={6}>
           {children}
         </ResponsiveSpacer>
-      </div>
-      <main className={footerMainClass}>
+      </main>
+      <footer className={footerMainClass}>
         <Spacer top={4} bottom={6}>
-          <footer className={footerClass}>
+          <div className={footerClass}>
             <div>
               <Text color={colors.textTertiary} weight={600} size={fonts.fontSizeN2} monospace>
                 David Sancho (
@@ -306,9 +383,9 @@ export function SiteShell({ children }: { children: ReactNode }) {
                 </TextLink>
               </Text>
             </div>
-          </footer>
+          </div>
         </Spacer>
-      </main>
+      </footer>
     </div>
   );
 }

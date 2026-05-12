@@ -20,7 +20,7 @@ const charClass = css`
   justify-content: center;
   align-items: center;
   color: ${colors.textPrimary};
-  transition: all 200ms ease-out;
+  transition: font-variation-settings 200ms ease-out;
 `;
 
 const containerClass = css`
@@ -57,7 +57,7 @@ function Squared({
 
         return (
           <span
-            key={`${char}-${idx}`}
+            key={`${text.slice(0, idx + 1)}-${char}`}
             className={charClass}
             style={{
               fontVariationSettings: `"wght" ${weight}`,
