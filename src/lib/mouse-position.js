@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-const useWindowMousePosition = () => {
+export default function useWindowMousePosition() {
   const [WindowMousePosition, setWindowMousePosition] = useState({
     x: null,
     y: null,
@@ -24,4 +24,3 @@ const useWindowMousePosition = () => {
   return WindowMousePosition;
 };
 
-export default useWindowMousePosition;

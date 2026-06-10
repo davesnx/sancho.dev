@@ -1,245 +1,173 @@
 ---
 title: "Safer languages might be the future"
-publishedAt: "2026-10-12"
+description: "Why LLMs may push us toward stricter, safer languages"
+publishedAt: "2026-02-12"
 published: false
 tags:
   - "AI"
   - "LLMs"
   - "Programming Languages"
   - "Type Safety"
-description: "Why LLMs might benefit from maximally-safe programming languages, and why even current languages aren't enough"
 ---
 
-# Safer Languages Blog - Research & Notes
+Yet when you ask an LLM to solve a problem without naming a language, it almost always chooses Python or TypeScript. As [Kiran Gopinathan notes](https://kirancodes.me/posts/log-lang-design-llms.html), LLMs perform better in languages that are overrepresented in training data.
 
-## Reading List
+That makes sense, but it also raises the question I keep coming back to: is training data the only factor as models get better? What would a language built for LLMs look like?
 
-- [ ] https://x.com/ashpreetbedi/status/2023563296440267176?s=46
-- [ ] Read https://chreke.com/posts/little-languages
-- [ ] Read https://martinfowler.com/articles/2025-nature-abstraction.html
-- [ ] Watch https://www.youtube.com/watch?v=hh0axmFH1j8&t=670s&ab_channel=TheHaskellFoundation
-- [ ] Read and quote https://kirancodes.me/posts/log-lang-design-llms.html ✅ (integrated)
-  - **The LLM Problem, or, rather, Everything is Easier in Python**
-  - LLMs have substantially higher efficacy when operating in programming languages well-represented in their training set
-- [ ] https://zed.dev/blog/why-llms-cant-build-software ✅ (integrated)
-- [ ] https://harper.blog/2025/02/16/my-llm-codegen-workflow-atm
-- [x] Read the future of web dev https://protoship.io/blog/rails-on-ocaml
-- [x] Read https://cdsmith.wordpress.com/2011/01/09/an-old-article-i-wrote ✅ (integrated)
-  - Good notes about different type-systems
-- [x] Watch https://x.com/sundeep/status/1914002310973526127
-  - "I know how I'm going to do it and go and doing it" - It's AIs job now
-- [ ]  t
-- [https://dafny.org](https://dafny.org/)
-- Reference Reinforcement Learning from Verifiable Rewards (RLVR) https://x.com/karpathy/status/2002118205729562949
+## Why Python and JavaScript dominate today
 
-## Other Links
+Python and JavaScript share the same philosophy: reduce friction, ship fast. Low barrier to entry, quick feedback, and no mandatory compile step. That permissiveness is exactly why they spread everywhere.
 
-- https://manus.im/app/hxFiEUMqYQqOgLVf6h26f1
-- https://world.hey.com/joaoqalves/five-opinions-i-ve-kept-let-go-and-picked-up-as-a-software-builder-and-leader-5ab3b919
+Python became the language of scripting, then data science, then machine learning. JavaScript became the only language that runs natively in the browser. TypeScript then made JavaScript safer without changing the ecosystem. For LLMs, that means two huge advantages: they have seen these APIs thousands of times, and the tooling is mature.
 
-## Alternative Titles Considered
+## The shift started before LLMs
 
-- Safer languages in the Age of AI
-- Safer language may be the future of programming in the AI age
-- **Choosing programming language in the AI age: an opportunity to safer languages?**
-- LLMs may change our preferred programming language
-- LLMs Might Prefer Much Safer Languages
-- **Safer languages might be the future of AI-driven development** (final choice)
+Even before AI codegen, the industry was already moving toward safer languages. As codebases grow, the cost of fixing bugs grows with them.
 
-## Cut Content
+Type systems reduce the "fix one bug, three appear" cycle. They catch entire classes of errors at compile time. Refactoring becomes more mechanical and less risky.
 
-### Cursor vs Claude Code (save for another post)
+We have seen this shift in multiple ecosystems:
 
-I have been thinking more as to how it is possible that a tool change made me flip mind between 'llm are cool for code but currently not helpful enough' to 'llm are cool for code'.
+- **TypeScript** is now the default for serious frontend work.
+- **Python** and **PHP** have adopted type hints and static analysis tools.
+- **Elixir** is actively working on gradual typing.
+- **Gleam** emerged with strong static typing for the Erlang VM.
 
-The thing is, cursor was already very good at helping writing new code. But as a developer, what is hard is to edit code not to write new ones. And basically I find cursor very lacking in this area. It has agents yes, but the agents require a lot of hand holding. Most often you really need to tell it look at this file, look at this function, and so you still need to do most of the hard job.
+## Compilers as a feedback loop
 
-And obviously doing the hard job is hard, so most of the time as a human you want to remain quite generic, which means you gave it broad instruction. Which means big context and then the model basically gets lost a bit.
+A strict compiler gives immediate feedback when something is logically inconsistent. This is exactly [what helps LLMs run longer and achieve better results](https://www.anthropic.com/engineering/effective-harnesses-for-long-running-agents). Compiler errors and successful builds guide them toward correctness with every iteration. Papers like [CoCoGen](https://arxiv.org/abs/2403.16792) show large accuracy gains when the model can iterate with compiler feedback.
 
-What Claude code does differently is that it tries to automate this part. Basically when it has a task, it will first use normal tools to discover the information. Look for small chunks of code or files, and it seems to do a lot of work in the background on compressing the context or rebuilding the prompts from information it gathers with those tools. It seems to be a very fine grained agents
+My thesis is simple: the safer the language, the more the compiler can verify, the faster the feedback loop, and the more reliably an LLM converges on correct code. This compounds.
 
-And the result is that, the code edits are a lot more precise, because the context is cleaner, probably. And in practice it is a big difference.
-
-And I guess what it means is that, when you are trying to build agents, the really hard question is the how. The workflow. Not the technical how, I mean the how you would actually do something. I mean most of the time as humans we focus on the what, the outcome, or when we focus on the how it is to teach some beginner so it is simple and basic how. But really, to build a good agent I think you need to understand in general the workflow of an expert, not the basic workflow, how an expert achievez tasks, break it down into good process that works most of the time, and turn it into a pipeline.
-
-It's pretty hard at least for me to think about that tbh most of the time when someone asks me 'how do I do x' as a workflow question, my answer is basically 'just figure it out' :D
-
-### Incomplete "Why" Section Ideas
-
-- Maintainability does decrease a bit
-- if the machine can eventually understand your entire program, or write tests for you or even debug it for you, and then explain/change the code
-- and the idea of an agent playing with a compiler and forking
-
-### Incomplete "How" Section
-
-Simplify this post https://harper.blog/2025/02/16/my-llm-codegen-workflow-atm and explain what will be the workflow of "forking"
-
-## Notes on OCaml's Limitations (for the twist)
-
-OCaml isn't safe enough because you can't express EVERYTHING in types/modules:
-- Memory safety (GC helps but not like Rust's guarantees)
-- Race-free data ops (no ownership model)
-- IO issues (side effects anywhere, not tracked)
-- Dependent-types kind of stuff (can't prove arbitrary properties)
-
-## The Ideal Language = Lean + Haskell + Rust
-
-- Rust's memory safety: Ownership and borrowing
-- Haskell's purity: Effects tracked in types (IO monad)
-- Lean's dependent types: Prove properties about your code
-
-
----
-
-Agentic AI represents a significant transformation in software development, comparable to the advent of high-level languages in the 1950s
-
-The rapid evolution of LLMs is reshaping software development. We see them assisting in code generation, debugging, and even architectural design. But there's something odd happening: ask an LLM to solve a problem (without specifying the language), and it almost always reaches for Python or TypeScript.
-
-This isn't surprising. As [Kiran Gopinathan notes](https://kirancodes.me/posts/log-lang-design-llms.html), LLMs have substantially higher efficacy when operating in languages well-represented in their training data.
-
-Python and TypeScript are the most used programming languages, so LLMs know them best. But here's the question that's been nagging me: **is this the optimal direction?**, **does training data be the only factor, as LLMs get better**? or even looking further, **what would be a language made for LLMs**?
-
-### Why they are the most common?
-
-Both languages share the same philosophy: remove friction to let developers move fast. Low barrier to entry, instant feedback, no compilation step. This permissiveness is exactly why they spread everywhere (PHP and Ruby are great examples too).
-
-Python became the language of scripting, then data science, then machine learning. JavaScript became the only language that runs natively in browsers, making it unavoidable for web development.
-
-In this blog post I want to reconsider the languages we choose in this new era. This may not be about LLMs adapting to our current paradigms, and whether certain language characteristics make them more suitable for AI-driven development.
-
-I'll spoil it upfront: even as a bit OCaml fan, I've firmly believe it might not be the best choice neither. Mostly because **not being safe enough**.
-
-## The shift was already happening
-
-Even before LLMs, the industry was already moving toward type-safe languages. As your codebases grow, the cost of fixing bugs scales dramatically.
-
- Type-safe languages eliminate the moment where you fix one bug and four pop up. They catch entire classes of errors at compile-time, making refactoring a pleasure instead of a pain and allowing more reasoning about the code.
-
-This was happening independently in a lot of ecosystems at the same time:
-
-- **TypeScript** brought gradual static typing to JavaScript, and it's now the default for serious frontend work
-- **Elixir** added an aclamed type system enhancements, bolstering its reputation for fault-tolerant systems
-- **Gleam** emerged with strong static typing for the Erlang VM
-- Even **Python** or **PHP** now has type hints baked into the language
-
-## Compilers as feedback loop
-
-A strict compiler tells you immediately when something is logically inconsistent. This **instant feedback** is exactly [what helps LLMs run longer and achieve better results](https://www.anthropic.com/engineering/effective-harnesses-for-long-running-agents). The compiler errors/successes guide them toward correctness with every iteration: [improving LLM accuracy by over 80%](https://arxiv.org/abs/2403.16792).
-
-My thesis is: the safer the language, the more the compiler can verify, the faster the feedback loop, and the more reliably the LLM converges on correct code. This will compound.
-
-[Yaron Minsky recently asked](https://x.com/yminsky/status/1980620162144378957) whether anyone had studied AI agent efficacy across statically vs dynamically typed languages. The replies were telling. One developer noted that agents perform better with TypeScript than JavaScript because "they have access to the linter, so they can fix their own typing mistakes." Another found AI outperforming expectations in Rust "due to helpful compiler messages related to the type system and borrow checker."
-
-The pattern is consistent: agents aren't just benefiting from training data—they're benefiting from tooling that catches their mistakes. Yaron's own response captured it well: one-shotting a simple program is one thing, but "making changes in a complex codebase is hard, and having strong tooling to inform agentic flows is really important."
+[Yaron Minsky recently asked](https://x.com/yminsky/status/1980620162144378957) whether anyone had studied AI agent efficacy across statically vs dynamically typed languages. The replies were telling. One developer noted that agents perform better with TypeScript than JavaScript because "they have access to the linter, so they can fix their own typing mistakes." Another found AI outperforming expectations in Rust due to compiler messages related to the type system and borrow checker.
 
 I now include a rule in all my projects: "Never accept broken compiler output. Every type mismatch must be fixed. When in doubt, ask me." It works extremely well.
 
 ## The safety spectrum
 
-I mentioned "safety" in a lot of places, but what does even mean?
+I keep saying "safety," but safety is not a single thing. [Different languages verify different properties](https://cdsmith.wordpress.com/2011/01/09/an-old-article-i-wrote/). Think of it as a spectrum of what the compiler can prove about your program.
 
-Not all safety is equal. [Different languages verify different properties](https://cdsmith.wordpress.com/2011/01/09/an-old-article-i-wrote/). Think of it as a spectrum of "what can the compiler can know from your code?"
+- **Type safety**: Operations are valid for the data they operate on. Languages like OCaml and Gleam excel here. The compiler enforces contracts between functions, makes illegal states unrepresentable, and guarantees exhaustive pattern matching.
+- **Memory safety**: Prevents buffer overflows, use-after-free errors, and dangling pointers. Rust is the gold standard with ownership and borrowing. [Microsoft found that 70% of their CVEs are memory safety issues](https://www.microsoft.com/en-us/msrc/blog/2019/07/we-need-a-safer-systems-programming-language).
+- **Thread safety**: Prevents data races. Rust again leads here by restricting aliasing and mutation.
+- **Effect tracking**: Makes side effects explicit. Haskell forces I/O into the type system so pure functions stay pure.
+- **Dependent types**: Allow you to prove logical properties about code. Languages like Idris and Lean can encode and verify invariants.
 
-**Type safety** ensures operations are valid for the data they operate on. Languages like OCaml and Gleam excel here, their compiler enforces contracts between functions, makes illegal states unrepresentable, and guarantees exhaustive pattern matching.
-
-**Memory safety** catches buffer overflows, use-after-free errors, and dangling pointers. Rust is the gold standard, using ownership and borrowing to guarantee memory safety at compile time without a garbage collector. [Microsoft found that 70% of their CVEs are memory safety issues](https://www.microsoft.com/en-us/msrc/blog/2019/07/we-need-a-safer-systems-programming-language).
-
-**Thread safety** catches race conditions and data races. Again, Rust leads here with its ownership model preventing concurrent mutable access. Worth mention for OxCaml.
-
-**Effect tracking** catches side effects. Haskell forces you to encode I/O operations in types, making it impossible to accidentally perform side effects in pure functions.
-
-**Dependent types** catch logical properties. Even not being often classified as a safety feature, some languages like Idris and Lean let you express invariants in your types, proving properties about your code mathematically.
-
-Each level up this spectrum means more properties the compiler can verify. More verification means tighter feedback loops for LLMs. An LLM working with a dependently-typed language could, in theory, prove its code correct rather than just hoping it works.
+Each step up the spectrum means more properties the compiler can verify, and tighter feedback loops for LLMs. In the extreme, an LLM working in a dependently typed language could prove its code correct rather than just hoping it works.
 
 ## Why systems beat discipline
 
-Here's a truth most developers learn the hard way: **software tends toward chaos**. This is entropy.
+Software tends toward entropy. You can write clean code, enforce conventions, and review every PR. But over time, small decisions pile up: caches, async flows, dependencies, abstractions that make sense when written but obscure critical details later. The [Broken Windows theory](https://yenkel.dev/posts/a-tale-of-latency-and-broken-windows) applies to code.
 
-You can write clean code. You can establish conventions. You can review every pull request. But over time, small decisions pile up. A waterfall here. A cache miss there. An abstraction that made sense when written but obscures critical details six months later. [The Broken Windows theory](https://yenkel.dev/posts/a-tale-of-latency-and-broken-windows) applies to code: if you let small issues slide, bigger ones follow.
+The problem is not incompetence. [Shu Ding captured it well](https://x.com/shuding/status/2013632751568851233): the same mistakes kept appearing in different codebases with different engineers. The real problem is that **context does not scale**.
 
-The problem isn't incompetence. [Shu Ding captured it perfectly](https://x.com/shuding/status/2013632751568851233) after seven years of performance work at Vercel: "The same mistakes kept appearing. Different engineers. Different codebases. Different times." He concluded that performance degradation isn't a technical problem—it's entropy.
+The solution is not more discipline. You cannot fight entropy with willpower. The solution is **systems that enforce what discipline cannot**. This is exactly what strict compilers do. They carry context we cannot keep in our heads.
 
-**Context doesn't scale.** Modern codebases grow faster than any individual can track. Dependencies, state machines, async flows, caching layers. You cannot hold the design of the entire system in your head while laying a single brick. Engineers make locally reasonable decisions that are globally suboptimal, not because they're careless, but because they lack the full picture.
-
-The solution isn't more discipline. You cannot fight entropy with willpower.
-
-The solution is **systems that enforce what discipline cannot**. This is exactly what strict compilers do. A type system doesn't ask you to remember which functions are pure—it tracks effects for you. A borrow checker doesn't rely on you to avoid data races—it makes them impossible. The compiler holds the context you can't.
-
-And now we have something new: LLMs that can reference the entire design of the cathedral while examining every brick. They don't get tired. They don't lose context between sessions. Combined with a strict compiler, they form a system that fights entropy in ways humans alone never could.
-
-This is why safer languages matter beyond just "catching bugs." They're not just feedback loops for correctness—they're bulwarks against the natural decay of software systems.
+And now we have something new: LLMs can hold large context while examining every line. Combined with a strict compiler, they can enforce discipline at scale in ways humans cannot.
 
 ## The paradox: tedious for humans, perfect for machines
 
-If safer languages are so powerful, why aren't we all writing Lean or Idris?
-
-Because **safer languages are tedious to write**. They demand more attention:
+Safer languages are tedious to write:
 
 - More learning curve
-- More attention to types and their precise definitions
-- More attention to memory ownership and lifetimes
+- More attention to types and definitions
+- More attention to ownership and lifetimes
 - More attention to effect boundaries and purity
-- More attention to proving properties hold
+- More attention to proofs and invariants
 
-This is painful. When you're trying to ship a feature, fighting with a borrow checker or satisfying a type constraint feels like overhead. Sometimes as humans we want to "just make it work".
+This is painful when you are trying to ship. But LLMs do not care about tedium. They can happily generate verbose annotations, satisfy lifetime constraints, and fill in proof terms. The ceremony that feels heavy to humans is just more tokens to them.
 
-But here's the thing: **LLMs don't care about tedium**.
+The pain of strong typing is at its worst when you are migrating from unsafe to safe or starting from scratch. It is at its best when you are maintaining, refactoring, testing, and explaining existing code. That is exactly where LLMs shine.
 
-What's painful for us is trivial for them. An LLM can happily generate verbose type annotations, satisfy lifetime constraints, and write proof terms. It doesn't get frustrated. It doesn't cut corners because it's tired. The ceremony that makes safer languages feel heavy to humans is just more tokens to an LLM.
+## Most languages are not safe enough
 
-The situation where we found type-safety being painful is when you're migrating from unsafe to safe, or maybe when you're creating software from scratch. But it's marvelous when you're maintaining, refactoring, testing, and explaining code. LLMs could handle the painful part while we reap the benefits.
-
-## Most languages aren't safe enough
-
-Here's where I have to be honest about my favorite language.
+Here is the uncomfortable part: even my favorite language does not go far enough.
 
 OCaml has an excellent type system. It catches a huge class of errors at compile time. Pattern matching is exhaustive. The module system is powerful. I love working in it.
 
-But for the purpose of maximizing compiler feedback for LLMs, OCaml hits a ceiling. There are things you simply can't express in its type system:
+But for maximizing compiler feedback, OCaml hits a ceiling:
 
-- **Memory safety**: OCaml has a garbage collector, which helps, but it doesn't have Rust's guarantees about ownership and borrowing. You can still create logical races with mutable state.
-- **Race-free data operations**: There's no ownership model preventing concurrent access to shared mutable data.
-- **Effect tracking**: Side effects can happen anywhere. The compiler doesn't know which functions do I/O and which are pure.
-- **Dependent types**: You can't encode complex invariants in types. The type system, while strong, can't prove arbitrary properties about your code.
+- **Memory safety**: A garbage collector helps, but it does not give Rust's ownership guarantees.
+- **Race-free data operations**: There is no ownership model preventing concurrent access to shared mutable data.
+- **Effect tracking**: Side effects can happen anywhere. The compiler cannot distinguish pure code from impure code.
+- **Dependent types**: You cannot encode complex invariants or prove properties about your code.
 
 ## But ecosystems matter
 
-In TypeScript land, you can probably set up a Supabase database, BetterAuth authentication, Stripe payments, Twilio SMS, and Sentry error tracking in a single prompt. The LLM knows these APIs inside out. It's seen thousands of examples.
+In TypeScript land, you can set up Supabase, auth, Stripe, Twilio, and Sentry in a single prompt. The LLM has seen these APIs a thousand times.
 
-Now imagine doing the same in Rust, or even Lean. The LLM would struggle, not because the language is harder, but because there's less training data, fewer examples, smaller ecosystems. The libraries might not even exist.
+Now imagine doing the same in Rust, or Lean. The LLM will struggle, not because the language is harder, but because there is less training data, smaller ecosystems, and fewer examples. Safer languages need richer ecosystems for LLMs to learn from them.
 
-This is the real barrier. Safer languages don't just need better compilers. They need ecosystems rich enough that LLMs can learn from them. Today, TypeScript wins not because it's the safest choice, but because it's the most documented one.
+## The ideal language does not exist yet
 
-But again, I doubt the barrier of creating those nice abstractions is what's stopping us from choosing another "better" language (and sorry for the better, there's no better one!).
+What would the ideal language for LLM-assisted development look like? I think it combines properties that do not yet exist in a single tool:
 
-## The ideal language doesn't exist yet
+- **Rust's memory safety**: Ownership and borrowing with compile-time guarantees about memory access and data races.
+- **Haskell's purity**: Effects tracked in types so the compiler knows exactly which functions can do I/O or mutate state.
+- **Lean's dependent types**: Express and prove invariants, not just hope tests catch them.
 
-What would the perfect language for LLM-assisted development look like? I think it's a combination that doesn't quite exist, let me enumerate a bunch of features:
+Some languages are moving in that direction. Idris combines dependent types with effect tracking. Koka has algebraic effects. Rust keeps adding more expressive type features. Research like [VeCoGen](https://arxiv.org/abs/2411.19275) and [TheoremLlama](https://arxiv.org/abs/2407.03203) already uses formal verification as a feedback mechanism.
 
-**Rust's memory safety**: Ownership and borrowing, compile-time guarantees about memory access, no data races.
+We are early. The language that combines all these properties in a practical way does not exist yet. But someone will build it.
 
-**Haskell's purity**: Effects tracked in types. The compiler knows exactly which functions can do I/O, modify state, or throw exceptions.
+## New languages worth watching
 
-**Lean's dependent types**: Express arbitrary properties in your types. Prove that your sorting function actually sorts, that your parser handles all inputs, that your state machine only allows valid transitions.
+Short takes on a few languages I keep an eye on:
 
-Some languages are moving in this direction. Idris combines dependent types with effect tracking. Koka has algebraic effects. Rust keeps adding more expressive type features. But we're not there yet.
-
-Research is already exploring this space. [CoCoGen](https://arxiv.org/abs/2403.16792) shows that compiler feedback can improve LLM code accuracy by over 80%. [VeCoGen](https://arxiv.org/abs/2411.19275) combines LLMs with formal verification, iteratively refining code until it satisfies specifications. [TheoremLlama](https://arxiv.org/abs/2407.03203) trains LLMs to write Lean proofs, using the type checker as a feedback mechanism.
-
-We're in early days. The language that combines all these properties in a way that's practical for LLM-assisted development doesn't exist yet. But someone will build it.
+- **Gleam**: The nicest static typing story on the BEAM today. It makes reliable Erlang-style systems more approachable. It does not change the VM's safety limits, but it raises the floor for correctness.
+- **Lean**: The most extreme form of safety. It is a proof assistant more than a general-purpose language. If LLMs can get good at proof construction, Lean becomes a serious target for verified software.
+- **Mojo**: A bet on making Python feel systems-level fast. It aims to add static typing and performance guarantees while staying familiar. Early days, but a compelling direction for AI-heavy workloads.
+- **OxCaml**: Jane Street's extensions to OCaml add stronger modes and lower-level control. It hints at a future OCaml with better safety and performance, without abandoning the language's ergonomics.
 
 ## The future might be weirder than we think
 
-Here's my speculation: LLMs might shift which languages succeed, but not in the way most people expect.
+The conventional wisdom is that LLMs will entrench Python and JavaScript because that is what they know best. In the short term, that is probably true.
 
-The conventional wisdom is that LLMs will entrench Python and JavaScript because that's what they know best. And in the short term, that's probably true.
+In the long term, the economics might flip. If LLMs can handle the tedium of safer languages, and those languages provide stronger feedback loops, then the "difficult" languages become the productive ones. The languages humans find annoying might be exactly what LLMs prefer.
 
-But in the long term, the economics might flip. If LLMs can handle the tedium of safer languages, and if those languages provide better feedback loops, then the "difficult" languages become the productive ones. The languages humans find annoying might be exactly what LLMs prefer.
+Imagine a future where you describe what you want in natural language, and an LLM writes Lean code that proves its own correctness. The code would be verbose and heavily annotated. You would never want to write it by hand. But you would not have to.
 
-Imagine a future where you describe what you want in natural language, and an LLM writes Lean code that proves its own correctness. The code is verbose, heavily annotated, full of proof terms. You would never want to write it by hand. But you don't have to. The LLM handles the ceremony, and you get mathematically verified software.
+That future is not here yet. Today's LLMs [still get stuck in loops](https://zed.dev/blog/why-llms-cant-build-software), repeat mistakes, and need manual intervention. Safer languages have smaller communities and less training data. But the trajectory seems clear.
 
-That future isn't here yet. Today's LLMs [still get stuck in loops](https://zed.dev/blog/why-llms-cant-build-software), repeat mistakes, and need manual intervention. The safer languages have smaller communities and less training data. But the trajectory seems clear.
+This post is a brain dump, not a verdict. I am mostly trying to name the direction: stop asking "what languages are LLMs good at?" and start asking "what languages would make LLMs better?" The answer might not be Python.
 
-Maybe we should stop asking "what languages are LLMs good at?" and start asking "what languages would make LLMs better?" The answer might not be Python.
+{/*
+ASSESSMENT
 
+1) Opinion on quality and voice
+- Strong op-ed quality. The thesis is clear, current, and provocative without sounding purely hype-driven.
+- Voice is confident and well referenced; it balances personal intuition with links to research and industry signals.
+- The structure reads well as a long-form argument and has good rhetorical progression.
+
+2) What's missing or weak
+- Counterarguments are underdeveloped: developer velocity, hiring constraints, ecosystem lock-in, and operational complexity need more direct treatment.
+- There is no concrete case study showing the same task solved in two languages with different feedback quality.
+- "Ideal language" section is compelling but slightly speculative-heavy without practical migration advice.
+- Ending lands as a reflection; it could be stronger with explicit, testable predictions for 1-3 years.
+
+3) How I would finish it
+- Add one concrete mini case study section:
+  - task: implement/refactor a non-trivial feature,
+  - compare Python/TS vs Rust/OCaml/Lean feedback loops,
+  - include number of iteration cycles and failure modes caught by compiler.
+- Add a "Steelman the opposite view" section with 3-4 reasons dynamic ecosystems may still dominate.
+- Add "Pragmatic adoption path" guidance:
+  - where to start (type-checking first, strict lints, one safe boundary),
+  - when not to migrate,
+  - what to measure (defect rate, refactor confidence, agent success rate).
+- Convert the ending into explicit predictions:
+  - Near term: typed supersets keep winning.
+  - Mid term: stronger compilers in mainstream workflows.
+  - Long term: proof-carrying components in critical systems.
+- Final paragraph: make one crisp claim and one falsifiable condition for being wrong.
+
+4) Hero image and visual concepts
+- Hero image options:
+  - "Compiler as co-pilot" visual: code loop with diagnostics feeding an agent.
+  - Safety spectrum gradient from dynamic to dependent types with icons.
+  - Editorial chart-style hero: productivity vs correctness under human-only vs agent-assisted workflows.
+- In-article visuals:
+  - Feedback loop diagram: model output -> compiler/linter -> corrected output.
+  - Radar chart comparing languages across safety dimensions.
+  - Timeline of ecosystem shifts toward stricter typing in mainstream languages.
+*/}

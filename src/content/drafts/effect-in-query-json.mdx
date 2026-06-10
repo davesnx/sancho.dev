@@ -1,6 +1,6 @@
 ---
 title: "Using Effects in query-json"
-description: "How OCaml effect system is used to handle all control flow for a jq interpreter"
+description: "Exceptions jump up the stack; OCaml effects generalize that jump so handlers can compose and resume"
 publishedAt: "2025-01-13"
 published: false
 tags:
@@ -9,17 +9,15 @@ tags:
   - "query-json"
 ---
 
-A few years ago I wrote [query-json](/posts/cross-compile-query-json), a re-implementation of subset of jq in OCaml. Back then, the interpreter was straightforward: a function that took an jq expression and a JSON, and returned a JSON.
+A few years ago I wrote [query-json](/posts/cross-compile-query-json), a re-implementation of a subset of jq in OCaml. Back then, the subset of the language supported were mostly the basic parts of jq (iterators, map, filter, `.`) and because of it, the interpreter was straightforward: a function that took a jq expression and a JSON value, and returned a JSON value.
 
-{/* add jq notation, example, whatever to give context */}
+Since then I've wanted query-json to support real jq: generators, catchable errors, loops, early exit. jq is [Turing-complete](https://github.com/MakeNowJust/bf.jq) if you need convincing. The interpreter I started with had none of that. It assumed one input, one output, and no way to stop or recover mid-pipeline.
 
-Since then, query-json grew into implementing most of jq's language: `try/catch`, `while`, `limit`, user-defined functions, expressions can produce zero, one, or many results. Those expressions can fail, halt the program, break out of loops, and a long etcetera of a complete programming language. jq is actually [Turing-complete](https://github.com/MakeNowJust/bf.jq) (someone wrote a Brainfuck interpreter in it, if you need convincing). The design I started with ("take an expression, return a value") couldn't handle any of this.
+In this post I want to explain what OCaml effects are, and how query-json's new interpreter uses them to implement the complexities of control flow in an elegant way.
 
-In this post I want to explain the evolution and implementation to handle those control-flow patterns and how OCaml effect system helped. If you know how `try/catch` works in any other language, you don't need anything else to understand effects.
+## The previous (simpler) interpreter
 
-## What makes jq a real language
-
-Most jq expressions are **generators**: they can produce multiple outputs from a single input.
+In jq, `.` is the current value, `|` pipes one stage into the next, and `[]` after a value (for example `.users[]`) iterates and emits one output per element.
 
 ```bash
 query-json '.users[]' '{"users": ["Alice", "Bob", "Charlie"]}'
@@ -28,22 +26,15 @@ query-json '.users[]' '{"users": ["Alice", "Bob", "Charlie"]}'
 # "Charlie"
 ```
 
-The `.users[]` expression iterates over the array and produces three separate results. These results flow downstream through pipes. This is fundamental to how jq works: every expression is potentially a generator.
-
-And there's more. `.[]` iterates over arrays, producing one output per element. `empty` produces zero outputs, and `select(.age > 30)` drops values that don't match. `label-break` exits a `foreach` early. `halt` and `halt_error` terminate execution immediately with an exit code. `error("message")` raises a user-facing error caught by `try/catch`.
-
-These aren't features bolted onto a query language. They're control flow primitives. And they require an interpreter that can do more than "call a function, get a value back."
-
-## The simple interpreter
-
-The first version compiled a query string into an expression, then ran it against a JSON value:
+The `.users[]` expression walks the array and yields three separate results. Those results flow downstream through pipes. The previous version compiled a query string into an expression, then ran it against a JSON value:
 
 ```ocaml
-val compile : string -> (expression, string) result
-val interpreter : expression -> Json.t -> (Json.t list, string) result
-```
+(* parses the string into a Ast.expression *)
+val compile : string -> (Ast.expression, string) result
 
-`compile` parses and validates the query. `interpreter` evaluates it against the input and returns either a list of results or an error message.
+(* evaluates the expression against the input and returns a list of JSONs *)
+val interpreter : Ast.expression -> Json.t -> (Json.t list, string) result
+```
 
 The interpreter itself was a recursive function that pattern-matched on the expression:
 
@@ -51,11 +42,14 @@ The interpreter itself was a recursive function that pattern-matched on the expr
 let rec interpreter expression json =
   match expression with
   | Empty -> Output.empty
+  (* . returns the same json *)
   | Identity -> Output.return json
+  (* ["lola"] finds "lola" as field of the json *)
   | Key key -> (
     match Json.member key json with
     | `Null -> Error (missing_member key json)
     | value -> Output.return value)
+  (* | ran the left, and pipe it into the right *)
   | Pipe (left, right) -> (
     match interpreter left json with
     | Error err -> Error err
@@ -63,13 +57,11 @@ let rec interpreter expression json =
   (* ... *)
 ```
 
-This worked fine for the basics. Field access, pipes, simple filters: all straightforward. Each expression takes a JSON value, does its thing, and returns `Ok result` or `Error message`. Pipe runs the left side, checks for errors, feeds the result into the right side.
+Each expression takes a JSON value, does its thing, and returns `Ok result` or `Error message`. Pipe runs the left side, checks for errors, feeds the result into the right side.
 
 ## Where it breaks
 
-The trouble starts when you try to implement real language features on top of this model.
-
-**Generators.** jq expressions can produce multiple values, not just one. The `.users[]` expression yields three results from a single input. With the old model, every function returns `(Json.t list, string) result`, which means `pipe` has to collect all results from the left side into a list, then iterate over that list and run the right side for each element, collecting all of those results into another list:
+The jq expression's can produce multiple values: `.users[]` expression yields three results from a single input. With the old model, every function returns `(Json.t list, string) result`, which means `pipe` has to collect all results from the left side into a list, then iterate over that list and run the right side for each element, collecting all of those results into another list:
 
 ```ocaml
 | Pipe (left, right) -> (
@@ -84,9 +76,13 @@ The trouble starts when you try to implement real language features on top of th
     Ok all_results)
 ```
 
-Everything is materialized eagerly. There's no way to stream values from one stage to the next, no way for `limit(2; .users[])` to stop after two results without evaluating all of them first.
+Everything is eager. `limit(2; .users[])` cannot stop after two yields without running the whole generator first.
 
-**Error handling.** Now try adding `try/catch`. You need every function between the error site and the catch handler to propagate the error. `pipe` has to check for it. `comma` has to check for it. Every combinator in between has to thread the `result` type through, even when they don't care about errors at all:
+```
+
+```
+
+Errors make it worse. Every combinator between an `error(...)` and a `try/catch` must propagate failures, even when it does not care about them:
 
 ```ocaml
 | Comma (left, right) -> (
@@ -104,21 +100,24 @@ The error plumbing dominates every case. And when you want to add `try/catch` th
 
 Each new control-flow feature adds another channel that every intermediate function must participate in. The interpreter becomes less about evaluating expressions and more about threading control-flow signals through layers of plumbing.
 
+{/* Replace with diagram: multiple control channels manually forwarded through every call frame */}
+
+```text
+  interp ──────► pipe ──────► comma ──────► select ...
+    │ yield?       │ Error?      │ Break?
+    │              │             │
+    └──────────────┴─────────────┴── each layer must check every channel
+```
+
 ## Effects, in plain words
 
-If you've used `try/catch`, you already understand the core idea.
-
-When you `throw` an error, execution jumps out of the current function, skipping all the intermediate code, until it reaches a matching `catch` block somewhere up the call stack. The functions in between don't need to know about errors at all: they don't pass error codes, they don't check return values. The error just propagates automatically.
-
-Dan Abramov wrote a [fantastic explanation](https://overreacted.io/algebraic-effects-for-the-rest-of-us/) of algebraic effects using this exact analogy. The key insight is:
+When you `throw` in JavaScript or raise an exception in OCaml, execution **jumps upward** until a matching handler runs. Intermediate functions do not pass error tuples; they do not even mention errors. Dan Abramov's [algebraic effects for the rest of us](https://overreacted.io/algebraic-effects-for-the-rest-of-us/) uses the same picture for `try/catch`:
 
 > Things in the middle don't need to concern themselves with error handling... Unlike error codes, with `try / catch`, you don't have to manually pass errors through every intermediate layer.
 
-Effects work the same way, but more general. Instead of only throwing errors, you can perform _any_ kind of signal. And the crucial difference: **the handler can resume execution** where the effect was performed.
+Effects generalize that jump. Instead of only errors, you `perform` a typed signal (`Yield`, `User_error`, ...). The handler (like `catch` for exceptions) receive two things: the effect itself (sometimes with a payload) and a **continuation** that captures the rest of the computation still to run. What the handler does with that continuation is entirely its choice. It can ignore it and abort, handle the effect and stop, or resume it so execution picks up again right after the `perform`. Generators need that last option: yield a value, let the handler observe it, then continue the loop and yield again.
 
-Think of it as a resumable `throw`. You perform an effect, control jumps to the handler, the handler does something (maybe collects a value, maybe checks a condition), and then it can choose to jump _back_ and continue where you left off.
-
-In OCaml 5, you declare effects as extensible variant types and perform them with `Effect.perform`:
+In OCaml 5 you declare effects as extensible variants and perform them with `Effect.perform`:
 
 ```ocaml
 type _ Effect.t +=
@@ -128,7 +127,57 @@ type _ Effect.t +=
   | User_error : Json.t -> unit Effect.t
 ```
 
-These four effects model all of the interpreter's control flow: `Yield` produces results, `Break` stops loops, `Halt` terminates the program, and `User_error` raises catchable errors. The central `interp` function performs one of these effects, nearby handlers catch only what they care about (`Yield` in `pipe`, `User_error` in `try/catch`), unhandled effects bubble to outer handlers, and the top-level `execute` handler is the final boundary.
+(`Runtime_error.Fail` lives in a separate module and covers type errors, missing keys, and similar failures; `try/catch` and `optional` treat it alongside `User_error`.)
+
+`Yield` produces results, `Break` stops loops, `Halt` terminates the program, and `User_error` is the query-level `error(...)`. The central `interp` function performs these effects; nearby handlers catch only what they need (`Yield` in `pipe`, `User_error` in `try/catch`); everything else bubbles to `execute`.
+
+### A minimal generator (no jq yet)
+
+Before the full interpreter, a toy program shows resumption without JSON:
+
+```ocaml
+type _ Effect.t += Yield : int -> unit Effect.t
+
+let run_three () =
+  for i = 1 to 3 do
+    Effect.perform (Yield i)
+  done
+
+let collect () =
+  let acc = ref [] in
+  (match run_three () with
+   | () -> ()
+   | effect Yield n, k ->
+       acc := n :: !acc;
+       Effect.Deep.continue k ());
+  List.rev !acc
+
+(* collect () = [1; 2; 3] *)
+```
+
+`run_three` returns `unit` and never builds a list itself. The handler owns the output channel: on each `Yield` it records `n`, then calls `Effect.Deep.continue k ()` so the loop runs again. That is the same contract as `interp` plus `run_and_collect_results`, just small enough to read in one screen.
+
+{/* Replace with diagram: perform Yield → handler → continue k → back to loop */}
+
+```text
+  run_three                handler (collect)
+      │                         │
+      ├─ perform Yield 1 ──────►│ acc := 1 :: ...
+      │                         ├─ continue k ───┐
+      ◄─────────────────────────┘                │
+      ├─ perform Yield 2 ──────►│ acc := 2 :: ... │
+      │                         ├─ continue k ───┤
+      ◄─────────────────────────┘                │
+      └─ ...                                     │
+```
+
+### Why `Effect.Deep` (optional)
+
+You can skip this if you only want the jq story.
+
+The toy handler and `on_yield` use `match fn () with | effect Yield v, k -> ...`. That installs a **shallow** handler: it sees effects performed directly in `fn`, not effects performed deeper inside calls from `fn`.
+
+`catch_errors` uses `Effect.Deep.try_with` with an `effect_handler` record because `try/catch` must intercept `User_error` and `Runtime_error.Fail` no matter how many nested `interp` calls sit between the `error(...)` site and the handler. Deep handlers are the tool for "catch this signal anywhere in the subtree." Shallow `match` handlers are enough when you control the immediate computation (`pipe`, `limit`, `collect`).
 
 ## Rebuilding the interpreter with effects
 
@@ -211,6 +260,46 @@ let on_yield fn ~then_ =
 ```
 
 Each time the left side yields a value, the handler intercepts it and runs the right side with that value as input. Then it resumes the left side to get the next value. The right side might itself yield multiple values, and those propagate up to whatever handler is above. This means `.users[] | .name` naturally does the right thing: `.users[]` yields each user object, and for each one, `.name` yields the name field. No explicit loops, no intermediate lists.
+
+{/* Replace with diagram: pipe — left yields, handler runs right, continue k, repeat */}
+
+```text
+  .users[]  |  .name
+      │           ▲
+      ├─ yield u₁ ─┼─► interp .name on u₁ ──► yield "Alice"
+      │           │
+      ├─ continue k
+      ├─ yield u₂ ─┼─► interp .name on u₂ ──► yield "Bob"
+      └─ continue k …
+```
+
+### Comma (same input, two programs)
+
+Comma is easy to miss because the `interp` case is only two lines, but the semantics differ from pipe. `left, right` runs **both** sides on the **same** input JSON. All yields from the left complete first, then all yields from the right. There is no special comma handler: yields bubble to whatever outer handler is collecting (stdout, `collect`, or a surrounding `pipe`).
+
+```ocaml
+| Comma (left, right) ->
+    interp ~ctx left json;
+    interp ~ctx right json
+```
+
+```bash
+query-json '1, 2' 'null'
+# 1
+# 2
+```
+
+{/* Replace with diagram: comma vs pipe — same input to both branches vs chain per yield */}
+
+```text
+  COMMA (same json for both)          PIPE (each yield feeds the next)
+        │                                    │
+   left ├──► out…                         left ──yield v──► right(v) ──► out…
+   right├──► out…                              └── continue ──┘
+   (same input)                              (chained per value)
+```
+
+Pipe threads values across stages. Comma sequences two independent programs on one document. Confusing them is the usual bug when reading jq-shaped code.
 
 ### Optional
 
@@ -301,6 +390,14 @@ and limit ~ctx n expr json =
 ```
 
 When the count reaches `n`, the handler simply doesn't call `continue`. The continuation, and everything it would have done, is discarded. This is the key insight about effects: the handler controls whether to resume.
+
+{/* Replace with diagram: limit handler stops calling continue after n yields */}
+
+```text
+  yield v₁ ──► count=1 ──► continue
+  yield v₂ ──► count=2 ──► continue
+  yield v₃ ──► count=3 ──► (no continue — generator abandoned)
+```
 
 You could implement `limit` with exceptions: throw a `Limit_reached` exception and catch it at the right level. But consider what that does to `pipe`. In `a | b`, the left side is a generator that yields values one at a time. With effects, `limit` simply stops calling `continue` and the generator disappears. With exceptions, you'd need to throw _through_ the pipe handler, which is also trying to catch yields, and somehow not confuse "I'm done producing values" with "something went wrong." Every intermediate handler becomes responsible for re-raising exceptions it doesn't own. Effects avoid this entirely because each effect type is distinct: a `Break` passes transparently through a `Yield` handler without any explicit forwarding.
 
