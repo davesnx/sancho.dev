@@ -51,3 +51,6 @@ out/
 AGENTS.md
 
 .wrangler/
+
+# Twitter voice experiment (scraped data, browser profile, scripts)
+twitter-data/

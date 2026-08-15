@@ -42,7 +42,8 @@
   },
   "exclude": [
     "node_modules",
-    "out"
+    "out",
+    "ocaml-effects-video"
   ],
   "include": [
     "next-env.d.ts",

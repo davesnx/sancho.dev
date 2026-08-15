@@ -29,11 +29,11 @@ export default function HomePage() {
     >
       <Spacer bottom={10}>
         <Text size={fonts.fontSize1} align="left">
-          A Software Engineer based in Barcelona, making software with <TextLink href="http://reasonml.github.io/">Reason</TextLink> and <TextLink href="https://ocaml.org/">OCaml</TextLink>
+          A Software Engineer based in Barcelona, making software with <TextLink href="https://reasonml.github.io/">Reason</TextLink> and <TextLink href="https://ocaml.org/">OCaml</TextLink>.
         </Text>
         <Spacer top={2} />
         <Text size={fonts.fontSize1}>
-          I am currently working at <TextLink href="https://ahrefs.com/">ahrefs</TextLink>, making tools that help developers build great user interfaces.
+          I am currently working at <TextLink href="https://ahrefs.com/">ahrefs</TextLink>, building the UI infrastructure that powers their frontend in OCaml, with <TextLink href="https://melange.re/">Melange</TextLink>, <TextLink href="https://github.com/ml-in-barcelona/server-reason-react">server-reason-react</TextLink>, <TextLink href="https://github.com/davesnx/styled-ppx">styled-ppx</TextLink> and company.
         </Text>
         <Spacer top={2} />
         <Text size={fonts.fontSize1}>
