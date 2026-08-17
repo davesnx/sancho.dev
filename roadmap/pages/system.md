@@ -1,6 +1,6 @@
 # 09 System
 
-**Status:** Blocked
+**Status:** Ready
 **Route:** `/system`
 **Blocked by:** 01-08
 
@@ -55,7 +55,7 @@ Work on session 09, System, using roadmap/pages/system.md as the contract. Confi
 ## Evidence
 
 ```text
-Status: Blocked
+Status: Ready
 OpenCode session: pending
 Commit: pending
 Approval: pending

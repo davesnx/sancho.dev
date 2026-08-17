@@ -53,8 +53,8 @@ Run one fresh OpenCode session per row. Continue the same session through implem
 | 05 | [Home](./pages/home.md) | `/` | 01, 04 | Verified |
 | 06 | [About and Work Migration](./pages/about.md) | `/about` | 01 | Verified |
 | 07 | [CV](./pages/cv.md) | `/cv` | 06 | Verified |
-| 08 | [Credits](./pages/credits.md) | `/credits` | 01, 05, 06 | Ready |
-| 09 | [System](./pages/system.md) | `/system` | 01-08 | Blocked |
+| 08 | [Credits](./pages/credits.md) | `/credits` | 01, 05, 06 | Verified |
+| 09 | [System](./pages/system.md) | `/system` | 01-08 | Ready |
 | 10 | [Experiments Index](./pages/experiments.md) | `/experiments` | 01 | Blocked |
 | 11 | [Chromatic Experiment](./pages/experiments-chromatic.md) | `/experiments/chromatic` | 01, 10 | Blocked |
 | 12 | [Variable Font Experiment](./pages/experiments-variable.md) | `/experiments/variable` | 01, 10 | Blocked |

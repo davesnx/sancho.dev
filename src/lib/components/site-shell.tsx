@@ -404,7 +404,18 @@ export function SiteShell({ children }: { children: ReactNode }) {
                 )
               </Text>
             </div>
-            <div>
+            <Row gap={2}>
+              <Text weight={600} size={fonts.fontSizeN2} monospace color={colors.textMuted}>
+                <TextLink
+                  href="/credits"
+                  weight={600}
+                  color={colors.textMuted}
+                  hoverColor={colors.textPrimary}
+                  monospace
+                >
+                  Credits
+                </TextLink>
+              </Text>
               <Text weight={600} size={fonts.fontSizeN2} monospace color={colors.textMuted}>
                 <TextLink
                   href="https://github.com/davesnx/sancho.dev"
@@ -416,7 +427,7 @@ export function SiteShell({ children }: { children: ReactNode }) {
                   Source
                 </TextLink>
               </Text>
-            </div>
+            </Row>
           </div>
         </Spacer>
       </footer>
