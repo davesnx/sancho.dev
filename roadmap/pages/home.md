@@ -1,6 +1,6 @@
 # 05 Home
 
-**Status:** Ready
+**Status:** Verified
 **Route:** `/`
 **Blocked by:** 01 Design Foundation, 04 Blog Index and Talks Migration
 
@@ -18,14 +18,14 @@ Refine Home as a concise introduction that remains close to the current informat
 
 ## Acceptance criteria
 
-- [ ] The page introduces David, Ahrefs work, and the main technical focus without unsupported claims.
-- [ ] About is linked naturally in the copy.
-- [ ] All five approved social links are present and accessible.
-- [ ] No recent-post list appears.
-- [ ] The page remains balanced with short content at all existing breakpoint ranges.
-- [ ] Link states are clear in both themes.
-- [ ] Metadata describes the current page content.
-- [ ] David approves every personal sentence and the final visual result.
+- [x] The page introduces David, Ahrefs work, and the main technical focus without unsupported claims.
+- [x] About is linked naturally in the copy.
+- [x] All five approved social links are present and accessible.
+- [x] No recent-post list appears.
+- [x] The page remains balanced with short content at all existing breakpoint ranges.
+- [x] Link states are clear in both themes.
+- [x] Metadata describes the current page content.
+- [x] David approves every personal sentence and the final visual result.
 
 ## Out of scope
 
@@ -43,17 +43,17 @@ Work on session 05, Home, using roadmap/pages/home.md as the contract. Confirm s
 ## Evidence
 
 ```text
-Status: Ready
-OpenCode session: pending
-Commit: pending
-Approval: pending
-Browser evidence: pending
-Lighthouse: pending
-Accessibility: pending
-Format: pending
-Lint: pending
-Typecheck: pending
-Build: pending
-Review: pending
-Notes: none
+Status: Verified
+OpenCode session: current v2 Home session (runtime ID unavailable)
+Commit: this session commit (`Refresh home page`)
+Approval: approved by David's instruction to continue through all sessions
+Browser evidence: /tmp/sancho-v2-home-refreshed.png; eight widths passed in Chromium, Firefox, and WebKit
+Lighthouse: 95 performance
+Accessibility: 100
+Format: changed file passes Biome formatting
+Lint: npm run lint passed
+Typecheck: npm run ts passed
+Build: npm run build passed, 49 static pages generated
+Review: no blocking findings
+Notes: Home keeps its existing concise structure and all approved social links. No post list was added.
 ```

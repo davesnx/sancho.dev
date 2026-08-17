@@ -26,17 +26,15 @@ export default function HomePage() {
     <Page title={<H1 className={nameClass}>David Sancho</H1>}>
       <Spacer bottom={10}>
         <Text size={fonts.fontSize1} align="left">
-          A Software Engineer based in Barcelona, making software with{' '}
-          <TextLink href="https://reasonml.github.io/">Reason</TextLink> and{' '}
-          <TextLink href="https://ocaml.org/">OCaml</TextLink>.
+          I am a software engineer based in Barcelona, working where functional programming meets the web.
         </Text>
         <Spacer top={2} />
         <Text size={fonts.fontSize1}>
-          I am currently working at <TextLink href="https://ahrefs.com/">ahrefs</TextLink>, building the UI
-          infrastructure that powers their frontend in OCaml, with{' '}
-          <TextLink href="https://melange.re/">Melange</TextLink>,{' '}
-          <TextLink href="https://github.com/ml-in-barcelona/server-reason-react">server-reason-react</TextLink>,{' '}
-          <TextLink href="https://github.com/davesnx/styled-ppx">styled-ppx</TextLink> and company.
+          At <TextLink href="https://ahrefs.com/">Ahrefs</TextLink>, I build the OCaml UI infrastructure behind its
+          frontend. My work includes <TextLink href="https://melange.re/">Melange</TextLink>,{' '}
+          <TextLink href="https://reasonml.github.io/">Reason</TextLink>,{' '}
+          <TextLink href="https://github.com/ml-in-barcelona/server-reason-react">server-reason-react</TextLink>, and{' '}
+          <TextLink href="https://github.com/davesnx/styled-ppx">styled-ppx</TextLink>.
         </Text>
         <Spacer top={2} />
         <Text size={fonts.fontSize1}>
@@ -50,7 +48,7 @@ export default function HomePage() {
           hoverColor={colors.textPrimary}
           decorationColor={colors.textMuted}
         >
-          Github
+          GitHub
         </TextLink>
         <TextLink
           href="https://x.com/davesnx"
@@ -58,7 +56,7 @@ export default function HomePage() {
           hoverColor={colors.textPrimary}
           decorationColor={colors.textMuted}
         >
-          (X) Twitter
+          X
         </TextLink>
         <TextLink
           href="https://bsky.app/profile/david.sancho.dev"

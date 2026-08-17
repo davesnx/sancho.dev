@@ -1,6 +1,6 @@
 # 06 About and Work Migration
 
-**Status:** Blocked
+**Status:** Ready
 **Route:** `/about`
 **Blocked by:** 01 Design Foundation
 
@@ -62,7 +62,7 @@ Work on session 06, About and Work Migration, using roadmap/pages/about.md as th
 ## Evidence
 
 ```text
-Status: Blocked
+Status: Ready
 OpenCode session: pending
 Commit: pending
 Approval: pending
