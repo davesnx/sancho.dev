@@ -6,6 +6,7 @@ export type CareerEntry = {
   role: string;
   from: string;
   to: string;
+  details: string[];
 };
 
 export type ProjectEntry = {
@@ -59,11 +60,48 @@ export const contact: ProfileSegment[][] = [
 ];
 
 export const career: CareerEntry[] = [
-  { company: 'Ahrefs', companyUrl: 'https://ahrefs.com', role: 'Software engineer', from: '2021', to: 'Now' },
-  { company: 'Draftbit', companyUrl: 'https://draftbit.com', role: 'Full-stack engineer', from: '2020', to: '2021' },
-  { company: 'Typeform', companyUrl: 'https://typeform.com', role: 'Frontend engineer', from: '2014', to: '2019' },
-  { company: 'Freelance', role: 'Web developer', from: '2012', to: '2014' },
-  { company: 'Ofertia', companyUrl: 'https://ofertia.com', role: 'Backend developer', from: '2011', to: '2012' },
+  {
+    company: 'Ahrefs',
+    companyUrl: 'https://ahrefs.com',
+    role: 'Software engineer',
+    from: '2021',
+    to: 'Now',
+    details: [
+      'Build and maintain the OCaml UI infrastructure behind the Ahrefs frontend.',
+      'Maintain and contribute to Melange, reason-react, server-reason-react, and styled-ppx.',
+    ],
+  },
+  {
+    company: 'Draftbit',
+    companyUrl: 'https://draftbit.com',
+    role: 'Full-stack engineer',
+    from: '2020',
+    to: '2021',
+    details: ['Worked across the product stack for a visual app development platform.'],
+  },
+  {
+    company: 'Typeform',
+    companyUrl: 'https://typeform.com',
+    role: 'Frontend engineer',
+    from: '2014',
+    to: '2019',
+    details: ['Worked on Typeform frontend systems and led the form rendering engine.'],
+  },
+  {
+    company: 'Freelance',
+    role: 'Web developer',
+    from: '2012',
+    to: '2014',
+    details: ['Built web projects for clients as an independent developer.'],
+  },
+  {
+    company: 'Ofertia',
+    companyUrl: 'https://ofertia.com',
+    role: 'Backend developer',
+    from: '2011',
+    to: '2012',
+    details: ['Worked on backend development for the Ofertia product.'],
+  },
 ];
 
 export const projects: ProjectEntry[] = [
@@ -91,6 +129,17 @@ export const projects: ProjectEntry[] = [
     description: 'Syntax highlighting with TextMate grammars and custom themes.',
     language: 'OCaml',
   },
+];
+
+export const skills = [
+  'OCaml',
+  'Reason',
+  'Melange',
+  'React',
+  'TypeScript',
+  'CSS',
+  'Developer tooling',
+  'Design systems',
 ];
 
 const segmentToMarkdown = (segment: ProfileSegment) =>

@@ -296,8 +296,8 @@ export function SiteShell({ children }: { children: ReactNode }) {
   };
 
   return (
-    <div className={rootClass}>
-      <div className={headerOuterClass}>
+    <div className={rootClass} data-site-root>
+      <div className={headerOuterClass} data-site-header>
         <div className={headerInnerClass}>
           <Row justify="between" fullWidth>
             <ButtonLink
@@ -386,7 +386,7 @@ export function SiteShell({ children }: { children: ReactNode }) {
           {children}
         </ResponsiveSpacer>
       </main>
-      <footer className={footerMainClass} inert={isOpen ? true : undefined}>
+      <footer className={footerMainClass} data-site-footer inert={isOpen ? true : undefined}>
         <Spacer top={4} bottom={6}>
           <div className={footerClass}>
             <div>

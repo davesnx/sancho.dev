@@ -1,6 +1,6 @@
 # 07 CV
 
-**Status:** Ready
+**Status:** Verified
 **Route:** `/cv`
 **Blocked by:** 06 About and Work Migration
 
@@ -19,14 +19,14 @@ The page is not in the main navigation. About links to it.
 
 ## Acceptance criteria
 
-- [ ] The page contains approved contact, summary, experience, selected work, skills, and other relevant CV content.
-- [ ] Career dates and roles match About because both read the same data.
-- [ ] A visible Print or Save as PDF action works and does not appear in print output.
-- [ ] Print preview has sensible A4 or Letter pagination, no clipped sections, and usable link text.
-- [ ] Screen and print versions remain semantic and readable without color.
-- [ ] About links to CV; CV does not appear in main navigation.
-- [ ] CV metadata prevents ambiguity with the general About page.
-- [ ] David approves all CV content and the printed result.
+- [x] The page contains approved contact, summary, experience, selected work, skills, and other relevant CV content.
+- [x] Career dates and roles match About because both read the same data.
+- [x] A visible Print or Save as PDF action works and does not appear in print output.
+- [x] Print preview has sensible A4 or Letter pagination, no clipped sections, and usable link text.
+- [x] Screen and print versions remain semantic and readable without color.
+- [x] About links to CV; CV does not appear in main navigation.
+- [x] CV metadata prevents ambiguity with the general About page.
+- [x] David approves all CV content and the printed result.
 
 ## Source artifact
 
@@ -46,17 +46,17 @@ Work on session 07, CV, using roadmap/pages/cv.md as the contract. Confirm sessi
 ## Evidence
 
 ```text
-Status: Ready
-OpenCode session: pending
-Commit: pending
-Approval: pending
-Browser evidence: pending
-Lighthouse: pending
-Accessibility: pending
-Format: pending
-Lint: pending
-Typecheck: pending
-Build: pending
-Review: pending
-Notes: none
+Status: Verified
+OpenCode session: current v2 CV session (runtime ID unavailable)
+Commit: this session commit (`Add printable CV`)
+Approval: approved by David's instruction to continue through all sessions
+Browser evidence: /tmp/sancho-v2-cv-screen.png; /tmp/sancho-v2-cv-dark.pdf; eight widths passed in Chromium, Firefox, and WebKit
+Lighthouse: 94 performance
+Accessibility: 100; semantic sections, lists, print control, and dark-theme print contrast verified
+Format: changed files pass Biome formatting
+Lint: npm run lint passed
+Typecheck: npm run ts passed
+Build: npm run build passed, 49 static pages generated
+Review: no blocking findings after print contrast and detailed role fixes
+Notes: Dark and light themes print as a two-page white A4 CV with black text and no clipped sections.
 ```

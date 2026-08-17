@@ -1,6 +1,6 @@
 # 08 Credits
 
-**Status:** Blocked
+**Status:** Ready
 **Route:** `/credits`
 **Blocked by:** 01 Design Foundation, 05 Home, 06 About and Work Migration
 
@@ -36,7 +36,7 @@ Work on session 08, Credits, using roadmap/pages/credits.md as the contract. Con
 ## Evidence
 
 ```text
-Status: Blocked
+Status: Ready
 OpenCode session: pending
 Commit: pending
 Approval: pending

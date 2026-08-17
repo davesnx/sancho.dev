@@ -36,6 +36,12 @@ const listItemClass = css`
   }
 `;
 
+const itemContentClass = css`
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+`;
+
 const dateClass = css`
   white-space: nowrap;
   color: ${colors.textMuted};
@@ -101,13 +107,14 @@ export default function AboutPage() {
 
         <Section title="Work">
           <Text className={sectionClass} size={fonts.fontSize1} color={colors.textProse}>
-            I have worked across backend, frontend, product engineering, and developer tooling.
+            I have worked across backend, frontend, product engineering, and developer tooling. The complete timeline is
+            available in my <TextLink href="/cv">printable CV</TextLink>.
           </Text>
           <Spacer top={3} />
           <ul className={listClass}>
             {career.map((entry) => (
               <li key={`${entry.company}-${entry.from}`} className={listItemClass}>
-                <div>
+                <div className={itemContentClass}>
                   <Text weight={700} color={colors.textAccent}>
                     {entry.companyUrl ? <TextLink href={entry.companyUrl}>{entry.company}</TextLink> : entry.company}
                   </Text>
@@ -131,7 +138,7 @@ export default function AboutPage() {
           <ul className={listClass}>
             {projects.map((project) => (
               <li key={project.name} className={listItemClass}>
-                <div>
+                <div className={itemContentClass}>
                   <TextLink href={project.url} weight={700} color={colors.textAccent}>
                     {project.name}
                   </TextLink>
