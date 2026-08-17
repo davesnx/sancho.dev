@@ -1,6 +1,6 @@
 import { css } from '@linaria/core';
 
-import breakpoints from '@/theme/constants';
+import breakpoints, { layout } from '@/theme/constants';
 import fonts from '@/theme/fonts';
 import { colors } from '@/theme/theme';
 
@@ -11,7 +11,7 @@ export const postContentClass = css`
   overflow-x: clip;
 
   & > p {
-    max-width: 72ch;
+    max-width: ${layout.readingMeasure};
   }
 
   & p {

@@ -1,5 +1,6 @@
 import { css } from '@linaria/core';
 import { PrintButton } from '@/components/print-button';
+import { ProfileEntry, profileListClass } from '@/components/profile-entry';
 import { H1, H2, Page, Row, Spacer, Stack, Text, TextLink } from '@/components/ui';
 import { career, projects, skills } from '@/profile';
 import { buildMetadata } from '@/site';
@@ -62,55 +63,6 @@ const sectionTitleClass = css`
   margin-bottom: 1rem;
 `;
 
-const listClass = css`
-  margin: 0;
-  padding: 0;
-  list-style: none;
-  border-top: 1px solid ${colors.borderSubtle};
-`;
-
-const itemClass = css`
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
-  gap: 1rem;
-  padding: 1rem 0;
-  border-bottom: 1px solid ${colors.borderSubtle};
-  break-inside: avoid;
-
-  @media (max-width: 599px) {
-    grid-template-columns: 1fr;
-    gap: 0.25rem;
-  }
-`;
-
-const itemContentClass = css`
-  display: flex;
-  flex-direction: column;
-  gap: 0.25rem;
-`;
-
-const dateClass = css`
-  white-space: nowrap;
-  color: ${colors.textMuted};
-  font-family: ${fonts.mono};
-  font-size: ${fonts.fontSizeN2};
-  font-weight: 600;
-
-  @media print {
-    color: #333;
-  }
-`;
-
-const detailListClass = css`
-  margin: 0.75rem 0 0;
-  padding-left: 1.25rem;
-  color: ${colors.textProse};
-
-  & li + li {
-    margin-top: 0.35rem;
-  }
-`;
-
 const skillListClass = css`
   display: flex;
   flex-wrap: wrap;
@@ -161,26 +113,16 @@ export default function CvPage() {
             <H2 id="cv-experience" className={sectionTitleClass}>
               Experience
             </H2>
-            <ul className={listClass}>
+            <ul className={profileListClass}>
               {career.map((entry) => (
-                <li key={`${entry.company}-${entry.from}`} className={itemClass}>
-                  <div className={itemContentClass}>
-                    <Text weight={700} color={colors.textAccent}>
-                      {entry.companyUrl ? <TextLink href={entry.companyUrl}>{entry.company}</TextLink> : entry.company}
-                    </Text>
-                    <Text size={fonts.fontSizeN1} color={colors.textProse}>
-                      {entry.role}
-                    </Text>
-                    <ul className={detailListClass}>
-                      {entry.details.map((detail) => (
-                        <li key={detail}>{detail}</li>
-                      ))}
-                    </ul>
-                  </div>
-                  <span className={dateClass}>
-                    {entry.from}–{entry.to}
-                  </span>
-                </li>
+                <ProfileEntry
+                  key={`${entry.company}-${entry.from}`}
+                  title={entry.company}
+                  href={entry.companyUrl}
+                  description={entry.role}
+                  meta={`${entry.from}–${entry.to}`}
+                  details={entry.details}
+                />
               ))}
             </ul>
           </section>
@@ -189,19 +131,15 @@ export default function CvPage() {
             <H2 id="cv-open-source" className={sectionTitleClass}>
               Selected open source
             </H2>
-            <ul className={listClass}>
+            <ul className={profileListClass}>
               {projects.map((project) => (
-                <li key={project.name} className={itemClass}>
-                  <div className={itemContentClass}>
-                    <TextLink href={project.url} weight={700} color={colors.textAccent}>
-                      {project.name}
-                    </TextLink>
-                    <Text size={fonts.fontSizeN1} color={colors.textProse}>
-                      {project.description}
-                    </Text>
-                  </div>
-                  <span className={dateClass}>{project.language}</span>
-                </li>
+                <ProfileEntry
+                  key={project.name}
+                  title={project.name}
+                  href={project.url}
+                  description={project.description}
+                  meta={project.language}
+                />
               ))}
             </ul>
           </section>

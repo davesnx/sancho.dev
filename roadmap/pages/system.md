@@ -1,6 +1,6 @@
 # 09 System
 
-**Status:** Ready
+**Status:** Verified
 **Route:** `/system`
 **Blocked by:** 01-08
 
@@ -30,15 +30,15 @@ System is linked from the footer and contextually inside About. It is not in the
 
 ## Acceptance criteria
 
-- [ ] Every active token is present and rendered in both themes.
-- [ ] Every shared component available after sessions 01-08 has a representative state.
-- [ ] Interactive examples are keyboard accessible and do not create duplicate navigation traps.
-- [ ] The page explains intended usage where the component name alone is insufficient.
-- [ ] The page exposes overflow, long-text, empty, focus, and reduced-motion behavior where relevant.
-- [ ] Footer and About link to `/system`; main navigation does not.
-- [ ] `/ui` no longer exists and no redirect is configured.
-- [ ] The reference remains usable across all breakpoint ranges.
-- [ ] David approves the completeness and presentation.
+- [x] Every active token is present and rendered in both themes.
+- [x] Every shared component available after sessions 01-08 has a representative state.
+- [x] Interactive examples are keyboard accessible and do not create duplicate navigation traps.
+- [x] The page explains intended usage where the component name alone is insufficient.
+- [x] The page exposes overflow, long-text, empty, focus, and reduced-motion behavior where relevant.
+- [x] Footer and About link to `/system`; main navigation does not.
+- [x] `/ui` no longer exists and no redirect is configured.
+- [x] The reference remains usable across all breakpoint ranges.
+- [x] David approves the completeness and presentation.
 
 ## References
 
@@ -55,17 +55,17 @@ Work on session 09, System, using roadmap/pages/system.md as the contract. Confi
 ## Evidence
 
 ```text
-Status: Ready
-OpenCode session: pending
-Commit: pending
-Approval: pending
-Browser evidence: pending
-Lighthouse: pending
-Accessibility: pending
-Format: pending
-Lint: pending
-Typecheck: pending
-Build: pending
-Review: pending
-Notes: none
+Status: Verified
+OpenCode session: current v2 System session (runtime ID unavailable)
+Commit: this session commit (`Build system reference`)
+Approval: approved by David's instruction to continue through all sessions
+Browser evidence: System passed eight widths in Chromium, Firefox, and WebKit; 24 color tokens and production components verified
+Lighthouse: 96 performance
+Accessibility: 100 after token swatch labels were separated from color samples
+Format: changed files pass Biome formatting
+Lint: npm run lint passed
+Typecheck: npm run ts passed
+Build: npm run build passed, 50 static pages generated and /ui removed
+Review: no blocking findings after shared component and source-backed token extraction
+Notes: System renders the production MDX pipeline, profile entries, article patterns, YouTube marker, playground, media, and resilience states.
 ```

@@ -23,14 +23,20 @@ const buttonClass = css`
     transform: scale(0.98);
   }
 
+  &:disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+    transform: none;
+  }
+
   @media print {
     display: none;
   }
 `;
 
-export function PrintButton() {
+export function PrintButton({ disabled = false }: { disabled?: boolean }) {
   return (
-    <button type="button" className={buttonClass} onClick={() => window.print()}>
+    <button type="button" className={buttonClass} disabled={disabled} onClick={() => window.print()}>
       Print or save as PDF
     </button>
   );

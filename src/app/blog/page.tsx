@@ -1,5 +1,6 @@
 import { css } from '@linaria/core';
 import { ButtonLink, H1, H3, Page, Spacer, Stack, Text, TextLink } from '@/components/ui';
+import { YouTubeIcon } from '@/components/youtube-icon';
 import type { BlogPost } from '@/posts';
 import { getPublishedPosts } from '@/posts';
 import { buildMetadata } from '@/site';
@@ -50,13 +51,6 @@ const postTitleClass = css`
   }
 `;
 
-const videoIconClass = css`
-  width: 16px;
-  height: 16px;
-  flex: 0 0 auto;
-  fill: ${colors.textMuted};
-`;
-
 const visuallyHiddenClass = css`
   position: absolute;
   width: 1px;
@@ -68,12 +62,6 @@ const visuallyHiddenClass = css`
   white-space: nowrap;
   border: 0;
 `;
-
-const YouTubeIcon = () => (
-  <svg viewBox="0 0 512 512" className={videoIconClass} aria-hidden="true">
-    <path d="M490.24,113.92c-13.888-24.704-28.96-29.248-59.648-30.976C399.936,80.864,322.848,80,256.064,80c-66.912,0-144.032,0.864-174.656,2.912c-30.624,1.76-45.728,6.272-59.744,31.008C7.36,138.592,0,181.088,0,255.904v0.256c0,74.496,7.36,117.312,21.664,141.728c14.016,24.704,29.088,29.184,59.712,31.264C112.032,430.944,189.152,432,256.064,432c66.784,0,143.872-1.056,174.56-2.816c30.688-2.08,45.76-6.56,59.648-31.264C504.704,373.504,512,330.688,512,256.192C512,181.088,504.704,138.592,490.24,113.92zM192,352V160l160,96L192,352z" />
-  </svg>
-);
 
 type PostsByYear = Record<string, BlogPost[]>;
 

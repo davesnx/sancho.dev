@@ -1,6 +1,6 @@
 # 10 Experiments Index
 
-**Status:** Blocked
+**Status:** Ready
 **Route:** `/experiments`
 **Blocked by:** 01 Design Foundation
 
@@ -33,7 +33,7 @@ Work on session 10, Experiments Index, using roadmap/pages/experiments.md as the
 ## Evidence
 
 ```text
-Status: Blocked
+Status: Ready
 OpenCode session: pending
 Commit: pending
 Approval: pending

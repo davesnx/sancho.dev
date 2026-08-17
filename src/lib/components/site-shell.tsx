@@ -6,7 +6,7 @@ import type { KeyboardEvent, ReactNode, RefObject } from 'react';
 import { useEffect, useId, useRef, useState } from 'react';
 import { ThemeToggle } from '@/components/theme-toggle';
 import { ButtonLink, ResponsiveSpacer, Row, Spacer, Stack, Text, TextLink } from '@/components/ui';
-import breakpoints from '@/theme/constants';
+import breakpoints, { layout } from '@/theme/constants';
 import fonts from '@/theme/fonts';
 import { colors } from '@/theme/theme';
 
@@ -29,14 +29,14 @@ const headerOuterClass = css`
 
 const headerInnerClass = css`
   width: 100%;
-  max-width: ${breakpoints.desktop.width}px;
+  max-width: ${layout.contentWidth}px;
   margin: 0 auto;
-  padding: 0 32px;
+  padding: 0 ${layout.desktopGutter};
   display: flex;
   align-items: center;
 
   @media screen and (max-width: ${breakpoints.mobile.width}px) {
-    padding: 0 24px;
+    padding: 0 ${layout.mobileGutter};
   }
 `;
 
@@ -184,12 +184,12 @@ const footerClass = css`
 
 const footerMainClass = css`
   width: 100%;
-  max-width: ${breakpoints.desktop.width}px;
-  padding: 0 32px;
+  max-width: ${layout.contentWidth}px;
+  padding: 0 ${layout.desktopGutter};
   margin: 0 auto;
 
   @media (max-width: ${breakpoints.mobile.width}px) {
-    padding: 0 24px;
+    padding: 0 ${layout.mobileGutter};
   }
 `;
 
@@ -405,6 +405,17 @@ export function SiteShell({ children }: { children: ReactNode }) {
               </Text>
             </div>
             <Row gap={2}>
+              <Text weight={600} size={fonts.fontSizeN2} monospace color={colors.textMuted}>
+                <TextLink
+                  href="/system"
+                  weight={600}
+                  color={colors.textMuted}
+                  hoverColor={colors.textPrimary}
+                  monospace
+                >
+                  System
+                </TextLink>
+              </Text>
               <Text weight={600} size={fonts.fontSizeN2} monospace color={colors.textMuted}>
                 <TextLink
                   href="/credits"

@@ -2,25 +2,25 @@ import { css } from '@linaria/core';
 import Link from 'next/link';
 import type { AnchorHTMLAttributes, CSSProperties, ElementType, HTMLAttributes, ReactNode } from 'react';
 
-import breakpoints from '@/theme/constants';
-import fonts from '@/theme/fonts';
+import breakpoints, { layout } from '@/theme/constants';
+import fonts, { typography } from '@/theme/fonts';
 import { colors } from '@/theme/theme';
 
 export const cx = (...classNames: Array<string | false | null | undefined>) => classNames.filter(Boolean).join(' ');
 
-export const space = (value: number) => `${value * 8}px`;
+export const space = (value: number) => `${value * layout.spacingUnit}px`;
 export const rem = (value: number) => `${value}rem`;
 
 const containerClass = css`
   width: 100%;
-  max-width: ${breakpoints.desktop.width}px;
+  max-width: ${layout.contentWidth}px;
   margin: 0 auto;
-  padding-left: 24px;
-  padding-right: 24px;
+  padding-left: ${layout.mobileGutter};
+  padding-right: ${layout.mobileGutter};
 
-  @media (min-width: 600px) {
-    padding-left: 32px;
-    padding-right: 32px;
+  @media (min-width: ${breakpoints.mobile.width + 1}px) {
+    padding-left: ${layout.desktopGutter};
+    padding-right: ${layout.desktopGutter};
   }
 `;
 
@@ -31,14 +31,14 @@ const rowBaseClass = css`
 `;
 
 const rowColumnMobileClass = css`
-  @media (max-width: 599px) {
+  @media (max-width: ${breakpoints.mobile.width}px) {
     flex-direction: column;
     align-items: flex-start !important;
   }
 `;
 
 const rowColumnReverseMobileClass = css`
-  @media (max-width: 599px) {
+  @media (max-width: ${breakpoints.mobile.width}px) {
     flex-direction: column-reverse;
     align-items: flex-start !important;
   }
@@ -52,8 +52,8 @@ const stackBaseClass = css`
 
 const textBaseClass = css`
   margin: 0;
-  max-width: 72ch;
-  line-height: 1.7;
+  max-width: ${layout.readingMeasure};
+  line-height: ${typography.body.lineHeight};
   letter-spacing: 0.02em;
   color: ${colors.textPrimary};
   font-family: ${fonts.sans};
@@ -65,39 +65,39 @@ const headingBaseClass = css`
   margin: 0;
   padding: 0;
   font-family: ${fonts.sans};
-  font-weight: 700;
-  line-height: 1.3;
+  font-weight: ${typography.h1.fontWeight};
+  line-height: ${typography.h1.lineHeight};
   color: ${colors.textAccent};
   text-wrap: balance;
 `;
 
 const h1Class = css`
-  font-size: ${fonts.fontSize5};
+  font-size: ${typography.h1.fontSize};
   letter-spacing: 1.6px;
 `;
 
 const h2Class = css`
-  font-size: ${fonts.fontSize4};
+  font-size: ${typography.h2.fontSize};
   letter-spacing: 1px;
 `;
 
 const h3Class = css`
-  font-size: ${fonts.fontSize3};
+  font-size: ${typography.h3.fontSize};
   letter-spacing: 0.8px;
 `;
 
 const h4Class = css`
-  font-size: ${fonts.fontSize2};
+  font-size: ${typography.h4.fontSize};
   letter-spacing: 0.6px;
 `;
 
 const h5Class = css`
-  font-size: ${fonts.fontSize1};
+  font-size: ${typography.h5.fontSize};
   letter-spacing: 0.4px;
 `;
 
 const h6Class = css`
-  font-size: ${fonts.fontSize0};
+  font-size: ${typography.h6.fontSize};
   letter-spacing: 0.2px;
 `;
 
@@ -349,7 +349,7 @@ export function Stack({
 
 export function Text({
   as: Tag = 'p',
-  size = fonts.fontSize1,
+  size = typography.body.fontSize,
   weight = 400,
   color = colors.textPrimary,
   monospace = false,

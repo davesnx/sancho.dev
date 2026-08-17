@@ -1,6 +1,7 @@
 import { css } from '@linaria/core';
 import type { ReactNode } from 'react';
 import { Fragment } from 'react';
+import { ProfileEntry, profileListClass } from '@/components/profile-entry';
 import { H1, H2, Page, Spacer, Stack, Text, TextLink } from '@/components/ui';
 import { career, contact, introduction, outsideComputers, type ProfileSegment, projects } from '@/profile';
 import { buildMetadata } from '@/site';
@@ -13,47 +14,6 @@ const sectionClass = css`
 
 const sectionHeadingClass = css`
   margin-bottom: 1.5rem;
-`;
-
-const listClass = css`
-  width: 100%;
-  margin: 0;
-  padding: 0;
-  list-style: none;
-  border-top: 1px solid ${colors.borderSubtle};
-`;
-
-const listItemClass = css`
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
-  gap: 1rem;
-  padding: 1rem 0;
-  border-bottom: 1px solid ${colors.borderSubtle};
-
-  @media (max-width: 599px) {
-    grid-template-columns: 1fr;
-    gap: 0.25rem;
-  }
-`;
-
-const itemContentClass = css`
-  display: flex;
-  flex-direction: column;
-  gap: 0.25rem;
-`;
-
-const dateClass = css`
-  white-space: nowrap;
-  color: ${colors.textMuted};
-  font-family: ${fonts.mono};
-  font-size: ${fonts.fontSizeN2};
-  font-weight: 600;
-`;
-
-const projectMetaClass = css`
-  color: ${colors.textMuted};
-  font-family: ${fonts.mono};
-  font-size: ${fonts.fontSizeN2};
 `;
 
 export const metadata = buildMetadata({
@@ -111,23 +71,21 @@ export default function AboutPage() {
             available in my <TextLink href="/cv">printable CV</TextLink>.
           </Text>
           <Spacer top={3} />
-          <ul className={listClass}>
+          <ul className={profileListClass}>
             {career.map((entry) => (
-              <li key={`${entry.company}-${entry.from}`} className={listItemClass}>
-                <div className={itemContentClass}>
-                  <Text weight={700} color={colors.textAccent}>
-                    {entry.companyUrl ? <TextLink href={entry.companyUrl}>{entry.company}</TextLink> : entry.company}
-                  </Text>
-                  <Text size={fonts.fontSizeN1} color={colors.textProse}>
-                    {entry.role}
-                  </Text>
-                </div>
-                <span className={dateClass}>
-                  {entry.from}–{entry.to}
-                </span>
-              </li>
+              <ProfileEntry
+                key={`${entry.company}-${entry.from}`}
+                title={entry.company}
+                href={entry.companyUrl}
+                description={entry.role}
+                meta={`${entry.from}–${entry.to}`}
+              />
             ))}
           </ul>
+          <Spacer top={2} />
+          <Text className={sectionClass} size={fonts.fontSizeN1} color={colors.textMuted}>
+            The tokens and components behind this site are documented in its <TextLink href="/system">System</TextLink>.
+          </Text>
         </Section>
 
         <Section title="Open source">
@@ -135,19 +93,15 @@ export default function AboutPage() {
             Open source is part of how I learn, work, and share tools with the Reason and OCaml communities.
           </Text>
           <Spacer top={3} />
-          <ul className={listClass}>
+          <ul className={profileListClass}>
             {projects.map((project) => (
-              <li key={project.name} className={listItemClass}>
-                <div className={itemContentClass}>
-                  <TextLink href={project.url} weight={700} color={colors.textAccent}>
-                    {project.name}
-                  </TextLink>
-                  <Text size={fonts.fontSizeN1} color={colors.textProse}>
-                    {project.description}
-                  </Text>
-                </div>
-                <span className={projectMetaClass}>{project.language}</span>
-              </li>
+              <ProfileEntry
+                key={project.name}
+                title={project.name}
+                href={project.url}
+                description={project.description}
+                meta={project.language}
+              />
             ))}
           </ul>
         </Section>
