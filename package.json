@@ -3,7 +3,6 @@
   "version": "0.1.1",
   "scripts": {
     "dev": "next dev -p 3005",
-    "prebuild": "SKIP_GITHUB_FETCH=1 node --experimental-strip-types scripts/fetch-github-repos.mts",
     "build": "next build",
     "start": "npx serve out",
     "generate:og": "node --experimental-strip-types scripts/generate-og-images.mts",

@@ -1,6 +1,6 @@
-import { aboutMarkdown } from '../app/about/content';
 import type { BlogPost } from './posts';
 import { getPublishedPostBySlug, getPublishedPosts } from './posts';
+import { aboutMarkdown } from './profile';
 import { siteConfig } from './site';
 
 const stripMdxComponents = (content: string): string => {

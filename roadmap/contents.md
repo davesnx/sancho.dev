@@ -40,7 +40,7 @@ Themes to cover (more friendly and longer, storytelling like [remix.run](https:/
 - Experience and open-source sections live inside About.
 - Current career data in the code is the baseline: Ahrefs from 2021 to current, Draftbit from 2020 to 2021, Typeform from 2014 to 2019, Freelance from 2012 to 2014, and Ofertia from 2011 to 2012.
 - About gives the narrative and selected work. CV gives the detailed history from the same data source.
-- The current GitHub repository data remains the source for open-source entries.
+- Selected open-source entries use curated names and descriptions in the shared profile module. Their linked repositories remain the authoritative project sources.
 
 ## Talks migrating to Blog
 

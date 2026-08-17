@@ -1,6 +1,6 @@
 # 07 CV
 
-**Status:** Blocked
+**Status:** Ready
 **Route:** `/cv`
 **Blocked by:** 06 About and Work Migration
 
@@ -46,7 +46,7 @@ Work on session 07, CV, using roadmap/pages/cv.md as the contract. Confirm sessi
 ## Evidence
 
 ```text
-Status: Blocked
+Status: Ready
 OpenCode session: pending
 Commit: pending
 Approval: pending
