@@ -1,10 +1,10 @@
-import { Fragment } from "react";
-import { css } from "@linaria/core";
+import { css } from '@linaria/core';
+import { Fragment } from 'react';
 
-import { H1, Page, Spacer, Stack, Text, TextLink } from "@/components/ui";
-import { buildMetadata } from "@/site";
-import fonts from "@/theme/fonts";
-import { aboutParagraphs } from "./content";
+import { H1, Page, Spacer, Stack, Text, TextLink } from '@/components/ui';
+import { buildMetadata } from '@/site';
+import fonts from '@/theme/fonts';
+import { aboutParagraphs } from './content';
 
 const contentClass = css`
   display: block;
@@ -13,9 +13,10 @@ const contentClass = css`
 `;
 
 export const metadata = buildMetadata({
-  title: "About",
-  description: "About David Sancho: software engineer in Barcelona working on OCaml, developer tooling, and UI infrastructure at ahrefs.",
-  path: "/about",
+  title: 'About',
+  description:
+    'About David Sancho: software engineer in Barcelona working on OCaml, developer tooling, and UI infrastructure at ahrefs.',
+  path: '/about',
 });
 
 export default function AboutPage() {
@@ -24,20 +25,18 @@ export default function AboutPage() {
       <Stack align="flex-start" gap={5}>
         <div className={contentClass}>
           {aboutParagraphs.map((paragraph, paragraphIndex) => {
-            const key = paragraph
-              .map((segment) => (typeof segment === "string" ? segment : segment.text))
-              .join("");
+            const key = paragraph.map((segment) => (typeof segment === 'string' ? segment : segment.text)).join('');
 
             return (
               <Fragment key={key}>
-                <Text size={fonts.fontSize1} align={paragraphIndex === 0 ? "left" : undefined}>
-                  {paragraph.map((segment, segmentIndex) => {
-                    if (typeof segment === "string") {
-                      return <Fragment key={`${paragraphIndex}-${segmentIndex}`}>{segment}</Fragment>;
+                <Text size={fonts.fontSize1} align={paragraphIndex === 0 ? 'left' : undefined}>
+                  {paragraph.map((segment) => {
+                    if (typeof segment === 'string') {
+                      return segment;
                     }
 
                     return (
-                      <TextLink key={`${paragraphIndex}-${segmentIndex}`} href={segment.href}>
+                      <TextLink key={`${segment.text}-${segment.href}`} href={segment.href}>
                         {segment.text}
                       </TextLink>
                     );

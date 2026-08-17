@@ -1,13 +1,17 @@
-import { css } from "@linaria/core";
+import { css } from '@linaria/core';
 
-import breakpoints from "@/theme/constants";
-import fonts from "@/theme/fonts";
-import { colors } from "@/theme/theme";
+import breakpoints from '@/theme/constants';
+import fonts from '@/theme/fonts';
+import { colors } from '@/theme/theme';
 
 export const postContentClass = css`
   color: ${colors.textProse};
   font-family: ${fonts.sans};
   width: 100%;
+
+  & > p {
+    max-width: 72ch;
+  }
 
   & p {
     margin: 0 0 1.35rem;
@@ -51,14 +55,14 @@ export const postContentClass = css`
   }
 
   & li::marker {
-    color: ${colors.textSecondary};
+    color: ${colors.textMuted};
   }
 
   & blockquote {
     margin: 2rem 0;
     padding: 0.25rem 0 0.25rem 1.25rem;
     border-left: 3px solid ${colors.borderStrong};
-    color: ${colors.textSecondary};
+    color: ${colors.textMuted};
   }
 
   & blockquote p:last-child,
@@ -99,7 +103,7 @@ export const postContentClass = css`
   }
 
   html[data-theme="light"] & code[data-theme*=" "] span {
-    color: var(--shiki-light);
+    color: color-mix(in srgb, var(--shiki-light) 55%, #141414);
     font-style: var(--shiki-light-font-style);
     font-weight: var(--shiki-light-font-weight);
     text-decoration: var(--shiki-light-text-decoration);

@@ -1,14 +1,12 @@
-import type { AnchorHTMLAttributes, CSSProperties, ElementType, HTMLAttributes, ReactNode } from "react";
+import { css } from '@linaria/core';
+import Link from 'next/link';
+import type { AnchorHTMLAttributes, CSSProperties, ElementType, HTMLAttributes, ReactNode } from 'react';
 
-import { css } from "@linaria/core";
-import Link from "next/link";
+import breakpoints from '@/theme/constants';
+import fonts from '@/theme/fonts';
+import { colors } from '@/theme/theme';
 
-import breakpoints from "@/theme/constants";
-import fonts from "@/theme/fonts";
-import { colors } from "@/theme/theme";
-
-export const cx = (...classNames: Array<string | false | null | undefined>) =>
-  classNames.filter(Boolean).join(" ");
+export const cx = (...classNames: Array<string | false | null | undefined>) => classNames.filter(Boolean).join(' ');
 
 export const space = (value: number) => `${value * 8}px`;
 export const rem = (value: number) => `${value}rem`;
@@ -54,6 +52,7 @@ const stackBaseClass = css`
 
 const textBaseClass = css`
   margin: 0;
+  max-width: 72ch;
   line-height: 1.7;
   letter-spacing: 0.02em;
   color: ${colors.textPrimary};
@@ -116,9 +115,14 @@ const textLinkClass = css`
   text-decoration-line: underline;
   text-decoration-thickness: 1.5px;
   text-underline-offset: 2px;
-  text-decoration-color: var(--link-decoration-color, ${colors.textTertiary});
+  text-decoration-color: var(--link-decoration-color, ${colors.textMuted});
 
   &:hover {
+    color: var(--link-hover-color);
+    text-decoration-color: var(--link-hover-color);
+  }
+
+  &:active {
     color: var(--link-hover-color);
     text-decoration-color: var(--link-hover-color);
   }
@@ -128,6 +132,15 @@ const buttonLinkClass = css`
   color: inherit;
   text-decoration: none;
   cursor: pointer;
+  transition: transform 120ms ease-out;
+
+  &:hover {
+    transform: translateY(-1px);
+  }
+
+  &:active {
+    transform: scale(0.98);
+  }
 `;
 
 const hideOnMobileClass = css`
@@ -165,14 +178,14 @@ type TextProps = BoxProps & {
   weight?: number;
   color?: string;
   monospace?: boolean;
-  align?: CSSProperties["textAlign"];
+  align?: CSSProperties['textAlign'];
   kerning?: string;
 };
 
 type RowProps = HTMLAttributes<HTMLDivElement> & {
   gap?: number;
-  align?: CSSProperties["alignItems"] | "top" | "center" | "bottom" | "baseline";
-  justify?: CSSProperties["justifyContent"] | "around" | "between" | "evenly" | "left" | "center" | "right";
+  align?: CSSProperties['alignItems'] | 'top' | 'center' | 'bottom' | 'baseline';
+  justify?: CSSProperties['justifyContent'] | 'around' | 'between' | 'evenly' | 'left' | 'center' | 'right';
   wrap?: boolean;
   fullWidth?: boolean;
   columnOnMobile?: boolean;
@@ -181,8 +194,8 @@ type RowProps = HTMLAttributes<HTMLDivElement> & {
 
 type StackProps = HTMLAttributes<HTMLDivElement> & {
   gap?: number;
-  align?: CSSProperties["alignItems"] | "left" | "center" | "right";
-  justify?: CSSProperties["justifyContent"] | "around" | "between" | "evenly" | "left" | "center" | "right";
+  align?: CSSProperties['alignItems'] | 'left' | 'center' | 'right';
+  justify?: CSSProperties['justifyContent'] | 'around' | 'between' | 'evenly' | 'left' | 'center' | 'right';
   fullWidth?: boolean;
 };
 
@@ -192,48 +205,49 @@ type LinkStyleProps = {
   decorationColor?: string;
   weight?: number;
   monospace?: boolean;
+  native?: boolean;
 };
 
-const isExternalLink = (href: string) => href.startsWith("http://") || href.startsWith("https://");
+const isExternalLink = (href: string) => href.startsWith('http://') || href.startsWith('https://');
 
 const stackAlignMap = {
-  left: "flex-start",
-  center: "center",
-  right: "flex-end",
+  left: 'flex-start',
+  center: 'center',
+  right: 'flex-end',
 } as const;
 
 const distributeMap = {
-  around: "space-around",
-  between: "space-between",
-  evenly: "space-evenly",
-  left: "flex-start",
-  center: "center",
-  right: "flex-end",
+  around: 'space-around',
+  between: 'space-between',
+  evenly: 'space-evenly',
+  left: 'flex-start',
+  center: 'center',
+  right: 'flex-end',
 } as const;
 
 const rowAlignMap = {
-  top: "flex-start",
-  center: "center",
-  bottom: "flex-end",
-  baseline: "baseline",
+  top: 'flex-start',
+  center: 'center',
+  bottom: 'flex-end',
+  baseline: 'baseline',
 } as const;
 
-const resolveStackAlign = (align: StackProps["align"]) => {
+const resolveStackAlign = (align: StackProps['align']) => {
   if (!align) return stackAlignMap.center;
   return stackAlignMap[align as keyof typeof stackAlignMap] ?? align;
 };
 
-const resolveDistribute = (justify: StackProps["justify"] | RowProps["justify"]) => {
+const resolveDistribute = (justify: StackProps['justify'] | RowProps['justify']) => {
   if (!justify) return distributeMap.center;
   return distributeMap[justify as keyof typeof distributeMap] ?? justify;
 };
 
-const resolveRowAlign = (align: RowProps["align"]) => {
+const resolveRowAlign = (align: RowProps['align']) => {
   if (!align) return rowAlignMap.center;
   return rowAlignMap[align as keyof typeof rowAlignMap] ?? align;
 };
 
-export function Container({ as: Tag = "div", className, ...props }: BoxProps) {
+export function Container({ as: Tag = 'div', className, ...props }: BoxProps) {
   return <Tag className={cx(containerClass, className)} {...props} />;
 }
 
@@ -268,7 +282,7 @@ export function Spacer({
         marginBottom: bottom ? space(bottom) : undefined,
         marginLeft: left ? space(left) : undefined,
         marginRight: right ? space(right) : undefined,
-        display: inline ? "inline-block" : undefined,
+        display: inline ? 'inline-block' : undefined,
       }}
     >
       {children}
@@ -278,8 +292,8 @@ export function Spacer({
 
 export function Row({
   gap = 0,
-  align = "center",
-  justify = "center",
+  align = 'center',
+  justify = 'center',
   wrap = false,
   fullWidth = false,
   columnOnMobile = false,
@@ -300,8 +314,8 @@ export function Row({
         gap: space(gap),
         alignItems: resolveRowAlign(align),
         justifyContent: resolveDistribute(justify),
-        flexWrap: wrap ? "wrap" : "nowrap",
-        width: fullWidth ? "100%" : undefined,
+        flexWrap: wrap ? 'wrap' : 'nowrap',
+        width: fullWidth ? '100%' : undefined,
         ...style,
       }}
       {...props}
@@ -311,8 +325,8 @@ export function Row({
 
 export function Stack({
   gap = 0,
-  align = "stretch",
-  justify = "flex-start",
+  align = 'stretch',
+  justify = 'flex-start',
   fullWidth = false,
   className,
   style,
@@ -325,7 +339,7 @@ export function Stack({
         gap: space(gap),
         alignItems: resolveStackAlign(align),
         justifyContent: resolveDistribute(justify),
-        width: fullWidth ? "100%" : undefined,
+        width: fullWidth ? '100%' : undefined,
         ...style,
       }}
       {...props}
@@ -334,13 +348,13 @@ export function Stack({
 }
 
 export function Text({
-  as: Tag = "p",
+  as: Tag = 'p',
   size = fonts.fontSize1,
   weight = 400,
   color = colors.textPrimary,
   monospace = false,
   align,
-  kerning = "0.02em",
+  kerning = '0.02em',
   className,
   style,
   ...props
@@ -353,7 +367,7 @@ export function Text({
         fontWeight: weight,
         color,
         fontFamily: monospace ? fonts.mono : fonts.sans,
-        fontVariantNumeric: monospace ? "tabular-nums slashed-zero" : undefined,
+        fontVariantNumeric: monospace ? 'tabular-nums slashed-zero' : undefined,
         letterSpacing: kerning,
         textAlign: align,
         ...style,
@@ -420,17 +434,19 @@ export function ResponsiveSpacer({
   return (
     <div
       className={cx(responsiveSpacerClass, className)}
-      style={{
-        "--desktop-top": desktopTop !== undefined ? rem(desktopTop) : undefined,
-        "--desktop-bottom": desktopBottom !== undefined ? rem(desktopBottom) : undefined,
-        "--desktop-left": desktopLeft !== undefined ? rem(desktopLeft) : undefined,
-        "--desktop-right": desktopRight !== undefined ? rem(desktopRight) : undefined,
-        "--mobile-top": mobileTop !== undefined ? rem(mobileTop) : undefined,
-        "--mobile-bottom": mobileBottom !== undefined ? rem(mobileBottom) : undefined,
-        "--mobile-left": mobileLeft !== undefined ? rem(mobileLeft) : undefined,
-        "--mobile-right": mobileRight !== undefined ? rem(mobileRight) : undefined,
-        ...style,
-      } as CSSProperties}
+      style={
+        {
+          '--desktop-top': desktopTop !== undefined ? rem(desktopTop) : undefined,
+          '--desktop-bottom': desktopBottom !== undefined ? rem(desktopBottom) : undefined,
+          '--desktop-left': desktopLeft !== undefined ? rem(desktopLeft) : undefined,
+          '--desktop-right': desktopRight !== undefined ? rem(desktopRight) : undefined,
+          '--mobile-top': mobileTop !== undefined ? rem(mobileTop) : undefined,
+          '--mobile-bottom': mobileBottom !== undefined ? rem(mobileBottom) : undefined,
+          '--mobile-left': mobileLeft !== undefined ? rem(mobileLeft) : undefined,
+          '--mobile-right': mobileRight !== undefined ? rem(mobileRight) : undefined,
+          ...style,
+        } as CSSProperties
+      }
       {...props}
     />
   );
@@ -441,32 +457,35 @@ export function TextLink({
   children,
   color = colors.textPrimary,
   hoverColor = colors.textAccent,
-  decorationColor = colors.textTertiary,
+  decorationColor = colors.textMuted,
   weight = 500,
   monospace = false,
+  native = false,
   className,
   style,
   ...props
 }: LinkStyleProps &
-  Omit<AnchorHTMLAttributes<HTMLAnchorElement>, "color"> & {
+  Omit<AnchorHTMLAttributes<HTMLAnchorElement>, 'color'> & {
     href: string;
     children: ReactNode;
   }) {
   const linkStyle = {
-    "--link-color": color,
-    "--link-hover-color": hoverColor,
-    "--link-decoration-color": decorationColor,
-    "--link-font-weight": String(weight),
-    "--link-font-family": monospace ? fonts.mono : fonts.sans,
+    '--link-color': color,
+    '--link-hover-color': hoverColor,
+    '--link-decoration-color': decorationColor,
+    '--link-font-weight': String(weight),
+    '--link-font-family': monospace ? fonts.mono : fonts.sans,
     ...style,
   } as CSSProperties;
 
-  if (isExternalLink(href)) {
+  const isExternal = isExternalLink(href);
+
+  if (isExternal || native) {
     return (
       <a
         href={href}
-        target="_blank"
-        rel="noopener noreferrer"
+        target={isExternal ? '_blank' : undefined}
+        rel={isExternal ? 'noopener noreferrer' : undefined}
         className={cx(textLinkClass, className)}
         style={linkStyle}
         {...props}
@@ -489,7 +508,7 @@ export function ButtonLink({
   className,
   style,
   ...props
-}: Omit<AnchorHTMLAttributes<HTMLAnchorElement>, "color"> & {
+}: Omit<AnchorHTMLAttributes<HTMLAnchorElement>, 'color'> & {
   href: string;
   children: ReactNode;
 }) {

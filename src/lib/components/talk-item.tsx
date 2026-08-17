@@ -1,9 +1,9 @@
-import { css } from "@linaria/core";
+import { css } from '@linaria/core';
 
-import { H4, Row, Stack, Text } from "@/components/ui";
-import breakpoints from "@/theme/constants";
-import font from "@/theme/fonts";
-import { colors } from "@/theme/theme";
+import { H4, Row, Stack, Text } from '@/components/ui';
+import breakpoints from '@/theme/constants';
+import font from '@/theme/fonts';
+import { colors } from '@/theme/theme';
 
 const iconWrapperClass = css`
   line-height: 0;
@@ -41,7 +41,7 @@ const boxClass = css`
   }
 
   &:hover .talk-meta {
-    color: ${colors.textSecondary};
+    color: ${colors.textProse};
   }
 
   &:hover .talk-icon svg {
@@ -51,10 +51,14 @@ const boxClass = css`
   &:hover .talk-title {
     color: ${colors.textAccent};
   }
+
+  &:hover .talk-description {
+    color: ${colors.textProse};
+  }
 `;
 
 const metaClass = css`
-  color: ${colors.textTertiary};
+  color: ${colors.textMuted};
   transition: color 150ms ease;
 `;
 
@@ -99,7 +103,7 @@ export function TalkItem({
           </Row>
           <Stack align="left" gap={1}>
             <H4 className={`talk-title ${titleClass}`}>{title}</H4>
-            <Text color={colors.textSecondary} size={font.fontSize0}>
+            <Text className="talk-description" color={colors.textMuted} size={font.fontSize0}>
               {description}
             </Text>
           </Stack>

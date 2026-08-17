@@ -1,17 +1,11 @@
-"use client";
+'use client';
 
-import type { ReactNode } from "react";
-
-import { ThemeProvider } from "next-themes";
+import { ThemeProvider } from 'next-themes';
+import type { ReactNode } from 'react';
 
 export function AppThemeProvider({ children }: { children: ReactNode }) {
   return (
-    <ThemeProvider
-      attribute="data-theme"
-      defaultTheme="dark"
-      enableSystem={false}
-      disableTransitionOnChange
-    >
+    <ThemeProvider attribute="data-theme" defaultTheme="system" enableSystem disableTransitionOnChange>
       {children}
     </ThemeProvider>
   );

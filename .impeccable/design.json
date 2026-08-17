@@ -1,0 +1,98 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-08-17T00:00:00Z",
+  "title": "Design System: sancho.dev",
+  "extensions": {
+    "colorMeta": {
+      "light-background-primary": { "role": "neutral", "displayName": "Clear Paper", "canonical": "#FFFFFF", "tonalRamp": ["#141414", "#272727", "#4C4D4D", "#848686", "#B9BDC3", "#DCDCDC", "#F0F0F0", "#FFFFFF"] },
+      "light-text-primary": { "role": "primary", "displayName": "Navy Ink", "canonical": "#233044", "tonalRamp": ["#121A24", "#233044", "#384456", "#4C586A", "#78818C", "#999FA8", "#B9BDC3", "#CFD2D6"] },
+      "dark-background-primary": { "role": "neutral", "displayName": "Carbon", "canonical": "#141414", "tonalRamp": ["#141414", "#171717", "#272727", "#4C4D4D", "#848686", "#CCCCCC", "#DCDCDC", "#F7F7F7"] },
+      "dark-text-primary": { "role": "primary", "displayName": "Soft Ink", "canonical": "#CFD2D6", "tonalRamp": ["#121A24", "#233044", "#384456", "#4C586A", "#78818C", "#999FA8", "#B9BDC3", "#CFD2D6"] }
+    },
+    "typographyMeta": {
+      "display": { "displayName": "Experiment Display", "purpose": "Inter is reserved for the variable-font experiment." },
+      "headline": { "displayName": "Page Headline", "purpose": "DM Sans gives page and section headings one clear voice." },
+      "body": { "displayName": "Reading Text", "purpose": "DM Sans carries prose at a generous line height." },
+      "label": { "displayName": "Technical Metadata", "purpose": "JetBrains Mono marks dates, reading time, and code." }
+    },
+    "shadows": [],
+    "motion": [
+      { "name": "state-fast", "value": "120ms ease-out", "purpose": "Active scale feedback." },
+      { "name": "state-standard", "value": "150ms ease", "purpose": "Color and background state changes." },
+      { "name": "state-slow", "value": "200ms ease-in-out", "purpose": "Theme icon and variable-font transitions." }
+    ],
+    "breakpoints": [
+      { "name": "mobile", "value": "599px" },
+      { "name": "desktop", "value": "899px" },
+      { "name": "big", "value": "1199px" }
+    ]
+  },
+  "components": [
+    {
+      "name": "Text Link",
+      "kind": "button",
+      "refersTo": "text-link",
+      "description": "The default inline navigation and citation treatment.",
+      "html": "<a class=\"ds-text-link\" href=\"#\">Readable link</a>",
+      "css": ".ds-text-link { color: #233044; font: 500 16px/1.7 'DM Sans', sans-serif; text-decoration: underline; text-decoration-thickness: 1.5px; text-underline-offset: 2px; text-decoration-color: #B9BDC3; transition: color 150ms ease, text-decoration-color 150ms ease; } .ds-text-link:hover { color: #393F48; text-decoration-color: #393F48; } .ds-text-link:focus-visible { outline: 2px solid #393F48; outline-offset: 4px; }"
+    },
+    {
+      "name": "Navigation Item",
+      "kind": "nav",
+      "refersTo": "navigation-item",
+      "description": "Compact primary navigation for Blog and About.",
+      "html": "<a class=\"ds-nav-item\" href=\"#\">BLOG</a>",
+      "css": ".ds-nav-item { min-height: 32px; display: inline-flex; align-items: center; color: #4C586A; font: 700 13px/1.4 'DM Sans', sans-serif; letter-spacing: 2px; text-decoration: none; } .ds-nav-item:hover { color: #393F48; } .ds-nav-item:focus-visible { outline: 2px solid #393F48; outline-offset: 4px; }"
+    },
+    {
+      "name": "Quiet Container",
+      "kind": "card",
+      "description": "A grouped surface used only when a border clarifies meaning.",
+      "html": "<div class=\"ds-container\">Grouped content</div>",
+      "css": ".ds-container { padding: 16px; color: #233044; background: #F7F7F7; border: 1px solid #CFD2D6; border-radius: 8px; font: 400 16px/1.7 'DM Sans', sans-serif; }"
+    },
+    {
+      "name": "Theme Toggle",
+      "kind": "button",
+      "description": "A compact light and dark theme action.",
+      "html": "<button class=\"ds-theme-toggle\" type=\"button\" aria-label=\"Toggle theme\">◐</button>",
+      "css": ".ds-theme-toggle { width: 48px; height: 24px; display: inline-grid; place-items: center; border: 0; border-radius: 24px; color: #233044; background: #F0F0F0; cursor: pointer; transition: background 150ms ease, transform 120ms ease-out; } .ds-theme-toggle:hover { background: #E3E3E3; } .ds-theme-toggle:active { transform: scale(.96); } .ds-theme-toggle:focus-visible { outline: 2px solid #393F48; outline-offset: 4px; }"
+    },
+    {
+      "name": "Metadata Label",
+      "kind": "custom",
+      "description": "Dates and compact technical context.",
+      "html": "<span class=\"ds-meta\">AUG 2026</span>",
+      "css": ".ds-meta { color: #4C586A; font: 600 13px/1.7 'JetBrains Mono', monospace; letter-spacing: .05em; font-variant-numeric: tabular-nums slashed-zero; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "Personal README",
+    "overview": "The site should feel like a carefully maintained README that grew into a personal home. Writing is the main material. Navigation, metadata, links, and code support the reading path without turning the site into documentation software or a generic developer portfolio.",
+    "keyCharacteristics": [
+      "Text-first layouts with a maximum content width of 899px.",
+      "DM Sans for reading and JetBrains Mono for compact metadata.",
+      "Light and dark neutral themes with rare functional brand color.",
+      "Flat surfaces separated by tone and restrained one-pixel borders.",
+      "Clear links and small, direct interaction feedback."
+    ],
+    "rules": [
+      { "name": "The Existing Palette Rule", "body": "Keep the current light and dark values until a separate palette decision approves changes.", "section": "colors" },
+      { "name": "The Readability Rule", "body": "Normal text must meet WCAG AA against its actual background.", "section": "colors" },
+      { "name": "The Reading Rule", "body": "Body copy keeps at least a 1.7 line height and a readable 65-75ch measure.", "section": "typography" },
+      { "name": "The Flat Surface Rule", "body": "Do not add shadows to ordinary content, links, code, or cards.", "section": "elevation" }
+    ],
+    "dos": [
+      "Do let writing determine layout and spacing.",
+      "Do use semantic tokens and verify their contrast in context.",
+      "Do keep links visibly interactive before hover."
+    ],
+    "donts": [
+      "Don't build a generic developer portfolio from repeated cards and technology logos.",
+      "Don't use SaaS landing-page cliches, gradients, glass panels, or inflated claims.",
+      "Don't use editorial-magazine styling as decoration rather than to improve reading.",
+      "Don't use terminal cosplay or monospace as a substitute for design.",
+      "Don't add decorative motion or color that competes with long-form content."
+    ]
+  }
+}
