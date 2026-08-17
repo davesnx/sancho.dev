@@ -1,7 +1,8 @@
 import { css } from '@linaria/core';
 
+import { JsonLd } from '@/components/json-ld';
 import { H1, Page, Row, Spacer, Text, TextLink } from '@/components/ui';
-import { buildMetadata } from '@/site';
+import { buildMetadata, buildPersonJsonLd, buildWebPageJsonLd } from '@/site';
 import fonts from '@/theme/fonts';
 import { colors } from '@/theme/theme';
 
@@ -24,6 +25,16 @@ export const metadata = buildMetadata({
 export default function HomePage() {
   return (
     <Page title={<H1 className={nameClass}>David Sancho</H1>}>
+      <JsonLd
+        data={[
+          buildWebPageJsonLd({
+            title: 'David Sancho',
+            description: metadata.description as string,
+            path: '/',
+          }),
+          buildPersonJsonLd(),
+        ]}
+      />
       <Spacer bottom={10}>
         <Text size={fonts.fontSize1} align="left">
           I am a software engineer based in Barcelona, working where functional programming meets the web.

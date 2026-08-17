@@ -2,6 +2,7 @@ import { css } from '@linaria/core';
 import { ArticleFeedback } from '@/components/article-feedback';
 import { ArticleMeta } from '@/components/article-meta';
 import { HeadingNavigation } from '@/components/heading-navigation';
+import { JsonLd } from '@/components/json-ld';
 import { MelangePlayground } from '@/components/melange-playground';
 import { postContentClass } from '@/components/post-content';
 import { PrintButton } from '@/components/print-button';
@@ -11,7 +12,7 @@ import { ButtonLink, H1, H2, H3, H4, H5, H6, Page, Row, Spacer, Stack, space, Te
 import { YouTubeEmbed } from '@/components/youtube-embed';
 import { YouTubeIcon } from '@/components/youtube-icon';
 import { career, projects } from '@/profile';
-import { buildMetadata } from '@/site';
+import { buildMetadata, buildWebPageJsonLd } from '@/site';
 import breakpoints, { layout } from '@/theme/constants';
 import fonts, { typography } from '@/theme/fonts';
 import { colors, darkCSSVariables, lightCSSVariables } from '@/theme/theme';
@@ -168,6 +169,14 @@ export const metadata = buildMetadata({
 export default function SystemPage() {
   return (
     <Page title={<H1>System</H1>}>
+      <JsonLd
+        data={buildWebPageJsonLd({
+          title: 'System',
+          description: 'The design tokens and shared components used on sancho.dev.',
+          path: '/system',
+          type: 'TechArticle',
+        })}
+      />
       <Stack gap={12} align="flex-start" fullWidth>
         <Text className={introClass} size={fonts.fontSize1} color={colors.textProse}>
           A living reference for the tokens and components used across sancho.dev. Every example below renders the same

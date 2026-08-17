@@ -265,6 +265,19 @@ export function SiteShell({ children }: { children: ReactNode }) {
     };
   }, [isOpen]);
 
+  useEffect(() => {
+    if (!isOpen) return;
+
+    const desktopQuery = window.matchMedia(`(min-width: ${breakpoints.mobile.width + 1}px)`);
+    const closeOnDesktop = (event: MediaQueryListEvent | MediaQueryList) => {
+      if (event.matches) setIsOpen(false);
+    };
+
+    closeOnDesktop(desktopQuery);
+    desktopQuery.addEventListener('change', closeOnDesktop);
+    return () => desktopQuery.removeEventListener('change', closeOnDesktop);
+  }, [isOpen]);
+
   const closeMenu = () => setIsOpen(false);
   const isCurrent = (href: string) => pathname === href || pathname.startsWith(`${href}/`);
 

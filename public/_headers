@@ -1,6 +1,12 @@
 /*
   X-Llms-Txt: /llms.txt
   Link: </llms.txt>; rel="llms-txt"
+  Strict-Transport-Security: max-age=31536000; includeSubDomains; preload
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: camera=(), microphone=(), geolocation=()
+  X-Frame-Options: DENY
+  Content-Security-Policy: default-src 'self'; base-uri 'self'; object-src 'none'; frame-ancestors 'none'; script-src 'self' 'unsafe-inline' https://analytics.ahrefs.com; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://analytics.ahrefs.com; frame-src https://www.youtube-nocookie.com; upgrade-insecure-requests
 
 /blog/*.md
   Content-Type: text/markdown; charset=utf-8

@@ -1,9 +1,10 @@
 import { css } from '@linaria/core';
+import { JsonLd } from '@/components/json-ld';
 import { ButtonLink, H1, H3, Page, Spacer, Stack, Text, TextLink } from '@/components/ui';
 import { YouTubeIcon } from '@/components/youtube-icon';
 import type { BlogPost } from '@/posts';
 import { getPublishedPosts } from '@/posts';
-import { buildMetadata } from '@/site';
+import { absoluteUrl, buildMetadata, siteConfig } from '@/site';
 import fonts from '@/theme/fonts';
 import { colors } from '@/theme/theme';
 
@@ -83,6 +84,35 @@ export default function BlogIndexPage() {
 
   return (
     <Page title={<H1>Blog</H1>}>
+      <JsonLd
+        data={{
+          '@context': 'https://schema.org',
+          '@type': 'Blog',
+          name: 'Blog',
+          description: "davesnx's technical blog about Software Engineering.",
+          url: absoluteUrl('/blog'),
+          author: { '@type': 'Person', name: siteConfig.authorName, url: absoluteUrl('/about') },
+          hasPart: posts.map((post) =>
+            post.kind === 'youtube'
+              ? {
+                  '@type': 'VideoObject',
+                  name: post.title,
+                  description: post.description,
+                  url: absoluteUrl(`/blog/${post.slug}`),
+                  uploadDate: post.uploadedAt,
+                  thumbnailUrl: absoluteUrl(post.thumbnail),
+                  embedUrl: `https://www.youtube-nocookie.com/embed/${post.youtubeId}`,
+                }
+              : {
+                  '@type': 'BlogPosting',
+                  headline: post.title,
+                  description: post.description,
+                  url: absoluteUrl(`/blog/${post.slug}`),
+                  datePublished: post.publishedAt,
+                },
+          ),
+        }}
+      />
       <Spacer bottom={4}>
         <Text color={colors.textMuted} size={fonts.fontSize1}>
           Subscribe via{' '}

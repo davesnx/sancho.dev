@@ -183,3 +183,48 @@ export const buildVideoJsonLd = ({
     url: siteConfig.siteUrl,
   },
 });
+
+export const buildPersonJsonLd = () => ({
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  name: siteConfig.authorName,
+  url: siteConfig.siteUrl,
+  sameAs: [
+    'https://github.com/davesnx',
+    'https://x.com/davesnx',
+    'https://bsky.app/profile/david.sancho.dev',
+    'https://www.strava.com/athletes/davesnx',
+  ],
+  jobTitle: 'Software engineer',
+  worksFor: { '@type': 'Organization', name: 'Ahrefs', url: 'https://ahrefs.com' },
+  address: { '@type': 'PostalAddress', addressLocality: 'Barcelona', addressCountry: 'ES' },
+});
+
+export const buildWebsiteJsonLd = () => ({
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  name: siteConfig.siteName,
+  url: siteConfig.siteUrl,
+  description: siteConfig.description,
+  author: { '@type': 'Person', name: siteConfig.authorName, url: absoluteUrl('/about') },
+});
+
+export const buildWebPageJsonLd = ({
+  title,
+  description,
+  path,
+  type = 'WebPage',
+}: {
+  title: string;
+  description: string;
+  path: string;
+  type?: 'CollectionPage' | 'ProfilePage' | 'TechArticle' | 'WebPage';
+}) => ({
+  '@context': 'https://schema.org',
+  '@type': type,
+  name: title,
+  description,
+  url: absoluteUrl(path),
+  isPartOf: { '@type': 'WebSite', name: siteConfig.siteName, url: siteConfig.siteUrl },
+  author: { '@type': 'Person', name: siteConfig.authorName, url: absoluteUrl('/about') },
+});

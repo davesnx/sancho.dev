@@ -1,10 +1,11 @@
 import { css } from '@linaria/core';
 import type { ReactNode } from 'react';
 import { Fragment } from 'react';
+import { JsonLd } from '@/components/json-ld';
 import { ProfileEntry, profileListClass } from '@/components/profile-entry';
 import { H1, H2, Page, Spacer, Stack, Text, TextLink } from '@/components/ui';
 import { career, contact, introduction, outsideComputers, type ProfileSegment, projects } from '@/profile';
-import { buildMetadata } from '@/site';
+import { buildMetadata, buildPersonJsonLd, buildWebPageJsonLd } from '@/site';
 import fonts from '@/theme/fonts';
 import { colors } from '@/theme/theme';
 
@@ -62,6 +63,17 @@ function Section({ title, children }: { title: string; children: ReactNode }) {
 export default function AboutPage() {
   return (
     <Page title={<H1>About</H1>}>
+      <JsonLd
+        data={[
+          buildWebPageJsonLd({
+            title: 'About David Sancho',
+            description: metadata.description as string,
+            path: '/about',
+            type: 'ProfilePage',
+          }),
+          buildPersonJsonLd(),
+        ]}
+      />
       <Stack gap={10} align="flex-start" fullWidth>
         <Prose paragraphs={introduction} />
 

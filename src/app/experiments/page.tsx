@@ -1,7 +1,8 @@
 import { css } from '@linaria/core';
 
+import { JsonLd } from '@/components/json-ld';
 import { ButtonLink, H1, Page, Spacer, Text } from '@/components/ui';
-import { buildMetadata } from '@/site';
+import { buildMetadata, buildWebPageJsonLd } from '@/site';
 import fonts from '@/theme/fonts';
 import { colors } from '@/theme/theme';
 
@@ -68,6 +69,14 @@ export const metadata = buildMetadata({
 export default function ExperimentsPage() {
   return (
     <Page title={<H1>Experiments</H1>}>
+      <JsonLd
+        data={buildWebPageJsonLd({
+          title: 'Experiments',
+          description: 'Small interactive UI experiments by David Sancho.',
+          path: '/experiments',
+          type: 'CollectionPage',
+        })}
+      />
       <Text color={colors.textProse}>
         Small interface and typography studies. They are public, but intentionally outside the main navigation.
       </Text>

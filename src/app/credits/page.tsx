@@ -1,6 +1,7 @@
 import { css } from '@linaria/core';
+import { JsonLd } from '@/components/json-ld';
 import { H1, H2, Page, Stack, Text, TextLink } from '@/components/ui';
-import { buildMetadata } from '@/site';
+import { buildMetadata, buildWebPageJsonLd } from '@/site';
 import fonts from '@/theme/fonts';
 import { colors } from '@/theme/theme';
 
@@ -36,6 +37,13 @@ export const metadata = buildMetadata({
 export default function CreditsPage() {
   return (
     <Page title={<H1>Credits</H1>}>
+      <JsonLd
+        data={buildWebPageJsonLd({
+          title: 'Credits',
+          description: 'The tools, typefaces, and references behind sancho.dev.',
+          path: '/credits',
+        })}
+      />
       <Stack gap={8} align="flex-start">
         <Text className={introClass} size={fonts.fontSize1} color={colors.textProse}>
           sancho.dev is designed, written, and built by David Sancho. It also depends on the work and ideas below.
