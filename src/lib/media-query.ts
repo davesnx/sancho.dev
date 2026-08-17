@@ -85,7 +85,7 @@ export const useMediaLayout = createUseMedia(useLayoutEffect);
 export default useMedia;
 
 export const useIsMobile = () => {
-  const isWide = useMedia({ minWidth: `${constants.mobile.width}px` });
+  const isWide = useMedia({ minWidth: `${constants.mobile.width + 1}px` });
   const isSmall = !isWide;
   return isSmall;
 };

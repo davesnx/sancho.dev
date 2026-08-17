@@ -7,17 +7,17 @@ const useWindowMousePosition = () => {
   });
 
   useEffect(() => {
-    const handleMouseMove = (e) => {
+    const handlePointerMove = (event) => {
       setWindowMousePosition({
-        x: e.pageX,
-        y: e.pageY,
+        x: event.clientX,
+        y: event.clientY,
       });
     };
 
-    window.addEventListener('mousemove', handleMouseMove);
+    window.addEventListener('pointermove', handlePointerMove, { passive: true });
 
     return () => {
-      window.removeEventListener('mousemove', handleMouseMove);
+      window.removeEventListener('pointermove', handlePointerMove);
     };
   }, []);
 
