@@ -1,6 +1,6 @@
 # 13 Global Metadata and Launch
 
-**Status:** Blocked
+**Status:** Ready
 **Area:** All public routes and generated assets
 **Blocked by:** 01-12
 
@@ -64,7 +64,7 @@ Work on session 13, Global Metadata and Launch, using roadmap/launch.md as the c
 ## Evidence
 
 ```text
-Status: Blocked
+Status: Ready
 OpenCode session: pending
 Commit: pending
 Approval: pending

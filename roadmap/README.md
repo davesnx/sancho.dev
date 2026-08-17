@@ -57,8 +57,8 @@ Run one fresh OpenCode session per row. Continue the same session through implem
 | 09 | [System](./pages/system.md) | `/system` | 01-08 | Verified |
 | 10 | [Experiments Index](./pages/experiments.md) | `/experiments` | 01 | Verified |
 | 11 | [Chromatic Experiment](./pages/experiments-chromatic.md) | `/experiments/chromatic` | 01, 10 | Verified |
-| 12 | [Variable Font Experiment](./pages/experiments-variable.md) | `/experiments/variable` | 01, 10 | Ready |
-| 13 | [Global Metadata and Launch](./launch.md) | Site-wide | 01-12 | Blocked |
+| 12 | [Variable Font Experiment](./pages/experiments-variable.md) | `/experiments/variable` | 01, 10 | Verified |
+| 13 | [Global Metadata and Launch](./launch.md) | Site-wide | 01-12 | Ready |
 
 ## Completion rule
 

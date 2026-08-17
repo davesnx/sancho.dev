@@ -1,91 +1,108 @@
-"use client";
+'use client';
 
-import { css } from "@linaria/core";
-import React from "react";
+import { css } from '@linaria/core';
+import { useRef } from 'react';
+import { TextLink } from '@/components/ui';
+import useMedia from '@/media-query';
+import usePointerPosition from '@/mouse-position';
+import { colors } from '@/theme/theme';
 
-import { TextLink } from "@/components/ui";
-import useMousePosition from "@/mouse-position";
-import { useIsMobile } from "@/media-query";
-import { colors } from "@/theme/theme";
-
-const rowClass = css`
-  display: flex;
-  flex-direction: row;
-`;
-
-const charClass = css`
-  text-transform: uppercase;
-  font-family: var(--font-display), "Inter", sans-serif;
+const headingClass = css`
   display: flex;
   justify-content: center;
+  width: 100%;
+  max-width: 100%;
+  margin: 0;
+`;
+
+const characterClass = css`
+  width: clamp(24px, 6vw, 64px);
+  display: inline-flex;
   align-items: center;
+  justify-content: center;
   color: ${colors.textPrimary};
-  transition: font-variation-settings 200ms ease-out;
+  font-family: var(--font-display), Inter, sans-serif;
+  font-size: clamp(1.5rem, 4vw, 3rem);
+  line-height: 1;
+  text-transform: uppercase;
+  transition: font-variation-settings 160ms ease-out;
+
+  @media (prefers-reduced-motion: reduce) {
+    transition: none;
+  }
 `;
 
 const containerClass = css`
+  min-height: 55vh;
   display: flex;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
   flex-direction: column;
-  flex: 1;
   cursor: ew-resize;
 `;
 
-const charSize = 75;
-const middle = charSize / 2;
+const instructionClass = css`
+  max-width: 36rem;
+  margin: 2rem 0 0;
+  color: ${colors.textPrimary};
+  text-align: center;
+`;
 
-function Squared({
-  isMobile,
+const clamp = (value: number, minimum: number, maximum: number) => Math.min(maximum, Math.max(minimum, value));
+
+function VariableHeading({
   text,
-  x: mousePosition,
+  pointerX,
+  reducedMotion,
 }: {
-  isMobile: boolean;
   text: string;
-  x: number | null;
+  pointerX: number | null;
+  reducedMotion: boolean;
 }) {
-  const ref = React.useRef<HTMLDivElement | null>(null);
-  const firstElementPosition = ref.current?.getBoundingClientRect().left
-    ? ref.current.getBoundingClientRect().left + middle
-    : 0;
-  const letters = text.split("");
+  const characterRefs = useRef<Array<HTMLSpanElement | null>>([]);
+  const characters = [...text];
 
   return (
-    <div ref={ref} className={rowClass}>
-      {letters.map((char, idx) => {
-        const weight = 1000 - Math.abs((mousePosition ?? 0) - firstElementPosition - 75 * idx);
+    <h1 className={headingClass}>
+      {characters.map((character, index) => {
+        const bounds = characterRefs.current[index]?.getBoundingClientRect();
+        const center = bounds ? bounds.left + bounds.width / 2 : null;
+        const distance = pointerX !== null && center !== null ? Math.abs(pointerX - center) : 100;
+        const weight = reducedMotion ? 550 : clamp(700 - distance * 1.5, 400, 700);
 
         return (
           <span
-            key={`${text.slice(0, idx + 1)}-${char}`}
-            className={charClass}
-            style={{
-              fontVariationSettings: `"wght" ${weight}`,
-              width: isMobile ? "25px" : "75px",
-              fontSize: isMobile ? "25px" : "50px",
+            key={`${text.slice(0, index)}-${character}`}
+            ref={(element) => {
+              characterRefs.current[index] = element;
             }}
+            className={characterClass}
+            style={{ fontVariationSettings: `"wght" ${Math.round(weight)}` }}
           >
-            {char}
+            {character === ' ' ? '\u00a0' : character}
           </span>
         );
       })}
-    </div>
+    </h1>
   );
 }
 
 export function VariableDemo() {
-  const mouse = useMousePosition();
-  const isMobile = useIsMobile();
+  const pointer = usePointerPosition();
+  const coarsePointer = useMedia('(pointer: coarse)');
+  const reducedMotion = useMedia('(prefers-reduced-motion: reduce)');
+  const instruction = reducedMotion
+    ? 'Reduced motion is enabled, so the font weight stays still.'
+    : coarsePointer
+      ? 'Tap or drag horizontally across the name to change the font weight.'
+      : 'Move the pointer horizontally across the name to change the font weight.';
 
   return (
     <div className={containerClass}>
-      <Squared isMobile={isMobile} x={mouse.x} text="David Sancho" />
-      <div style={{ marginTop: "32px" }}>
-        <p style={{ margin: 0, color: colors.textPrimary, textAlign: "center" }}>
-          {isMobile ? "Tap into the name to see the " : "Move the mouse in the y axis to see the "}
-          <TextLink href="https://v-fonts.com">Variable font weight</TextLink> effect
-        </p>
-      </div>
+      <VariableHeading text="David Sancho" pointerX={pointer.x} reducedMotion={reducedMotion} />
+      <p className={instructionClass} aria-live="polite">
+        {instruction} Explore more <TextLink href="https://v-fonts.com">variable fonts</TextLink>.
+      </p>
     </div>
   );
 }
