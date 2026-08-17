@@ -1,6 +1,6 @@
 # 03 YouTube Post
 
-**Status:** Blocked
+**Status:** Ready
 **Route:** `/blog/[slug]` for `kind: youtube` entries
 **Blocked by:** 01 Design Foundation, 02 Article Post
 
@@ -59,7 +59,7 @@ Work on session 03, YouTube Post, using roadmap/pages/youtube.md as the contract
 ## Evidence
 
 ```text
-Status: Blocked
+Status: Ready
 OpenCode session: pending
 Commit: pending
 Approval: pending

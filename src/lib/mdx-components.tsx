@@ -1,6 +1,6 @@
 import { css } from '@linaria/core';
 import type { MDXComponents } from 'mdx/types';
-import type { ComponentProps } from 'react';
+import type { ComponentProps, ReactNode } from 'react';
 
 import { MdxImage } from '@/components/mdx-image';
 import { MelangePlayground } from '@/components/melange-playground';
@@ -16,9 +16,8 @@ const headingContentClass = css`
 `;
 
 const anchorLinkClass = css`
-  position: absolute;
-  right: calc(100% + 1rem);
-  top: 0;
+  display: inline;
+  margin-left: 0.5rem;
   color: ${colors.textMuted};
   text-decoration: none;
   font-family: ${fonts.mono};
@@ -63,25 +62,43 @@ const hrClass = css`
 `;
 
 const blockquoteClass = css`
-  margin: 32px;
-  position: relative;
-  padding: 0;
-  margin-left: 24px;
-  opacity: 0.6;
-
-  &:before {
-    content: "";
-    position: absolute;
-    margin-left: -24px;
-    background-color: ${colors.borderStrong};
-    width: 3px;
-    height: 100%;
-  }
+  margin: 2rem 0;
+  padding: 1.25rem;
+  border: 1px solid ${colors.borderStrong};
+  border-radius: 6px;
+  background: ${colors.backgroundSecondary};
+  color: ${colors.textProse};
 
   & p {
     margin: 0;
     font-style: italic;
     font-weight: 700;
+  }
+`;
+
+const noteClass = css`
+  margin: 2rem 0;
+  padding: 1.25rem;
+  border: 1px solid ${colors.borderStrong};
+  border-radius: 6px;
+  background: ${colors.backgroundSecondary};
+  color: ${colors.textProse};
+`;
+
+const noteTitleClass = css`
+  display: block;
+  margin-bottom: 0.5rem;
+  color: ${colors.textAccent};
+  font-family: ${fonts.mono};
+  font-size: ${fonts.fontSizeN2};
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+`;
+
+const noteContentClass = css`
+  & > :last-child {
+    margin-bottom: 0;
   }
 `;
 
@@ -238,6 +255,7 @@ const createHeadingWithAnchor = (HeadingComponent: typeof H1, marginTop: string)
       className={headingWrapClass}
       style={{ ['--heading-margin-top' as string]: marginTop }}
       id={id}
+      tabIndex={-1}
       {...props}
     >
       <span className={headingContentClass}>
@@ -281,6 +299,12 @@ const Blockquote = ({ children, ...props }: ComponentProps<'blockquote'>) => (
 const Pre = (props: ComponentProps<'pre'>) => <pre className={preClass} {...props} />;
 const Code = (props: ComponentProps<'code'>) => <code className={codeClass} {...props} />;
 const Table = (props: ComponentProps<'table'>) => <table className={tableClass} {...props} />;
+export const Note = ({ children, title = 'Note' }: { children: ReactNode; title?: string }) => (
+  <aside className={noteClass} role="note" aria-label={title}>
+    <span className={noteTitleClass}>{title}</span>
+    <div className={noteContentClass}>{children}</div>
+  </aside>
+);
 const Image = ({ alt, src, ...props }: ComponentProps<'img'>) => (
   <span className={imageWrapClass}>
     {typeof src === 'string' ? <MdxImage src={src} alt={alt} {...props} /> : null}
@@ -307,6 +331,7 @@ const components: MDXComponents = {
   pre: Pre,
   code: Code,
   table: Table,
+  Note,
   MelangePlayground,
 };
 

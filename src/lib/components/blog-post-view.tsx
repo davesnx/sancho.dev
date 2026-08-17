@@ -4,44 +4,88 @@ import { parseISO } from 'date-fns/parseISO';
 import type { ComponentType } from 'react';
 import { postContentClass } from '@/components/post-content';
 import { H1, Page, Row, Spacer, Text, TextLink } from '@/components/ui';
-import type { BlogPost } from '@/posts';
+import type { BlogHeading, BlogPost } from '@/posts';
 import breakpoints from '@/theme/constants';
 import fonts from '@/theme/fonts';
 import { colors } from '@/theme/theme';
 
 const titleWrapClass = css`
   display: flex;
-  justify-content: center;
   flex-direction: column;
-  align-items: center;
+  align-items: flex-start;
   gap: 0.65rem;
-  margin-left: -6rem;
-  margin-right: -6rem;
-  max-width: 150%;
-
-  @media screen and (max-width: calc(${breakpoints.desktop.width}px + 32px)) {
-    max-width: 100%;
-    margin-left: 0;
-    margin-right: 0;
-  }
+  max-width: 72ch;
 `;
 
 const titleClass = css`
-  margin: 5rem 0px 1rem;
-  font-size: 3rem;
+  margin: 2rem 0 0.75rem;
+  font-size: clamp(2.35rem, 6vw, 3.75rem);
   width: 100%;
-  text-align: center;
-  line-height: 1.4;
+  text-align: left;
+  line-height: 1.12;
+  letter-spacing: -0.025em;
   color: ${colors.textAccent};
 
   @media screen and (max-width: 599px) {
-    font-size: 2rem;
+    font-size: 2.25rem;
   }
 `;
 
 const metaRowClass = css`
-  justify-content: center;
+  justify-content: flex-start;
   flex-wrap: wrap;
+`;
+
+const backLinkClass = css`
+  display: inline-flex;
+  font-size: ${fonts.fontSizeN1};
+`;
+
+const tableOfContentsClass = css`
+  max-width: 72ch;
+  margin: 0 0 4rem;
+  padding: 1rem 0;
+  border-top: 1px solid ${colors.borderSubtle};
+  border-bottom: 1px solid ${colors.borderSubtle};
+
+  @media screen and (max-width: ${breakpoints.mobile.width}px) {
+    display: none;
+  }
+`;
+
+const tableOfContentsTitleClass = css`
+  display: block;
+  margin-bottom: 0.75rem;
+  color: ${colors.textMuted};
+  font-family: ${fonts.mono};
+  font-size: ${fonts.fontSizeN2};
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+`;
+
+const tableOfContentsListClass = css`
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+`;
+
+const tableOfContentsNestedListClass = css`
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  margin: 0.4rem 0 0;
+  padding-left: 1.5rem;
+  list-style: none;
+`;
+
+const tableOfContentsLinkClass = css`
+  display: inline;
+  color: ${colors.textProse};
+  font-size: ${fonts.fontSizeN1};
 `;
 
 const thanksClass = css`
@@ -86,6 +130,26 @@ const TwitterIcon = () => (
   </svg>
 );
 
+type TableOfContentsItem = {
+  heading: BlogHeading;
+  children: BlogHeading[];
+};
+
+const groupHeadings = (headings: BlogHeading[]) => {
+  const items: TableOfContentsItem[] = [];
+
+  for (const heading of headings) {
+    const previous = items.at(-1);
+    if (heading.level === 3 && previous?.heading.level === 2) {
+      previous.children.push(heading);
+    } else {
+      items.push({ heading, children: [] });
+    }
+  }
+
+  return items;
+};
+
 export function BlogPostView({
   post,
   PostContent,
@@ -96,18 +160,23 @@ export function BlogPostView({
   jsonLd: Record<string, unknown>;
 }) {
   const serializedJsonLd = JSON.stringify(jsonLd).replaceAll('<', '\\u003c');
+  const hasTableOfContents = post.headings.length >= 3;
+  const tableOfContents = hasTableOfContents ? groupHeadings(post.headings) : [];
 
   return (
     <Page
       title={
         <>
+          <TextLink href="/blog" className={backLinkClass} color={colors.textMuted} hoverColor={colors.textAccent}>
+            ← Blog
+          </TextLink>
           <div className={titleWrapClass}>
             <H1 className={titleClass}>{post.title}</H1>
           </div>
           <Spacer bottom={2} />
           <Row className={metaRowClass} gap={2}>
             <Text kerning="0.05rem" color={colors.textMuted} size={fonts.fontSizeN2} weight={600} monospace>
-              {format(parseISO(post.publishedAt), 'MMM yyyy').toUpperCase()}
+              {format(parseISO(post.publishedAt), 'MMM d, yyyy').toUpperCase()}
             </Text>
             <Text color={colors.textTertiary} size={fonts.fontSize0} weight={400} monospace>
               •
@@ -128,7 +197,7 @@ export function BlogPostView({
               •
             </Text>
             <Text kerning="0.05rem" color={colors.textMuted} size={fonts.fontSizeN2} weight={600} monospace>
-              {`${Math.max(1, Math.floor(post.readingTime.minutes))} MINUTES`}
+              {`${Math.max(1, Math.ceil(post.readingTime.minutes))} MINUTES`}
             </Text>
           </Row>
         </>
@@ -136,6 +205,31 @@ export function BlogPostView({
     >
       {/* biome-ignore lint/security/noDangerouslySetInnerHtml: JSON-LD is serialized from local metadata and escapes script delimiters. */}
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: serializedJsonLd }} />
+      {hasTableOfContents ? (
+        <nav className={tableOfContentsClass} aria-label="On this page">
+          <span className={tableOfContentsTitleClass}>On this page</span>
+          <ol className={tableOfContentsListClass}>
+            {tableOfContents.map(({ heading, children }) => (
+              <li key={heading.id}>
+                <TextLink href={`#${heading.id}`} className={tableOfContentsLinkClass}>
+                  {heading.text}
+                </TextLink>
+                {children.length > 0 ? (
+                  <ol className={tableOfContentsNestedListClass}>
+                    {children.map((child) => (
+                      <li key={child.id}>
+                        <TextLink href={`#${child.id}`} className={tableOfContentsLinkClass}>
+                          {child.text}
+                        </TextLink>
+                      </li>
+                    ))}
+                  </ol>
+                ) : null}
+              </li>
+            ))}
+          </ol>
+        </nav>
+      ) : null}
       <article className={postContentClass}>
         <PostContent />
       </article>

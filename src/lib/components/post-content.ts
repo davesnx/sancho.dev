@@ -8,6 +8,7 @@ export const postContentClass = css`
   color: ${colors.textProse};
   font-family: ${fonts.sans};
   width: 100%;
+  overflow-x: clip;
 
   & > p {
     max-width: 72ch;
@@ -111,10 +112,15 @@ export const postContentClass = css`
 
   & [data-rehype-pretty-code-figure] {
     margin: 0.75rem 0 1.75rem;
+    min-width: 0;
+    max-width: 100%;
   }
 
   & [data-rehype-pretty-code-figure] pre {
-    display: grid;
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
     overflow: auto;
     padding: 2rem;
     margin: 0;
@@ -127,6 +133,7 @@ export const postContentClass = css`
 
   & [data-rehype-pretty-code-figure] code {
     display: grid;
+    min-width: max-content;
   }
 
   & [data-line] {
