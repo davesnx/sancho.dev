@@ -1,11 +1,11 @@
-import type { MetadataRoute } from "next";
+import type { MetadataRoute } from 'next';
 
-import { getPublishedPosts } from "@/posts";
+import { getPublishedPosts } from '@/posts';
 
-export const dynamic = "force-static";
+export const dynamic = 'force-static';
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const pages = ["/", "/about", "/blog", "/work", "/talks", "/ui", "/experiments"];
+  const pages = ['/', '/about', '/blog', '/work', '/ui', '/experiments'];
   const staticEntries = pages.map((route) => ({
     url: `https://sancho.dev${route}`,
   }));

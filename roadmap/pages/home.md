@@ -1,6 +1,6 @@
 # 05 Home
 
-**Status:** Blocked
+**Status:** Ready
 **Route:** `/`
 **Blocked by:** 01 Design Foundation, 04 Blog Index and Talks Migration
 
@@ -43,7 +43,7 @@ Work on session 05, Home, using roadmap/pages/home.md as the contract. Confirm s
 ## Evidence
 
 ```text
-Status: Blocked
+Status: Ready
 OpenCode session: pending
 Commit: pending
 Approval: pending

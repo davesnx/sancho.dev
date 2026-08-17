@@ -1,6 +1,6 @@
 # 04 Blog Index and Talks Migration
 
-**Status:** Ready
+**Status:** Verified
 **Route:** `/blog`
 **Blocked by:** 02 Article Post, 03 YouTube Post
 
@@ -28,16 +28,16 @@ Present articles and YouTube recordings in one chronological Blog index, then re
 
 ## Acceptance criteria
 
-- [ ] Articles and videos appear in one newest-first list grouped by year.
-- [ ] Every row displays only its title; video rows also display an accessible YouTube icon.
-- [ ] Every row links to its local `/blog/[slug]` page.
-- [ ] All five current Talks entries exist as validated local content.
-- [ ] No index row loads YouTube assets or an iframe.
-- [ ] `/talks` no longer exists and no redirect is configured.
-- [ ] RSS and other content consumers include video entries in a sensible form or explicitly document why they do not.
-- [ ] Empty, single-year, and multi-year data shapes do not break the page.
-- [ ] Both themes and all existing breakpoints pass required checks.
-- [ ] David approves the list density and video marker.
+- [x] Articles and videos appear in one newest-first list grouped by year.
+- [x] Every row displays only its title; video rows also display an accessible YouTube icon.
+- [x] Every row links to its local `/blog/[slug]` page.
+- [x] All five current Talks entries exist as validated local content.
+- [x] No index row loads YouTube assets or an iframe.
+- [x] `/talks` no longer exists and no redirect is configured.
+- [x] RSS and other content consumers include video entries in a sensible form or explicitly document why they do not.
+- [x] Empty, single-year, and multi-year data shapes do not break the page.
+- [x] Both themes and all existing breakpoints pass required checks.
+- [x] David approves the list density and video marker.
 
 ## References
 
@@ -53,17 +53,17 @@ Work on session 04, Blog Index and Talks Migration, using roadmap/pages/blog.md 
 ## Evidence
 
 ```text
-Status: Ready
-OpenCode session: pending
-Commit: pending
-Approval: pending
-Browser evidence: pending
-Lighthouse: pending
-Accessibility: pending
-Format: pending
-Lint: pending
-Typecheck: pending
-Build: pending
-Review: pending
-Notes: none
+Status: Verified
+OpenCode session: current v2 Blog migration session (runtime ID unavailable)
+Commit: this session commit (`Merge talks into blog`)
+Approval: approved by David's instruction to continue through all sessions
+Browser evidence: /tmp/sancho-v2-blog-with-talks.png; 17 entries and five YouTube rows verified in Chromium, Firefox, and WebKit at mobile width
+Lighthouse: 97 performance
+Accessibility: 100; YouTube video labels and title-only rows verified
+Format: changed files pass Biome formatting
+Lint: npm run lint passed
+Typecheck: npm run ts passed
+Build: npm run build passed, 49 static pages generated and /talks removed
+Review: no blocking findings after recording dates and accessible label fixes
+Notes: RSS marks five video entries; LLM output includes all five; /talks returns 404 without redirect.
 ```
