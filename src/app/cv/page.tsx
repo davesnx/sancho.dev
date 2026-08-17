@@ -3,7 +3,7 @@ import { JsonLd } from '@/components/json-ld';
 import { PrintButton } from '@/components/print-button';
 import { ProfileEntry, profileListClass } from '@/components/profile-entry';
 import { H1, H2, Page, Row, Spacer, Stack, Text, TextLink } from '@/components/ui';
-import { career, projects, skills } from '@/profile';
+import { career, projectMeta, projects, skills } from '@/profile';
 import { buildMetadata, buildWebPageJsonLd } from '@/site';
 import fonts from '@/theme/fonts';
 import { colors } from '@/theme/theme';
@@ -147,7 +147,7 @@ export default function CvPage() {
                   title={project.name}
                   href={project.url}
                   description={project.description}
-                  meta={project.language}
+                  meta={projectMeta(project)}
                 />
               ))}
             </ul>

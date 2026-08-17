@@ -11,7 +11,7 @@ import { ThemeToggle } from '@/components/theme-toggle';
 import { ButtonLink, H1, H2, H3, H4, H5, H6, Page, Row, Spacer, Stack, space, Text, TextLink } from '@/components/ui';
 import { YouTubeEmbed } from '@/components/youtube-embed';
 import { YouTubeIcon } from '@/components/youtube-icon';
-import { career, projects } from '@/profile';
+import { career, projectMeta, projects } from '@/profile';
 import { buildMetadata, buildWebPageJsonLd } from '@/site';
 import breakpoints, { layout } from '@/theme/constants';
 import fonts, { typography } from '@/theme/fonts';
@@ -381,7 +381,7 @@ export default function SystemPage() {
                   title={firstProject.name}
                   href={firstProject.url}
                   description={firstProject.description}
-                  meta={firstProject.language}
+                  meta={projectMeta(firstProject)}
                 />
               ) : null}
             </ul>

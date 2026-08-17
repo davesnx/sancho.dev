@@ -1,3 +1,6 @@
+import githubData from '../data/github-repos.json';
+import type { GitHubRepo } from './github';
+
 export type ProfileSegment = string | { text: string; href: string };
 
 export type CareerEntry = {
@@ -10,10 +13,13 @@ export type CareerEntry = {
 };
 
 export type ProjectEntry = {
+  fullName: string;
   name: string;
   url: string;
   description: string;
   language: string;
+  stars: number;
+  ownerAvatar: string;
 };
 
 export const introduction: ProfileSegment[][] = [
@@ -104,32 +110,54 @@ export const career: CareerEntry[] = [
   },
 ];
 
-export const projects: ProjectEntry[] = [
+const projectFallbacks = [
   {
+    fullName: 'davesnx/styled-ppx',
     name: 'styled-ppx',
     url: 'https://github.com/davesnx/styled-ppx',
     description: 'Type-safe CSS for Melange and native OCaml with static extraction.',
     language: 'OCaml',
   },
   {
+    fullName: 'ml-in-barcelona/server-reason-react',
     name: 'server-reason-react',
     url: 'https://github.com/ml-in-barcelona/server-reason-react',
     description: "A native implementation of React's server rendering and server component architecture.",
     language: 'OCaml',
   },
   {
+    fullName: 'davesnx/parseff',
     name: 'parseff',
     url: 'https://github.com/davesnx/parseff',
     description: 'Direct-style parser combinators built with OCaml 5 effects.',
     language: 'OCaml',
   },
   {
+    fullName: 'davesnx/ochre',
     name: 'ochre',
     url: 'https://github.com/davesnx/ochre',
     description: 'Syntax highlighting with TextMate grammars and custom themes.',
     language: 'OCaml',
   },
 ];
+
+const githubByName = new Map((githubData as GitHubRepo[]).map((repo) => [repo.fullName, repo]));
+
+export const projects: ProjectEntry[] = projectFallbacks.map((fallback) => {
+  const github = githubByName.get(fallback.fullName);
+  return {
+    fullName: fallback.fullName,
+    name: github?.name ?? fallback.name,
+    url: github?.url ?? fallback.url,
+    description: github?.description ?? fallback.description,
+    language: github?.language ?? fallback.language,
+    stars: github?.stars ?? 0,
+    ownerAvatar: github?.ownerAvatar ?? '',
+  };
+});
+
+export const projectMeta = (project: ProjectEntry) =>
+  project.stars > 0 ? `${project.language} · ${project.stars.toLocaleString('en')} stars` : project.language;
 
 export const skills = [
   'OCaml',

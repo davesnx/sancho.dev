@@ -4,7 +4,7 @@ import { Fragment } from 'react';
 import { JsonLd } from '@/components/json-ld';
 import { ProfileEntry, profileListClass } from '@/components/profile-entry';
 import { H1, H2, Page, Spacer, Stack, Text, TextLink } from '@/components/ui';
-import { career, contact, introduction, outsideComputers, type ProfileSegment, projects } from '@/profile';
+import { career, contact, introduction, outsideComputers, type ProfileSegment, projectMeta, projects } from '@/profile';
 import { buildMetadata, buildPersonJsonLd, buildWebPageJsonLd } from '@/site';
 import fonts from '@/theme/fonts';
 import { colors } from '@/theme/theme';
@@ -112,7 +112,7 @@ export default function AboutPage() {
                 title={project.name}
                 href={project.url}
                 description={project.description}
-                meta={project.language}
+                meta={projectMeta(project)}
               />
             ))}
           </ul>
