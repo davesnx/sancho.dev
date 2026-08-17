@@ -1,6 +1,6 @@
 # 04 Blog Index and Talks Migration
 
-**Status:** Blocked
+**Status:** Ready
 **Route:** `/blog`
 **Blocked by:** 02 Article Post, 03 YouTube Post
 
@@ -53,7 +53,7 @@ Work on session 04, Blog Index and Talks Migration, using roadmap/pages/blog.md 
 ## Evidence
 
 ```text
-Status: Blocked
+Status: Ready
 OpenCode session: pending
 Commit: pending
 Approval: pending

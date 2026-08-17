@@ -13,7 +13,7 @@ export const siteConfig = {
   },
 } as const;
 
-export type MetadataKind = 'article' | 'website' | 'webpage';
+export type MetadataKind = 'article' | 'video' | 'website' | 'webpage';
 
 export type PageMetadataInput = {
   title: string;
@@ -24,6 +24,7 @@ export type PageMetadataInput = {
   publishedAt?: string;
   kind?: MetadataKind;
   noIndex?: boolean;
+  imageUrl?: string;
 };
 
 export const absoluteUrl = (path = '/') => new URL(path, siteConfig.siteUrl).toString();
@@ -45,10 +46,12 @@ export const buildMetadata = ({
   publishedAt,
   kind = 'webpage',
   noIndex = false,
+  imageUrl,
 }: PageMetadataInput): Metadata => {
   const resolvedCanonical = canonicalUrl ?? absoluteUrl(path);
-  const image = getSocialImage({ slug });
+  const image = imageUrl ?? getSocialImage({ slug });
   const isArticle = kind === 'article';
+  const isVideo = kind === 'video';
 
   return {
     title,
@@ -73,7 +76,7 @@ export const buildMetadata = ({
       description,
       url: resolvedCanonical,
       siteName: siteConfig.siteName,
-      type: isArticle ? 'article' : 'website',
+      type: isArticle ? 'article' : isVideo ? 'video.other' : 'website',
       locale: 'en_US',
       images: [
         {
@@ -130,6 +133,50 @@ export const buildArticleJsonLd = ({
         dateModified: publishedAt,
       }
     : {}),
+  isPartOf: {
+    '@type': 'WebSite',
+    name: siteConfig.siteName,
+    url: siteConfig.siteUrl,
+  },
+});
+
+export const buildVideoJsonLd = ({
+  title,
+  description,
+  publishedAt,
+  uploadedAt,
+  url,
+  youtubeId,
+  event,
+  thumbnailUrl,
+}: {
+  title: string;
+  description: string;
+  publishedAt: string;
+  uploadedAt: string;
+  url: string;
+  youtubeId: string;
+  event: string;
+  thumbnailUrl: string;
+}) => ({
+  '@context': 'https://schema.org',
+  '@type': 'VideoObject',
+  name: title,
+  description,
+  uploadDate: uploadedAt,
+  url,
+  thumbnailUrl: [thumbnailUrl],
+  embedUrl: `https://www.youtube-nocookie.com/embed/${youtubeId}`,
+  author: {
+    '@type': 'Person',
+    name: siteConfig.authorName,
+    url: absoluteUrl('/about'),
+  },
+  recordedAt: {
+    '@type': 'Event',
+    name: event,
+    startDate: publishedAt,
+  },
   isPartOf: {
     '@type': 'WebSite',
     name: siteConfig.siteName,

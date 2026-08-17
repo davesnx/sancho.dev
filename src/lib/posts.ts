@@ -8,17 +8,7 @@ import matter from 'gray-matter';
 import { cache } from 'react';
 import readingTime from 'reading-time';
 
-export type BlogPostFrontmatter = {
-  title?: string;
-  description?: string;
-  publishedAt?: string;
-  tags?: string[];
-  draft?: boolean;
-  canonicalUrl?: string;
-  published?: boolean;
-};
-
-export type BlogPost = {
+type BaseBlogPost = {
   slug: string;
   sourcePath: string;
   extension: 'md' | 'mdx';
@@ -35,6 +25,20 @@ export type BlogPost = {
   headings: BlogHeading[];
 };
 
+export type ArticlePost = BaseBlogPost & {
+  kind: 'article';
+};
+
+export type YouTubePost = BaseBlogPost & {
+  kind: 'youtube';
+  youtubeId: string;
+  event: string;
+  thumbnail: string;
+  uploadedAt: string;
+};
+
+export type BlogPost = ArticlePost | YouTubePost;
+
 export type BlogHeading = {
   level: 2 | 3;
   text: string;
@@ -43,6 +47,7 @@ export type BlogHeading = {
 
 const POSTS_DIR = Path.join(process.cwd(), 'src', 'content', 'posts');
 const VALID_SLUG = /^[a-z0-9/_-]+$/i;
+const VALID_YOUTUBE_ID = /^[a-zA-Z0-9_-]{11}$/;
 
 const toHeadingText = (value: string) =>
   value
@@ -89,12 +94,37 @@ const toSlug = (sourcePath: string) =>
     .split(Path.sep)
     .join('/');
 
-const getRequiredField = (sourcePath: string, field: 'title' | 'publishedAt', value: unknown) => {
-  if (typeof value === 'string' && value.length > 0) {
-    return value;
-  }
-
+const getRequiredText = (sourcePath: string, field: string, value: unknown) => {
+  if (typeof value === 'string' && value.trim().length > 0) return value.trim();
   throw new Error(`Missing ${field} in ${sourcePath}`);
+};
+
+const getRequiredDate = (sourcePath: string, field: string, value: unknown) => {
+  const date = getRequiredText(sourcePath, field, value);
+  if (Number.isNaN(parseISO(date).getTime())) {
+    throw new Error(`Invalid ${field} in ${sourcePath}: ${date}`);
+  }
+  return date;
+};
+
+const getOptionalText = (sourcePath: string, field: string, value: unknown) => {
+  if (value === undefined) return undefined;
+  if (typeof value !== 'string') throw new Error(`Invalid ${field} in ${sourcePath}`);
+  return value.trim() || undefined;
+};
+
+const getBoolean = (sourcePath: string, field: string, value: unknown, fallback: boolean) => {
+  if (value === undefined) return fallback;
+  if (typeof value !== 'boolean') throw new Error(`Invalid ${field} in ${sourcePath}`);
+  return value;
+};
+
+const getTags = (sourcePath: string, value: unknown) => {
+  if (value === undefined) return [];
+  if (!Array.isArray(value) || value.some((tag) => typeof tag !== 'string')) {
+    throw new Error(`Invalid tags in ${sourcePath}`);
+  }
+  return value.map((tag) => tag.trim()).filter(Boolean);
 };
 
 const readAllPosts = cache((): BlogPost[] => {
@@ -104,28 +134,54 @@ const readAllPosts = cache((): BlogPost[] => {
     .map((sourcePath) => {
       const source = Fs.readFileSync(sourcePath, 'utf8');
       const { data, content } = matter(source);
-      const frontmatter = data as BlogPostFrontmatter;
+      const frontmatter: Record<string, unknown> = Object.fromEntries(Object.entries(data));
       const slug = toSlug(sourcePath);
       const extension = sourcePath.endsWith('.md') ? 'md' : 'mdx';
+      const kind = frontmatter.kind ?? 'article';
+      if (kind !== 'article' && kind !== 'youtube') {
+        throw new Error(`Invalid kind in ${sourcePath}: ${String(frontmatter.kind)}`);
+      }
 
-      return {
+      const basePost = {
         slug,
         sourcePath,
         extension,
-        title: getRequiredField(sourcePath, 'title', frontmatter.title),
-        description: typeof frontmatter.description === 'string' ? frontmatter.description : '',
-        publishedAt: getRequiredField(sourcePath, 'publishedAt', frontmatter.publishedAt),
-        tags: Array.isArray(frontmatter.tags)
-          ? frontmatter.tags.filter((tag): tag is string => typeof tag === 'string')
-          : [],
-        draft: frontmatter.draft === true,
-        canonicalUrl: typeof frontmatter.canonicalUrl === 'string' ? frontmatter.canonicalUrl : undefined,
-        published: frontmatter.published !== false,
+        title: getRequiredText(sourcePath, 'title', frontmatter.title),
+        description: getOptionalText(sourcePath, 'description', frontmatter.description) ?? '',
+        publishedAt: getRequiredDate(sourcePath, 'publishedAt', frontmatter.publishedAt),
+        tags: getTags(sourcePath, frontmatter.tags),
+        draft: getBoolean(sourcePath, 'draft', frontmatter.draft, false),
+        canonicalUrl: getOptionalText(sourcePath, 'canonicalUrl', frontmatter.canonicalUrl),
+        published: getBoolean(sourcePath, 'published', frontmatter.published, true),
         content,
         wordCount: content.split(/\s+/g).filter(Boolean).length,
         readingTime: readingTime(content),
         headings: getPostHeadings(content),
-      } satisfies BlogPost;
+      } satisfies BaseBlogPost;
+
+      if (kind === 'youtube') {
+        const youtubeId = getRequiredText(sourcePath, 'youtubeId', frontmatter.youtubeId);
+        if (!VALID_YOUTUBE_ID.test(youtubeId)) {
+          throw new Error(`Invalid youtubeId in ${sourcePath}: ${youtubeId}`);
+        }
+
+        const thumbnail = `/images/talks/${slug}.jpg`;
+        if (!Fs.existsSync(Path.join(process.cwd(), 'public', thumbnail))) {
+          throw new Error(`Missing YouTube thumbnail in public${thumbnail}`);
+        }
+
+        return {
+          ...basePost,
+          kind,
+          description: getRequiredText(sourcePath, 'description', frontmatter.description),
+          youtubeId,
+          event: getRequiredText(sourcePath, 'event', frontmatter.event),
+          thumbnail,
+          uploadedAt: getRequiredDate(sourcePath, 'uploadedAt', frontmatter.uploadedAt),
+        } satisfies YouTubePost;
+      }
+
+      return { ...basePost, kind } satisfies ArticlePost;
     })
     .sort((left, right) => compareDesc(parseISO(left.publishedAt), parseISO(right.publishedAt)));
 });
