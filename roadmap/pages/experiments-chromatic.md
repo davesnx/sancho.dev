@@ -1,6 +1,6 @@
 # 11 Chromatic Experiment
 
-**Status:** Blocked
+**Status:** Ready
 **Route:** `/experiments/chromatic`
 **Blocked by:** 01 Design Foundation, 10 Experiments Index
 
@@ -34,7 +34,7 @@ Work on session 11, Chromatic Experiment, using roadmap/pages/experiments-chroma
 ## Evidence
 
 ```text
-Status: Blocked
+Status: Ready
 OpenCode session: pending
 Commit: pending
 Approval: pending

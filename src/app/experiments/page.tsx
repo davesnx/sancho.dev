@@ -1,31 +1,49 @@
 import { css } from '@linaria/core';
 
-import { ButtonLink, H1, Page, Text } from '@/components/ui';
+import { ButtonLink, H1, Page, Spacer, Text } from '@/components/ui';
 import { buildMetadata } from '@/site';
 import fonts from '@/theme/fonts';
 import { colors } from '@/theme/theme';
 
-const gridClass = css`
+const listClass = css`
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border-top: 1px solid ${colors.borderSubtle};
+`;
+
+const itemClass = css`
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  gap: 16px;
-`;
-
-const cardClass = css`
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-  padding: 1.5rem;
-  border-radius: 0.75rem;
-  border: 1px solid ${colors.borderStrong};
-  background: ${colors.backgroundSecondary};
+  grid-template-columns: minmax(0, 1fr) minmax(0, 2fr) auto;
+  align-items: baseline;
+  gap: 1rem;
+  padding: 1.25rem 0;
+  border-bottom: 1px solid ${colors.borderSubtle};
   text-decoration: none;
+
+  @media (max-width: 599px) {
+    grid-template-columns: 1fr auto;
+
+    & p {
+      grid-column: 1 / -1;
+    }
+  }
 `;
 
-const cardTitleClass = css`
+const titleClass = css`
   margin: 0;
   font-size: ${fonts.fontSize2};
   color: ${colors.textAccent};
+`;
+
+const arrowClass = css`
+  color: ${colors.textMuted};
+  font-family: ${fonts.mono};
+
+  @media (max-width: 599px) {
+    grid-column: 2;
+    grid-row: 1;
+  }
 `;
 
 const experiments = [
@@ -50,14 +68,23 @@ export const metadata = buildMetadata({
 export default function ExperimentsPage() {
   return (
     <Page title={<H1>Experiments</H1>}>
-      <div className={gridClass}>
+      <Text color={colors.textProse}>
+        Small interface and typography studies. They are public, but intentionally outside the main navigation.
+      </Text>
+      <Spacer top={4} />
+      <ul className={listClass}>
         {experiments.map((experiment) => (
-          <ButtonLink key={experiment.href} href={experiment.href} className={cardClass}>
-            <h2 className={cardTitleClass}>{experiment.title}</h2>
-            <Text color={colors.textMuted}>{experiment.description}</Text>
-          </ButtonLink>
+          <li key={experiment.href}>
+            <ButtonLink href={experiment.href} className={itemClass}>
+              <h2 className={titleClass}>{experiment.title}</h2>
+              <Text color={colors.textMuted}>{experiment.description}</Text>
+              <span className={arrowClass} aria-hidden="true">
+                →
+              </span>
+            </ButtonLink>
+          </li>
         ))}
-      </div>
+      </ul>
     </Page>
   );
 }

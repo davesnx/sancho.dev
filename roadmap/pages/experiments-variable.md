@@ -1,6 +1,6 @@
 # 12 Variable Font Experiment
 
-**Status:** Blocked
+**Status:** Ready
 **Route:** `/experiments/variable`
 **Blocked by:** 01 Design Foundation, 10 Experiments Index
 
@@ -34,7 +34,7 @@ Work on session 12, Variable Font Experiment, using roadmap/pages/experiments-va
 ## Evidence
 
 ```text
-Status: Blocked
+Status: Ready
 OpenCode session: pending
 Commit: pending
 Approval: pending

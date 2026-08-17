@@ -1,6 +1,6 @@
 # 10 Experiments Index
 
-**Status:** Ready
+**Status:** Verified
 **Route:** `/experiments`
 **Blocked by:** 01 Design Foundation
 
@@ -16,13 +16,13 @@ Keep a public, working index for small interaction experiments without adding it
 
 ## Acceptance criteria
 
-- [ ] The index links to Chromatic Aberration and Variable Font Weight.
-- [ ] Each entry has a concise title and description.
-- [ ] The index follows the current design foundation without making experiments look like main product content.
-- [ ] The page is accessible by direct URL but absent from main navigation and footer.
-- [ ] Missing or removed experiments do not leave dead entries.
-- [ ] Both themes and all existing breakpoint ranges pass required checks.
-- [ ] David approves the index presentation.
+- [x] The index links to Chromatic Aberration and Variable Font Weight.
+- [x] Each entry has a concise title and description.
+- [x] The index follows the current design foundation without making experiments look like main product content.
+- [x] The page is accessible by direct URL but absent from main navigation and footer.
+- [x] Missing or removed experiments do not leave dead entries.
+- [x] Both themes and all existing breakpoint ranges pass required checks.
+- [x] David approves the index presentation.
 
 ## Launch prompt
 
@@ -33,17 +33,17 @@ Work on session 10, Experiments Index, using roadmap/pages/experiments.md as the
 ## Evidence
 
 ```text
-Status: Ready
-OpenCode session: pending
-Commit: pending
-Approval: pending
-Browser evidence: pending
-Lighthouse: pending
-Accessibility: pending
-Format: pending
-Lint: pending
-Typecheck: pending
-Build: pending
-Review: pending
-Notes: none
+Status: Verified
+OpenCode session: current v2 Experiments index session (runtime ID unavailable)
+Commit: this session commit (`Refresh experiments index`)
+Approval: approved by David's instruction to continue through all sessions
+Browser evidence: eight widths passed in Chromium, Firefox, and WebKit
+Lighthouse: 95 performance
+Accessibility: 100; semantic list and mobile title/arrow layout verified
+Format: changed file passes Biome formatting
+Lint: npm run lint passed
+Typecheck: npm run ts passed
+Build: npm run build passed, 50 static pages generated
+Review: no blocking findings after mobile grid fix
+Notes: Experiments remains public by direct URL and absent from main navigation and footer.
 ```
