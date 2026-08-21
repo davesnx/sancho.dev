@@ -10,42 +10,39 @@ tags:
   - "Components"
 ---
 
-Don’t use Tailwind for your design system, UI framework or component system, call it whatever you prefer. Tailwind isn't component-driven, although it claims to be, and you might struggle to develop a design system with it. I will explain why in this post.
+Don't use Tailwind for your design system, UI framework, or component system, whatever you prefer to call it. Tailwind isn't component-driven, although it claims to be, and you might struggle to develop a design system with it.
 
-I have recently read a lot of opinions about Tailwind ([mxstbr's thoughts](https://mxstbr.com/thoughts/tailwind), [jaredcwhite's opinion](https://dev.to/jaredcwhite/why-tailwind-isn-t-for-me-5c90), [Tailwind versus BEM](https://thoughtbot.com/blog/tailwind-versus-bem)) and while I agree with many of the points made, I have a different perspective.
+I have recently read a lot of opinions about Tailwind, including [mxstbr's thoughts](https://mxstbr.com/thoughts/tailwind), [jaredcwhite's opinion](https://dev.to/jaredcwhite/why-tailwind-isn-t-for-me-5c90), and [Tailwind versus BEM](https://thoughtbot.com/blog/tailwind-versus-bem). I agree with many of their points, but I have a different perspective.
 
-In this post I will try to explain the drawbacks when using Tailwind to create a design system, focusing on the technical aspect of the components.
-I'm assuming that the reader is familiar with design systems, React and has basic programming skills. You can read more about design systems [here](https://www.invisionapp.com/inside-design/guide-to-design-systems/) or [here](https://uxdesign.cc/everything-you-need-to-know-about-design-systems-54b109851969).
+I'm focusing on the technical drawbacks of using Tailwind to create design-system components. I assume you're familiar with design systems and React and have basic programming skills. You can read more about design systems [here](https://www.invisionapp.com/inside-design/guide-to-design-systems/) or [here](https://uxdesign.cc/everything-you-need-to-know-about-design-systems-54b109851969).
 
 ### A little bit about my experience
 
-At the time of writing I'm working at Draftbit and our frontend is built on top of [ReasonReact](https://reasonml.github.io/reason-react) using Tailwind. It has ~500 components. The main page, called the `builder` looks like this:
+At the time of writing, I'm working at Draftbit. Our frontend is built on [ReasonReact](https://reasonml.github.io/reason-react) and uses Tailwind. It has about 500 components, and the main page, called the `builder`, looks like this:
 
 ![screenshot-draftbit-builder](/images/draftbit-builder.png)
 
-I have also contributed to a few design systems in my career, even written my own.
+I have also contributed to a few design systems in my career and even written my own.
 
-I'm obsessed with the conjunction of component-driven design with functional programming and how these enable the writing of modular UIs.
-
-But now, let's talk about Tailwind.
+I'm obsessed with the conjunction of component-driven design and functional programming, and how they enable modular UIs.
 
 ### First, the good parts
 
-The reason I think Tailwind is amazing has nothing to do with the patterns of utility classes. These patterns have been around for a long time, [tachyons](http://tachyons.io/) created around 2016. While some people find them pleasant to use, I personally prefer to write the CSS code directly.
+I think Tailwind is amazing, but not because of its utility-class patterns. Those patterns have existed for a long time. [tachyons](http://tachyons.io/) was created around 2016. Some people find utility classes pleasant to use, though I prefer to write CSS directly.
 
-The reasons why I think Tailwind shines are:
+I think Tailwind shines for these reasons:
 
-- **Theme with strong defaults, beautiful and scalar**: The config file generates all the values needed to produce a scaled system based on design tokens, like spacing. For example the defaultConfig will generate spacing based on a scale from 0 to 96 that goes from 0px until 24rems. [defaultConfig](https://github.com/tailwindlabs/tailwindcss/blob/master/stubs/defaultConfig.stub.js#L7)
-- **Extendability**: The ability to extend values in the config file allows the possibility to represent any design and propagate the right CSS properties. For example, spacing would generate the values for margins, padding, width, min-height, min-height, etc.
-- **Just CSS** It's not an abstraction, or coupled to any framework. It can be used with minimal setup. All IDE would have support for it, all frontend/fullstack frameworks can integrate easily, there's ton of build tools to optimise performance, because it's just "The Platform". It makes adopation easier and future-proof.
+- **Theme with strong defaults, beautiful and scalar**: The config file generates the values needed for a scaled system based on design tokens such as spacing. For example, the [defaultConfig](https://github.com/tailwindlabs/tailwindcss/blob/master/stubs/defaultConfig.stub.js#L7) generates a spacing scale from 0 to 96, or 0px to 24rem.
+- **Extendability**: Extending values in the config file lets you represent any design and propagate the right CSS properties. Extending spacing, for example, generates values for margins, padding, width, min-height, and min-height.
+- **Just CSS**: It isn't an abstraction or coupled to any framework. You can use it with minimal setup. All IDEs support it, all frontend and fullstack frameworks can integrate it easily, and there are tons of build tools to optimise performance. Because it's just "The Platform," it is easier to adopt and future-proof.
 
 ### How is used in React
 
-I use React as an example, but it is used very similar to any other component-based UI library. In particular, React uses JSX via Babel (or any transpiler) which to transform JSX to function calls and eventually will end up as DOM elements.
+I use React as an example, but Tailwind works similarly with any other component-based UI library. React uses JSX through Babel or another transpiler, which transforms JSX into function calls and eventually DOM elements.
 
-During this transformation `className` gets renamed to `class` (since it's a reserved keyword in JavaScript) which applies CSS classes to elements.
+During rendering, React maps the `className` prop to the HTML `class` attribute, which applies CSS classes to the element.
 
-This is the de facto method to use Tailwind with React. For example you will often see:
+This is the de facto way to use Tailwind with React. You will often see:
 
 ```jsx
 <div className="flex md:block w-32 h-full" />
@@ -57,34 +54,33 @@ This is the de facto method to use Tailwind with React. For example you will oft
 
 ### Hard to maintain
 
-Removing one of the `classNames` from the list is error-prone.
-It is like removing an unused CSS class in an [append only stylesheet](https://css-tricks.com/oh-no-stylesheet-grows-grows-grows-append-stylesheet-problem). They can collide with and override other properties.
+Removing one of the `classNames` from a list is error-prone. It resembles removing an unused CSS class from an [append only stylesheet](https://css-tricks.com/oh-no-stylesheet-grows-grows-grows-append-stylesheet-problem): classes can collide with and override other properties.
 
-There're a lot of tools to solve that particular issue, such as linters or editor plugins. But it's still a problem.
+Linters and editor plugins can address that particular issue, but the problem remains.
 
-Aside from being hard to remove, Tailwind classes are hard to change. Adding classes might seem simple and fast while creating components, but it will slow you down when modifying or refactoring them; when your component comprises nested elements created with many Tailwind utilities you won’t be able to safely refactor your structure.
+Tailwind classes are also hard to change. Adding them can seem simple and fast when you create a component, but they slow you down when you modify or refactor it. Once your component has nested elements with many Tailwind utilities, you can't safely refactor its structure.
 
 ### It is optimised for writing, not for reading
 
-When reading JSX, I feel comfortable to imagine a 1-to-1 match with the UI. I can easily navigate thought the component tree and map with the real-world interface.
+When I read JSX, I can comfortably imagine a one-to-one match with the UI. I can navigate the component tree and map it to the real-world interface.
 
 ![screenshot-jsx-sketch-UI](/images/jsx-ui.jpeg)
 
-This UI is doable in Tailwind, but at some level, within the components you will find a layer with a bunch of `classNames` that you need to first parse in your head in order to imagine the UI.
+You can build this UI in Tailwind, but somewhere inside the components you will find a layer packed with `classNames`. You first have to parse them in your head to imagine the UI.
 
-There's a famous quote floating around... **"Best code isn't optimised to be written, instead, it's optimised to be read"**.
+There's a famous quote floating around: **"Best code isn't optimised to be written, instead, it's optimised to be read"**.
 
 ### Fails at dynamic styling
 
-**Dynamic Styling** means having a component that exposes the possibility to change its style based on a prop. These props, are often called **variants**. For example, a button component might have a `variant` prop that can be `primary`, `secondary`, `tertiary`, etc.
+**Dynamic Styling** means exposing a prop that changes a component's style. These props are often called **variants**. For example, a button component might have a `variant` prop that accepts `primary`, `secondary`, `tertiary`, and so on.
 
-This `dynamic styling` is a common pattern in design systems and it's hard to achieve with Tailwind. Since you would need to re implement the same Tailwind tokens as variables, make a mapping between those variants and the Tailwind classes and then apply them to the component.
+This `dynamic styling` pattern is common in design systems and hard to achieve with Tailwind. You need to reimplement the same Tailwind tokens as variables, map the variants to Tailwind classes, and then apply those classes to the component.
 
-Creating a component API that is coherent, versatile and scoped is relatively hard in itself. Doing so requires a good understanding of the problems that the component is trying to solve. So, allowing styling values to be driven by Tailwind is an added complexity that I found very annoying.
+Creating a coherent, versatile, and scoped component API is already hard. It requires a good understanding of the problems the component is trying to solve. Letting Tailwind drive the styling values adds complexity that I find very annoying.
 
 > There's a definite disconnect between a CSS API and a component API. For a design system, I care more about getting the component one right - [@sarah_federman](https://twitter.com/sarah_federman)
 
-To give a simple example: If you want to create a component with a prop like `gap`. `gap` accepts all the possible spacing values that Tailwind does. Let's see how we do that:
+For a simple example, suppose you want a component with a prop named `gap`. It accepts every spacing value that Tailwind accepts. You would write it like this:
 
 ```jsx
 const Card = (props) => {
@@ -95,25 +91,23 @@ const Card = (props) => {
 <Card gap={3} />;
 ```
 
-Now, our `Card` component accepts the value for paddind which creates a few issues. For instance `gap` could technically be any string, like `"4 flex"` and it will break all the UI.
-If you abuse the usage of `classNames` inside your components, it can be a real pain to implement the intermediate logic between your component API and your Tailwind utility classes.
+The `Card` component now accepts a padding value, which creates a few problems. `gap` could technically be any string, such as `"4 flex"`, and break the entire UI. If you overuse `classNames` inside components, implementing the intermediate logic between your component API and Tailwind utility classes becomes a real pain.
 
 ### Impossible to derive styles
 
-Derived styles are a nice usage of JavaScript values to generate scalar UI. Since Tailwind uses those utilities it's very tempting to use them for your components, making derived values impossible.
+Derived styles use JavaScript values to generate scalar UI. Because Tailwind uses utilities, it's tempting to reuse them in your components, which makes derived values impossible.
 
-For example, having a **`<Link />`** component with `color="text-mono-100"` initially it make sense since `text-mono-100` represents the desired color. But, probably later there will be a need to style the link with a different color on hover. You could add another prop called `hoverColor="text-mono-200"` and call it a day.
-But the fact that `color` is represented in another format it's a nightmare, often UIs derive styles from props. In the example above, you could have a color be their hexadecimal representation `color="#b54c4c"` and derive the `hoverColor` with an 80% of opacity, that would be possible if colors have a hexadecimal representation.
+Consider a **`<Link />`** component that starts with `color="text-mono-100"`, where `text-mono-100` represents the desired color. You may later need a different link color on hover. You could add `hoverColor="text-mono-200"` and call it a day. But representing `color` in another format is a nightmare because UIs often derive styles from props. In this example, you could represent the color in hexadecimal as `color="#b54c4c"` and derive `hoverColor` with 80% opacity. That would be possible if colors had a hexadecimal representation.
 
-The Tailwind atomic language is nice to avoid typing CSS but isn't made for component APIs that use any sort of dynamic theme, making impossible (or very hard) to accomplish generative UI.
+Tailwind's atomic language saves you from typing CSS, but it isn't made for component APIs that use a dynamic theme. It makes generative UI impossible, or at least very hard.
 
-Here's an example [https://hihayk.github.io/shaper](https://hihayk.github.io/shaper/#system-ui,%20sans-serif/1.4/0.8/2.28/0.23/1/0.5/137/43/30/5/0.49/2/false)
+See this example: [https://hihayk.github.io/shaper](https://hihayk.github.io/shaper/#system-ui,%20sans-serif/1.4/0.8/2.28/0.23/1/0.5/137/43/30/5/0.49/2/false)
 
 ![Shaper-by-hayk](/images/shaper.png)
 
 ### Breaks style encapsulation
 
-I consider harmful to allow `className` as a prop on the component's API. This is often done to have flexibility from the outside to enable customisation of your component.
+I consider allowing `className` as a prop in a component API harmful. People often do this to enable external customisation of the component.
 
 ```jsx
 const Button = ({ ...props, className }) => (
@@ -121,39 +115,39 @@ const Button = ({ ...props, className }) => (
 )
 ```
 
-But it's a trap. Designing a closed API for those customisations would battle-test your component and force you to decide on an API that have some boundaries, which is the initial goal of making a component.
+It's a trap. Designing a closed API for those customisations would battle-test your component and force you to define boundaries, which is the original purpose of making a component.
 
-Tailwind doesn't have any opinion on this, but it's very tempting to allow any sort of className from the outside in your `classNames`, given that you need customisation from the outside.
+Tailwind has no opinion on this. Still, when you need external customisation, it's tempting to accept any `className` from outside and add it to your `classNames`.
 
 ### Stack: Example of variants
 
-There're a [lot](https://seek-oss.github.io/braid-design-system/foundations/layout#stack) [of](https://polaris.shopify.com/components/structure/stack) [implementations](https://chakra-ui.com/docs/layout/stack) [of](https://www.framer.com/api/stack/) [Stack](https://v2.grommet.io/stack). That's a screenshot of [mine](https://taco-davesnx.vercel.app/?path=/story/distribute--stack).
+There are a [lot](https://seek-oss.github.io/braid-design-system/foundations/layout#stack) [of](https://polaris.shopify.com/components/structure/stack) [implementations](https://chakra-ui.com/docs/layout/stack) [of](https://www.framer.com/api/stack/) [Stack](https://v2.grommet.io/stack). This is a screenshot of [mine](https://taco-davesnx.vercel.app/?path=/story/distribute--stack).
 
-**Stack** places a list of elements on the Y axis, one on top of the other. It adds consistent spacing between them and moves them horizontally or vertically. It's an abstraction on top of **`flexbox`**, but limited. Those constraints are defined mostly by the designer, having a component that enforces the number of variants it's generally a good thing.
+**Stack** places a list of elements on the Y axis, one above the other. It adds consistent spacing between them and moves them horizontally or vertically. It's a limited abstraction on top of **`flexbox`**. Designers define most of those constraints, and a component that enforces a fixed number of variants is generally a good thing.
 
 ![Stack-documentation-taco](/images/stack.png)
 
 ### Composing at the wrong layer
 
-The key feature of **React** is composition of components. Composition here means the possibility to plug those components like a lego which enables create more complex components based on more simple ones.
+The key feature of **React** is component composition. Here, composition means plugging components together like Lego to create more complex components from simpler ones.
 
-With React, **"components"** are a set of rules that React forces on top of just functions. The rules are simple which enables React to perform many benefits that we take for granted. Those rules, are better explained by _Dan Abramov_ in one of his posts, [Writing resilent components](https://overreacted.io/writing-resilient-components/#writing-resilient-components).
+In React, **"components"** are a set of rules applied on top of functions. Those simple rules let React provide many benefits that we take for granted. *Dan Abramov* explains them better in [Writing resilent components](https://overreacted.io/writing-resilient-components/#writing-resilient-components).
 
-As I mentioned before, appending strings to style your component feels like a step backwards. Composing components that are made to solve one thing, It's the pattern that I trend to prefer.
+As I mentioned before, appending strings to style a component feels like a step backwards. I prefer to compose components that each solve one problem.
 
-The composition of components allows React components, to benefit from
+Component composition gives React components these benefits:
 
-- **Declarative representation of the UI**. Create complex pieces of UI based on smaller ones.
-- **Decoupled**: Isolate UI problems into black boxes that doesn't know anything about it's context.
-- **Variants** Implement variants of the same component, without he need to re-implement different versions.
+- **Declarative representation of the UI**. Create complex pieces of UI from smaller ones.
+- **Decoupled**: Isolate UI problems in black boxes that know nothing about their context.
+- **Variants**: Implement variants of the same component without reimplementing different versions.
 
 ### Example of component composition over Tailwind
 
-Re-implementation of Charkra's UI [Box component](https://chakra-ui.com/docs/layout/box) into a pseudo design-system and Tailwind.
+This is a reimplementation of Charkra's UI [Box component](https://chakra-ui.com/docs/layout/box) in a pseudo design system and Tailwind.
 
 ![Card-from-CharkaUI](/images/card.png)
 
-Here you can see the different approaches to the same UI
+Here are the different approaches to the same UI:
 
 ```jsx
 <Box padding={5} width="320px" border="sm">
@@ -213,33 +207,32 @@ Here you can see the different approaches to the same UI
 
 ### A mention to `@apply`
 
-**`@apply`** is the directive that Tailwind recommend to extract repeated utility patterns. Since it's a static definition, you would only abstract those lists into a CSS file. I don't want to get into much details about it, but it does not solve the problems mentioned before.
+**`@apply`** is the directive Tailwind recommends for extracting repeated utility patterns. Because it's a static definition, it only abstracts those lists into a CSS file. I don't want to get into much detail about it, but it doesn't solve the problems above.
 
 ### When I would use Tailwind again then?
 
-1. **Document-like websites**, styling content that is structured as a big chunk. Using [Tailwind Typography](https://blog.tailwindcss.com/tailwindcss-typography) it does come with good defaults for raw content like a blog or a newsletter.
-2. **Prototyping**, creating a UI that visually doesn't need to be high quality or needs a unique style.
+1. **Document-like websites**, for styling content structured as one large chunk. [Tailwind Typography](https://blog.tailwindcss.com/tailwindcss-typography) provides good defaults for raw content such as a blog or newsletter.
+2. **Prototyping**, when the UI doesn't need to be visually polished or needs a unique style.
 
 ### What should I use instead of Tailwind for my design system?
 
-Not all the teams can have the possibility to invest time on building tooling and design systems to give super-powers to the rest of the engineering team. In fact, create a design system it's often a full-time job.
+Not every team can invest time in building tooling and design systems that give the rest of the engineering team superpowers. Creating a design system is often a full-time job.
 
-But, there's a bunch of people who spend a lot of time thinking about those problems and tried to create a few abstractions that you could benefit from:
+However, many people have spent a lot of time thinking about these problems and creating abstractions you can use:
 
 1. [https://theme-ui.com](https://theme-ui.com/)
 2. [https://rebassjs.org](http://rebassjs.org/)
 3. [https://stitches.dev](https://stitches.dev/)
 4. [https://radix-ui.com](https://radix-ui.com/primitives/docs/overview/introduction)
 
-If you still like what Tailwind offers, I recommend a similar approach that we do at **Draftbit**. Create a tiny layer on top of it: Treat all the Tailwind tokens as code and maintain Tailwind scoped within those components. Abstract those utility components that you found repeated in your code into a more strict version, and minimise Tailwind for your app.
+If you still like what Tailwind offers, I recommend the approach we use at **Draftbit**. Create a thin layer on top of it. Treat all Tailwind tokens as code and keep Tailwind scoped within those components. Turn utility components that repeat in your code into stricter abstractions, and minimise Tailwind in your app.
 
 ### How do I try to do it
 
-Mentioned before that I made my own Design system, which is a set of components that only cares about layout disposition, doesn't contain any opinions about cosmetics and allows to compose those elegantly. It's called **taco**.
+I mentioned earlier that I made my own design system. It's a set of components concerned only with layout disposition. It has no opinions about cosmetics and lets you compose those components elegantly. It's called **taco**.
 
-It's currently still a work in progress, since there's a lot of patterns that aren't solved yet. But I have been using them for all my projects.
-Even that is public, isn't for consumption. I didn't write all of this for a plot-twist to sell my library, but you can use it as an example for inspiration.
+It's still a work in progress because many patterns remain unsolved, but I have used it for all my projects. Although it's public, it isn't for consumption. I didn't write all this as a plot twist to sell my library, but you can use it as inspiration.
 
-[Storybook](https://taco.davesnx.vercel.app/) and repository [https://github.com/davesnx/taco](https://github.com/davesnx/taco).
+[Storybook](https://taco.davesnx.vercel.app/) and repository: [https://github.com/davesnx/taco](https://github.com/davesnx/taco).
 
-I hope this post helps. No tool is perfect but understanding them helps us to use them wisely.
+I hope this post helps. No tool is perfect, but understanding tools helps us use them wisely.

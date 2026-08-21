@@ -13,22 +13,21 @@ tags:
   - "js_of_ocaml"
 ---
 
-[query-json](https://github.com/davesnx/query-json) is a faster and simpler re-implementation of [jq's language](https://github.com/stedolan/jq/wiki/jq-Language-Description) in [Reason](https://reasonml.github.io), compiled to a native binary and to a JavaScript library.
+[query-json](https://github.com/davesnx/query-json) is a faster and simpler re-implementation of [jq's language](https://github.com/stedolan/jq/wiki/jq-Language-Description) in [Reason](https://reasonml.github.io), compiled to a native binary and a JavaScript library.
 
-It's a CLI to run small programs against JSON files, the same idea as [sed](https://www.linode.com/docs/tools-reference/tools/manipulate-text-from-the-command-line-with-sed/) for text. As a web engineer, it's an essential tool while debugging HTTP APIs or exploring big JSON files (like those from AWS Config).
+It's a CLI for running small programs against JSON files, the same idea as [sed](https://www.linode.com/docs/tools-reference/tools/manipulate-text-from-the-command-line-with-sed/) for text. As a web engineer, I find it essential when debugging HTTP APIs or exploring big JSON files, such as those from AWS Config.
 
-I started the project with the goal to create something useful and learn during the process. I was very interested in learning how to write a parser and a compiler using the OCaml stack: [menhir](https://opam.ocaml.org/packages/menhir) and [sedlex](https://github.com/ocaml-community/sedlex), and finally try to compile it to JavaScript.
+I started the project to create something useful and learn along the way. I especially wanted to learn how to write a parser and a compiler with the OCaml stack, using [menhir](https://opam.ocaml.org/packages/menhir) and [sedlex](https://github.com/ocaml-community/sedlex), and then try compiling it to JavaScript.
 
-This post explains the project, how it was made, the decisions I followed, and some reflections.
+I'll explain the project, how I made it, the decisions I followed, and some reflections.
 
 ![](/images/exploded-view.jpg)
 
 ## Why I wanted to learn parsers/compilers
 
-I had a vague idea about the theory, but nothing practical. It was the right time since I had made [styled-ppx](https://github.com/davesnx/styled-ppx), a
-**ppx** (**P**re**P**rocessor E**x**tension) that allows CSS-in-Reason/OCaml. It needs to parse CSS and do some code generation for [bs-emotion](https://github.com/ahrefs/bs-emotion).
+I had a vague idea of the theory but no practical experience. The timing was right because I had made [styled-ppx](https://github.com/davesnx/styled-ppx), a **ppx** (**P**re**P**rocessor E**x**tension) that allows CSS-in-Reason/OCaml. It needs to parse CSS and generate some code for [bs-emotion](https://github.com/ahrefs/bs-emotion).
 
-I asked [@EduardoRFS](https://www.twitch.tv/eduardorfs) for help writing a CSS Parser that supports the entire [CSS3 specification](https://www.w3.org/TR/2001/WD-css3-roadmap-20010523/) and he came up with something. That "something" is a project I want to understand, improve, and maintain over time.
+I asked [@EduardoRFS](https://www.twitch.tv/eduardorfs) for help writing a CSS Parser that supports the entire [CSS3 specification](https://www.w3.org/TR/2001/WD-css3-roadmap-20010523/), and he came up with something. That "something" is a project I want to understand, improve, and maintain over time.
 
 ## How query-json works
 
@@ -38,7 +37,7 @@ query-json ".store.books | filter(.price > 10)" stores.json
 
 This reads `stores.json` and runs the query `".store.books | filter(.price > 10)"` against it.
 
-The query describes a jq program. By running it, it accesses the `"store"` field, then the `"books"` field (since it's an array), runs a filter on each item by its `"price"` (larger than 10), and finally prints the resulting list.
+The query describes a jq program. It accesses the `"store"` field and then the `"books"` field. Because `"books"` is an array, it filters each item by its `"price"`, keeping prices larger than 10, and prints the resulting list.
 
 ```json
 [
@@ -55,33 +54,33 @@ The query describes a jq program. By running it, it accesses the `"store"` field
 ]
 ```
 
-The semantics of jq consist of a set of piped operations, where each output is connected to an input where the first input is the JSON itself. Some pseudo-code to illustrate:
+A jq program consists of piped operations. Each operation's output becomes the next operation's input, with the JSON itself as the first input. Some pseudo-code to illustrate:
 
 ```
 { /* json */ } | filter | transform | count | .field
 ```
 
-In order to transform the `query` to a set of operations that run against a JSON, we will divide the problem into 3 steps: **parse**, **compile** and **run**.
+To transform the `query` into operations that run against JSON, we'll divide the problem into 3 steps: **parse**, **compile** and **run**.
 
 ### Parsing
 
-Parsing is responsible for transforming a string into an [AST](https://en.wikipedia.org/wiki/Abstract_syntax_tree) (Abstract Syntax Tree), a data structure that contains the same information as the input, but in an easier shape to work with. In case the input is malformed (not following the rules), the parser can also return errors.
+Parsing transforms a string into an [AST](https://en.wikipedia.org/wiki/Abstract_syntax_tree) (Abstract Syntax Tree), a data structure with the same information as the input in a shape that's easier to work with. The parser can also return errors if the input is malformed and doesn't follow the rules.
 
-One of the beauties of `jq` is that all the expressions are piped by default, so `.store | .books` is equivalent to `.store.books`. I designed the _AST_ to represent the pipe structure in its nature. If you want to know more about jq's language, check their [wiki](https://en.wikipedia.org/wiki/Abstract_syntax_tree).
+One of the beauties of `jq` is that all expressions are piped by default, so `.store | .books` is equivalent to `.store.books`. I designed the _AST_ so its structure represents that pipe. If you want to know more about jq's language, check its [wiki](https://en.wikipedia.org/wiki/Abstract_syntax_tree).
 
-Let's see an example. When the parser receives `.store.books` it will return:
+For example, when the parser receives `.store.books`, it returns:
 
 ```reason
 Pipe(Key("store"), Key("books"));
 ```
 
-All the operations are transformed into these constructors from above (`Pipe`, `Key`, etc.). Those constructors are called Variants.
+The parser transforms all operations into constructors such as `Pipe` and `Key`. These constructors are called Variants.
 
-Variants model values that may assume one of many known variations. This feature is similar to `enums` in other languages, but each variant may optionally contain data that is carried inside. Variants belong to a large group of types called [_ADTs_](https://en.wikipedia.org/wiki/Algebraic_data_type).
+Variants model values that may assume one of many known variations. This feature resembles `enums` in other languages, but each variant may optionally carry data. Variants belong to a large group of types called [_ADTs_](https://en.wikipedia.org/wiki/Algebraic_data_type).
 
 The entire `query-json` AST is one big recursive variant.
 
-Following with a more complex example, let's parse `.store.books | filter(.price > 10)`:
+A more complex example parses `.store.books | filter(.price > 10)`:
 
 ```reason
 Pipe(
@@ -90,11 +89,11 @@ Pipe(
 );
 ```
 
-Here you can see how `Pipe` is used both as the pipe `|` and as `.store.books`. You can see more examples in the [parsing tests](https://github.com/davesnx/query-json/blob/f1ae467e53447a045178673440332b6e59958b1c/test/Test_parse.ml).
+Here, `Pipe` represents both the pipe `|` and `.store.books`. The [parsing tests](https://github.com/davesnx/query-json/blob/f1ae467e53447a045178673440332b6e59958b1c/test/Test_parse.ml) contain more examples.
 
 ### Compiling
 
-The compilation step receives the _AST_ expression and transforms it to code. The compiler is a big recursive [pattern match](https://reasonml.github.io/docs/en/pattern-matching), which is another great feature of Reason/OCaml and looks something like this:
+The compilation step receives the _AST_ expression and transforms it into code. The compiler is one big recursive [pattern match](https://reasonml.github.io/docs/en/pattern-matching), another great feature of Reason/OCaml. It looks something like this:
 
 ```reason
 let rec compile = (expression, json) => {
@@ -110,13 +109,13 @@ let rec compile = (expression, json) => {
 }
 ```
 
-On the left side are defined all the possible `Variants` and on the right side each operation. Those operations transform the JSON. Here is where `map`, `filter`, `reduce`, `index`, etc. are implemented. In the real implementation, many branches call `compile` recursively.
+The left side defines every possible `Variant`, while the right side defines each operation. These operations transform the JSON. This is where `map`, `filter`, `reduce`, `index`, etc. are implemented. In the real implementation, many branches call `compile` recursively.
 
 ### Running
 
-The easier part: the compile step gives us back a curried function that expects a json as the only argument. We just apply the function to this JSON and print the result.
+This is the easier part. The compile step returns a curried function that expects a json as its only argument. We apply the function to this JSON and print the result.
 
-This example only describes the happy path. In reality, the parsing and compilation steps return a `result` type which allows handling errors.
+This example describes only the happy path. In reality, the parsing and compilation steps return a `result` type that allows error handling.
 
 ```ocaml
 let compile: Ast.expression -> Json.t -> (Json.t list, string) result
@@ -124,25 +123,25 @@ let compile: Ast.expression -> Json.t -> (Json.t list, string) result
 
 # Distribution
 
-Now we've covered how it works internally and a brief overview of the architecture. Let's dive into how developers can use it on their machines.
+We've covered how it works internally and the basic architecture. Developers can use it on their machines in the following ways.
 
 ## How to compile it
 
-query-json is built with dune, which supports ReasonML out of the box. dune (by default) can run the OCaml compiler with different backends. It can compile to bytecode (and run with the bytecode interpreter) or it can compile to binary to make a native executable.
+query-json is built with dune, which supports ReasonML out of the box. By default, dune can run the OCaml compiler with different backends. It can compile to bytecode, which runs with the bytecode interpreter, or to binary for a native executable.
 
-All of the build process and tests run on our CI in GitHub Actions: running Mac, Windows, and Linux images. I distribute the pre-built binaries for all architectures in the GitHub Releases and the npm registry.
+All build steps and tests run in our CI on GitHub Actions using Mac, Windows, and Linux images. I distribute pre-built binaries for all architectures through GitHub Releases and the npm registry.
 
-This allows users to download it directly via npm, or from the GitHub release page.
+Users can download it directly through npm or from the GitHub release page.
 
 ## How to compile to the web
 
-Apart from compiling to the executable, query-json is compiled to JavaScript as well.
+Besides compiling to an executable, query-json also compiles to JavaScript.
 
-Compilation to JavaScript is the sweet section of this blog post and the part I'm most proud of. It wasn't a big effort, since the tools I used are already mature, but being capable of releasing 2 distributables from a single codebase feels like magic, considering all query-json's dependencies ([menhir](https://opam.ocaml.org/packages/menhir/), [sedlex](https://github.com/ocaml-community/sedlex), and [yojson](https://github.com/ocaml-community/yojson)).
+Compiling to JavaScript is the part of this blog post I'm most proud of. It didn't take much effort because the tools I used are already mature. Still, releasing 2 distributables from one codebase feels like magic, especially with all of query-json's dependencies: [menhir](https://opam.ocaml.org/packages/menhir/), [sedlex](https://github.com/ocaml-community/sedlex), and [yojson](https://github.com/ocaml-community/yojson).
 
-To accomplish this, I used [js_of_ocaml](https://github.com/ocsigen/js_of_ocaml) (jsoo for short). jsoo is a compiler that uses an intermediate representation of the OCaml compiler (the bytecode I mentioned before) and transforms it to JavaScript.
+I used [js_of_ocaml](https://github.com/ocsigen/js_of_ocaml), or jsoo for short. jsoo is a compiler that takes an intermediate representation from the OCaml compiler, the bytecode I mentioned earlier, and transforms it into JavaScript.
 
-Since [dune](https://dune.build) supports jsoo out of the box, I just needed to modify its stanza by adding `(modes js)`:
+Because [dune](https://dune.build) supports jsoo out of the box, I only needed to add `(modes js)` to its stanza:
 
 ```dune
 (executable
@@ -151,13 +150,13 @@ Since [dune](https://dune.build) supports jsoo out of the box, I just needed to 
  (libraries console.lib source yojson js_of_ocaml))
 ```
 
-After running `dune build`, I had a big file `Js.bc.js` with all the code bundled. Kind of amazing, tbh.
+After running `dune build`, I had a big file named `Js.bc.js` with all the code bundled. That was kind of amazing, tbh.
 
 ## Building query-json's playground
 
-After compiling to JavaScript, I built a web playground where people could try query-json without installing anything. This made the tool immediately accessible—no downloads, no setup, just open a browser and start typing.
+After compiling to JavaScript, I built a web playground where people could try query-json without installing anything. This made the tool immediately accessible. They could open a browser and start typing, with no downloads or setup.
 
-Beyond user accessibility, the playground brought some nice benefits: I could deploy preview versions on every pull request, users could share bug reports via a single URL, and everything ran faster since it executed locally in the browser.
+The playground also brought some nice benefits. I could deploy preview versions for every pull request, users could share bug reports through a single URL, and everything ran faster because it executed locally in the browser.
 
 ![](/images/query-json-playground.png)
 
@@ -165,37 +164,37 @@ The playground is built with jsoo and a few cool dependencies: [jsoo-react](http
 
 https://query-json.netlify.app
 
-The query-json execution runs on each keystroke, which means the playground runs offline. Comparing this with the official [jq playground](https://jqplay.org/), which needs to communicate with a backend, run jq there, and return the response, it's night and day.
+The playground runs query-json on each keystroke, so it also works offline. The official [jq playground](https://jqplay.org/) needs to communicate with a backend, run jq there, and return the response. The difference is night and day.
 
-Having a playground as a serverless frontend app is a massive improvement over a backend-dependent one. Faster, safer, more scalable and accessible to everybody.
+A playground built as a serverless frontend app is a massive improvement over one that depends on a backend. It's faster, safer, more scalable, and accessible to everybody.
 
 ### Benefits
 
-Using jsoo seems a powerful way to run your OCaml code in a browser without much hassle. This was a key takeaway for me while making this project possible. But distribution isn't the only benefit—here's a list of other upsides in my opinion:
+I found jsoo to be a powerful way to run OCaml code in a browser without much hassle. That was a key takeaway for me, and it helped make this project possible. In my opinion, it also offers these benefits beyond distribution:
 
 - **Portability**: moving code from server to client or vice versa, sharing marshal/unmarshal code, easier contract testing.
-- **Familiarity**: writing the same patterns benefits newcomers who need to learn fewer platform-specific rules.
-- **Usage of OCaml's ecosystem**: access to many libraries and ppxs and latest OCaml features.
-- **New possibilities**: some apps might benefit from server-side rendering, others from moving functionality offline, and many app-specific designs that are unblocked by this.
+- **Familiarity**: writing the same patterns helps newcomers learn fewer platform-specific rules.
+- **Usage of OCaml's ecosystem**: access to many libraries and ppxs and the latest OCaml features.
+- **New possibilities**: some apps might benefit from server-side rendering, others from moving functionality offline, and many app-specific designs are unblocked by this.
 
-Most of the REPLs from Reason, OCaml, Flow, and ReScript (all written in OCaml) use js_of_ocaml for their playgrounds.
+Most of the REPLs for Reason, OCaml, Flow, and ReScript, all written in OCaml, use js_of_ocaml for their playgrounds.
 
 # Future
 
-query-json is still young. It supports most of jq's core features, but there's room to grow—and maybe diverge.
+query-json is still young. It supports most of jq's core features, but it has room to grow and perhaps diverge.
 
-The future of query-json is to support more constructors from the jq language and provide a better experience for running operations on JSON by having better error messages and better performance.
+I want query-json to support more constructors from the jq language and make operations on JSON easier to run through better error messages and performance.
 
-For me, jq is like a double-edged sword—very powerful but a bit confusing. The number of questions on StackOverflow.com proves that there are many problems without a solution in the language. If query-json gets a lot of traction, I would diverge from the jq syntax and try to solve those confusing parts.
+For me, jq is a double-edged sword: very powerful but also confusing. The number of questions on StackOverflow.com proves that the language has many problems without a solution. If query-json gets a lot of traction, I would diverge from jq's syntax and try to solve those confusing parts.
 
-The other mission of query-json is to push performance forward. Now we are implementing most of the missing functionality, and next is to explore performance optimizations, such as:
+Another mission of query-json is to push performance forward. We are now implementing most of the missing functionality. Next, we'll explore performance optimizations such as:
 
-- Improving the JSON parsing, such as JSON streaming, or even better, only parsing the parts that the query needs
-- Refactor it using OCaml multicore (once it's published!)
+- Improving JSON parsing through JSON streaming, or better yet, parsing only the parts that the query needs
+- Refactoring it with OCaml multicore (once it's published!)
 - Replacing menhir with a hand-written parser
 
 ## Final
 
-I hope you liked the project and the story. Let me know if you're interested in these topics. I'm always happy to chat.
+I hope you enjoyed the project and its story. Let me know if these topics interest you; I'm always happy to chat.
 
 Thanks to everyone who reviewed this blog post: [Javi](http://javierchavarri.com/), [Enric](https://twitter.com/epallerols), and [Gerard](http://gerard.sh/).
