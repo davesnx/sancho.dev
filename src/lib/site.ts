@@ -6,8 +6,17 @@ export const siteConfig = {
   authorName: 'David Sancho',
   twitter: '@davesnx',
   feedUrl: 'https://sancho.dev/rss.xml',
+  homeDescription:
+    'David Sancho writes about OCaml, Melange, Reason, React infrastructure, and open source software engineering.',
   description:
     'Open Source UI infra at @ahrefs with OCaml. Made styled-ppx and server-reason-react. Working on reason-react, Melange, Reason.',
+  socialProfiles: {
+    github: 'https://github.com/davesnx',
+    x: 'https://x.com/davesnx',
+    bluesky: 'https://bsky.app/profile/david.sancho.dev',
+    discord: 'https://discordapp.com/users/122441959414431745',
+    strava: 'https://www.strava.com/athletes/davesnx',
+  },
   verification: {
     ahrefs: 'e9ca7385f25c8be91c3030a42bb760b5c9f23a9e43e6dce7a5f3409951c4572d',
   },
@@ -27,6 +36,8 @@ export type PageMetadataInput = {
 };
 
 export const absoluteUrl = (path = '/') => new URL(path, siteConfig.siteUrl).toString();
+
+export const serializeJsonLd = (value: unknown) => JSON.stringify(value).replace(/</g, '\\u003c');
 
 export const getSocialImage = ({ slug }: { slug?: string }) => {
   if (slug) {
@@ -91,6 +102,51 @@ export const buildMetadata = ({
       description,
       images: [image],
     },
+  };
+};
+
+export const buildHomeJsonLd = () => {
+  const homeUrl = absoluteUrl('/');
+  const personId = `${homeUrl}#person`;
+
+  return {
+    '@context': 'https://schema.org',
+    '@graph': [
+      {
+        '@type': 'Person',
+        '@id': personId,
+        name: siteConfig.authorName,
+        description: siteConfig.homeDescription,
+        url: absoluteUrl('/about'),
+        sameAs: Object.values(siteConfig.socialProfiles),
+        jobTitle: 'Software Engineer',
+        worksFor: {
+          '@type': 'Organization',
+          name: 'Ahrefs',
+          url: 'https://ahrefs.com/',
+        },
+        knowsAbout: [
+          'Functional programming',
+          'Web technologies',
+          'Developer tools',
+          'OCaml',
+          'Reason',
+          'Melange',
+          'UI infrastructure',
+        ],
+      },
+      {
+        '@type': 'WebSite',
+        '@id': `${homeUrl}#website`,
+        name: siteConfig.siteName,
+        description: siteConfig.homeDescription,
+        url: homeUrl,
+        inLanguage: 'en',
+        publisher: {
+          '@id': personId,
+        },
+      },
+    ],
   };
 };
 

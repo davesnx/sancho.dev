@@ -5,6 +5,7 @@
     "dev": "next dev -p 3005",
     "prebuild": "SKIP_GITHUB_FETCH=1 node --experimental-strip-types scripts/fetch-github-repos.mts",
     "build": "next build",
+    "test:agent-readiness": "node --experimental-strip-types --test scripts/agent-readiness/*.test.mts",
     "start": "npx serve out",
     "generate:og": "node --experimental-strip-types scripts/generate-og-images.mts",
     "generate:og-default": "node --experimental-strip-types scripts/generate-og-images.mts --default-only",
@@ -13,8 +14,8 @@
     "build-prod": "npm run build",
     "clean": "rimraf .next out",
     "ts": "next typegen && tsc --noEmit --pretty",
-    "format": "biome format --write src scripts --config-path biome.json",
-    "lint": "biome lint --write src scripts --config-path biome.json"
+    "format": "biome format --write src scripts functions --config-path biome.json",
+    "lint": "biome lint --write src scripts functions --config-path biome.json"
   },
   "devDependencies": {
     "@biomejs/biome": "^2.4.10",

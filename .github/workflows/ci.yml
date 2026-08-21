@@ -35,6 +35,9 @@ jobs:
       - name: Build
         run: npm run build
 
+      - name: Test agent readiness
+        run: npm run test:agent-readiness
+
       - name: Deploy
         if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         env:
