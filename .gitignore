@@ -54,3 +54,8 @@ AGENTS.md
 
 # Twitter voice experiment (scraped data, browser profile, scripts)
 twitter-data/
+
+# Local project tooling
+.impeccable/
+.opencode/
+roadmap/
