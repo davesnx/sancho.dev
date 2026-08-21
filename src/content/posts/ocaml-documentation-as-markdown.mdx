@@ -10,36 +10,36 @@ tags:
   - "odoc"
 ---
 
-For a while, Melange had two documentation sites. The guides lived in [VitePress](https://vitepress.dev/) while the API reference lived in `odoc`'s generated HTML. It worked, but it was far from a great experience.
+For a while, Melange had two documentation sites. The guides lived in [VitePress](https://vitepress.dev/), while the API reference lived in `odoc`'s generated HTML. It worked, but the experience was far from great.
 
-That split was the reason I wanted markdown output from [`odoc`](https://github.com/ocaml/odoc). With dune 3.22 and odoc 3.1, `dune build @doc-markdown` now turns `.mli` and `.mld` files into Markdown files.
+That split made me want markdown output from [`odoc`](https://github.com/ocaml/odoc). With dune 3.22 and odoc 3.1, `dune build @doc-markdown` now turns `.mli` and `.mld` files into Markdown files.
 
 ```zsh
 dune build @doc-markdown
 ```
 
-I implemented both the odoc's markdown backend and the dune integration because this is the direction I wanted OCaml tooling to move toward: integrated with the rest of the world and more modern. I built it for Melange first, then started using the same flow in smaller libraries too.
+I implemented both odoc's markdown backend and the dune integration because I wanted OCaml tooling to integrate with the rest of the world and become more modern. I built it for Melange first, then started using the same flow in smaller libraries too.
 
-In this post, I want to explain why, and how you can use it too.
+In this post, I want to explain why and how you can use it too.
 
 ## Why I cared
 
-In [Melange 5.0.0](https://melange.re/v5.0.0/), we use VitePress to write most of the manual documentation with pages like: _What is Melange_, _Rationale_, _Getting Started_, etc. We use `odoc` for the API reference for built-in libraries such as `Belt`, `Js`, and `Stdlib`.
+In [Melange 5.0.0](https://melange.re/v5.0.0/), we use VitePress to write most of the manual documentation, with pages such as _What is Melange_, _Rationale_, and _Getting Started_. We use `odoc` for the API reference for built-in libraries such as `Belt`, `Js`, and `Stdlib`.
 
 ![odoc's HTML website for melange.belt](/images/belt-odoc-html.png)
 
-The current approach used `odoc`'s HTML backend, which generates a standalone site linked from our documentation. That worked, but it created a big UX barrier between the two sites:
+That approach used `odoc`'s HTML backend, which generates a standalone site linked from our documentation. It worked, but created a big UX barrier between the two sites:
 
 - Users went from a unified experience to a different one: `melange.re` is a SPA, while the generated API docs are a separate MPA with different styling
-- Navigation was not shared, the sidebars were completely different (both content and design)
+- Navigation was not shared, and the sidebars were completely different in both content and design
 - Search on `melange.re` could not find anything inside the generated HTML
-- Could not reference `melange.re` pages from inside `.mld` files
-- Language toggling was awkward because we needed separate HTML artifacts for Reason and OCaml, and it didn't persist when visiting the API references
-- And then there were all the smaller things: favicon, tracking scripts, syntax highlighting, plus the rest of the features a static site generator gives you
+- `.mld` files could not reference `melange.re` pages
+- Language toggling was awkward because we needed separate HTML artifacts for Reason and OCaml, and it did not persist when visiting the API references
+- We also had to handle smaller details such as the favicon, tracking scripts, and syntax highlighting, along with the rest of the features a static site generator gives you
 
-For those reasons, I wanted one documentation site with the API reference inside. The missing piece was markdown output from `odoc`, so another tool could build the final site from those generated files.
+For those reasons, I wanted one documentation site with the API reference inside. The missing piece was markdown output from `odoc`, which would let another tool build the final site from those generated files.
 
-In our case, that tool was VitePress, but [there are](https://docusaurus.io/) [plenty](https://www.mkdocs.org/) [of](https://www.sphinx-doc.org/) [options](https://starlight.astro.build/) [for](https://jekyllrb.com/) [this](https://gohugo.io/), or even the GitHub markdown viewer.
+In our case, that tool was VitePress, but other options include [Docusaurus](https://docusaurus.io/), [MkDocs](https://www.mkdocs.org/), [Sphinx](https://www.sphinx-doc.org/), [Starlight](https://starlight.astro.build/), [Jekyll](https://jekyllrb.com/), [Hugo](https://gohugo.io/), and even the GitHub markdown viewer.
 
 Those documentation generators are powerful, and I do not expect `odoc` to match everything they do. Markdown output lets `odoc` plug into the rest of the docs stack instead of competing with it: developers already read it on GitHub, publishing systems can consume it directly, and AI tooling is generally easier to integrate with Markdown than a generated HTML site.
 
@@ -47,11 +47,11 @@ Those documentation generators are powerful, and I do not expect `odoc` to match
 
 ![Same documentation as before (melange.belt), but as part of the `melange.re` docs](/images/belt-vitepress.png)
 
-You can visit the result live [https://melange.re/unstable/api.html](https://melange.re/unstable/api.html)
+You can visit the result at [https://melange.re/unstable/api.html](https://melange.re/unstable/api.html).
 
 ## How does it work
 
-Running `dune build @doc-markdown` reads your `.mli` and `.mld` files, passes them through `odoc`, and produces markdown files under `_build/default/_doc/_markdown/<package>/`. One module becomes one file, one `.mld` page becomes one file. The output looks something like this:
+Running `dune build @doc-markdown` reads your `.mli` and `.mld` files, passes them through `odoc`, and produces markdown files under `_build/default/_doc/_markdown/<package>/`. Each module becomes one file, and each `.mld` page becomes one file. The output looks like this:
 
 ```bash
 _doc/_markdown/
@@ -61,9 +61,9 @@ _doc/_markdown/
     page.md
 ```
 
-The simplest thing you can do is treat that directory as the thing you publish: upload `_doc/_markdown` wherever you need it or point a static host at the folder after the build.
+The simplest option is to publish that directory: upload `_doc/_markdown` wherever you need it, or point a static host at the folder after the build.
 
-When you want the markdown wired into a bigger pipeline, you have more options. You can promote generated files into your source tree with `(promote (until-clean))` so a static-site generator sees them as normal files next to your hand-written docs. Running `dune clean` removes the promoted copies, so they do not go stale. This is what I do in [parseff](https://github.com/davesnx/parseff), where a Starlight site consumes the promoted markdown. A simplified promote rule for a single page:
+You have more options when wiring the markdown into a bigger pipeline. You can promote generated files into your source tree with `(promote (until-clean))` so a static-site generator sees them as normal files next to your hand-written docs. Running `dune clean` removes the promoted copies so they do not go stale. I use this approach in [parseff](https://github.com/davesnx/parseff), where a Starlight site consumes the promoted markdown. This simplified promote rule handles a single page:
 
 ```dune
 (rule
@@ -74,9 +74,9 @@ When you want the markdown wired into a bigger pipeline, you have more options. 
  (action (copy %{first-dep} %{targets})))
 ```
 
-Both [parseff](https://github.com/davesnx/parseff) and [html_of_jsx](https://github.com/davesnx/html_of_jsx) run `dune build @doc-markdown` in GitHub Actions on push to main, then build and deploy the site. Check each repo's workflow if you want the full wiring.
+Both [parseff](https://github.com/davesnx/parseff) and [html_of_jsx](https://github.com/davesnx/html_of_jsx) run `dune build @doc-markdown` in GitHub Actions on push to main, then build and deploy the site. Check each repo's workflow for the full wiring.
 
-Once I had the markdown output, I started using the same flow in smaller libraries too. One of my favorite uses is generating `README.md` from `README.mld`.
+After I had the markdown output, I started using the same flow in smaller libraries too. One of my favorite uses is generating `README.md` from `README.mld`.
 
 ## Generate README.md from README.mld
 
@@ -138,9 +138,9 @@ You can also check toplevel examples this way. `mdx` treats them like cram tests
 
 ## Try it out and report any issue
 
-Upgrade to `dune.3.22` and `odoc.3.1` and try it. Use the obvious cases, but also explore the less obvious ones: pipe the output into your docs site, generate a `README.md`, check examples with `mdx`, or try anything else that falls out of having OCaml docs as Markdown. If you hit edge cases, please report them in the GitHub tracker: https://github.com/ocaml/odoc and tag me `@davesnx`.
+Upgrade to `dune.3.22` and `odoc.3.1` and try it. Use the obvious cases and explore the less obvious ones: pipe the output into your docs site, generate a `README.md`, check examples with `mdx`, or try anything else that comes from having OCaml docs as Markdown. If you hit edge cases, please report them in the GitHub tracker at https://github.com/ocaml/odoc and tag me `@davesnx`.
 
-This feature is still relatively experimental. Real-world feedback, especially unusual use cases, is what will improve these workflows.
+This feature is still relatively experimental. Real-world feedback, especially unusual use cases, will improve these workflows.
 
 ### References
 
@@ -154,4 +154,4 @@ This feature is still relatively experimental. Real-world feedback, especially u
 
 ### Credits
 
-Thanks to [@jonludlam](https://jon.recoil.org/) [@rgrinberg](http://rgrinberg.com/) and [@Alizter](https://github.com/Alizter) for reviewing the work that made it possible
+Thanks to [@jonludlam](https://jon.recoil.org/), [@rgrinberg](http://rgrinberg.com/), and [@Alizter](https://github.com/Alizter) for reviewing the work that made it possible.
