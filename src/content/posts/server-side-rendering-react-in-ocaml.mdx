@@ -9,111 +9,111 @@ tags:
   - "SSR"
 ---
 
-`server-reason-react` implements `react-dom/server` and some of React's internals in OCaml. It renders HTML markup natively on the server for a Reason React application.
+`server-reason-react` is an implementation of `react-dom/server` and some of React's internals in OCaml. Its purpose is to render HTML markup from the server for a Reason React application natively.
 
-This post covers the library's concepts, what it means to render React in OCaml, how we use it at [ahrefs.com](http://ahrefs.com/), a benchmark against a Node equivalent, and where all of this might go.
+This post provides an overview of some of the concepts of the library, what it means to render React in OCaml, how we use it at [ahrefs.com](http://ahrefs.com/), a benchmark against a Node equivalent, and the future of all of this.
 
-If you are not familiar with Reason or OCaml, that's fine. I'm not trying to convince you to learn or try those languages. I want to share something I built and care about.
+If you are not familiar with Reason or OCaml, it's fine. The purpose of this post is not to convince you to learn or try those languages but rather to share something I built that I'm passionate about.
 
-I will explain most concepts for developers with React experience. Don't be scared by the niche languages or technologies; I'll introduce them as we go.
+I will try to explain most concepts for any developer with experience in React. Don't be scared by any niche language/technology mentioned here since I will introduce them as we go.
 
-First, some context about Reason and OCaml.
+The first piece of context to follow this post is to introduce Reason and OCaml for those who are not familiar with them:
 
 ## Clarity about Reason and OCaml
 
-[Reason](https://reasonml.github.io/) is a language built on top of [OCaml](https://ocaml.org). They share the compiler, type checker, and most of their tooling. Jordan Walke created Reason so JavaScript developers could enjoy OCaml. Back when TypeScript was less popular, many people in the JavaScript community were interested in Reason.
+[Reason](https://reasonml.github.io/) is a language built on top of [OCaml](https://ocaml.org), they share the compiler, the type-checker, and most tooling around. It was created by Jordan Walke to allow JavaScript developers to enjoy OCaml. Back in the days (when TypeScript was not as popular) many members from the JavaScript community were interested in Reason.
 
-OCaml is a robust, type-safe language that supports functional programming with powerful type inference. It offers a unique balance of performance, maintainability, and reliability.
+OCaml is a type-safe and robust language that empowers a functional style with powerful inference. It provides a unique balance of performance, maintainability, and reliability.
 
-Despite being a niche programming language, OCaml has influenced modern programming languages and language tooling. The first versions of Rust were implemented in OCaml, as was Meta's Flow JavaScript type checker. OCaml also became the basis for ReScript, an offshoot language that compiles statically typed code to JavaScript. Today, OCaml is a solid general-purpose language backed by trading firms, blockchain companies, and SaaS companies.
+Despite being a niche programming language, OCaml has made an impact on modern programming languages and language tooling. The first versions of Rust were implemented in OCaml and Meta's Flow JavaScript type checker as well, also used as the basis for ReScript an offshoot programming language which offers compiled statically typed code into JavaScript. Nowadays, OCaml is a solid option for a general programming language backed by trade firms, blockchains and SaaS companies.
 
-I often use Reason and OCaml interchangeably because they are the same to me. Reason has a different syntax that should feel familiar to JavaScript developers, but its “engine” is OCaml.
+I often refer to Reason/OCaml interchangeably since they are the same for me. Reason has a different syntax that should feel familiar to JavaScript developers, but the “engine” is the same as OCaml.
 
 ## ahrefs.com
 
-At ahrefs, I'm a software engineer working on tooling. I maintain the design system and styled-ppx, help with [Melange](https://github.com/melange-re/melange), and now work on server-reason-react.
+At ahrefs, I'm a Software engineer working on tooling. I work on maintaining the design system, styled-ppx, helping with [Melange](https://github.com/melange-re/melange) and now on server-reason-react.
 
-ahrefs is a comprehensive SEO toolset that provides data-driven insights and competitive analysis for digital marketers and businesses. We have one of the best crawlers on the internet. We also recently launched a search engine called [Yep.com](https://yep.com/about), which aims to provide a better revenue-sharing model.
+ahrefs is a comprehensive SEO toolset that provides data-driven insights and competitive analysis for digital marketers and businesses. With one of the best crawlers of the internet, we recently launched a search engine called [Yep.com](https://yep.com/about) with the goal of providing a better revenue-sharing model.
 
-ahrefs is written mainly in OCaml and Reason, with some Rust and C++/D. Its monorepo contains more than 1M lines of code. We value type safety, maintainability, and performance.
+It's written mainly in OCaml and Reason (there's a bit of Rust and C++/D) with a monorepo containing more than 1M lines of code. We value type-safety, maintainability and performance.
 
-The frontend parts of ahrefs include the dashboard (app.ahrefs.com), the public website (ahrefs.com), a tiny website called [wordcount.com](https://wordcount.com/), and [Yep.com](http://Yep.com).
+The frontend parts of ahrefs are the dashboard (app.ahrefs.com), the public website (ahrefs.com), a tiny website called [wordcount.com](https://wordcount.com/) and [Yep.com](http://Yep.com).
 
 ## The problem
 
-One of the initial problems with our main React application (app.ahrefs.com) was client-side rendering.
+One of the initial problems with our main React application (app.ahrefs.com) was the client-side rendering.
 
-The Header was the canonical example. We had to load contextual data for the user, permissions, billing, tokens, and theme. Running all those requests on the client creates a request waterfall. Our users often use more than one tool at a time, and navigating between them was not a good experience. Navigation was slow. Mounting each page flashed the Header and the entire app while repeating the same requests.
+The canonical example of this problem happens on the Header. We had to load a bunch of contextual data such as user, permissions, billing, tokens and theme. Running all of those requests on the client creates a request waterfall and often our users use more than one tool at the same time, where navigating between those is not an optimal experience. Navigation would be slow, “flashing” the header (and the entire app) while mounting each page each time can be annoying and a waste of the same requests.
 
-We addressed these issues by adding server-side rendering for the static parts. We rendered a “shell” app and injected the data as regular `scripts` containing serialized JSON. We used [Tyxml](https://github.com/ocsigen/tyxml), a library that generates HTML from OCaml, to create these static templates.
+To address those issues, we implemented server-side rendering for the static parts: a “shell” app and injecting the data as regular `scripts` with serialized JSON. We used [Tyxml](https://github.com/ocsigen/tyxml), a library that generates HTML from OCaml, for creating these static templates.
 
-This improved the user experience by a lot because the served HTML contains the static part of the app, which the browser can cache locally. But we soon hit another problem: two separate implementations of the same component. The client version used React, while the server version used Tyxml.
+It improved the user experience by a lot, since the HTML served contains the static part of the app, so the browser can cache it locally. But, we quickly encountered a new problem: having two separate implementations of the same component. The client version, written in React and the server version, written with Tyxml.
 
-- Sharing implementations or even styles between them was difficult
-- Keeping both versions in sync with different data requirements was too much hassle. The server component had to work without data, and the client component had to mount the interaction on top
+- Not easy to share implementations or even styles between the two
+- Keeping both versions in sync with different data-requirements is too much hustle: Ensuring the server version of the component functioned correctly without data and the client one mounts on top with the interaction
 
-The resulting technology was difficult to maintain and deterred developers from making significant changes. The solution worked for a while, but we wanted a more scalable approach for our other frontends.
+The resulting tech was difficult to maintain, deterring developers from making significant changes. While this solution was adequate for some time, we sought a more scalable approach for our other frontends.
 
-> To address some of those problems, Javi (one of my coworkers) experimented with mixing Tyxml and ReasonReact and published the experiment on his blog: [javierchavarri.com/react-server-side-rendering-with-ocaml](https://www.javierchavarri.com/react-server-side-rendering-with-ocaml)
+> To address some of those problems, Javi (one of my coworkers) experimented to mix Tyxml and ReasonReact and published the experiment in his blog: [javierchavarri.com/react-server-side-rendering-with-ocaml](https://www.javierchavarri.com/react-server-side-rendering-with-ocaml)
 
-Alongside server-side rendering, which renders each request, we needed a different strategy for static pages. We wanted Server-Side Generation, which Next.js calls Incremental Static Regeneration: run a rendering step at build time and populate the state on each request.
+In addition to server-side rendering (rendering in each request), we needed a different strategy for our static pages, such as Server-Side Generation (what Next.js calls Incremental Static Regeneration). Running a rendering step at build-time and populate state on each request.
 
-Our goal was to use the same client components from our design system in these server templates.
+Ultimately, our goal was to use the same client components from our design system in these server templates.
 
 ## First approach
 
-The common solution is a Node-based framework such as Next.js, Gatsby, or Astro. After using Gatsby and react-snap for a few years, plus building a proof of concept with Next, we were not satisfied with any of them.
+The common solution to this problem is to go with a node-based solution, such as Next.js, gatsby or Astro. After using gastby and react-snap for a few years and a proof of concept with Next, we weren't satisfied with any approach.
 
 ### Pre-rendering (SSG) with Node
 
-One option was to run the pre-rendering step during the build and serve the results through our OCaml backend.
+Running the pre-rendering step during the build and serving them via our backend in OCaml.
 
-This couples the build process running in CI to the runtime on the production and staging servers. It made serving static files more complex and polluted those files with data, also known as hydration.
+This solution couples the build process (running in CI) with the runtime (the production and staging servers). Increased the complexity on how we were serving those static files, and how those static files became polluted with data (also known as hydration).
 
-- Templates could be unsafe to hydrate and error-prone
-- We needed to generate templates for each language, currently 17, and upload them in CI
-- Running pre-rendering in CI created a strange combination. It coupled our OCaml backend to HTML files and required us to manage cache purging
+- Templates could be unsafe to hydrate and error prone
+- Needed to generate templates for each language (currently 17) and upload them on CI
+- Running the pre-rendering on CI made a weird combination, pre-rendering required to couple our OCaml backend with HTML files and be aware of purging the cache
 
 ### Running Node with SSR on production
 
-The other option was to serve the application with Node and use OCaml as the API.
+The other solution is to serve the application by Node and using OCaml as API.
 
-Putting Node in front is a common architecture that works wonderfully for some teams. It still has drawbacks for the ahrefs backend.
+Placing node in front is a very common architecture that works wonderful in some teams, but there are still some drawbacks when using Node in the backend for ahrefs.
 
-Most of our API fetches data from different storage systems, shuffles it, and serves the result. Several characteristics of Node made it less than ideal for us:
+Most of our API consists of fetching from different data storages and shuffle this data to serve it. Some of those problems make it non ideal for us:
 
-- Single-threaded nature: Node.js is inherently single-threaded, which can cause performance issues with high concurrency or CPU-intensive tasks
-- Node.js is not the best at memory consumption. SSR applications can use a lot of memory and potentially constrain resources in production
-- It would add a burden for DevOps. They were not happy about learning another language and framework to manage, especially because it would be the entry point for users
-- Type-safety concerns: We would need to use TypeScript and maintain separate type definitions, or use Reason and compile it to JavaScript. However, Node.js bindings are not my favorite part of Reason
-- It might duplicate logic such as authentication across our backend and Node
-- Moving a request from the server to the client, or the other way around, can be difficult and increase complexity and maintenance work
+- Single-threaded nature: Node.js is inherently single-threaded, which can lead to performance issues when dealing with high-concurrency or CPU-intensive tasks.
+- Node.js isn't the best player at memory consumption. SSR applications can be memory-intensive, potentially causing resource constraints in production environments.
+- Additional burden on DevOps, as they were not happy learning another language and framework to manage, with emphasis since it's the entry-point for users.
+- Type-safety concerns: Ensuring type-safety would require either using TypeScript and maintaining separate type definitions or using Reason and compiling it to JavaScript. However, the Node.js's bindings aren't my favorite part of Reason.
+- Might lead to some duplication of logic —e.g. authentication— on both our Backend and Node.
+- Switching a request from the server to the client (or the other way around) can be challenging, potentially leading to increased complexity and maintenance efforts.
 
-After discussing this with my coworkers, especially Javi and his experiments with Tyxml and ReasonReact, we had an idea. We might be able to use the *exact same code* on the client and server if we reimplemented or stubbed some stuff here and there.
+After discussing with my coworkers and specially Javi with his explorations on Tyxml and ReasonReact, an idea appeared: it might be possible to use the *exact same code* from the client in the server, if we re-implement or stub some stuff here and there.
 
-We could follow the JavaScript ecosystem's approach and run the same React components on the server, with one twist: native code on the server and compiled JavaScript on the client.
+We could have the same approach on how the JavaScript ecosystem do, running the exact same React components on the server but with the twist of running native code on the server while compiled JavaScript on the client.
 
-How hard could it be?
+How hard it would be?
 
 ## Enter server-reason-react
 
 ### reason-react
 
-The Reason parser includes the JSX transformation, so it compiles JSX expressions into function calls. Reason does not need Babel, esbuild, or Vite for this.
+The Reason parser comes with the JSX transformation out of the box, so JSX expressions are compiled down to function calls. No need to use babel, esbuild or vite in Reason.
 
 ![A Reason-React component describing a simple Counter](/images/counter-reason-component.png)
 
-`reason-react` is a set of bindings to the JavaScript version of React. It is a thin type-system layer that gives Reason code the correct interface for hooks, createElement calls, and the rest of the React API. It is similar to [`.d.ts` modules](https://www.typescriptlang.org/docs/handbook/declaration-files/templates/module-d-ts.html) in TypeScript or [FFI in Rust](https://doc.rust-lang.org/nomicon/ffi.html).
+`reason-react` are a set of bindings to the JavaScript version of React. So, a tiny layer for the type-system to tell the Reason code the right interface of those hooks, createElement calls, and any React API, similar on what [`.d.ts` modules](https://www.typescriptlang.org/docs/handbook/declaration-files/templates/module-d-ts.html) are in TypeScript or [FFI in Rust](https://doc.rust-lang.org/nomicon/ffi.html).
 
-The repository is at [https://github.com/reasonml/reason-react](https://github.com/reasonml/reason-react).
+The repository lives here [https://github.com/reasonml/reason-react](https://github.com/reasonml/reason-react)
 
 ## What's server-reason-react?
 
-`server-reason-react` is a reimplementation of ReactDOMServer (`react-dom/server`) and parts of React, written in OCaml, that generates markup from a React component.
+`server-reason-react` is a re-implementation of ReactDOMServer (`react-dom/server`) and some parts of React itself to generate markup from a React component but written in OCaml.
 
-More precisely, it implements `ReactDOM.renderToString` and `ReactDOM.renderToStaticMarkup`.
+More precisely `ReactDOM.renderToString` and `ReactDOM.renderToStaticMarkup`
 
-ReactDOM must represent every kind of React node: components, elements, Fragments, Providers, and Consumers. This `node` variant type represents all of them:
+To make sure this ReactDOM can represent all kinds of nodes in React: components, elements, Fragments, Providers, Consumers. Here's the `node` variant type that represents all of them:
 
 ```reason
 type node =
@@ -128,9 +128,9 @@ type node =
   | Suspense({ children: node, fallback: node })
 ```
 
-It is a [variant type (aka union or ADT)](https://dev.realworldocaml.org/variants.html), and it matches what React uses internally with [Symbols](https://github.com/facebook/react/blob/fa4314841e7fdeef6e6bc5a7722fe74dc8e9fd89/packages/shared/ReactSymbols.js#L14). It is a recursive type (`rec`) because it references itself.
+It's a [variant type (aka union or ADT)](https://dev.realworldocaml.org/variants.html) and it matches with what React internally uses with [Symbols](https://github.com/facebook/react/blob/fa4314841e7fdeef6e6bc5a7722fe74dc8e9fd89/packages/shared/ReactSymbols.js#L14). It's a recursive type (`rec`) since it references itself.
 
-The implementation generates the string by traversing the component tree and producing the appropriate HTML for each node. For every node, it handles details such as serializing DOM attributes, processing inline styles, encoding HTML, and supporting React-specific behavior such as `dangerouslySetInnerHTML` and hydration hacks.
+The actual string generation is done by traversing the component tree to generate specific HTML representation of each node. In each "node" takes into account a few details such as serialize DOM attributes, process inline styles, encode HTML and a few React particularities (such as `dangerouslySetInnerHTML` or hydration hacks).
 
 ```reason
 let rec render_to_string = node =>
@@ -156,25 +156,25 @@ components and HTML representation. The original implementation uses Buffer and 
   Note: `++` is a string concatenation operator */
 ```
 
-To ensure it supports full rendering and hydration in the same way as React, I migrated all the tests from [ReactDOM's server test suite](https://github.com/facebook/react/tree/main/packages/react-dom/src/__tests__).
+To be sure it supports full render and hydration the same way as React does, I migrated all tests from the [ReactDOM's server test suite](https://github.com/facebook/react/tree/main/packages/react-dom/src/__tests__).
 
-Once that worked, implementing the rest of React on the server, including hooks, portals, and the other APIs, was trivial by comparison. Most hooks do nothing. useEffect does not run. useState sets only the initial value, and all setStates are ignored. useCallback creates the function once, and it is probably never called. useMemo runs and returns the value.
+With all of this solved, on the server rest of React such as hooks, portals or any other APIs were trivial in comparision. Most hooks do nothing: useEffect don't run. useState is only setting the initial value, all setStates are ignored. useCallback creates the function once (and probably never called). useMemo runs and gets the value.
 
-My implementation makes a single pass over the React tree, while React.js makes multiple passes. But it's on them to change that: [https://github.com/facebook/react/issues/25318](https://github.com/facebook/react/issues/25318).
+As you could guess, my implementation does a single pass on the React tree, while React.js does multiple passes, but it's on them to change it: [https://github.com/facebook/react/issues/25318](https://github.com/facebook/react/issues/25318).
 
-We can return those strings as HTTP responses. That gives us server-side rendering.
+With all of this done, we can return those strings as HTTP responses, and we have server-side rendering working!
 
 ## Benchmark
 
-The question I heard most while implementing this was about performance.
+The most asked question I got while I was implementing all of this, was about performance.
 
-The theory was that a compiled language such as OCaml should outperform an interpreted one such as JavaScript in Node, even while v8, the engine under Node, works tirelessly to optimize it. Many benchmarks have set out to prove that theory, but does it hold here?
+The theory said that a compiled language (OCaml) should over-perform an interpreted one (JavaScript in node), even when v8 (the engine that node runs on top) is working tirelessly to optimise it. There have been many benchmarks to prove it, but does it holds true here?
 
-I was curious too, although performance was not the only reason for `server-reason-react`. The implementation has not been optimized or even profiled. It tries to minimize allocations and CPU cycles, but I have done no performance work so far.
+I was curious too, but, as explained above it was not the only impetus for `server-reason-react`. In fact the implementation isn't very optimised, and not even profiled. It does try to minimise allocations and CPU cycles but there hasn't been any performance work so far.
 
-Before pushing to production, I made a small microbenchmark to check for regressions and measure the gain against Node and Bun:
+I made a small micro-benchmark before pushing to production to ensure there wasn't any regression and prove how much gain are we talking about (against a Node and bun solutions):
 
-We compared the three stacks by latency, requests per second (req/s), and transfer rate.
+We compared the performance of three stacks in terms of latency, requests per second (req/s), and transfer rate.
 
 |  | Req/s | Avg Latency | Transfer/s |
 | --- | --- | --- | --- |
@@ -182,64 +182,64 @@ We compared the three stacks by latency, requests per second (req/s), and transf
 | Bun | 10.3k | 24.32ms | 17.5MB |
 | server-reason-react (with OCaml) | 64.8k | 6.21ms | 155MB |
 
-The results show an approximate 10x improvement over Node and 6x over Bun.
+It shows an approximate improvement of x10 over Node and x6 over Bun.
 
-I ran all tests locally on my **MacBook Pro (13-inch, M1, 2020)**. The benchmark data comes from this demo repository: [https://github.com/ml-in-barcelona/fullstack-reason-react-demo/tree/main/benchmark](https://github.com/ml-in-barcelona/fullstack-reason-react-demo/tree/main/benchmark).
+All tests are run on local under my **MacBook Pro (13-inch, M1, 2020)**, and the benchmark data comes from a demo repository: [https://github.com/ml-in-barcelona/fullstack-reason-react-demo/tree/main/benchmark](https://github.com/ml-in-barcelona/fullstack-reason-react-demo/tree/main/benchmark).
 
-The benchmark is not very scientific, and microbenchmarks can mislead. Still, it shows the potential of this approach and validates the theory.
+Even thought the benchmark is not very scientific and it can lie in terms of micro-benchmarking it shows the potential of this approach and validates the theory.
 
 ## Status
 
-It has been deployed to every user at [app.ahrefs.com](http://app.ahrefs.com) since February, and we plan to use it for all our frontends. It is not ready for general use, though. The lack of documentation, the shape of the libraries, and some missing APIs make it difficult to use. I do not recommend relying on it yet.
+It's deployed to all users at [app.ahrefs.com](http://app.ahrefs.com) since February and planning to use it for all frontends. Although, it's not ready for consumption. The lack of documentation, the shape of the libraries and some missing APIs makes it hard to use and I don't recommend relying on it.
 
-It is open source, and the repository is on [GitHub](https://github.com/ml-in-barcelona/server-reason-react). Check it out!
+It's open-source and the repository lives in [GitHub](https://github.com/ml-in-barcelona/server-reason-react), check it out!
 
-If you are still interested, feel free to contact me on [Discord](https://discord.com/users/122441959414431745) or [Twitter](https://www.twitter.com/davesnx), or open an issue on GitHub.
+Even with all of this, if you are still interested feel free to contact me in [Discord](https://discord.com/users/122441959414431745) or [Twitter](https://www.twitter.com/davesnx), and open issues on GitHub.
 
 ## What it enables
 
-I went deep into the implementation details for curious readers, but the consequences matter more:
+I got a little deep into some of the details about how it works for the curious minds, but the implementation doesn't matter much. What matters are the consequences:
 
 ### Same code for frontend and backend
 
-The same code compiles to native code and JavaScript, entirely thanks to [Melange](https://github.com/melange-re/melange). As far as I know, other native languages such as Rust or Go cannot do this. Many similar solutions exist, but they do not cross-compile the same code.
+The same code gets compiled to Native and JavaScript (thanks entirely to [Melange](https://github.com/melange-re/melange)). As far as I know, it can't be done in other native languages such as Rust or Go, there are many of similar solutions but they don't cross-compile the same code.
 
 ![](/images/server-reason-react-graph.png)
 
-This enables full-stack applications written in Reason. It is not about “one language to rule them all.” It is about simplicity.
+It enables full-stack applications written in Reason. It's not a matter of "one language to rule them all", but rather simplicity.
 
-That simplicity means shared data types, one learning experience, one toolchain, one set of rules, and more. Sharing code has detractors, with good reasons. Once you have struggled to maintain large pieces of code across stacks, though, you appreciate having a single language.
+Simplicity on shared data types, one learning experience, one toolchain, one set of rules, etc. Even thought sharing code has some detractors (and with good reasons) once you face the troubles of maintaining big pieces of code between stacks, you appreciate a single language after-all.
 
 ### Performance is much better
 
-Performance is critical for any SSR solution, both in the rendering engine and the underlying platform. Requests per second and memory footprint both matter, but slow startup stands out among the performance problems. A Node application's slow startup is a barrier for current solutions. Teams often address it by changing their application architecture to use Edge computing, and it can also block SSR in development.
+Performance is critical for any SSR solution, not only the rendering engine itself but the platform you are running as well. Not only the number of requests per second it supports or the memory footprint. Among many performance issues, one that stands out is the slow start. The slow start of a Node application is a barrier for current solutions. Often this problems is addressed by changing the architecture of your application by utilizing Edge computing, or a blocker to run SSR in development.
 
-Some OCaml-based frameworks are fast enough to boot for each request and shut down when the session ends. Doing the same with Node is much harder. This is one example of OCaml's performance advantage.
+Here is an example of a performance benefit from OCaml. Some OCaml-based frameworks are fast enough that it can boot for each request and tear down when the session finishes. On the other hand, this is much more challenging to do with Node.
 
-Maybe a faster approach can solve some of [the problems from SSR](https://github.com/theninthsky/client-side-rendering#ssr-disadvantages).
+Maybe with a more performant approach we can solve some of [the problems from SSR](https://github.com/theninthsky/client-side-rendering#ssr-disadvantages)
 
 ### Allows further exploration of effects of React and OCaml
 
-OCaml and functional programming concepts have influenced React from the start, including immutability, purity, and eventually algebraic effects.
+React has been influenced by OCaml and some functional programming concepts from the start. Such as immutability, purity and eventually algebraic effects.
 
-This work creates the base implementation for Server components, which are a deal breaker for server-reason-react. Running components only on the server and streaming their output representation avoids the client-side cost of executing the JavaScript code. That can radically change how we write our backends.
+Creates the base implementation for Server components, which are a deal breaker for server-reason-react. Allowing to only run components on the server and stream the output representation of it, without the client-side penalty of executing the JavaScript code, can change radically how we write our backends.
 
-OCaml 5.0 was recently released with the highly anticipated Multicore and Effects features. They make it possible to explore writing some of React's concepts in OCaml.
+Recently OCaml 5.0 was released with the highly anticipated features Multicore and Effects. These new features enable the possibility of exploring some of React's concepts to be written in OCaml.
 
 ## Why you should not use it
 
-I would not adopt server-reason-react today for these reasons:
+Here are main reasons why I would not adopt server-reason-react today:
 
-- It is an entirely new ecosystem with a new language, package manager, and trade-offs
-- The learning curve might be steep. OCaml makes different trade-offs from JavaScript or Node. It is probably not as big as learning to deal with a borrow checker 😛
-- Not everyone needs this. It made a lot of sense at ahrefs, but it might not for you
+- It's an entire new ecosystem: new language, new package manager, new trade-offs
+- The learning curve might be big. The tradeoffs made by OCaml do not match with some by JavaScript (or node). Probably not as big as learning how to deal with a borrow checker 😛
+- Not everyone needs this. At ahrefs it made a lot of sense, but this it may not for you.
 - It is still very experimental
-- It requires lifting the ecosystem to work on the server, so every client-side library must be ported to OCaml or stubbed when needed
-- The community is smaller, but growing
+- Requires to lift the ecosystem to work on the server, so all client-side libraries need to be ported to OCaml when needed or stub
+- Smaller community, but growing
 
 ## Final thoughts
 
-I intentionally did not explain **how** this is compiled because I want to keep this short and explain Melange in future blog posts. For reference: [ahrefs is now built with Melange](https://tech.ahrefs.com/ahrefs-is-now-built-with-melange-b14f5ec56df4?gi=582fa8d9438f)
+I intentionally didn't mention **how** this is compiled, because I want to keep it short and explain Melange in future blog posts. For reference: [ahrefs is now built with Melange](https://tech.ahrefs.com/ahrefs-is-now-built-with-melange-b14f5ec56df4?gi=582fa8d9438f)
 
-This has been a lot of fun, and I hope I can keep pushing this stack further.
+This has been very fun and I hope I can keep pushing this stack further.
 If you are as excited as we are, come talk to us!

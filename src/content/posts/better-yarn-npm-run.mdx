@@ -10,13 +10,13 @@ tags:
   - "npm"
 ---
 
-In a Node environment or a project with a package.json, it's very common to have a `"scripts"` field in **package.json**. It lists the scripts available to build, test, and run the project.
+In a Node environment or a project with a package.json, It's very common to have a field `"scripts"` inside the **package.json** which stores and lists the scripts available to build, test and run the project.
 
-To see which scripts are available without opening package.json in an editor, `yarn` and `npm` provide commands that list them: `yarn run` and `npm run`.
+In order to see which scripts are available in the project without opening the package.json with an editor, `yarn` and `npm` have a command that lists them: `yarn run` or `npm run`.
 
-Depending on whether you use npm or yarn, the command either lists the scripts or opens a prompt where you can enter the command you want to run.
+Which is a prompt that allows you to write which command you want to run or list them, depend if you are using npm or yarn.
 
-This is the output from a recently created expo app:
+This is the output in a recently created expo app:
 
 ```bash
 yarn run v1.22.4
@@ -34,13 +34,13 @@ info Project commands
 question Which command would you like to run?:
 ```
 
-It's very handy. You get a fast lookup instead of spending energy trying to remember the commands. But it's **very slow** (around 250ms!) because it needs to start a node process, parse the json file, and send output to stdin. The **UX could be better**, too, because it forces you to type the command again.
+It's very handy and allows you to not spend energy trying to remember those and have a fast lookup, but it's **very slow** (around 250ms!) since needs to start a node process, parse the json file and output something to stdin and the **UX can be better** since it forces you to type the command again.
 
-I was a little frustrated, so I created a small bash script to solve it. It's aliased to `run` in my local environment, and it works like this:
+I was a little frustrated by it and I created a small bash script that solves it, it's aliased to `run` in my local enviroment, take a look how it works:
 
 ![yarn-run.gif](/images/yarn-run.gif)
 
-It uses [fzf](https://github.com/junegunn/fzf) to filter the available commands and search them quickly. If you don't know what fzf is, I can't recommend taking a look at it enough. fzf stands for *fuzzy finder*. With fzf's shell integration enabled, I use `CTRL+R` to navigate my shell history; fzf is also commonly used to navigate files in an editor.
+It uses [fzf](https://github.com/junegunn/fzf) to filter the commands available and allows a fast search for them. If you don't know what's fzf, I can't recommend enough taking a look at it. fzf stands for _fuzzy finder_ and it's used by when hit `CTRL+R` to navigate the bash history and It's commonly used to navigate between files in your editor.
 
 ![fzf.gif](/images/fzf.gif)
 
@@ -62,19 +62,19 @@ else
 fi
 ```
 
-This can be intimidating at first, so let's break it down and explain what each command does.
+This can be intimidating at first so in order to understand it better, let's break it down to explain a little what each command does.
 
-The first interesting bit previews the content of `package.json` in an `fzf` menu.
+The first interesting bit is to preview the content of `package.json` and make it appear on a `fzf` menu.
 
 ```
 cat package.json | jq .scripts | sed '1d;$d'
 ```
 
-`cat package.json` prints the content of package.json.
+`cat package.json` prints the content of the package.json
 
-`jq .scripts` parses the json and selects only `"scripts"`.
+`jq .scripts` parses the json and selects only "scripts"
 
-`sed '1d;$d'` removes the first and last lines.
+`sed '1d;$d'` removes the first and the last line
 
 ```json
 "predeploy": "yarn build",
@@ -86,19 +86,19 @@ cat package.json | jq .scripts | sed '1d;$d'
 "serve": "gatsby serve",
 ```
 
-This output gets passed to [fzf](https://github.com/junegunn/fzf), which creates the floating menu. Once you select a row, the `$script` value is set to `"start": "npm run develop"`. The script then gets the command name `"start"`, saves that command to the history, and finally runs `"yarn run start"`.
+This output gets passed to [fzf](https://github.com/junegunn/fzf), which creates the floating menu, and once you select one of the rows, the `$script` value is set to `"start": "npm run develop"` and finally you are able to get the command name `"start"`, saves that command to the history and finaly runs `"yarn run start"`.
 
-> I appended `yarn run` instead of `yarn start`, which is also valid, to avoid shadowing any binary.
+> I appended `yarn run` instead of `yarn start` which is also valid, to avoid shadowing any binary.
 
 ## Custom
 
-This script lives in my [dotfiles repo](https://github.com/davesnx/setup/blob/master/bin/run), which is an easy way to install and set up your environment each time you change laptops.
+This script lives under my [dotfiles repo](https://github.com/davesnx/setup/blob/master/bin/run), which is an easy way to install and setup your enviroment each time you change laptops.
 
-Feel free to change this script to use `npm` or make any other changes. I've found playing with my terminal very rewarding. Learning more about the tools I use every day has let me do things I couldn't do before, and those small performance boosts have made my life a little easier. I'll keep sharing more as they pop into my head.
+Feel free to change this script to use `npm` or do any sort of change, I found playing with my terminal very rewarding, getting to learn deeper about the tools that I used everyday, allowed me to do stuff that I wasn't capable before and having those small performance boosts made my life a little easier. I will keep sharing more as they pop in my head.
 
 ### Resources
 
-- For an introduction to fzf, see this [blog post](https://www.freecodecamp.org/news/fzf-a-command-line-fuzzy-finder-missing-demo-a7de312403ff)
-- My personal setup, [davesnx/setup](https://github.com/davesnx/setup), uses zsh
-- If you aren't familiar with dotfiles, [this](https://www.freecodecamp.org/news/dive-into-dotfiles-part-1-e4eb1003cff6/) should provide a little clarity
-- For Spanish speakers, I found this [course](https://pro.codely.tv/library/terminal-zsh/about) amazing
+- For an introduction to the fzf, see this [blog post](https://www.freecodecamp.org/news/fzf-a-command-line-fuzzy-finder-missing-demo-a7de312403ff)
+- My personal setup [davesnx/setup](https://github.com/davesnx/setup) using zsh
+- If you aren't familiar with the dotfiles [this](https://www.freecodecamp.org/news/dive-into-dotfiles-part-1-e4eb1003cff6/) would give a little clarity
+- For the spanish speakers I found this [course](https://pro.codely.tv/library/terminal-zsh/about) amazing
