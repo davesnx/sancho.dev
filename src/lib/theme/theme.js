@@ -21,18 +21,18 @@
  * @type {CommonValues}
  */
 const commonValues = {
-  r: "#FF211B",
-  g: "#17E620",
-  b: "#003AEC",
-  bluesky: "rgb(18 133 254)",
-  bluesky60: "rgb(18 133 254 / 60%)",
-  bluesky20: "rgb(18 133 254 / 20%)",
-  discord: "rgb(88 101 242)",
-  discord60: "rgb(88 101 242 / 60%)",
-  discord20: "rgb(88 101 242 / 20%)",
-  strava: "rgb(250 89 1)",
-  strava60: "rgb(250 89 1 / 60%)",
-  strava20: "rgb(250 89 1 / 20%)",
+  r: '#FF211B',
+  g: '#17E620',
+  b: '#003AEC',
+  bluesky: 'rgb(18 133 254)',
+  bluesky60: 'rgb(18 133 254 / 60%)',
+  bluesky20: 'rgb(18 133 254 / 20%)',
+  discord: 'rgb(88 101 242)',
+  discord60: 'rgb(88 101 242 / 60%)',
+  discord20: 'rgb(88 101 242 / 20%)',
+  strava: 'rgb(250 89 1)',
+  strava60: 'rgb(250 89 1 / 60%)',
+  strava20: 'rgb(250 89 1 / 20%)',
 };
 
 /**
@@ -50,31 +50,20 @@ const commonValues = {
  * @property {string} backgroundTertiary - Hover state backgrounds for cards and buttons
  */
 
-const navyScale = {
-  navy100: "#CFD2D6",
-  navy200: "#B9BDC3",
-  navy300: "#999FA8",
-  navy400: "#78818C",
-  navy500: "#4C586A",
-  navy600: "#384456",
-  navy700: "#233044",
-  navy800: "#293039",
-  /* navy900: "#121A24" */
-  navy900: "#393F48"
-};
-
-const greyScale = {
-  /* grey100: "#FAFAFA", */
-  grey100: "#DCDCDC",
-  grey200: "#F7F7F7",
-  grey300: "#F0F0F0",
-  grey400: "#E3E3E3",
-  grey500: "#CCCCCC",
-  grey600: "#848686",
-  grey700: "#4C4D4D",
-  grey800: "#272727",
-  grey900: "#171717",
-  grey1000: "#141414"
+const uchu = {
+  yang: 'oklch(0.994 0 0)',
+  gray1: 'oklch(0.9557 0.003 286.35)',
+  gray2: 'oklch(0.9204 0.002 197.12)',
+  gray3: 'oklch(0.8828 0.003 286.34)',
+  gray4: 'oklch(0.8468 0.002 197.12)',
+  gray5: 'oklch(0.8073 0.002 247.84)',
+  yin2: 'oklch(0.8461 0.004 286.31)',
+  yin5: 'oklch(0.6101 0.005 271.34)',
+  yin6: 'oklch(0.5279 0.005 271.32)',
+  yin7: 'oklch(0.4387 0.005 271.3)',
+  yin8: 'oklch(0.3502 0.005 236.66)',
+  yin9: 'oklch(0.2511 0.006 258.36)',
+  yin: 'oklch(0.1438 0.007 256.88)',
 };
 
 /**
@@ -82,17 +71,17 @@ const greyScale = {
  * @type {ThemeValues}
  */
 const lightValues = {
-  backgroundGrey900: greyScale.grey900,
-  backgroundPrimary: "#FFFFFF",
-  backgroundSecondary: greyScale.grey200,
-  backgroundTertiary: greyScale.grey300,
-  borderStrong: navyScale.navy100,
-  borderSubtle: greyScale.grey400,
-  textAccent: navyScale.navy900,
-  textPrimary: navyScale.navy700,
-  textSecondary: navyScale.navy400,
-  textProse: navyScale.navy500,
-  textTertiary: navyScale.navy200,
+  backgroundGrey900: uchu.yin,
+  backgroundPrimary: uchu.yang,
+  backgroundSecondary: uchu.gray1,
+  backgroundTertiary: uchu.gray2,
+  borderStrong: uchu.gray4,
+  borderSubtle: uchu.gray3,
+  textAccent: uchu.yin8,
+  textPrimary: uchu.yin9,
+  textSecondary: uchu.yin6,
+  textProse: uchu.yin7,
+  textTertiary: uchu.gray5,
 };
 
 /**
@@ -100,18 +89,17 @@ const lightValues = {
  * @type {ThemeValues}
  */
 const darkValues = {
-  backgroundGrey900: greyScale.grey900,
-  backgroundPrimary: greyScale.grey1000,
-  backgroundSecondary: greyScale.grey900,
-  backgroundTertiary: greyScale.grey800,
-  borderStrong: greyScale.grey800,
-  borderSubtle: greyScale.grey700,
-  /* borderSubtle: greyScale.grey800, */
-  textAccent: greyScale.grey100,
-  textPrimary: navyScale.navy100,
-  textSecondary: greyScale.grey600,
-  textProse: greyScale.grey500,
-  textTertiary: greyScale.grey700,
+  backgroundGrey900: uchu.yin,
+  backgroundPrimary: uchu.yin,
+  backgroundSecondary: uchu.yin9,
+  backgroundTertiary: uchu.yin8,
+  borderStrong: uchu.yin8,
+  borderSubtle: uchu.yin7,
+  textAccent: uchu.gray3,
+  textPrimary: uchu.yin2,
+  textSecondary: uchu.yin5,
+  textProse: uchu.gray4,
+  textTertiary: uchu.yin7,
 };
 
 /** @type {CommonValues & ThemeValues} */
@@ -152,13 +140,13 @@ const variableName = (key) => `--c-${key}`;
 const objectToCSSVariable = (prefix, obj) => {
   return Object.entries(obj)
     .map(([key, value]) => declaration(prefix, key, value))
-    .join(" ");
+    .join(' ');
 };
 
 /** @type {string} */
-export const lightCSSVariables = objectToCSSVariable("light", lightTheme);
+export const lightCSSVariables = objectToCSSVariable('light', lightTheme);
 /** @type {string} */
-export const darkCSSVariables = objectToCSSVariable("dark", darkTheme);
+export const darkCSSVariables = objectToCSSVariable('dark', darkTheme);
 
 /**
  * Creates a CSS root rule
@@ -177,7 +165,7 @@ export const assignThemeVariables = (theme) => {
   return Object.keys(lightTheme)
     .map((key) => [`--c-${key}`, `var(--c-${theme}-${key})`])
     .map(([colorName, themeName]) => `${colorName}: ${themeName};`)
-    .join(" ");
+    .join(' ');
 };
 
 /**
@@ -194,8 +182,5 @@ export const make = (theme) => {
  * @type {Record<keyof (CommonValues & ThemeValues), string>}
  */
 export const colors = Object.fromEntries(
-  Object.entries(lightTheme).map(([key, _value]) => [
-    key,
-    variable(variableName(key)),
-  ]),
+  Object.entries(lightTheme).map(([key, _value]) => [key, variable(variableName(key))]),
 );
