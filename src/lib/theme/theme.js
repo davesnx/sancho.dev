@@ -21,9 +21,9 @@
  * @type {CommonValues}
  */
 const commonValues = {
-  r: '#FF211B',
-  g: '#17E620',
-  b: '#003AEC',
+  r: 'oklch(0.5863 0.231 19.6)',
+  g: 'oklch(0.7523 0.209 144.64)',
+  b: 'oklch(0.5115 0.204 260.17)',
   bluesky: 'rgb(18 133 254)',
   bluesky60: 'rgb(18 133 254 / 60%)',
   bluesky20: 'rgb(18 133 254 / 20%)',
