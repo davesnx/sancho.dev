@@ -1,12 +1,12 @@
-"use client";
+'use client';
 
-import { css } from "@linaria/core";
-import React from "react";
+import { css } from '@linaria/core';
+import React from 'react';
 
-import { TextLink } from "@/components/ui";
-import useMousePosition from "@/mouse-position";
-import { useIsMobile } from "@/media-query";
-import { colors } from "@/theme/theme";
+import { TextLink } from '@/components/ui';
+import useMousePosition from '@/mouse-position';
+import { useIsMobile } from '@/media-query';
+import { colors } from '@/theme/theme';
 
 const rowClass = css`
   display: flex;
@@ -35,20 +35,12 @@ const containerClass = css`
 const charSize = 75;
 const middle = charSize / 2;
 
-function Squared({
-  isMobile,
-  text,
-  x: mousePosition,
-}: {
-  isMobile: boolean;
-  text: string;
-  x: number | null;
-}) {
+function Squared({ isMobile, text, x: mousePosition }: { isMobile: boolean; text: string; x: number | null }) {
   const ref = React.useRef<HTMLDivElement | null>(null);
   const firstElementPosition = ref.current?.getBoundingClientRect().left
     ? ref.current.getBoundingClientRect().left + middle
     : 0;
-  const letters = text.split("");
+  const letters = text.split('');
 
   return (
     <div ref={ref} className={rowClass}>
@@ -61,8 +53,8 @@ function Squared({
             className={charClass}
             style={{
               fontVariationSettings: `"wght" ${weight}`,
-              width: isMobile ? "25px" : "75px",
-              fontSize: isMobile ? "25px" : "50px",
+              width: isMobile ? '25px' : '75px',
+              fontSize: isMobile ? '25px' : '50px',
             }}
           >
             {char}
@@ -80,9 +72,9 @@ export function VariableDemo() {
   return (
     <div className={containerClass}>
       <Squared isMobile={isMobile} x={mouse.x} text="David Sancho" />
-      <div style={{ marginTop: "32px" }}>
-        <p style={{ margin: 0, color: colors.textPrimary, textAlign: "center" }}>
-          {isMobile ? "Tap into the name to see the " : "Move the mouse in the y axis to see the "}
+      <div style={{ marginTop: '32px' }}>
+        <p style={{ margin: 0, color: colors.textPrimary, textAlign: 'center' }}>
+          {isMobile ? 'Tap into the name to see the ' : 'Move the mouse in the y axis to see the '}
           <TextLink href="https://v-fonts.com">Variable font weight</TextLink> effect
         </p>
       </div>

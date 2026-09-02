@@ -21,7 +21,7 @@ interface GitHubAPIResponse {
   };
 }
 
-const GITHUB_API_BASE = "https://api.github.com";
+const GITHUB_API_BASE = 'https://api.github.com';
 
 export function parseGitHubUrl(url: string): { owner: string; repo: string } | null {
   const match = url.match(/github\.com\/([^/]+)\/([^/]+)/);
@@ -44,7 +44,7 @@ export async function fetchGitHubRepo(url: string): Promise<GitHubRepo | null> {
 
   try {
     const headers: HeadersInit = {
-      Accept: "application/vnd.github.v3+json",
+      Accept: 'application/vnd.github.v3+json',
     };
 
     if (token) {
@@ -66,7 +66,7 @@ export async function fetchGitHubRepo(url: string): Promise<GitHubRepo | null> {
       owner: data.owner.login,
       name: repo,
       fullName: data.full_name,
-      description: data.description || "No description available",
+      description: data.description || 'No description available',
       stars: data.stargazers_count,
       language: data.language,
       url: data.html_url,
@@ -83,25 +83,23 @@ export async function fetchAllGitHubRepos(urls: string[]): Promise<GitHubRepo[]>
 
   return results
     .filter(
-      (result): result is PromiseFulfilledResult<GitHubRepo> =>
-        result.status === "fulfilled" && result.value !== null
+      (result): result is PromiseFulfilledResult<GitHubRepo> => result.status === 'fulfilled' && result.value !== null,
     )
     .map((result) => result.value);
 }
 
 export const languageColors: Record<string, string> = {
-  OCaml: "#EF7A08",
-  Reason: "#FF5847",
-  TypeScript: "#3178C6",
-  JavaScript: "#F1E05A",
-  HTML: "#E34C26",
-  CSS: "#563D7C",
-  Shell: "#89E051",
-  Makefile: "#427819",
+  OCaml: '#EF7A08',
+  Reason: '#FF5847',
+  TypeScript: '#3178C6',
+  JavaScript: '#F1E05A',
+  HTML: '#E34C26',
+  CSS: '#563D7C',
+  Shell: '#89E051',
+  Makefile: '#427819',
 };
 
 export function getLanguageColor(language: string | null): string {
-  if (!language) return "#858585";
-  return languageColors[language] || "#858585";
+  if (!language) return '#858585';
+  return languageColors[language] || '#858585';
 }
-

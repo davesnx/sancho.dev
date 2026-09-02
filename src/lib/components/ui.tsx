@@ -1,14 +1,13 @@
-import type { AnchorHTMLAttributes, CSSProperties, ElementType, HTMLAttributes, ReactNode } from "react";
+import type { AnchorHTMLAttributes, CSSProperties, ElementType, HTMLAttributes, ReactNode } from 'react';
 
-import { css } from "@linaria/core";
-import Link from "next/link";
+import { css } from '@linaria/core';
+import Link from 'next/link';
 
-import breakpoints from "@/theme/constants";
-import fonts from "@/theme/fonts";
-import { colors } from "@/theme/theme";
+import breakpoints from '@/theme/constants';
+import fonts from '@/theme/fonts';
+import { colors } from '@/theme/theme';
 
-export const cx = (...classNames: Array<string | false | null | undefined>) =>
-  classNames.filter(Boolean).join(" ");
+export const cx = (...classNames: Array<string | false | null | undefined>) => classNames.filter(Boolean).join(' ');
 
 export const space = (value: number) => `${value * 8}px`;
 export const rem = (value: number) => `${value}rem`;
@@ -66,7 +65,7 @@ const headingBaseClass = css`
   margin: 0;
   padding: 0;
   font-family: ${fonts.sans};
-  font-weight: 700;
+  font-weight: 600;
   line-height: 1.3;
   color: ${colors.textAccent};
   text-wrap: balance;
@@ -74,32 +73,26 @@ const headingBaseClass = css`
 
 const h1Class = css`
   font-size: ${fonts.fontSize5};
-  letter-spacing: 1.6px;
 `;
 
 const h2Class = css`
-  font-size: ${fonts.fontSize4};
-  letter-spacing: 1px;
+  font-size: ${fonts.fontSize3};
 `;
 
 const h3Class = css`
-  font-size: ${fonts.fontSize3};
-  letter-spacing: 0.8px;
+  font-size: ${fonts.fontSize2};
 `;
 
 const h4Class = css`
-  font-size: ${fonts.fontSize2};
-  letter-spacing: 0.6px;
+  font-size: ${fonts.fontSize1};
 `;
 
 const h5Class = css`
-  font-size: ${fonts.fontSize1};
-  letter-spacing: 0.4px;
+  font-size: ${fonts.fontSize0};
 `;
 
 const h6Class = css`
-  font-size: ${fonts.fontSize0};
-  letter-spacing: 0.2px;
+  font-size: ${fonts.fontSizeN1};
 `;
 
 const textLinkClass = css`
@@ -165,14 +158,14 @@ type TextProps = BoxProps & {
   weight?: number;
   color?: string;
   monospace?: boolean;
-  align?: CSSProperties["textAlign"];
+  align?: CSSProperties['textAlign'];
   kerning?: string;
 };
 
 type RowProps = HTMLAttributes<HTMLDivElement> & {
   gap?: number;
-  align?: CSSProperties["alignItems"] | "top" | "center" | "bottom" | "baseline";
-  justify?: CSSProperties["justifyContent"] | "around" | "between" | "evenly" | "left" | "center" | "right";
+  align?: CSSProperties['alignItems'] | 'top' | 'center' | 'bottom' | 'baseline';
+  justify?: CSSProperties['justifyContent'] | 'around' | 'between' | 'evenly' | 'left' | 'center' | 'right';
   wrap?: boolean;
   fullWidth?: boolean;
   columnOnMobile?: boolean;
@@ -181,8 +174,8 @@ type RowProps = HTMLAttributes<HTMLDivElement> & {
 
 type StackProps = HTMLAttributes<HTMLDivElement> & {
   gap?: number;
-  align?: CSSProperties["alignItems"] | "left" | "center" | "right";
-  justify?: CSSProperties["justifyContent"] | "around" | "between" | "evenly" | "left" | "center" | "right";
+  align?: CSSProperties['alignItems'] | 'left' | 'center' | 'right';
+  justify?: CSSProperties['justifyContent'] | 'around' | 'between' | 'evenly' | 'left' | 'center' | 'right';
   fullWidth?: boolean;
 };
 
@@ -194,46 +187,46 @@ type LinkStyleProps = {
   monospace?: boolean;
 };
 
-const isExternalLink = (href: string) => href.startsWith("http://") || href.startsWith("https://");
+const isExternalLink = (href: string) => href.startsWith('http://') || href.startsWith('https://');
 
 const stackAlignMap = {
-  left: "flex-start",
-  center: "center",
-  right: "flex-end",
+  left: 'flex-start',
+  center: 'center',
+  right: 'flex-end',
 } as const;
 
 const distributeMap = {
-  around: "space-around",
-  between: "space-between",
-  evenly: "space-evenly",
-  left: "flex-start",
-  center: "center",
-  right: "flex-end",
+  around: 'space-around',
+  between: 'space-between',
+  evenly: 'space-evenly',
+  left: 'flex-start',
+  center: 'center',
+  right: 'flex-end',
 } as const;
 
 const rowAlignMap = {
-  top: "flex-start",
-  center: "center",
-  bottom: "flex-end",
-  baseline: "baseline",
+  top: 'flex-start',
+  center: 'center',
+  bottom: 'flex-end',
+  baseline: 'baseline',
 } as const;
 
-const resolveStackAlign = (align: StackProps["align"]) => {
+const resolveStackAlign = (align: StackProps['align']) => {
   if (!align) return stackAlignMap.center;
   return stackAlignMap[align as keyof typeof stackAlignMap] ?? align;
 };
 
-const resolveDistribute = (justify: StackProps["justify"] | RowProps["justify"]) => {
+const resolveDistribute = (justify: StackProps['justify'] | RowProps['justify']) => {
   if (!justify) return distributeMap.center;
   return distributeMap[justify as keyof typeof distributeMap] ?? justify;
 };
 
-const resolveRowAlign = (align: RowProps["align"]) => {
+const resolveRowAlign = (align: RowProps['align']) => {
   if (!align) return rowAlignMap.center;
   return rowAlignMap[align as keyof typeof rowAlignMap] ?? align;
 };
 
-export function Container({ as: Tag = "div", className, ...props }: BoxProps) {
+export function Container({ as: Tag = 'div', className, ...props }: BoxProps) {
   return <Tag className={cx(containerClass, className)} {...props} />;
 }
 
@@ -268,7 +261,7 @@ export function Spacer({
         marginBottom: bottom ? space(bottom) : undefined,
         marginLeft: left ? space(left) : undefined,
         marginRight: right ? space(right) : undefined,
-        display: inline ? "inline-block" : undefined,
+        display: inline ? 'inline-block' : undefined,
       }}
     >
       {children}
@@ -278,8 +271,8 @@ export function Spacer({
 
 export function Row({
   gap = 0,
-  align = "center",
-  justify = "center",
+  align = 'center',
+  justify = 'center',
   wrap = false,
   fullWidth = false,
   columnOnMobile = false,
@@ -300,8 +293,8 @@ export function Row({
         gap: space(gap),
         alignItems: resolveRowAlign(align),
         justifyContent: resolveDistribute(justify),
-        flexWrap: wrap ? "wrap" : "nowrap",
-        width: fullWidth ? "100%" : undefined,
+        flexWrap: wrap ? 'wrap' : 'nowrap',
+        width: fullWidth ? '100%' : undefined,
         ...style,
       }}
       {...props}
@@ -311,8 +304,8 @@ export function Row({
 
 export function Stack({
   gap = 0,
-  align = "stretch",
-  justify = "flex-start",
+  align = 'stretch',
+  justify = 'flex-start',
   fullWidth = false,
   className,
   style,
@@ -325,7 +318,7 @@ export function Stack({
         gap: space(gap),
         alignItems: resolveStackAlign(align),
         justifyContent: resolveDistribute(justify),
-        width: fullWidth ? "100%" : undefined,
+        width: fullWidth ? '100%' : undefined,
         ...style,
       }}
       {...props}
@@ -334,13 +327,13 @@ export function Stack({
 }
 
 export function Text({
-  as: Tag = "p",
+  as: Tag = 'p',
   size = fonts.fontSize1,
   weight = 400,
   color = colors.textPrimary,
   monospace = false,
   align,
-  kerning = "0.02em",
+  kerning = '0.02em',
   className,
   style,
   ...props
@@ -353,7 +346,7 @@ export function Text({
         fontWeight: weight,
         color,
         fontFamily: monospace ? fonts.mono : fonts.sans,
-        fontVariantNumeric: monospace ? "tabular-nums slashed-zero" : undefined,
+        fontVariantNumeric: monospace ? 'tabular-nums slashed-zero' : undefined,
         letterSpacing: kerning,
         textAlign: align,
         ...style,
@@ -420,17 +413,19 @@ export function ResponsiveSpacer({
   return (
     <div
       className={cx(responsiveSpacerClass, className)}
-      style={{
-        "--desktop-top": desktopTop !== undefined ? rem(desktopTop) : undefined,
-        "--desktop-bottom": desktopBottom !== undefined ? rem(desktopBottom) : undefined,
-        "--desktop-left": desktopLeft !== undefined ? rem(desktopLeft) : undefined,
-        "--desktop-right": desktopRight !== undefined ? rem(desktopRight) : undefined,
-        "--mobile-top": mobileTop !== undefined ? rem(mobileTop) : undefined,
-        "--mobile-bottom": mobileBottom !== undefined ? rem(mobileBottom) : undefined,
-        "--mobile-left": mobileLeft !== undefined ? rem(mobileLeft) : undefined,
-        "--mobile-right": mobileRight !== undefined ? rem(mobileRight) : undefined,
-        ...style,
-      } as CSSProperties}
+      style={
+        {
+          '--desktop-top': desktopTop !== undefined ? rem(desktopTop) : undefined,
+          '--desktop-bottom': desktopBottom !== undefined ? rem(desktopBottom) : undefined,
+          '--desktop-left': desktopLeft !== undefined ? rem(desktopLeft) : undefined,
+          '--desktop-right': desktopRight !== undefined ? rem(desktopRight) : undefined,
+          '--mobile-top': mobileTop !== undefined ? rem(mobileTop) : undefined,
+          '--mobile-bottom': mobileBottom !== undefined ? rem(mobileBottom) : undefined,
+          '--mobile-left': mobileLeft !== undefined ? rem(mobileLeft) : undefined,
+          '--mobile-right': mobileRight !== undefined ? rem(mobileRight) : undefined,
+          ...style,
+        } as CSSProperties
+      }
       {...props}
     />
   );
@@ -448,16 +443,16 @@ export function TextLink({
   style,
   ...props
 }: LinkStyleProps &
-  Omit<AnchorHTMLAttributes<HTMLAnchorElement>, "color"> & {
+  Omit<AnchorHTMLAttributes<HTMLAnchorElement>, 'color'> & {
     href: string;
     children: ReactNode;
   }) {
   const linkStyle = {
-    "--link-color": color,
-    "--link-hover-color": hoverColor,
-    "--link-decoration-color": decorationColor,
-    "--link-font-weight": String(weight),
-    "--link-font-family": monospace ? fonts.mono : fonts.sans,
+    '--link-color': color,
+    '--link-hover-color': hoverColor,
+    '--link-decoration-color': decorationColor,
+    '--link-font-weight': String(weight),
+    '--link-font-family': monospace ? fonts.mono : fonts.sans,
     ...style,
   } as CSSProperties;
 
@@ -489,7 +484,7 @@ export function ButtonLink({
   className,
   style,
   ...props
-}: Omit<AnchorHTMLAttributes<HTMLAnchorElement>, "color"> & {
+}: Omit<AnchorHTMLAttributes<HTMLAnchorElement>, 'color'> & {
   href: string;
   children: ReactNode;
 }) {

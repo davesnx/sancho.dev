@@ -1,12 +1,12 @@
-"use client";
+'use client';
 
-import type { CSSProperties } from "react";
-import { useEffect, useId, useState } from "react";
+import type { CSSProperties } from 'react';
+import { useEffect, useId, useState } from 'react';
 
-import { css } from "@linaria/core";
-import { useTheme } from "next-themes";
+import { css } from '@linaria/core';
+import { useTheme } from 'next-themes';
 
-import { colors } from "@/theme/theme";
+import { colors } from '@/theme/theme';
 
 const buttonClass = css`
   color: var(--toggle-color, transparent);
@@ -52,13 +52,7 @@ const floatingIconClass = css`
   transition: transform 200ms ease;
 `;
 
-export function ThemeToggle({
-  floating = false,
-  onToggle,
-}: {
-  floating?: boolean;
-  onToggle?: () => void;
-}) {
+export function ThemeToggle({ floating = false, onToggle }: { floating?: boolean; onToggle?: () => void }) {
   const [mounted, setMounted] = useState(false);
   const { resolvedTheme, setTheme } = useTheme();
   const maskId = useId();
@@ -67,9 +61,9 @@ export function ThemeToggle({
     setMounted(true);
   }, []);
 
-  const isDark = (mounted ? resolvedTheme : "dark") === "dark";
+  const isDark = (mounted ? resolvedTheme : 'dark') === 'dark';
   const handleToggle = () => {
-    setTheme(isDark ? "light" : "dark");
+    setTheme(isDark ? 'light' : 'dark');
     onToggle?.();
   };
 
@@ -95,18 +89,21 @@ export function ThemeToggle({
       onClick={handleToggle}
       style={
         {
-          "--toggle-color": floating ? colors.textPrimary : "transparent",
-          "--toggle-background": floating ? colors.backgroundTertiary : "transparent",
-          "--toggle-radius": floating ? "24px" : "50%",
-          "--toggle-width": floating ? "48px" : "24px",
-          "--toggle-height": "24px",
-          "--toggle-backdrop": floating ? "blur(5px)" : "none",
-          "--toggle-hover-background": floating ? colors.borderSubtle : "transparent",
+          '--toggle-color': floating ? colors.textPrimary : 'transparent',
+          '--toggle-background': floating ? colors.backgroundTertiary : 'transparent',
+          '--toggle-radius': floating ? '24px' : '50%',
+          '--toggle-width': floating ? '48px' : '24px',
+          '--toggle-height': '24px',
+          '--toggle-backdrop': floating ? 'blur(5px)' : 'none',
+          '--toggle-hover-background': floating ? colors.borderSubtle : 'transparent',
         } as CSSProperties
       }
     >
       {floating ? (
-        <span className={floatingIconClass} style={{ transform: `translateX(${floatingLeft}px)`, width: 16, height: 16 }}>
+        <span
+          className={floatingIconClass}
+          style={{ transform: `translateX(${floatingLeft}px)`, width: 16, height: 16 }}
+        >
           {content}
         </span>
       ) : (

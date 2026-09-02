@@ -1,7 +1,7 @@
-import { css } from "@linaria/core";
+import { css } from '@linaria/core';
 
-import fonts from "@/theme/fonts";
-import { colors } from "@/theme/theme";
+import fonts from '@/theme/fonts';
+import { colors } from '@/theme/theme';
 
 const containerClass = css`
   position: relative;
@@ -66,16 +66,16 @@ const PlayIcon = () => (
 
 type MelangePlaygroundProps = {
   children: string;
-  language?: "OCaml" | "Reason";
+  language?: 'OCaml' | 'Reason';
 };
 
 function encodeForPlayground(code: string): string {
   const trimmed = code.trim();
-  return Buffer.from(trimmed).toString("base64");
+  return Buffer.from(trimmed).toString('base64');
 }
 
-export function MelangePlayground({ children, language = "OCaml" }: MelangePlaygroundProps) {
-  const code = typeof children === "string" ? children : String(children);
+export function MelangePlayground({ children, language = 'OCaml' }: MelangePlaygroundProps) {
+  const code = typeof children === 'string' ? children : String(children);
   const encoded = encodeForPlayground(code);
   const playgroundUrl = `https://melange.re/v4.0.0/playground/?language=${language}&code=${encodeURIComponent(encoded)}&live=off`;
 

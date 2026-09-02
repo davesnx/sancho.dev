@@ -1,24 +1,32 @@
-"use client";
+'use client';
 
-import type React from "react";
-import { useCallback, useEffect, useRef, useState } from "react";
-import { createPortal } from "react-dom";
+import type React from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
+import { createPortal } from 'react-dom';
 
-import { css } from "@linaria/core";
+import { css } from '@linaria/core';
 
-const buildZoomCursor = (iconPath: string, fallback: "zoom-in" | "zoom-out") => {
+const buildZoomCursor = (iconPath: string, fallback: 'zoom-in' | 'zoom-out') => {
   const svg = `<svg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32' fill='none'><circle cx='16' cy='16' r='12' fill='rgba(10,10,10,0.9)'/><circle cx='16' cy='16' r='11.5' stroke='rgba(255,255,255,0.9)'/><path d='${iconPath}' stroke='white' stroke-width='2.25' stroke-linecap='round'/></svg>`;
   return `url("data:image/svg+xml,${encodeURIComponent(svg)}") 16 16, ${fallback}`;
 };
 
-const zoomInCursor = buildZoomCursor("M16 11v10M11 16h10", "zoom-in");
-const zoomOutCursor = buildZoomCursor("M11 16h10", "zoom-out");
+const zoomInCursor = buildZoomCursor('M16 11v10M11 16h10', 'zoom-in');
+const zoomOutCursor = buildZoomCursor('M11 16h10', 'zoom-out');
 
 const imageClass = css`
   width: 100%;
   border-radius: 6px;
   margin: 0;
   cursor: ${zoomInCursor};
+`;
+
+const imageButtonClass = css`
+  display: block;
+  width: 100%;
+  padding: 0;
+  border: 0;
+  background: none;
 `;
 
 const overlayClass = css`
@@ -30,6 +38,8 @@ const overlayClass = css`
   align-items: center;
   justify-content: center;
   cursor: ${zoomOutCursor};
+  padding: 0;
+  border: 0;
 `;
 
 const zoomedImageClass = css`
@@ -69,42 +79,39 @@ export const ZoomableImage: React.FC<ZoomableImageProps> = ({ src, alt, classNam
     }, 100);
   }, []);
 
-  const handleOverlayClick = useCallback(
-    (event: React.MouseEvent) => {
-      if (event.target === event.currentTarget || (event.target as HTMLElement).tagName === "IMG") {
-        event.stopPropagation();
-        handleClose();
-      }
-    },
-    [handleClose],
-  );
-
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === "Escape" && isZoomed) {
+      if (event.key === 'Escape' && isZoomed) {
         handleClose();
       }
     };
 
     if (isZoomed) {
-      document.body.style.overflow = "hidden";
-      window.addEventListener("keydown", handleKeyDown);
+      document.body.style.overflow = 'hidden';
+      window.addEventListener('keydown', handleKeyDown);
     }
 
     return () => {
-      document.body.style.overflow = "";
-      window.removeEventListener("keydown", handleKeyDown);
+      document.body.style.overflow = '';
+      window.removeEventListener('keydown', handleKeyDown);
     };
   }, [isZoomed, handleClose]);
 
   return (
     <>
-      <img className={mergedClassName} src={src} alt={alt} loading="lazy" decoding="async" onClick={handleImageClick} {...props} />
+      <button
+        type="button"
+        className={imageButtonClass}
+        onClick={handleImageClick}
+        aria-label={`Zoom image: ${alt ?? ''}`}
+      >
+        <img className={mergedClassName} src={src} alt={alt} loading="lazy" decoding="async" {...props} />
+      </button>
       {isZoomed
         ? createPortal(
-            <div className={overlayClass} onClick={handleOverlayClick}>
+            <button type="button" className={overlayClass} onClick={handleClose} aria-label="Close zoomed image">
               <img className={zoomedImageClass} src={src} alt={alt} />
-            </div>,
+            </button>,
             document.body,
           )
         : null}

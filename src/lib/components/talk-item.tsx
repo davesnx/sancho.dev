@@ -1,9 +1,9 @@
-import { css } from "@linaria/core";
+import { css } from '@linaria/core';
 
-import { H4, Row, Stack, Text } from "@/components/ui";
-import breakpoints from "@/theme/constants";
-import font from "@/theme/fonts";
-import { colors } from "@/theme/theme";
+import { H4, Row, Stack, Text } from '@/components/ui';
+import breakpoints from '@/theme/constants';
+import font from '@/theme/fonts';
+import { colors } from '@/theme/theme';
 
 const iconWrapperClass = css`
   line-height: 0;
@@ -90,7 +90,7 @@ export function TalkItem({
       <a className={boxClass} href={link} target="_blank" rel="noopener noreferrer">
         <div>
           <Row justify="left" align="center" gap={1}>
-            <Text className={`talk-meta ${metaClass}`} size={font.fontSize1} weight={700}>
+            <Text className={`talk-meta ${metaClass}`} size={font.fontSize1} weight={600}>
               {meta}
             </Text>
             <div className={`talk-icon ${iconWrapperClass}`}>

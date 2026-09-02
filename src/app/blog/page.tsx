@@ -1,33 +1,33 @@
-import { css } from "@linaria/core";
-import type { BlogPost } from "@/posts";
+import { css } from '@linaria/core';
 
-import { ButtonLink, H1, H3, Page, Spacer, Stack, Text, TextLink } from "@/components/ui";
-import { getPublishedPosts } from "@/posts";
-import { buildMetadata } from "@/site";
-import fonts from "@/theme/fonts";
-import { colors } from "@/theme/theme";
+import { ButtonLink, H1, H3, Page, Spacer, Stack, Text, TextLink } from '@/components/ui';
+import { getPublishedPosts } from '@/posts';
+import { buildMetadata } from '@/site';
+import fonts from '@/theme/fonts';
+import { colors } from '@/theme/theme';
 
 export const metadata = buildMetadata({
-  title: "Blog",
+  title: 'Blog',
   description: "davesnx's technical blog about Software Engineering.",
-  path: "/blog",
+  path: '/blog',
 });
 
 const yearSectionClass = css`
-  position: relative;
+  display: flex;
+  align-items: flex-start;
+  gap: clamp(12px, 3vw, 24px);
   width: 100%;
 `;
 
 const yearHeaderClass = css`
-  position: absolute;
-  right: calc(100% + 120px);
-  top: 0px;
+  order: 1;
+  flex: 0 0 4ch;
   margin: 0;
-  padding: 0;
   font-family: ${fonts.mono};
   font-size: ${fonts.fontSize3};
   line-height: 1.3;
   font-weight: 700;
+  text-align: right;
   color: ${colors.textTertiary};
   opacity: 0.5;
   user-select: none;
@@ -52,36 +52,23 @@ const postTitleClass = css`
 `;
 
 const postDescriptionClass = css`
-  width: 80%;
-
-  @media (max-width: 599px) {
-    width: 100%;
-  }
+  width: 100%;
 `;
 
-type PostsByYear = Record<string, BlogPost[]>;
-
-const groupByYear = (posts: BlogPost[]) => {
-  return posts.reduce((acc, post) => {
-    const year = new Date(post.publishedAt).getFullYear().toString();
-
-    acc[year] ??= [];
-    acc[year].push(post);
-
-    return acc;
-  }, {} as PostsByYear);
-};
-
 export default function BlogIndexPage() {
-  let posts = getPublishedPosts();
-  let postsByYear = groupByYear(posts);
-  let years = Object.keys(postsByYear).sort((left, right) => Number(right) - Number(left));
+  const postsByYear = Object.groupBy(getPublishedPosts(), (post) =>
+    new Date(post.publishedAt).getFullYear().toString(),
+  );
+  const years = Object.keys(postsByYear).sort((left, right) => Number(right) - Number(left));
 
   return (
     <Page title={<H1>Blog</H1>}>
       <Spacer bottom={4}>
         <Text color={colors.textSecondary} size={fonts.fontSize1}>
-          Subscribe via <TextLink href="/rss.xml" color={colors.textProse} hoverColor={colors.textAccent}>RSS</TextLink>
+          Subscribe via{' '}
+          <TextLink href="/rss.xml" color={colors.textProse} hoverColor={colors.textAccent}>
+            RSS
+          </TextLink>
         </Text>
       </Spacer>
       <Spacer bottom={16}>

@@ -1,12 +1,12 @@
-import { getPostLlmTextBySlug } from "@/llms";
-import { getPostStaticParams } from "@/posts";
+import { getPostLlmTextBySlug } from '@/llms';
+import { getPostStaticParams } from '@/posts';
 
-export const dynamic = "force-static";
+export const dynamic = 'force-static';
 export const dynamicParams = false;
 
 const headers = {
-  "Content-Type": "text/plain; charset=utf-8",
-  "X-Content-Type-Options": "nosniff",
+  'Content-Type': 'text/plain; charset=utf-8',
+  'X-Content-Type-Options': 'nosniff',
 } as const;
 
 type RouteContext = {
@@ -21,10 +21,10 @@ export function generateStaticParams() {
 
 export async function GET(_request: Request, { params }: RouteContext) {
   const { slug } = await params;
-  const content = getPostLlmTextBySlug(slug.join("/"));
+  const content = getPostLlmTextBySlug(slug.join('/'));
 
   if (!content) {
-    return new Response("Not Found", {
+    return new Response('Not Found', {
       status: 404,
       headers,
     });

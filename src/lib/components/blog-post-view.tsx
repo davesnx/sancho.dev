@@ -1,15 +1,15 @@
-import type { ComponentType } from "react";
+import type { ComponentType } from 'react';
 
-import { css } from "@linaria/core";
-import { format } from "date-fns/format";
-import { parseISO } from "date-fns/parseISO";
+import { css } from '@linaria/core';
+import { format } from 'date-fns/format';
+import { parseISO } from 'date-fns/parseISO';
 
-import type { BlogPost } from "@/posts";
-import { postContentClass } from "@/components/post-content";
-import { H1, Page, Row, Spacer, Text, TextLink } from "@/components/ui";
-import breakpoints from "@/theme/constants";
-import fonts from "@/theme/fonts";
-import { colors } from "@/theme/theme";
+import type { BlogPost } from '@/posts';
+import { postContentClass } from '@/components/post-content';
+import { H1, Page, Row, Spacer, Text, TextLink } from '@/components/ui';
+import breakpoints from '@/theme/constants';
+import fonts from '@/theme/fonts';
+import { colors } from '@/theme/theme';
 
 const titleWrapClass = css`
   display: flex;
@@ -77,7 +77,13 @@ const twitterIconClass = css`
 `;
 
 const TwitterIcon = () => (
-  <svg role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" className={twitterIconClass} fill={colors.textPrimary}>
+  <svg
+    role="img"
+    viewBox="0 0 24 24"
+    xmlns="http://www.w3.org/2000/svg"
+    className={twitterIconClass}
+    fill={colors.textPrimary}
+  >
     <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
   </svg>
 );
@@ -98,16 +104,23 @@ export function BlogPostView({
           <div className={titleWrapClass}>
             <H1 className={titleClass}>{post.title}</H1>
           </div>
-          <Spacer bottom={2} />
+          <Spacer bottom={1} />
           <Row className={metaRowClass} gap={2}>
             <Text kerning="0.05rem" color={colors.textSecondary} size={fonts.fontSizeN2} weight={600} monospace>
-              {format(parseISO(post.publishedAt), "MMM yyyy").toUpperCase()}
+              {format(parseISO(post.publishedAt), 'MMM yyyy').toUpperCase()}
             </Text>
             <Text color={colors.textTertiary} size={fonts.fontSize0} weight={400} monospace>
               •
             </Text>
             <Text kerning="0.05rem" weight={600} size={fonts.fontSizeN2} monospace>
-              <TextLink href="/about" weight={600} color={colors.textSecondary} hoverColor={colors.textProse} decorationColor="transparent" monospace>
+              <TextLink
+                href="/about"
+                weight={600}
+                color={colors.textSecondary}
+                hoverColor={colors.textProse}
+                decorationColor="transparent"
+                monospace
+              >
                 DAVESNX
               </TextLink>
             </Text>
@@ -121,21 +134,26 @@ export function BlogPostView({
         </>
       }
     >
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+      <script type="application/ld+json">{JSON.stringify(jsonLd).replaceAll('<', '\\u003c')}</script>
       <article className={postContentClass}>
         <PostContent />
       </article>
 
-      {post.slug !== "hello" ? (
+      {post.slug !== 'hello' ? (
         <Spacer top={10} bottom={4}>
           <div className={thanksClass}>
             <Row columnOnMobile justify="space-between" align="center" wrap gap={2}>
-              <div style={{ flex: 1, minWidth: "280px" }}>
+              <div style={{ flex: 1, minWidth: '280px' }}>
                 <Text>
                   <strong>Thanks for reading!</strong> <br /> Any feedback is appreciated.
                 </Text>
               </div>
-              <a className={thanksButtonClass} href="https://twitter.com/davesnx" target="_blank" rel="noopener noreferrer">
+              <a
+                className={thanksButtonClass}
+                href="https://twitter.com/davesnx"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
                 <TwitterIcon />
                 <Text monospace>@davesnx</Text>
               </a>

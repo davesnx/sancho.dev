@@ -1,9 +1,9 @@
-import { css } from "@linaria/core";
+import { css } from '@linaria/core';
 
-import { H1, Page } from "@/components/ui";
-import { buildMetadata } from "@/site";
-import fonts from "@/theme/fonts";
-import { colors, darkCSSVariables, lightCSSVariables } from "@/theme/theme";
+import { H1, Page } from '@/components/ui';
+import { buildMetadata } from '@/site';
+import fonts from '@/theme/fonts';
+import { colors, darkCSSVariables, lightCSSVariables } from '@/theme/theme';
 
 const wrapperClass = css`
   display: grid;
@@ -70,9 +70,9 @@ const swatchClass = css`
   font-size: ${fonts.fontSizeN2};
 `;
 
-const parseThemeVariables = (cssVars: string, prefix: "light" | "dark") => {
+const parseThemeVariables = (cssVars: string, prefix: 'light' | 'dark') => {
   const map = new Map<string, string>();
-  const regex = new RegExp(`--c-${prefix}-([a-zA-Z0-9]+):\\s*([^;]+);`, "g");
+  const regex = new RegExp(`--c-${prefix}-([a-zA-Z0-9]+):\\s*([^;]+);`, 'g');
   let match = regex.exec(cssVars);
 
   while (match) {
@@ -90,10 +90,10 @@ const parseThemeVariables = (cssVars: string, prefix: "light" | "dark") => {
 };
 
 const toContrastColor = (value: string) => {
-  const hex = value.replace("#", "");
+  const hex = value.replace('#', '');
 
   if (!/^[0-9a-fA-F]{6}$/.test(hex)) {
-    return "#111111";
+    return '#111111';
   }
 
   const r = Number.parseInt(hex.slice(0, 2), 16);
@@ -101,7 +101,7 @@ const toContrastColor = (value: string) => {
   const b = Number.parseInt(hex.slice(4, 6), 16);
   const luminance = 0.2126 * r + 0.7152 * g + 0.0722 * b;
 
-  return luminance > 145 ? "#111111" : "#FAFAFA";
+  return luminance > 145 ? '#111111' : '#FAFAFA';
 };
 
 const renderValue = (value: string) => {
@@ -118,16 +118,16 @@ const renderValue = (value: string) => {
   );
 };
 
-const lightTokens = parseThemeVariables(lightCSSVariables, "light");
-const darkTokens = parseThemeVariables(darkCSSVariables, "dark");
+const lightTokens = parseThemeVariables(lightCSSVariables, 'light');
+const darkTokens = parseThemeVariables(darkCSSVariables, 'dark');
 const lightKeys = Array.from(lightTokens.keys());
 const darkKeys = Array.from(darkTokens.keys());
 const tokens = Array.from(new Set(lightKeys.concat(darkKeys))).sort();
 
 export const metadata = buildMetadata({
-  title: "UI Color Tokens",
-  description: "A reference table of the light and dark theme color tokens used on sancho.dev.",
-  path: "/ui",
+  title: 'UI Color Tokens',
+  description: 'A reference table of the light and dark theme color tokens used on sancho.dev.',
+  path: '/ui',
 });
 
 export default function UIColorsPage() {
@@ -148,8 +148,8 @@ export default function UIColorsPage() {
             </thead>
             <tbody>
               {tokens.map((token) => {
-                const lightValue = lightTokens.get(token) || "-";
-                const darkValue = darkTokens.get(token) || "-";
+                const lightValue = lightTokens.get(token) || '-';
+                const darkValue = darkTokens.get(token) || '-';
 
                 return (
                   <tr key={token}>

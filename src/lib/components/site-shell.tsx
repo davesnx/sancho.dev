@@ -1,15 +1,15 @@
-"use client";
+'use client';
 
-import type { KeyboardEvent, ReactNode } from "react";
-import { useEffect, useId, useRef, useState } from "react";
+import type { KeyboardEvent, ReactNode } from 'react';
+import { useEffect, useId, useRef, useState } from 'react';
 
-import { css } from "@linaria/core";
+import { css } from '@linaria/core';
 
-import { ButtonLink, ResponsiveSpacer, Row, Spacer, Stack, Text, TextLink } from "@/components/ui";
-import { ThemeToggle } from "@/components/theme-toggle";
-import breakpoints from "@/theme/constants";
-import fonts from "@/theme/fonts";
-import { colors } from "@/theme/theme";
+import { ButtonLink, ResponsiveSpacer, Row, Spacer, Stack, Text, TextLink } from '@/components/ui';
+import { ThemeToggle } from '@/components/theme-toggle';
+import breakpoints from '@/theme/constants';
+import fonts from '@/theme/fonts';
+import { colors } from '@/theme/theme';
 
 const rootClass = css`
   min-height: 100vh;
@@ -45,7 +45,7 @@ const menuItemClass = css`
   user-select: none;
   font-size: ${fonts.fontSize0};
   font-family: ${fonts.sans};
-  font-weight: 700;
+  font-weight: 600;
   text-transform: uppercase;
   display: inline-flex;
   letter-spacing: 2px;
@@ -212,15 +212,15 @@ const visuallyHiddenClass = css`
 `;
 
 const navItems = [
-  { href: "/blog", label: "blog" },
-  { href: "/work", label: "work" },
-  { href: "/talks", label: "talks" },
-  { href: "/about", label: "about" },
+  { href: '/blog', label: 'blog' },
+  { href: '/work', label: 'work' },
+  { href: '/talks', label: 'talks' },
+  { href: '/about', label: 'about' },
 ];
 
 const House = () => (
   <div className={logoClass}>
-    <svg viewBox="0 0 24 24" aria-hidden="true" style={{ fill: "currentColor", width: 18, height: 18 }}>
+    <svg viewBox="0 0 24 24" aria-hidden="true" style={{ fill: 'currentColor', width: 18, height: 18 }}>
       <path d="M21.591 7.146L12.52 1.157c-.316-.21-.724-.21-1.04 0l-9.071 5.99c-.26.173-.409.456-.409.757v13.183c0 .502.418.913.929.913H9.14c.51 0 .929-.41.929-.913v-7.075h3.909v7.075c0 .502.417.913.928.913h6.165c.511 0 .929-.41.929-.913V7.904c0-.301-.158-.584-.408-.758z" />
     </svg>
   </div>
@@ -230,7 +230,7 @@ const Hamburger = ({ isOpen, menuId, onClick }: { isOpen: boolean; menuId: strin
   <button
     type="button"
     className={iconClass}
-    aria-label={isOpen ? "Close menu" : "Open menu"}
+    aria-label={isOpen ? 'Close menu' : 'Open menu'}
     aria-controls={menuId}
     aria-haspopup="menu"
     aria-expanded={isOpen}
@@ -252,8 +252,8 @@ export function SiteShell({ children }: { children: ReactNode }) {
     const previousActiveElement = document.activeElement instanceof HTMLElement ? document.activeElement : null;
     const previousOverflow = document.body.style.overflow;
 
-    document.body.style.overflow = "hidden";
-    menuRef.current?.querySelector<HTMLElement>("a, button")?.focus();
+    document.body.style.overflow = 'hidden';
+    menuRef.current?.querySelector<HTMLElement>('a, button')?.focus();
 
     return () => {
       document.body.style.overflow = previousOverflow;
@@ -264,15 +264,17 @@ export function SiteShell({ children }: { children: ReactNode }) {
   const closeMenu = () => setIsOpen(false);
 
   const handleMenuKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
-    if (event.key === "Escape") {
+    if (event.key === 'Escape') {
       event.preventDefault();
       closeMenu();
       return;
     }
 
-    if (event.key !== "Tab" || !menuRef.current) return;
+    if (event.key !== 'Tab' || !menuRef.current) return;
 
-    const focusableItems = Array.from(menuRef.current.querySelectorAll<HTMLElement>("a, button")).filter((item) => !item.hasAttribute("disabled"));
+    const focusableItems = Array.from(menuRef.current.querySelectorAll<HTMLElement>('a, button')).filter(
+      (item) => !item.hasAttribute('disabled'),
+    );
     if (focusableItems.length === 0) return;
 
     const firstItem = focusableItems[0]!;
@@ -307,7 +309,12 @@ export function SiteShell({ children }: { children: ReactNode }) {
             <div className={mobileMenuRootClass}>
               {isOpen ? (
                 <>
-                  <button type="button" className={mobileMenuOverlayClass} aria-label="Close menu" onClick={closeMenu} />
+                  <button
+                    type="button"
+                    className={mobileMenuOverlayClass}
+                    aria-label="Close menu"
+                    onClick={closeMenu}
+                  />
                   <div
                     id={menuId}
                     className={mobileMenuPopupClass}
@@ -317,13 +324,20 @@ export function SiteShell({ children }: { children: ReactNode }) {
                     ref={menuRef}
                     onKeyDown={handleMenuKeyDown}
                   >
-                    <div id={`${menuId}-title`} className={visuallyHiddenClass}>Navigation menu</div>
+                    <div id={`${menuId}-title`} className={visuallyHiddenClass}>
+                      Navigation menu
+                    </div>
                     <Stack gap={0}>
                       <ButtonLink href="/" className={`${menuItemClass} ${mobileMenuItemClass}`} onClick={closeMenu}>
                         home
                       </ButtonLink>
                       {navItems.map((item) => (
-                        <ButtonLink key={item.href} href={item.href} className={`${menuItemClass} ${mobileMenuItemClass}`} onClick={closeMenu}>
+                        <ButtonLink
+                          key={item.href}
+                          href={item.href}
+                          className={`${menuItemClass} ${mobileMenuItemClass}`}
+                          onClick={closeMenu}
+                        >
                           {item.label}
                         </ButtonLink>
                       ))}

@@ -1,21 +1,19 @@
-import type { DependencyList, EffectCallback } from "react";
-import { useEffect, useLayoutEffect, useState } from "react";
+import type { DependencyList, EffectCallback } from 'react';
+import { useEffect, useLayoutEffect, useState } from 'react';
 
-import constants from "@/theme/constants";
+import constants from '@/theme/constants';
 
 export type Effect = (_effect: EffectCallback, _deps?: DependencyList) => void;
 export type MediaQueryObject = { [key: string]: string | number | boolean };
 
-const QUERY_COMBINATOR = " and ";
+const QUERY_COMBINATOR = ' and ';
 
 function camelToHyphen(camelString: string) {
-  return camelString
-    .replace(/[A-Z]/g, (string) => `-${string.toLowerCase()}`)
-    .toLowerCase();
+  return camelString.replace(/[A-Z]/g, (string) => `-${string.toLowerCase()}`).toLowerCase();
 }
 
 function queryObjectToString(query: string | MediaQueryObject) {
-  if (typeof query === "string") {
+  if (typeof query === 'string') {
     return query;
   }
 
@@ -24,14 +22,11 @@ function queryObjectToString(query: string | MediaQueryObject) {
       const convertedFeature = camelToHyphen(feature);
       let convertedValue = value;
 
-      if (typeof convertedValue === "boolean") {
+      if (typeof convertedValue === 'boolean') {
         return convertedValue ? convertedFeature : `not ${convertedFeature}`;
       }
 
-      if (
-        typeof convertedValue === "number" &&
-        /[height|width]$/.test(convertedFeature)
-      ) {
+      if (typeof convertedValue === 'number' && /[height|width]$/.test(convertedFeature)) {
         convertedValue = `${convertedValue}px`;
       }
 
@@ -40,10 +35,10 @@ function queryObjectToString(query: string | MediaQueryObject) {
     .join(QUERY_COMBINATOR);
 }
 
-const noop = () => { };
+const noop = () => {};
 
 export const mockMediaQueryList: MediaQueryList = {
-  media: "",
+  media: '',
   matches: false,
   onchange: noop,
   addListener: noop,
@@ -55,36 +50,34 @@ export const mockMediaQueryList: MediaQueryList = {
 
 const createUseMedia =
   (effect: Effect) =>
-    (rawQuery: string | MediaQueryObject, defaultState = false) => {
-      const [state, setState] = useState(defaultState);
-      const query = queryObjectToString(rawQuery);
+  (rawQuery: string | MediaQueryObject, defaultState = false) => {
+    const [state, setState] = useState(defaultState);
+    const query = queryObjectToString(rawQuery);
 
-      effect(() => {
-        let mounted = true;
-        const mediaQueryList: MediaQueryList =
-          typeof window === "undefined"
-            ? mockMediaQueryList
-            : window.matchMedia(query);
+    effect(() => {
+      let mounted = true;
+      const mediaQueryList: MediaQueryList =
+        typeof window === 'undefined' ? mockMediaQueryList : window.matchMedia(query);
 
-        const onChange = () => {
-          if (!mounted) {
-            return;
-          }
+      const onChange = () => {
+        if (!mounted) {
+          return;
+        }
 
-          setState(Boolean(mediaQueryList.matches));
-        };
+        setState(Boolean(mediaQueryList.matches));
+      };
 
-        mediaQueryList.addListener(onChange);
-        setState(mediaQueryList.matches);
+      mediaQueryList.addListener(onChange);
+      setState(mediaQueryList.matches);
 
-        return () => {
-          mounted = false;
-          mediaQueryList.removeListener(onChange);
-        };
-      }, [query]);
+      return () => {
+        mounted = false;
+        mediaQueryList.removeListener(onChange);
+      };
+    }, [query]);
 
-      return state;
-    };
+    return state;
+  };
 
 export const useMedia = createUseMedia(useEffect);
 export const useMediaLayout = createUseMedia(useLayoutEffect);
@@ -92,7 +85,7 @@ export const useMediaLayout = createUseMedia(useLayoutEffect);
 export default useMedia;
 
 export const useIsMobile = () => {
-  const isWide = useMedia({ minWidth: constants.mobile.width + "px" });
+  const isWide = useMedia({ minWidth: constants.mobile.width + 'px' });
   const isSmall = !isWide;
   return isSmall;
 };

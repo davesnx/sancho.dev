@@ -360,11 +360,7 @@
     },
     {
       "name": "Types fixes",
-      "scope": [
-        "source.java storage.type",
-        "source.haskell storage.type",
-        "source.c storage.type"
-      ],
+      "scope": ["source.java storage.type", "source.haskell storage.type", "source.c storage.type"],
       "settings": {
         "foreground": "#399ee6"
       }
@@ -406,12 +402,7 @@
     },
     {
       "name": "Function call",
-      "scope": [
-        "variable.function",
-        "variable.annotation",
-        "meta.function-call.generic",
-        "support.function.go"
-      ],
+      "scope": ["variable.function", "variable.annotation", "meta.function-call.generic", "support.function.go"],
       "settings": {
         "foreground": "#f2ae49"
       }
@@ -453,11 +444,7 @@
     },
     {
       "name": "Tag start/end",
-      "scope": [
-        "punctuation.definition.tag.end",
-        "punctuation.definition.tag.begin",
-        "punctuation.definition.tag"
-      ],
+      "scope": ["punctuation.definition.tag.end", "punctuation.definition.tag.begin", "punctuation.definition.tag"],
       "settings": {
         "foreground": "#55b4d480"
       }
@@ -486,11 +473,7 @@
     },
     {
       "name": "Decorators/annotation",
-      "scope": [
-        "meta.decorator variable.other",
-        "meta.decorator punctuation.decorator",
-        "storage.type.annotation"
-      ],
+      "scope": ["meta.decorator variable.other", "meta.decorator punctuation.decorator", "storage.type.annotation"],
       "settings": {
         "foreground": "#e6ba7e"
       }

@@ -1,9 +1,9 @@
-import { css } from "@linaria/core";
+import { css } from '@linaria/core';
 
-import { ButtonLink, H1, Page, Text } from "@/components/ui";
-import { buildMetadata } from "@/site";
-import fonts from "@/theme/fonts";
-import { colors } from "@/theme/theme";
+import { ButtonLink, H1, Page, Text } from '@/components/ui';
+import { buildMetadata } from '@/site';
+import fonts from '@/theme/fonts';
+import { colors } from '@/theme/theme';
 
 const gridClass = css`
   display: grid;
@@ -30,21 +30,21 @@ const cardTitleClass = css`
 
 const experiments = [
   {
-    href: "/experiments/chromatic",
-    title: "Chromatic aberration",
-    description: "A playful RGB-split hover and orientation effect.",
+    href: '/experiments/chromatic',
+    title: 'Chromatic aberration',
+    description: 'A playful RGB-split hover and orientation effect.',
   },
   {
-    href: "/experiments/variable",
-    title: "Variable font weight",
-    description: "Interactive typography driven by pointer position.",
+    href: '/experiments/variable',
+    title: 'Variable font weight',
+    description: 'Interactive typography driven by pointer position.',
   },
 ];
 
 export const metadata = buildMetadata({
-  title: "Experiments",
-  description: "Small interactive UI experiments by David Sancho.",
-  path: "/experiments",
+  title: 'Experiments',
+  description: 'Small interactive UI experiments by David Sancho.',
+  path: '/experiments',
 });
 
 export default function ExperimentsPage() {

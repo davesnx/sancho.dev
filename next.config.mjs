@@ -22,7 +22,6 @@ const withMDX = createMDX({
     rehypePlugins: [
       rehypePrettyCodePluginPath,
       "rehype-slug",
-      ["rehype-autolink-headings", { behavior: "append" }],
     ],
   },
 });

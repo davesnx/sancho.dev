@@ -1,22 +1,32 @@
-import type { ComponentProps } from "react";
-import type { MDXComponents } from "mdx/types";
-import { css } from "@linaria/core";
+import type { ComponentProps } from 'react';
+import type { MDXComponents } from 'mdx/types';
+import { css } from '@linaria/core';
 
-import { MdxImage } from "@/components/mdx-image";
-import { MelangePlayground } from "@/components/melange-playground";
-import { H1, H2, H3, H4, H5, H6, Text, TextLink } from "@/components/ui";
-import fonts from "@/theme/fonts";
-import { colors } from "@/theme/theme";
+import { MdxImage } from '@/components/mdx-image';
+import { MelangePlayground } from '@/components/melange-playground';
+import { H1, H2, H3, H4, H5, H6, Text, TextLink } from '@/components/ui';
+import fonts from '@/theme/fonts';
+import { colors } from '@/theme/theme';
 
-const scrollOffsetTop = "5rem";
+const scrollOffsetTop = '5rem';
 
 const headingContentClass = css`
   position: relative;
   display: inline;
 `;
 
+const headingLinkClass = css`
+  color: inherit;
+  text-decoration: none;
+
+  &:hover > [data-section-link],
+  &:focus-visible > [data-section-link] {
+    opacity: 0.3;
+  }
+`;
+
 const anchorLinkClass = css`
-  opacity: 0.2;
+  opacity: 0;
   position: absolute;
   right: calc(100% + 1rem);
   top: 0;
@@ -26,10 +36,7 @@ const anchorLinkClass = css`
   font-weight: 700;
   line-height: inherit;
   white-space: nowrap;
-
-  &:hover {
-    color: ${colors.textSecondary};
-  }
+  transition: opacity 150ms ease;
 
   @media screen and (max-width: 599px) {
     display: none;
@@ -81,7 +88,7 @@ const blockquoteClass = css`
   & p {
     margin: 0;
     font-style: italic;
-    font-weight: 700;
+    font-weight: 600;
   }
 `;
 
@@ -226,25 +233,31 @@ const codeClass = css`
   hyphens: none;
 `;
 
-const Anchor = ({ href = "", children, ...props }: ComponentProps<"a">) => (
+const Anchor = ({ href = '', children, ...props }: ComponentProps<'a'>) => (
   <TextLink href={href} {...props}>
     {children}
   </TextLink>
 );
 
-const createHeadingWithAnchor = (
-  HeadingComponent: typeof H1,
-  marginTop: string,
-) => {
-  const HeadingWithAnchor = ({ id, children, ...props }: ComponentProps<"h1"> & { id?: string }) => (
-    <HeadingComponent className={headingWrapClass} style={{ ["--heading-margin-top" as string]: marginTop }} id={id} {...props}>
+const createHeadingWithAnchor = (HeadingComponent: typeof H1, marginTop: string) => {
+  const HeadingWithAnchor = ({ id, children, ...props }: ComponentProps<'h1'> & { id?: string }) => (
+    <HeadingComponent
+      className={headingWrapClass}
+      style={{ ['--heading-margin-top' as string]: marginTop }}
+      id={id}
+      {...props}
+    >
       <span className={headingContentClass}>
         {id ? (
-          <a href={`#${id}`} aria-label={`Link to ${typeof children === "string" ? children : "section"}`} className={anchorLinkClass}>
-            #
+          <a href={`#${id}`} className={headingLinkClass}>
+            <span aria-hidden="true" className={anchorLinkClass} data-section-link>
+              #
+            </span>
+            {children}
           </a>
-        ) : null}
-        {children}
+        ) : (
+          children
+        )}
       </span>
     </HeadingComponent>
   );
@@ -252,26 +265,32 @@ const createHeadingWithAnchor = (
   return HeadingWithAnchor;
 };
 
-const MdxH1 = createHeadingWithAnchor(H1, "5rem");
-const MdxH2 = createHeadingWithAnchor(H2, "4rem");
-const MdxH3 = createHeadingWithAnchor(H3, "3rem");
-const MdxH4 = createHeadingWithAnchor(H4, "2rem");
-const MdxH5 = createHeadingWithAnchor(H5, "2rem");
-const MdxH6 = createHeadingWithAnchor(H6, "1.5rem");
+const MdxH1 = createHeadingWithAnchor(H1, '5rem');
+const MdxH2 = createHeadingWithAnchor(H2, '4rem');
+const MdxH3 = createHeadingWithAnchor(H3, '3rem');
+const MdxH4 = createHeadingWithAnchor(H4, '2rem');
+const MdxH5 = createHeadingWithAnchor(H5, '2rem');
+const MdxH6 = createHeadingWithAnchor(H6, '1.5rem');
 
-const Strong = (props: ComponentProps<"strong">) => <Text as="strong" weight={600} color={colors.textAccent} {...props} />;
-const Paragraph = (props: ComponentProps<"p">) => <p className={paragraphClass} {...props} />;
-const ListItem = (props: ComponentProps<"li">) => <li className={liClass} {...props} />;
-const OrderList = (props: ComponentProps<"ol">) => <ol className={orderedListClass} {...props} />;
-const UnorderList = (props: ComponentProps<"ul">) => <ul className={unorderedListClass} {...props} />;
-const Hr = (props: ComponentProps<"hr">) => <hr className={hrClass} {...props} />;
-const Blockquote = ({ children, ...props }: ComponentProps<"blockquote">) => <blockquote className={blockquoteClass} {...props}>{children}</blockquote>;
-const Pre = (props: ComponentProps<"pre">) => <pre className={preClass} {...props} />;
-const Code = (props: ComponentProps<"code">) => <code className={codeClass} {...props} />;
-const Table = (props: ComponentProps<"table">) => <table className={tableClass} {...props} />;
-const Image = ({ alt, src, ...props }: ComponentProps<"img">) => (
+const Strong = (props: ComponentProps<'strong'>) => (
+  <Text as="strong" weight={600} color={colors.textAccent} {...props} />
+);
+const Paragraph = (props: ComponentProps<'p'>) => <p className={paragraphClass} {...props} />;
+const ListItem = (props: ComponentProps<'li'>) => <li className={liClass} {...props} />;
+const OrderList = (props: ComponentProps<'ol'>) => <ol className={orderedListClass} {...props} />;
+const UnorderList = (props: ComponentProps<'ul'>) => <ul className={unorderedListClass} {...props} />;
+const Hr = (props: ComponentProps<'hr'>) => <hr className={hrClass} {...props} />;
+const Blockquote = ({ children, ...props }: ComponentProps<'blockquote'>) => (
+  <blockquote className={blockquoteClass} {...props}>
+    {children}
+  </blockquote>
+);
+const Pre = (props: ComponentProps<'pre'>) => <pre className={preClass} {...props} />;
+const Code = (props: ComponentProps<'code'>) => <code className={codeClass} {...props} />;
+const Table = (props: ComponentProps<'table'>) => <table className={tableClass} {...props} />;
+const Image = ({ alt, src, ...props }: ComponentProps<'img'>) => (
   <span className={imageWrapClass}>
-    {typeof src === "string" ? <MdxImage src={src} alt={alt} {...props} /> : null}
+    {typeof src === 'string' ? <MdxImage src={src} alt={alt} {...props} /> : null}
     {alt ? <span className={imageCaptionClass}>{alt}</span> : null}
   </span>
 );
