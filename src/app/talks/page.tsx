@@ -4,6 +4,13 @@ import { buildMetadata } from '@/site';
 
 const talks = [
   {
+    title: 'React from another universe',
+    description:
+      "React introduced a generation of developers to functional programming. For me, it was the start of an obsession that sent me down the rabbit hole of learning a new paradigm, working with different languages (elm/ReasonML/OCaml), shipping a few compilers, implementing a type system, and eventually reimplementing React. In this talk, I'll share the insights that transformed me from someone who uses React to someone who understands why it works—and how to apply those principles far beyond React itself. I promise I won't go deeply into algebraic effects.",
+    meta: 'React Miami 2026',
+    link: 'https://www.youtube.com/watch?v=w1WujO2i7kM',
+  },
+  {
     title: 'Universal React in OCaml',
     description:
       "server-reason-react implements react-dom/server and some of React's internals in OCaml. Its purpose is to natively render HTML markup from the server for a Reason React application. This pushes the idea for universal code (sharing code between the browser and native) and this talk is the story of all of this, and what are the solutions we applied at ahrefs",
