@@ -5,7 +5,7 @@ import { getPublishedPosts } from '@/posts';
 export const dynamic = 'force-static';
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const pages = ['/', '/about', '/blog', '/work', '/talks', '/ui', '/experiments'];
+  const pages = ['/', '/about', '/blog', '/talks', '/ui', '/experiments'];
   const staticEntries = pages.map((route) => ({
     url: `https://sancho.dev${route}`,
   }));

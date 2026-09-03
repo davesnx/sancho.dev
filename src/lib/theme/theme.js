@@ -48,6 +48,8 @@ const commonValues = {
  * @property {string} borderSubtle - Borders, rules, dividers, subtle backgrounds
  * @property {string} borderStrong - Card borders, interactive element outlines
  * @property {string} backgroundTertiary - Hover state backgrounds for cards and buttons
+ * @property {string} backgroundPill - Rest background of pills: inline icon links, floating theme toggle
+ * @property {string} backgroundPillHover - Hover background of the same pills
  */
 
 const navyScale = {
@@ -86,6 +88,8 @@ const lightValues = {
   backgroundPrimary: '#FFFFFF',
   backgroundSecondary: greyScale.grey200,
   backgroundTertiary: greyScale.grey300,
+  backgroundPill: greyScale.grey300,
+  backgroundPillHover: greyScale.grey400,
   borderStrong: navyScale.navy100,
   borderSubtle: greyScale.grey400,
   textAccent: navyScale.navy900,
@@ -104,6 +108,8 @@ const darkValues = {
   backgroundPrimary: greyScale.grey1000,
   backgroundSecondary: greyScale.grey900,
   backgroundTertiary: greyScale.grey800,
+  backgroundPill: '#1A1A1A',
+  backgroundPillHover: greyScale.grey800,
   borderStrong: greyScale.grey800,
   borderSubtle: greyScale.grey700,
   /* borderSubtle: greyScale.grey800, */

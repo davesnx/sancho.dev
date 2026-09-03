@@ -24,6 +24,8 @@ Colors are CSS variables (`var(--c-<name>)`) exposed as `colors.<name>` from
 | backgroundPrimary | #FFFFFF | #141414 | Page background |
 | backgroundSecondary | #F7F7F7 | #171717 | Cards, code blocks |
 | backgroundTertiary | #F0F0F0 | #272727 | Hover background for cards and buttons |
+| backgroundPill | #F0F0F0 | #1A1A1A | Rest background of pills: inline icon links, floating theme toggle |
+| backgroundPillHover | #E3E3E3 | #272727 | Hover background of the same pills |
 | backgroundGrey900 | #171717 | #171717 | Fixed dark tile behind logos (same in both themes) |
 | borderSubtle | #E3E3E3 | #4C4D4D | Rules, dividers, subtle borders |
 | borderStrong | #CFD2D6 | #272727 | Card borders, interactive outlines |
@@ -69,24 +71,35 @@ Extraction confirmed the dark values in use on /about: text `#cfd2d6`
 
 8px base. `space(n)` = n × 8px. Extraction saw 8, 16, 32, 40, 48, 96px.
 Paragraph gap on /about is `Spacer top={2}` (16px). Section gaps 3–10 units.
+H2 headings on /about use `Spacer top={6} bottom={2}` (48px above, 16px
+below), matching the rendered h2 margins in blog posts.
 
 ## Shape
 
-- Cards (work page open source items): radius 0.5rem, 1px `borderStrong`
+- Cards (about page open source items): radius 0.5rem, 1px `borderStrong`
   border, `backgroundSecondary`, hover `backgroundTertiary`.
-- Company logo tile (work page): 80×80, `backgroundGrey900`, 1px
+- Company logo tile (about page): 80×80, `backgroundGrey900`, 1px
   `borderStrong`, radius 6px, logo centered at 30–55px.
-- Repo owner avatar (work page): 15×15, `border-radius: 50%`.
-- Theme toggle: radius 24px (pill).
+- Repo owner avatar (about page): 15×15, `border-radius: 50%`.
+- Theme toggle: radius 24px (pill). When floating it uses `backgroundPill`
+  at rest and `backgroundPillHover` on hover, like `IconTextLink`.
 - No box shadows on the site.
+- Repo gallery (about page): shows 6 cards by default, sorted by GitHub
+  stars (highest first), plus a 2-card peek row, non-interactive, that
+  fades into the page background with a gradient starting 3rem above the
+  row. The monospace "Show N more" text button sits centered over it with
+  no background, border or radius, `textPrimary` at rest and `textAccent`
+  on hover. Expanded state shows the full list, sorted the same way, with
+  "Show less" below in normal flow.
 
 ## Motion
 
 - Color and filter transitions: 150ms ease.
 - Press feedback: `transform: scale(0.96)` on the theme toggle,
   `scale(0.99)` on cards, 120ms ease-out.
-- Pill links (`IconTextLink`): background transition 150ms ease from the
-  translucent rest color to `colors.borderStrong` on hover and focus. The
+- Pill links (`IconTextLink`): background transition 150ms ease from
+  `colors.backgroundPill` to `colors.backgroundPillHover` on hover and
+  focus, the same pair as the floating theme toggle. The
   icon sits at `filter: grayscale(1)` and goes to full color on the same
   hover and focus, 150ms ease.
 
@@ -101,16 +114,17 @@ Paragraph gap on /about is `Spacer top={2}` (16px). Section gaps 3–10 units.
   (`src/lib/components/icon-text-link.tsx`): an inline pill built on
   `ButtonLink`, radius 4px, padding 0 4px, no underline, `white-space:
   nowrap` so icon and text never split across lines, background
-  `#27272752` at rest and `colors.borderStrong` on hover and
-  `:focus-visible` (theme-resolved: #CFD2D6 light, #272727 dark). The icon
+  `colors.backgroundPill` at rest (#F0F0F0 light, #1A1A1A dark) and
+  `colors.backgroundPillHover` on hover and `:focus-visible` (#E3E3E3
+  light, #272727 dark). The icon
   is a 1em square with 4px radius and 1px padding, `vertical-align: middle`
   nudged up 3px, 3px gap before the text, grayscale until the link is
   hovered or focused, with `alt=""` because the link text carries the
   meaning.
 - Links without a distinctive logo (Melange) use `github-icon.svg`, the
   GitHub mark on the dark tile.
-- Icon-only variant: a link with `iconOnly: true` in `about/content.ts`
-  renders no text and gets `aria-label` set to the link's name.
+- Icon-only use: render `IconTextLink` with no children and pass
+  `aria-label` with the link's name, since no text carries the meaning.
 
 ## Breakpoints
 
@@ -121,8 +135,7 @@ Paragraph gap on /about is `Spacer top={2}` (16px). Section gaps 3–10 units.
 
 - Reuse `Text`, `TextLink`, `Row`, `Stack`, `Spacer` from `@/components/ui`.
 - Use `colors.*` and `fonts.*` tokens. Never hardcode a hex outside
-  `theme.js` or an SVG asset. The one documented exception is the fixed
-  translucent pill background in `IconTextLink`.
+  `theme.js` or an SVG asset.
 - Never reference a theme variable directly (`var(--c-dark-...)`,
   `var(--c-light-...)`, `var(--c-...)`). Always import `colors` from
   `@/theme/theme`.

@@ -24,12 +24,12 @@ const iconTextLinkClass = css`
   border-radius: 4px;
   padding: 0px 4px;
   text-decoration-line: none;
-  background: #27272752;
+  background: ${colors.backgroundPill};
   transition: background 150ms ease;
 
   &:hover,
   &:focus-visible {
-    background: ${colors.borderStrong};
+    background: ${colors.backgroundPillHover};
   }
 
   &:hover .${iconClass},

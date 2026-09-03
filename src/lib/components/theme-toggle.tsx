@@ -90,12 +90,12 @@ export function ThemeToggle({ floating = false, onToggle }: { floating?: boolean
       style={
         {
           '--toggle-color': floating ? colors.textPrimary : 'transparent',
-          '--toggle-background': floating ? colors.backgroundTertiary : 'transparent',
+          '--toggle-background': floating ? colors.backgroundPill : 'transparent',
           '--toggle-radius': floating ? '24px' : '50%',
           '--toggle-width': floating ? '48px' : '24px',
           '--toggle-height': '24px',
           '--toggle-backdrop': floating ? 'blur(5px)' : 'none',
-          '--toggle-hover-background': floating ? colors.borderSubtle : 'transparent',
+          '--toggle-hover-background': floating ? colors.backgroundPillHover : 'transparent',
         } as CSSProperties
       }
     >

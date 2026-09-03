@@ -213,7 +213,6 @@ const visuallyHiddenClass = css`
 
 const navItems = [
   { href: '/blog', label: 'blog' },
-  { href: '/work', label: 'work' },
   { href: '/talks', label: 'talks' },
   { href: '/about', label: 'about' },
 ];
