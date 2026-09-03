@@ -20,7 +20,7 @@ const companyLogoClass = css`
   width: 80px;
   height: 80px;
   flex-shrink: 0;
-  background-color: ${colors.backgroundGrey900};
+  background-color: ${colors.backgroundLogoTile};
   border: 1px solid ${colors.borderStrong};
   border-radius: 6px;
   display: flex;

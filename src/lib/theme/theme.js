@@ -39,7 +39,7 @@ const commonValues = {
  * @typedef {Object} ThemeValues
  * @property {string} backgroundPrimary - Main page background color
  * @property {string} backgroundSecondary - Secondary surface background (cards, code blocks)
- * @property {string} backgroundGrey900 - Fixed dark surface background
+ * @property {string} backgroundLogoTile - Tile behind company logos: dark in light mode, transparent in dark mode
  * @property {string} textAccent - Strongest foreground: hover states, emphasis, bold text
  * @property {string} textProse - Long-form content text (paragraphs, nav items, code)
  * @property {string} textPrimary - Default/fallback text color across components
@@ -84,7 +84,7 @@ const greyScale = {
  * @type {ThemeValues}
  */
 const lightValues = {
-  backgroundGrey900: greyScale.grey900,
+  backgroundLogoTile: greyScale.grey900,
   backgroundPrimary: '#FFFFFF',
   backgroundSecondary: greyScale.grey200,
   backgroundTertiary: greyScale.grey300,
@@ -104,7 +104,7 @@ const lightValues = {
  * @type {ThemeValues}
  */
 const darkValues = {
-  backgroundGrey900: greyScale.grey900,
+  backgroundLogoTile: 'transparent',
   backgroundPrimary: greyScale.grey1000,
   backgroundSecondary: greyScale.grey900,
   backgroundTertiary: greyScale.grey800,

@@ -26,7 +26,7 @@ Colors are CSS variables (`var(--c-<name>)`) exposed as `colors.<name>` from
 | backgroundTertiary | #F0F0F0 | #272727 | Hover background for cards and buttons |
 | backgroundPill | #F0F0F0 | #1A1A1A | Rest background of pills: inline icon links, floating theme toggle |
 | backgroundPillHover | #E3E3E3 | #272727 | Hover background of the same pills |
-| backgroundGrey900 | #171717 | #171717 | Fixed dark tile behind logos (same in both themes) |
+| backgroundLogoTile | #171717 | transparent | Tile behind company logos on /about |
 | borderSubtle | #E3E3E3 | #4C4D4D | Rules, dividers, subtle borders |
 | borderStrong | #CFD2D6 | #272727 | Card borders, interactive outlines |
 | textAccent | #393F48 | #DCDCDC | Strongest text, hover states, emphasis |
@@ -78,8 +78,9 @@ below), matching the rendered h2 margins in blog posts.
 
 - Cards (about page open source items): radius 0.5rem, 1px `borderStrong`
   border, `backgroundSecondary`, hover `backgroundTertiary`.
-- Company logo tile (about page): 80×80, `backgroundGrey900`, 1px
-  `borderStrong`, radius 6px, logo centered at 30–55px.
+- Company logo tile (about page): 80×80, `backgroundLogoTile` (#171717
+  light, transparent dark), 1px `borderStrong`, radius 6px, logo centered
+  at 30–55px.
 - Repo owner avatar (about page): 15×15, `border-radius: 50%`.
 - Theme toggle: radius 24px (pill). When floating it uses `backgroundPill`
   at rest and `backgroundPillHover` on hover, like `IconTextLink`.
@@ -106,7 +107,7 @@ below), matching the rendered h2 margins in blog posts.
 ## Icons and logos
 
 - Assets live in `public/logos/<name>-icon.svg`, 40×40 intrinsic size.
-  Logos with white glyphs sit on a baked `#171717` (backgroundGrey900)
+  Logos with white glyphs sit on a baked `#171717` (grey900)
   square so they read in both themes, like `ahrefs-icon.svg`.
 - GitHub org avatars come from `avatars.githubusercontent.com` with
   `s=80` for 2× density at 40px.
