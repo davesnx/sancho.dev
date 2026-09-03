@@ -1,6 +1,8 @@
 import { Fragment } from 'react';
 import { css } from '@linaria/core';
+import type { Metadata } from 'next';
 
+import { SocialLinks } from '@/components/social-links';
 import { H1, Page, Spacer, Stack, Text, TextLink } from '@/components/ui';
 import { buildMetadata } from '@/site';
 import fonts from '@/theme/fonts';
@@ -12,7 +14,7 @@ const contentClass = css`
   font-size: ${fonts.fontSize1};
 `;
 
-export const metadata = buildMetadata({
+export const metadata: Metadata = buildMetadata({
   title: 'About',
   description:
     'About David Sancho: software engineer in Barcelona working on OCaml, developer tooling, and UI infrastructure at ahrefs.',
@@ -47,6 +49,7 @@ export default function AboutPage() {
             );
           })}
         </div>
+        <SocialLinks platforms={['x', 'bluesky']} />
       </Stack>
     </Page>
   );

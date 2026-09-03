@@ -1,22 +1,25 @@
-export type AboutSegment =
-  | string
-  | {
-      text: string;
-      href: string;
-    };
+type Link = {
+  text: string;
+  href: string;
+  inlineIcon?: string;
+};
 
-export const aboutParagraphs: AboutSegment[][] = [
+type Segment = string | Link;
+
+type content = Segment[][];
+
+export const aboutParagraphs: content = [
   [
-    "Hi, I'm David. A software engineer based in Barcelona, who spends the cold winter in the Pyrenees. My work bridges functional programming, web technologies and maintainability; by focusing on creating better developer tools and experiences with ",
-    { text: 'Reason', href: 'https://reasonml.github.io/' },
+    "Hi, I'm David. Nice to meet you! I'm a Remote Software Engineer based in Ordino, Andorra. My work bridges functional programming, web and maintainability. Right now by focusing on creating better developer tools and experiences with ",
+    { text: 'OCaml', href: 'https://ocaml.org/', inlineIcon: '' },
     ' and ',
-    { text: 'OCaml', href: 'https://ocaml.org/' },
+    { text: 'Reason', href: 'https://reasonml.github.io/' },
     '.',
   ],
   [
     'I believe that creating maintainable and powerful software comes from designing with clarity, building on sound architecture, and embracing the iterative nature of development. Currently working at ',
     { text: 'ahrefs', href: 'https://ahrefs.com/' },
-    ', building the UI infrastructure that powers their frontend in OCaml, with ',
+    ', building the UI infrastructure that powers their frontend, with ',
     { text: 'Melange', href: 'https://melange.re/' },
     ', ',
     {
@@ -25,7 +28,7 @@ export const aboutParagraphs: AboutSegment[][] = [
     },
     ', ',
     { text: 'styled-ppx', href: 'https://github.com/davesnx/styled-ppx' },
-    ' and company. My work sits at the intersection between backend and frontend, and I maintain several of these projects as Open Source in the Reason ecosystem, alongside ',
+    ' and company. Always at the intersection between backend, frontend and compilers. I also maintain several of these projects as Open Source, alongside ',
     {
       text: 'reason-react',
       href: 'https://github.com/reasonml/reason-react',
@@ -33,9 +36,9 @@ export const aboutParagraphs: AboutSegment[][] = [
     '.',
   ],
   [
-    'I also contribute to the broader Reason and Melange ecosystems and co-host ',
+    'I also contribute to the broader Reason, OCaml and Melange ecosystems and co-host ',
     { text: 'emelle.tv', href: 'https://www.twitch.tv/emelletv' },
-    ', where we explore ML-family languages with their authors and maintainers.',
+    ', where we explore ML-family languages and their ecosystem with their authors and maintainers.',
   ],
   [
     'Previously, I helped build visual app development platforms at ',
@@ -46,7 +49,7 @@ export const aboutParagraphs: AboutSegment[][] = [
   ],
   [
     'Want to chat? DM me on ',
-    { text: 'Twitter', href: 'https://x.com/davesnx' },
+    { text: 'X', href: 'https://x.com/davesnx' },
     ' or ',
     {
       text: 'Bluesky',
@@ -56,12 +59,18 @@ export const aboutParagraphs: AboutSegment[][] = [
   ],
 ];
 
-const toMarkdown = (segment: AboutSegment) => {
+const toMarkdown = (segment: Segment): string | null => {
   if (typeof segment === 'string') {
     return segment;
   }
 
-  return `[${segment.text}](${segment.href})`;
+  if (typeof segment === 'object' && typeof segment.text === 'string' && typeof segment.href === 'string') {
+    return `[${segment.text}](${segment.href})`;
+  }
+
+  return null;
 };
 
-export const aboutMarkdown = aboutParagraphs.map((paragraph) => paragraph.map(toMarkdown).join('')).join('\n\n');
+export const aboutMarkdown = aboutParagraphs
+  .map((paragraph) => paragraph.map(toMarkdown).filter(Boolean).join(''))
+  .join('\n\n');

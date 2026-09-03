@@ -370,11 +370,10 @@ export function SiteShell({ children }: { children: ReactNode }) {
         <Spacer top={4} bottom={6}>
           <div className={footerClass}>
             <div>
-              <Text color={colors.textTertiary} weight={600} size={fonts.fontSizeN2} monospace>
+              <Text color={colors.textTertiary} size={fonts.fontSizeN2} monospace>
                 David Sancho (
                 <TextLink
                   href="https://x.com/davesnx"
-                  weight={600}
                   color={colors.textTertiary}
                   hoverColor={colors.textSecondary}
                   monospace
@@ -385,10 +384,9 @@ export function SiteShell({ children }: { children: ReactNode }) {
               </Text>
             </div>
             <div>
-              <Text weight={600} size={fonts.fontSizeN2} monospace color={colors.textTertiary}>
+              <Text size={fonts.fontSizeN2} monospace color={colors.textTertiary}>
                 <TextLink
                   href="https://github.com/davesnx/sancho.dev"
-                  weight={600}
                   color={colors.textTertiary}
                   hoverColor={colors.textSecondary}
                   monospace

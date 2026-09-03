@@ -19,8 +19,8 @@ const headingLinkClass = css`
   color: inherit;
   text-decoration: none;
 
-  &:hover > [data-section-link],
-  &:focus-visible > [data-section-link] {
+  &:hover [data-section-link],
+  &:focus-visible [data-section-link] {
     opacity: 0.3;
   }
 `;
@@ -240,27 +240,33 @@ const Anchor = ({ href = '', children, ...props }: ComponentProps<'a'>) => (
 );
 
 const createHeadingWithAnchor = (HeadingComponent: typeof H1, marginTop: string) => {
-  const HeadingWithAnchor = ({ id, children, ...props }: ComponentProps<'h1'> & { id?: string }) => (
-    <HeadingComponent
-      className={headingWrapClass}
-      style={{ ['--heading-margin-top' as string]: marginTop }}
-      id={id}
-      {...props}
-    >
-      <span className={headingContentClass}>
-        {id ? (
-          <a href={`#${id}`} className={headingLinkClass}>
+  const HeadingWithAnchor = ({ id, children, ...props }: ComponentProps<'h1'> & { id?: string }) => {
+    const heading = (
+      <HeadingComponent
+        className={headingWrapClass}
+        style={{ ['--heading-margin-top' as string]: marginTop }}
+        id={id}
+        {...props}
+      >
+        <span className={headingContentClass}>
+          {id && (
             <span aria-hidden="true" className={anchorLinkClass} data-section-link>
               #
             </span>
-            {children}
-          </a>
-        ) : (
-          children
-        )}
-      </span>
-    </HeadingComponent>
-  );
+          )}
+          {children}
+        </span>
+      </HeadingComponent>
+    );
+
+    return id ? (
+      <a href={`#${id}`} className={headingLinkClass}>
+        {heading}
+      </a>
+    ) : (
+      heading
+    );
+  };
 
   return HeadingWithAnchor;
 };

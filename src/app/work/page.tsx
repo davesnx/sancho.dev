@@ -24,6 +24,7 @@ const companyLogoClass = css`
   height: 80px;
   flex-shrink: 0;
   background-color: ${colors.backgroundGrey900};
+  border: 1px solid ${colors.borderStrong};
   border-radius: 6px;
   display: flex;
   align-items: center;

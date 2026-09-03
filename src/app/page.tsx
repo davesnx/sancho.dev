@@ -1,6 +1,8 @@
 import { css } from '@linaria/core';
+import type { Metadata } from 'next';
 
-import { H1, Page, Row, Spacer, Text, TextLink } from '@/components/ui';
+import { SocialLinks } from '@/components/social-links';
+import { H1, Page, Spacer, Text, TextLink } from '@/components/ui';
 import { buildMetadata } from '@/site';
 import fonts from '@/theme/fonts';
 import { colors } from '@/theme/theme';
@@ -13,10 +15,10 @@ const nameClass = css`
   color: ${colors.textAccent};
 `;
 
-export const metadata = buildMetadata({
+export const metadata: Metadata = buildMetadata({
   title: 'David Sancho',
   description:
-    'David Sancho writes about OCaml, Melange, Reason, React infrastructure, and open source software engineering.',
+    'David Sancho writes about Software engineering: OCaml, Melange, Reason, React infrastructure and Open Source',
   path: '/',
   kind: 'website',
 });
@@ -26,15 +28,13 @@ export default function HomePage() {
     <Page title={<H1 className={nameClass}>David Sancho</H1>}>
       <Spacer bottom={10}>
         <Text size={fonts.fontSize1} align="left">
-          A Software Engineer based in Barcelona, making software with{' '}
-          <TextLink href="https://reasonml.github.io/">Reason</TextLink> and{' '}
+          Remote Software Engineer based in Andorra, making software with{' '}
           <TextLink href="https://ocaml.org/">OCaml</TextLink>.
         </Text>
         <Spacer top={2} />
         <Text size={fonts.fontSize1}>
           I am currently working at <TextLink href="https://ahrefs.com/">ahrefs</TextLink>, building the UI
-          infrastructure that powers their frontend in OCaml, with{' '}
-          <TextLink href="https://melange.re/">Melange</TextLink>,{' '}
+          infrastructure that powers their frontend, with <TextLink href="https://melange.re/">Melange</TextLink>,{' '}
           <TextLink href="https://github.com/ml-in-barcelona/server-reason-react">server-reason-react</TextLink>,{' '}
           <TextLink href="https://github.com/davesnx/styled-ppx">styled-ppx</TextLink> and company.
         </Text>
@@ -43,48 +43,7 @@ export default function HomePage() {
           You can read more about me on the <TextLink href="/about">about</TextLink> page.
         </Text>
       </Spacer>
-      <Row gap={2} justify="flex-start" wrap>
-        <TextLink
-          href="https://github.com/davesnx"
-          color={colors.textSecondary}
-          hoverColor={colors.textPrimary}
-          decorationColor={colors.borderSubtle}
-        >
-          Github
-        </TextLink>
-        <TextLink
-          href="https://x.com/davesnx"
-          color={colors.textSecondary}
-          hoverColor={colors.textPrimary}
-          decorationColor={colors.borderSubtle}
-        >
-          (X) Twitter
-        </TextLink>
-        <TextLink
-          href="https://bsky.app/profile/david.sancho.dev"
-          color={colors.bluesky60}
-          hoverColor={colors.bluesky}
-          decorationColor={colors.bluesky20}
-        >
-          Bluesky
-        </TextLink>
-        <TextLink
-          href="https://discordapp.com/users/122441959414431745"
-          color={colors.discord60}
-          hoverColor={colors.discord}
-          decorationColor={colors.discord20}
-        >
-          Discord
-        </TextLink>
-        <TextLink
-          href="https://www.strava.com/athletes/davesnx"
-          color={colors.strava60}
-          hoverColor={colors.strava}
-          decorationColor={colors.strava20}
-        >
-          Strava
-        </TextLink>
-      </Row>
+      <SocialLinks />
     </Page>
   );
 }
