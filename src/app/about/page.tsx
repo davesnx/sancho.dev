@@ -2,7 +2,7 @@ import { Fragment } from 'react';
 import { css } from '@linaria/core';
 import type { Metadata } from 'next';
 
-import { SocialLinks } from '@/components/social-links';
+import { IconTextLink } from '@/components/icon-text-link';
 import { H1, Page, Spacer, Stack, Text, TextLink } from '@/components/ui';
 import { buildMetadata } from '@/site';
 import fonts from '@/theme/fonts';
@@ -37,6 +37,19 @@ export default function AboutPage() {
                       return segment;
                     }
 
+                    if (segment.inlineIcon) {
+                      return (
+                        <IconTextLink
+                          key={segment.href}
+                          href={segment.href}
+                          icon={segment.inlineIcon}
+                          aria-label={segment.text}
+                        >
+                          {segment.text}
+                        </IconTextLink>
+                      );
+                    }
+
                     return (
                       <TextLink key={segment.href} href={segment.href}>
                         {segment.text}
@@ -49,7 +62,6 @@ export default function AboutPage() {
             );
           })}
         </div>
-        <SocialLinks platforms={['x', 'bluesky']} />
       </Stack>
     </Page>
   );
