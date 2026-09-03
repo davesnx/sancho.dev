@@ -34,7 +34,7 @@ export default function HomePage() {
         <Spacer top={2} />
         <Text size={fonts.fontSize1}>
           I am currently working at <TextLink href="https://ahrefs.com/">ahrefs</TextLink>, building the UI
-          infrastructure that powers their frontend, with <TextLink href="https://melange.re/">Melange</TextLink>,{' '}
+          infrastructure, with <TextLink href="https://melange.re/">Melange</TextLink>,{' '}
           <TextLink href="https://github.com/ml-in-barcelona/server-reason-react">server-reason-react</TextLink>,{' '}
           <TextLink href="https://github.com/davesnx/styled-ppx">styled-ppx</TextLink> and company.
         </Text>
