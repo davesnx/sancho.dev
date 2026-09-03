@@ -383,6 +383,8 @@ export default function AboutPage() {
           {'.'}
         </Text>
       </div>
+
+      <Spacer bottom={20} />
     </Page>
   );
 }
