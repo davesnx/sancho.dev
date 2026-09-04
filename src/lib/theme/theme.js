@@ -48,8 +48,8 @@ const commonValues = {
  * @property {string} borderSubtle - Borders, rules, dividers, subtle backgrounds
  * @property {string} borderStrong - Card borders, interactive element outlines
  * @property {string} backgroundTertiary - Hover state backgrounds for cards and buttons
- * @property {string} backgroundPill - Rest background of pills: inline icon links, floating theme toggle
- * @property {string} backgroundPillHover - Hover background of the same pills
+ * @property {string} backgroundPill - Rest background of the floating theme toggle pill, hover background of inline icon links
+ * @property {string} backgroundPillHover - Hover background of the floating theme toggle pill
  */
 
 const navyScale = {

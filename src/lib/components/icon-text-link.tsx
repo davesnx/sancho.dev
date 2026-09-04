@@ -22,14 +22,15 @@ const iconTextLinkClass = css`
   display: inline;
   white-space: nowrap;
   border-radius: 4px;
-  padding: 0px 4px;
+  padding: 0px 3px;
+  margin: 0px -3px;
   text-decoration-line: none;
-  background: ${colors.backgroundPill};
+  background: ${colors.backgroundPrimary};
   transition: background 150ms ease;
 
   &:hover,
   &:focus-visible {
-    background: ${colors.backgroundPillHover};
+    background: ${colors.backgroundPill};
   }
 
   &:hover .${iconClass},

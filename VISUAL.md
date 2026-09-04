@@ -24,8 +24,8 @@ Colors are CSS variables (`var(--c-<name>)`) exposed as `colors.<name>` from
 | backgroundPrimary | #FFFFFF | #141414 | Page background |
 | backgroundSecondary | #F7F7F7 | #171717 | Cards, code blocks |
 | backgroundTertiary | #F0F0F0 | #272727 | Hover background for cards and buttons |
-| backgroundPill | #F0F0F0 | #1A1A1A | Rest background of pills: inline icon links, floating theme toggle |
-| backgroundPillHover | #E3E3E3 | #272727 | Hover background of the same pills |
+| backgroundPill | #F0F0F0 | #1A1A1A | Rest background of the floating theme toggle pill, hover background of inline icon links |
+| backgroundPillHover | #E3E3E3 | #272727 | Hover background of the floating theme toggle pill |
 | backgroundLogoTile | #171717 | transparent | Tile behind company logos on /about |
 | borderSubtle | #E3E3E3 | #4C4D4D | Rules, dividers, subtle borders |
 | borderStrong | #CFD2D6 | #272727 | Card borders, interactive outlines |
@@ -83,7 +83,8 @@ below), matching the rendered h2 margins in blog posts.
   at 30–55px.
 - Repo owner avatar (about page): 15×15, `border-radius: 50%`.
 - Theme toggle: radius 24px (pill). When floating it uses `backgroundPill`
-  at rest and `backgroundPillHover` on hover, like `IconTextLink`.
+  at rest and `backgroundPillHover` on hover. `IconTextLink` uses
+  `backgroundPrimary` at rest and `backgroundPill` on hover.
 - No box shadows on the site.
 - Repo gallery (about page): shows 6 cards by default, sorted by GitHub
   stars (highest first), plus a 2-card peek row, non-interactive, that
@@ -99,8 +100,8 @@ below), matching the rendered h2 margins in blog posts.
 - Press feedback: `transform: scale(0.96)` on the theme toggle,
   `scale(0.99)` on cards, 120ms ease-out.
 - Pill links (`IconTextLink`): background transition 150ms ease from
-  `colors.backgroundPill` to `colors.backgroundPillHover` on hover and
-  focus, the same pair as the floating theme toggle. The
+  `colors.backgroundPrimary` to `colors.backgroundPill` on hover and
+  focus, the toggle's rest color. The
   icon sits at `filter: grayscale(1)` and goes to full color on the same
   hover and focus, 150ms ease.
 
@@ -113,11 +114,13 @@ below), matching the rendered h2 margins in blog posts.
   `s=80` for 2× density at 40px.
 - Inline icon links in prose use `IconTextLink`
   (`src/lib/components/icon-text-link.tsx`): an inline pill built on
-  `ButtonLink`, radius 4px, padding 0 4px, no underline, `white-space:
+  `ButtonLink`, radius 4px, 0 3px padding cancelled by a 0 -3px margin
+  so the hover background extends past the text without moving the
+  surrounding prose, no underline, `white-space:
   nowrap` so icon and text never split across lines, background
-  `colors.backgroundPill` at rest (#F0F0F0 light, #1A1A1A dark) and
-  `colors.backgroundPillHover` on hover and `:focus-visible` (#E3E3E3
-  light, #272727 dark). The icon
+  `colors.backgroundPrimary` at rest (#FFFFFF light, #141414 dark)
+  and `colors.backgroundPill` on hover and `:focus-visible` (#F0F0F0
+  light, #1A1A1A dark). The icon
   is a 1em square with 4px radius and 1px padding, `vertical-align: middle`
   nudged up 3px, 3px gap before the text, grayscale until the link is
   hovered or focused, with `alt=""` because the link text carries the
