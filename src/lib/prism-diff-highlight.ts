@@ -1,4 +1,5 @@
 // @ts-nocheck
+// biome-ignore-all lint/style/useNamingConvention: ported from PrismJS upstream, keep its names for diffability
 // https://github.com/PrismJS/prism/blob/master/plugins/diff-highlight/prism-diff-highlight.js
 
 export default function diffHighlight(Prism) {
