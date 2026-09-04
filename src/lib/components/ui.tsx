@@ -189,6 +189,15 @@ type LinkStyleProps = {
 
 const isExternalLink = (href: string) => href.startsWith('http://') || href.startsWith('https://');
 
+// Route handlers and public assets (/rss.xml, /llms.txt) are not pages. Next.js Link would
+// prefetch them as routes and log a 404, so they must render as a plain anchor.
+const isFileLink = (href: string) => /\.[a-z0-9]+$/i.test(href.split(/[?#]/)[0] ?? '');
+
+const usesPlainAnchor = (href: string) => isExternalLink(href) || isFileLink(href);
+
+const externalAnchorProps = (href: string) =>
+  isExternalLink(href) ? ({ target: '_blank', rel: 'noopener noreferrer' } as const) : undefined;
+
 const stackAlignMap = {
   left: 'flex-start',
   center: 'center',
@@ -456,12 +465,11 @@ export function TextLink({
     ...style,
   } as CSSProperties;
 
-  if (isExternalLink(href)) {
+  if (usesPlainAnchor(href)) {
     return (
       <a
         href={href}
-        target="_blank"
-        rel="noopener noreferrer"
+        {...externalAnchorProps(href)}
         className={cx(textLinkClass, className)}
         style={linkStyle}
         {...props}
@@ -488,16 +496,9 @@ export function ButtonLink({
   href: string;
   children: ReactNode;
 }) {
-  if (isExternalLink(href)) {
+  if (usesPlainAnchor(href)) {
     return (
-      <a
-        href={href}
-        target="_blank"
-        rel="noopener noreferrer"
-        className={cx(buttonLinkClass, className)}
-        style={style}
-        {...props}
-      >
+      <a href={href} {...externalAnchorProps(href)} className={cx(buttonLinkClass, className)} style={style} {...props}>
         {children}
       </a>
     );
