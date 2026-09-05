@@ -9,7 +9,10 @@ here instead of new literal values.
   (dembrandt, chromium, 2026-09-03). The crawler rendered the dark theme and
   could not resolve CSS custom properties, so its palette was empty. Its
   typography, spacing, link and button findings are recorded below.
-- Source of truth for colors: `src/lib/theme/theme.js`. Fonts and sizes:
+- Source of truth for colors: `src/lib/theme/theme.js`, which re-exports the
+  active palette. Palettes: `src/lib/theme/luma.js` (active, extracted from
+  `https://luma.com/barcelona` with dembrandt on 2026-09-05) and
+  `src/lib/theme/navy.js` (the previous sancho.dev palette). Fonts and sizes:
   `src/lib/theme/fonts.js`. Primitives: `src/lib/components/ui.tsx`.
 - One page was crawled. Treat this as a description of the site, not proof of
   every screen.
@@ -21,27 +24,30 @@ Colors are CSS variables (`var(--c-<name>)`) exposed as `colors.<name>` from
 
 | Token | Light | Dark | Use |
 |---|---|---|---|
-| backgroundPrimary | #FFFFFF | #141414 | Page background |
-| backgroundSecondary | #F7F7F7 | #171717 | Cards, code blocks |
-| backgroundTertiary | #F0F0F0 | #272727 | Hover background for cards and buttons |
-| backgroundPill | #F0F0F0 | #1A1A1A | Rest background of the floating theme toggle pill, hover background of inline icon links |
-| backgroundPillHover | #E3E3E3 | #272727 | Hover background of the floating theme toggle pill |
-| backgroundLogoTile | #171717 | transparent | Tile behind company logos on /about |
-| borderSubtle | #E3E3E3 | #4C4D4D | Rules, dividers, subtle borders |
-| borderStrong | #CFD2D6 | #272727 | Card borders, interactive outlines |
-| textAccent | #393F48 | #DCDCDC | Strongest text, hover states, emphasis |
-| textPrimary | #233044 | #CFD2D6 | Default text |
-| textProse | #4C586A | #CCCCCC | Long-form paragraphs |
-| textSecondary | #78818C | #848686 | Dates, metadata |
-| textTertiary | #B9BDC3 | #4C4D4D | Footer, separators, link underlines |
+| backgroundPrimary | #FFFFFF | #151515 | Page background |
+| backgroundSecondary | #F8F8F8 | #353535 | Cards, code blocks |
+| backgroundTertiary | #EEEEEE | #555555 | Hover background for cards and buttons |
+| backgroundPill | #F6F6F6 | #353535 | Rest background of the floating theme toggle pill, hover background of inline icon links |
+| backgroundPillHover | #E3E3E3 | #555555 | Hover background of the floating theme toggle pill |
+| backgroundLogoTile | #151515 | transparent | Tile behind company logos on /about |
+| borderSubtle | rgb(21 21 21 / 4%) | rgb(255 255 255 / 8%) | Rules, dividers, subtle borders |
+| borderStrong | rgb(21 21 21 / 36%) | #959595 | Card borders, interactive outlines |
+| textAccent | #151515 | #FFFFFF | Strongest text, hover states, emphasis |
+| textPrimary | rgb(21 21 21 / 64%) | rgb(255 255 255 / 50%) | Default text |
+| textProse | #555555 | #E3E3E3 | Long-form paragraphs |
+| textSecondary | #757575 | #959595 | Dates, metadata |
+| textTertiary | #D4D4D4 | #757575 | Footer, separators, link underlines |
 
 Brand colors (same in both themes): bluesky `rgb(18 133 254)`, discord
 `rgb(88 101 242)`, strava `rgb(250 89 1)`, each with 60% and 20% alpha
 variants (`bluesky60`, `bluesky20`, ...). Raw accents: r `#FF211B`,
 g `#17E620`, b `#003AEC`.
 
-Extraction confirmed the dark values in use on /about: text `#cfd2d6`
-(90 occurrences), underline and tertiary `#4c4d4d`, hover text `#dcdcdc`.
+The Luma page renders one fixed light scheme, so the light column is
+extracted data (ink `#151515` on 942 elements, translucent ink borders and
+text) and the dark column is a best-effort inversion built from the same
+extracted greys. Luma accents seen but not adopted: pink `#F31A7C`, link blue
+`#167ACF`, green `#3CBD2C`, amber `#D69712`, red `#ED2B32`.
 
 ## Typography
 
@@ -138,8 +144,8 @@ below), matching the rendered h2 margins in blog posts.
 ## Do
 
 - Reuse `Text`, `TextLink`, `Row`, `Stack`, `Spacer` from `@/components/ui`.
-- Use `colors.*` and `fonts.*` tokens. Never hardcode a hex outside
-  `theme.js` or an SVG asset.
+- Use `colors.*` and `fonts.*` tokens. Never hardcode a hex outside a
+  palette file in `src/lib/theme/` or an SVG asset.
 - Never reference a theme variable directly (`var(--c-dark-...)`,
   `var(--c-light-...)`, `var(--c-...)`). Always import `colors` from
   `@/theme/theme`.
