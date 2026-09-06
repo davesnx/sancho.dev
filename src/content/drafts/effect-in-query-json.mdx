@@ -11,11 +11,11 @@ tags:
 
 A few years ago I wrote [query-json](/posts/cross-compile-query-json), a re-implementation of a subset of jq in OCaml. Back then, the subset of the language supported were mostly the basic parts of jq (iterators, map, filter, `.`) and because of it, the interpreter was straightforward: a function that took a jq expression and a JSON value, and returned a JSON value.
 
-Since then I've wanted query-json to support real jq: generators, catchable errors, loops, early exit. jq is [Turing-complete](https://github.com/MakeNowJust/bf.jq) if you need convincing. The interpreter I started with had none of that. It assumed one input, one output, and no way to stop or recover mid-pipeline.
+Since then I've wanted query-json to support the entire jq language, which is way more complex... including generators, loops, catchable errors, early exit. It's even [Turing-complete](https://github.com/MakeNowJust/bf.jq) if you need any convincing. The query-json interpreter had none of that. It assumed one input, one output, and no way to stop or recover mid-pipeline.
 
 In this post I want to explain what OCaml effects are, and how query-json's new interpreter uses them to implement the complexities of control flow in an elegant way.
 
-## The previous (simpler) interpreter
+## The previous interpreter
 
 In jq, `.` is the current value, `|` pipes one stage into the next, and `[]` after a value (for example `.users[]`) iterates and emits one output per element.
 
@@ -77,10 +77,6 @@ The jq expression's can produce multiple values: `.users[]` expression yields th
 ```
 
 Everything is eager. `limit(2; .users[])` cannot stop after two yields without running the whole generator first.
-
-```
-
-```
 
 Errors make it worse. Every combinator between an `error(...)` and a `try/catch` must propagate failures, even when it does not care about them:
 
