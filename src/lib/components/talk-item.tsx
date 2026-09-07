@@ -26,13 +26,14 @@ const boxClass = css`
   border-radius: 0.5rem;
   border: 1px solid ${colors.borderStrong};
   background-color: ${colors.backgroundSecondary};
-  transition: background-color 150ms ease, transform 120ms ease-out;
+  transition: background-color 300ms ease, transform 120ms ease-out;
 
   @media (max-width: ${breakpoints.mobile.width}px) {
     padding: 2rem;
   }
 
-  &:hover {
+  &:hover,
+  &:focus-visible {
     background-color: ${colors.backgroundTertiary};
   }
 

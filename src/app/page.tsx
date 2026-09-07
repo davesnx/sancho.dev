@@ -1,6 +1,7 @@
 import { css } from '@linaria/core';
 import type { Metadata } from 'next';
 
+import { IconTextLink } from '@/components/icon-text-link';
 import { SocialLinks } from '@/components/social-links';
 import { H1, Page, Spacer, Text, TextLink } from '@/components/ui';
 import { buildMetadata } from '@/site';
@@ -32,14 +33,38 @@ export default function HomePage() {
         </Text>
         <Text size={fonts.fontSize1} align="left">
           I work as a Remote Software Engineer based in Andorra, making software with{' '}
-          <TextLink href="https://ocaml.org/">OCaml</TextLink>.
+          <IconTextLink href="https://ocaml.org/" icon="/logos/ocaml-icon.svg" aria-label="OCaml">
+            OCaml
+          </IconTextLink>
+          .
         </Text>
         <Spacer top={2} />
         <Text size={fonts.fontSize1}>
-          Currently working at <TextLink href="https://ahrefs.com/">ahrefs</TextLink>, building the UI infrastructure
-          with <TextLink href="https://melange.re/">Melange</TextLink>,{' '}
-          <TextLink href="https://github.com/ml-in-barcelona/server-reason-react">server-reason-react</TextLink>,{' '}
-          <TextLink href="https://github.com/davesnx/styled-ppx">styled-ppx</TextLink> and company.
+          Currently working at{' '}
+          <IconTextLink href="https://ahrefs.com/" icon="/logos/ahrefs-icon.svg" aria-label="ahrefs">
+            ahrefs
+          </IconTextLink>
+          , building the UI infrastructure with{' '}
+          <IconTextLink href="https://melange.re/" icon="/logos/github-icon.svg" aria-label="Melange">
+            Melange
+          </IconTextLink>
+          ,{' '}
+          <IconTextLink
+            href="https://github.com/ml-in-barcelona/server-reason-react"
+            icon="https://avatars.githubusercontent.com/u/71291184?s=80&v=4"
+            aria-label="server-reason-react"
+          >
+            server-reason-react
+          </IconTextLink>
+          ,{' '}
+          <IconTextLink
+            href="https://github.com/davesnx/styled-ppx"
+            icon="https://avatars.githubusercontent.com/u/3763599?s=80&v=4"
+            aria-label="styled-ppx"
+          >
+            styled-ppx
+          </IconTextLink>{' '}
+          and company.
         </Text>
         <Spacer top={2} />
         <Text size={fonts.fontSize1}>
