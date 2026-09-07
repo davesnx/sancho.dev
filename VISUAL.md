@@ -131,8 +131,8 @@ below), matching the rendered h2 margins in blog posts.
   Each decorative logo (`alt=""`) is a non-shrinking 1em square with 4px radius
   and 1px padding. The link uses inline flex, centered alignment, a 3px gap,
   and `white-space: nowrap` to keep the logo and label together as the row wraps.
-  Logos are grayscale at rest and full color on hover or keyboard focus, with
-  a 150ms filter transition limited by the global reduced-motion rule.
+  Logos stay full color at rest, on hover, and on keyboard focus, with no
+  grayscale transition.
   Discord and Strava glyphs come from `https://cdn.simpleicons.org/discord`
   and `https://cdn.simpleicons.org/strava`, on matching 40x40 brand-color tiles.
 - Inline icon links in prose use `IconTextLink`
