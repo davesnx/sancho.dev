@@ -1,15 +1,45 @@
-export const aboutMarkdown = `
-Hi, I'm David. Nice to meet you! I'm a Remote Software Engineer based in Ordino, Andorra. My work bridges functional programming, web and maintainability. Right now by focusing on creating better developer tools and experiences with [OCaml](https://ocaml.org/) and [Reason](https://reasonml.github.io/).
+import { Fragment, isValidElement } from 'react';
 
-I believe that creating maintainable and powerful software comes from designing with clarity, building on sound architecture, and embracing the iterative nature of development.
+import { IconTextLink } from '@/components/icon-text-link';
+import { Text, TextLink } from '@/components/ui';
+import AboutPage from './page';
 
-Currently working at [ahrefs](https://ahrefs.com/), building the UI infrastructure, always at the intersection between backend, frontend and compilers. Previously, I helped build visual app development platforms at [Draftbit](https://draftbit.com) for a year and, before that, worked at [Typeform](https://www.typeform.com) for 5 years, where I led the form rendering engine.
+function inlineMarkdown(node: unknown): string {
+  if (node == null || typeof node === 'boolean') return '';
+  if (typeof node === 'number') return String(node);
+  if (typeof node === 'string') {
+    return node
+      .replace(/[\\`*_[\]<>#|~]/g, '\\$&')
+      .replace(/&(?=#\d+;|#x[\da-f]+;|[a-z][\da-z]+;)/gi, '\\&')
+      .replace(/^( {0,3})([-+])(?=\s)/gm, '$1\\$2')
+      .replace(/^( {0,3}\d+)([.)])(?=\s)/gm, '$1\\$2');
+  }
+  if (Array.isArray(node)) return node.map(inlineMarkdown).join('');
 
-I co-host [emelle.tv](https://www.twitch.tv/emelletv), where we talk with the authors and maintainers behind ML-family languages and their tooling.
+  if (isValidElement<{ children?: unknown; href?: unknown }>(node)) {
+    if (node.type === Fragment) return inlineMarkdown(node.props.children);
+    if (node.type === IconTextLink || node.type === TextLink) {
+      if (typeof node.props.href !== 'string') {
+        throw new Error('About prose links must have a string href.');
+      }
+      const href = node.props.href
+        .replace(/[\\()]/g, '\\$&')
+        .replace(/[\s<>]/g, encodeURIComponent)
+        .replace(/&(?=#\d+;|#x[\da-f]+;|[a-z][\da-z]+;)/gi, '\\&');
+      return `[${inlineMarkdown(node.props.children)}](${href})`;
+    }
+  }
 
-I maintain a few open source projects, like [Melange](https://melange.re/), [server-reason-react](https://github.com/ml-in-barcelona/server-reason-react), [styled-ppx](https://github.com/davesnx/styled-ppx) and [reason-react](https://github.com/reasonml/reason-react), the stack behind the UI at ahrefs.
+  throw new Error('Unsupported inline About prose. Add explicit support in src/app/about/content.ts before using it.');
+}
 
-Open source shaped my career, and I give back to the community where I can.
+function proseParagraphs(node: unknown): string[] {
+  if (Array.isArray(node)) return node.flatMap(proseParagraphs);
+  if (!isValidElement<{ children?: unknown }>(node)) return [];
+  if (node.type === Text) return [inlineMarkdown(node.props.children)];
 
-Want to chat? DM me on [(Twitter)](https://x.com/davesnx) or [Bluesky](https://bsky.app/profile/david.sancho.dev).
-`.trim();
+  // Only inspect explicit children, never the output of nested components.
+  return proseParagraphs(node.props.children);
+}
+
+export const aboutMarkdown = proseParagraphs(AboutPage()).join('\n\n');
