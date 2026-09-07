@@ -369,25 +369,18 @@ export function SiteShell({ children }: { children: ReactNode }) {
         <Spacer top={4} bottom={6}>
           <div className={footerClass}>
             <div>
-              <Text color={colors.textTertiary} size={fonts.fontSizeN2} monospace>
-                David Sancho (
-                <TextLink
-                  href="https://x.com/davesnx"
-                  color={colors.textTertiary}
-                  hoverColor={colors.textSecondary}
-                  monospace
-                >
-                  @davesnx
+              <Text color={colors.textProse} size={fonts.fontSizeN2} monospace>
+                <TextLink href="/rss.xml" color={colors.textProse} hoverColor={colors.textAccent} monospace>
+                  RSS
                 </TextLink>
-                )
               </Text>
             </div>
             <div>
-              <Text size={fonts.fontSizeN2} monospace color={colors.textTertiary}>
+              <Text size={fonts.fontSizeN2} monospace color={colors.textProse}>
                 <TextLink
                   href="https://github.com/davesnx/sancho.dev"
-                  color={colors.textTertiary}
-                  hoverColor={colors.textSecondary}
+                  color={colors.textProse}
+                  hoverColor={colors.textAccent}
                   monospace
                 >
                   Source

@@ -16,7 +16,7 @@ I have recently read a lot of opinions about Tailwind, including [mxstbr's thoug
 
 I'm focusing on the technical drawbacks of using Tailwind to create design-system components. I assume you're familiar with design systems and React and have basic programming skills. You can read more about design systems [here](https://www.invisionapp.com/inside-design/guide-to-design-systems/) or [here](https://uxdesign.cc/everything-you-need-to-know-about-design-systems-54b109851969).
 
-### A little bit about my experience
+## A little bit about my experience
 
 At the time of writing, I'm working at Draftbit. Our frontend is built on [ReasonReact](https://reasonml.github.io/reason-react) and uses Tailwind. It has about 500 components, and the main page, called the `builder`, looks like this:
 
@@ -26,7 +26,7 @@ I have also contributed to a few design systems in my career and even written my
 
 I'm obsessed with the conjunction of component-driven design and functional programming, and how they enable modular UIs.
 
-### First, the good parts
+## First, the good parts
 
 I think Tailwind is amazing, but not because of its utility-class patterns. Those patterns have existed for a long time. [tachyons](http://tachyons.io/) was created around 2016. Some people find utility classes pleasant to use, though I prefer to write CSS directly.
 
@@ -36,7 +36,7 @@ I think Tailwind shines for these reasons:
 - **Extendability**: Extending values in the config file lets you represent any design and propagate the right CSS properties. Extending spacing, for example, generates values for margins, padding, width, min-height, and min-height.
 - **Just CSS**: It isn't an abstraction or coupled to any framework. You can use it with minimal setup. All IDEs support it, all frontend and fullstack frameworks can integrate it easily, and there are tons of build tools to optimise performance. Because it's just "The Platform," it is easier to adopt and future-proof.
 
-### How is used in React
+## How is used in React
 
 I use React as an example, but Tailwind works similarly with any other component-based UI library. React uses JSX through Babel or another transpiler, which transforms JSX into function calls and eventually DOM elements.
 
@@ -119,7 +119,7 @@ It's a trap. Designing a closed API for those customisations would battle-test y
 
 Tailwind has no opinion on this. Still, when you need external customisation, it's tempting to accept any `className` from outside and add it to your `classNames`.
 
-### Stack: Example of variants
+#### Stack: Example of variants
 
 There are a [lot](https://seek-oss.github.io/braid-design-system/foundations/layout#stack) [of](https://polaris.shopify.com/components/structure/stack) [implementations](https://chakra-ui.com/docs/layout/stack) [of](https://www.framer.com/api/stack/) [Stack](https://v2.grommet.io/stack). This is a screenshot of [mine](https://taco-davesnx.vercel.app/?path=/story/distribute--stack).
 
@@ -141,7 +141,7 @@ Component composition gives React components these benefits:
 - **Decoupled**: Isolate UI problems in black boxes that know nothing about their context.
 - **Variants**: Implement variants of the same component without reimplementing different versions.
 
-### Example of component composition over Tailwind
+#### Example of component composition over Tailwind
 
 This is a reimplementation of Charkra's UI [Box component](https://chakra-ui.com/docs/layout/box) in a pseudo design system and Tailwind.
 
@@ -209,12 +209,12 @@ Here are the different approaches to the same UI:
 
 **`@apply`** is the directive Tailwind recommends for extracting repeated utility patterns. Because it's a static definition, it only abstracts those lists into a CSS file. I don't want to get into much detail about it, but it doesn't solve the problems above.
 
-### When I would use Tailwind again then?
+## When I would use Tailwind again then?
 
 1. **Document-like websites**, for styling content structured as one large chunk. [Tailwind Typography](https://blog.tailwindcss.com/tailwindcss-typography) provides good defaults for raw content such as a blog or newsletter.
 2. **Prototyping**, when the UI doesn't need to be visually polished or needs a unique style.
 
-### What should I use instead of Tailwind for my design system?
+## What should I use instead of Tailwind for my design system?
 
 Not every team can invest time in building tooling and design systems that give the rest of the engineering team superpowers. Creating a design system is often a full-time job.
 

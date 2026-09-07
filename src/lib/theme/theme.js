@@ -44,16 +44,16 @@ const commonValues = {
  * @property {string} textProse - Long-form content text (paragraphs, nav items, code)
  * @property {string} textPrimary - Default/fallback text color across components
  * @property {string} textSecondary - Secondary info: dates, metadata, descriptions
- * @property {string} textTertiary - Tertiary text: footer, separators, decorations
+ * @property {string} textTertiary - Separators, link underlines, decorations
  * @property {string} borderSubtle - Borders, rules, dividers, subtle backgrounds
  * @property {string} borderStrong - Card borders, interactive element outlines
  * @property {string} backgroundTertiary - Hover state backgrounds for cards and buttons
- * @property {string} backgroundPill - Rest background of the floating theme toggle pill, hover background of inline icon links
+ * @property {string} backgroundPill - Rest background of the floating theme toggle pill, hover and keyboard focus background of inline links
  * @property {string} backgroundPillHover - Hover background of the floating theme toggle pill
  */
 
 const navyScale = {
-  navy100: '#CFD2D6',
+  navy100: '#eceef1',
   navy200: '#B9BDC3',
   navy300: '#999FA8',
   navy400: '#78818C',
@@ -71,8 +71,8 @@ const greyScale = {
   grey200: '#F7F7F7',
   grey300: '#F0F0F0',
   grey400: '#E3E3E3',
-  grey500: '#CCCCCC',
-  grey600: '#848686',
+  grey500: '#b1b0b0',
+  grey600: '#909292',
   grey700: '#4C4D4D',
   grey800: '#272727',
   grey900: '#171717',
@@ -94,7 +94,7 @@ const lightValues = {
   borderSubtle: greyScale.grey400,
   textAccent: navyScale.navy900,
   textPrimary: navyScale.navy700,
-  textSecondary: navyScale.navy400,
+  textSecondary: navyScale.navy500,
   textProse: navyScale.navy500,
   textTertiary: navyScale.navy200,
 };

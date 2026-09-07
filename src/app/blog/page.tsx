@@ -1,6 +1,6 @@
 import { css } from '@linaria/core';
 
-import { ButtonLink, H1, H3, Page, Spacer, Stack, Text, TextLink } from '@/components/ui';
+import { ButtonLink, H1, H3, Page, Spacer, Stack, Text } from '@/components/ui';
 import { getPublishedPosts } from '@/posts';
 import { buildMetadata } from '@/site';
 import fonts from '@/theme/fonts';
@@ -28,8 +28,7 @@ const yearHeaderClass = css`
   line-height: 1.3;
   font-weight: 700;
   text-align: right;
-  color: ${colors.textTertiary};
-  opacity: 0.5;
+  color: ${colors.textSecondary};
   user-select: none;
 `;
 
@@ -63,14 +62,6 @@ export default function BlogIndexPage() {
 
   return (
     <Page title={<H1>Blog</H1>}>
-      <Spacer bottom={4}>
-        <Text color={colors.textSecondary} size={fonts.fontSize1}>
-          Subscribe via{' '}
-          <TextLink href="/rss.xml" color={colors.textProse} hoverColor={colors.textAccent}>
-            RSS
-          </TextLink>
-        </Text>
-      </Spacer>
       <Spacer bottom={16}>
         <Stack gap={10} align="flex-start" fullWidth>
           {years.map((year) => (

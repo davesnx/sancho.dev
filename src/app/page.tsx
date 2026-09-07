@@ -25,22 +25,26 @@ export const metadata: Metadata = buildMetadata({
 
 export default function HomePage() {
   return (
-    <Page title={<H1 className={nameClass}>David Sancho</H1>}>
+    <Page title={<H1 className={nameClass}>Hi, I'm David Sancho</H1>}>
       <Spacer bottom={10}>
         <Text size={fonts.fontSize1} align="left">
-          Remote Software Engineer based in Andorra, making software with{' '}
+          Welcome to my little space on the internet.
+        </Text>
+        <Text size={fonts.fontSize1} align="left">
+          I work as a Remote Software Engineer based in Andorra, making software with{' '}
           <TextLink href="https://ocaml.org/">OCaml</TextLink>.
         </Text>
         <Spacer top={2} />
         <Text size={fonts.fontSize1}>
-          I am currently working at <TextLink href="https://ahrefs.com/">ahrefs</TextLink>, building the UI
-          infrastructure, with <TextLink href="https://melange.re/">Melange</TextLink>,{' '}
+          Currently working at <TextLink href="https://ahrefs.com/">ahrefs</TextLink>, building the UI infrastructure
+          with <TextLink href="https://melange.re/">Melange</TextLink>,{' '}
           <TextLink href="https://github.com/ml-in-barcelona/server-reason-react">server-reason-react</TextLink>,{' '}
           <TextLink href="https://github.com/davesnx/styled-ppx">styled-ppx</TextLink> and company.
         </Text>
         <Spacer top={2} />
         <Text size={fonts.fontSize1}>
-          You can read more about me on the <TextLink href="/about">about</TextLink> page.
+          Trying to express myself on <TextLink href="/blog">blog</TextLink> and you can read more about me on the{' '}
+          <TextLink href="/about">about</TextLink> page.
         </Text>
       </Spacer>
       <SocialLinks />

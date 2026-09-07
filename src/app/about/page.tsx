@@ -17,16 +17,15 @@ const contentClass = css`
 `;
 
 const companyLogoClass = css`
-  width: 80px;
-  height: 80px;
+  width: 40px;
+  height: 40px;
   flex-shrink: 0;
   background-color: ${colors.backgroundLogoTile};
-  border: 1px solid ${colors.borderStrong};
   border-radius: 6px;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-right: 1.5rem;
+  margin-right: 1rem;
   overflow: hidden;
 `;
 
@@ -36,10 +35,23 @@ const jobRootClass = css`
   justify-content: space-between;
   align-items: center;
   flex-direction: row;
+
+  padding-bottom: 10px;
+  padding-top: 10px;
+  & + & {
+    border-top: 1px solid ${colors.borderStrong};
+  }
 `;
 
 const jobs = [
-  { company: 'ahrefs', url: 'https://ahrefs.com', role: 'Software engineer', from: '2021', to: 'curr', logo: 'ahrefs' },
+  {
+    company: 'ahrefs',
+    url: 'https://ahrefs.com',
+    role: 'Software engineer',
+    from: '2021',
+    to: 'now\u00a0',
+    logo: 'ahrefs',
+  },
   {
     company: 'Draftbit',
     url: 'https://draftbit.com',
@@ -114,7 +126,14 @@ const AhrefsLogo = () => (
 );
 
 const DraftbitLogo = () => (
-  <svg width="30" height="30" viewBox="0 0 28 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <svg
+    width="30"
+    height="30"
+    viewBox="0 0 28 30"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+    style={{ padding: `3px` }}
+  >
     <path
       d="M16.108 0.550584L25.7509 5.96179C27.0965 6.71688 27.9286 8.1331 27.9286 9.66822V20.3318C27.9286 21.8669 27.0965 23.2831 25.7509 24.0382L16.108 29.4494C14.7998 30.1835 13.2002 30.1835 11.8919 29.4494L2.24909 24.0382C0.903508 23.2831 0.0714264 21.8669 0.0714264 20.3318V9.66822C0.0714264 8.1331 0.903508 6.71688 2.24909 5.96179L11.8919 0.550584C13.2002 -0.183528 14.7998 -0.183528 16.108 0.550584ZM1.67857 9.71139V20.3318C1.67857 21.2848 2.19606 22.1656 3.03559 22.6367L12.5415 27.971C12.6646 28.0187 12.7958 28.0434 12.9286 28.0434C13.5203 28.0434 14 27.5637 14 26.972V18.3878C14 16.9888 13.2213 15.7061 11.9801 15.0607L11.2725 14.6928C11.1056 14.6217 10.9408 14.5439 10.7786 14.4592L1.67857 9.71139ZM11.648 13.5093C13.356 14.4004 14.6486 14.4004 16.3566 13.5093L25.5884 8.32656C25.3611 7.80604 24.9668 7.3619 24.451 7.07243L15.3216 1.95213C14.5019 1.49215 13.4981 1.49215 12.6784 1.95213L3.56635 7.07243C3.0505 7.3619 2.65625 7.80604 2.42891 8.32656L11.648 13.5093ZM14 3.75C16.0089 3.75 17.6489 4.73732 17.7455 5.97794L17.75 8.10268C17.75 9.3971 16.0711 10.4464 14 10.4464C11.9289 10.4464 10.25 9.3971 10.25 8.10268V5.97794C10.3511 4.73732 11.9911 3.75 14 3.75ZM14.0004 7.5C15.7401 7.5 17.1504 6.79485 17.1504 5.925C17.1504 5.05515 15.7401 4.35 14.0004 4.35C12.2607 4.35 10.8504 5.05515 10.8504 5.925C10.8504 6.79485 12.2607 7.5 14.0004 7.5Z"
       fill="#FAFAFA"
@@ -123,7 +142,14 @@ const DraftbitLogo = () => (
 );
 
 const TypeformLogo = () => (
-  <svg width="30" height="30" viewBox="0 0 256 407" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid">
+  <svg
+    width="30"
+    height="30"
+    viewBox="0 0 256 407"
+    xmlns="http://www.w3.org/2000/svg"
+    preserveAspectRatio="xMidYMid"
+    style={{ padding: `4px` }}
+  >
     <g>
       <path
         d="M215.946858,1.30253648 L255.678174,1.30253648 L255.678174,406.328715 L215.946858,406.328715 L215.946858,1.30253648 Z"
@@ -138,7 +164,14 @@ const TypeformLogo = () => (
 );
 
 const OfertiaLogo = () => (
-  <svg width="40" height="40" viewBox="0 0 124 124" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <svg
+    width="40"
+    height="40"
+    viewBox="0 0 124 124"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+    style={{ padding: `5px` }}
+  >
     <path
       d="M24.2305 36.7852C34.4788 26.4464 52.3525 23.054 65.9844 28.7695C74.0284 33.6802 80.9026 40.6502 83.5381 49.8838C85.7726 60.1115 84.8863 72.7517 80 82C74.7155 89.9632 67.9331 94.0223 59 97C47.7915 98.2351 37.3132 97.9885 28 91C21.1076 85.1214 16.7897 78.1214 15.7812 69.0273C14.8997 57.0592 16.4512 46.3763 24.2305 36.7852ZM55 42C49.9726 41.2691 45.6363 41.1645 41.0625 43.5C37.4592 47.8676 35.2581 51.4193 34.6836 57.1641C34.5549 64.6271 34.5121 72.316 40 78C44.8833 82.0883 47.8791 82.5017 54 82C58.6248 80.4584 60.4438 78.8034 63.25 74.75C66.4183 68.0903 66.2637 57.9504 64 51C61.8582 46.491 59.5091 44.174 55 42Z"
       fill="#FCFCFE"
@@ -160,13 +193,13 @@ const OfertiaLogo = () => (
 
 const DateRange = ({ date }: { date: { from: string; to: string } }) => (
   <Row gap={1}>
-    <Text monospace weight={800} size={fonts.fontSize1}>
+    <Text monospace size={fonts.fontSize1}>
       {date.from}
     </Text>
-    <Text monospace weight={800} size={fonts.fontSize1}>
+    <Text monospace color={colors.textSecondary} size={fonts.fontSize1}>
       -
     </Text>
-    <Text monospace weight={800} size={fonts.fontSize1}>
+    <Text monospace size={fonts.fontSize1}>
       {date.to}
     </Text>
   </Row>
@@ -195,34 +228,39 @@ const Job = ({
   role: string;
 }) => (
   <section className={jobRootClass}>
-    <div className={companyLogoClass}>
+    <div className={companyLogoClass} role="img" aria-label={company.name}>
       <CompanyLogo logo={company.logo} />
     </div>
     <Stack gap={1} align="left" fullWidth>
-      <Row justify="between" fullWidth>
-        <Stack align="left" gap={0}>
-          <Text weight={600} size={fonts.fontSize2} color={colors.textAccent}>
+      <Row justify="left" fullWidth gap={4}>
+        <HideOnMobile>
+          <div style={{ flex: 1, minWidth: '100px', display: 'flex', alignItems: 'center' }}>
+            {company.url ? (
+              <TextLink
+                weight={600}
+                color={colors.textSecondary}
+                hoverColor={colors.textProse}
+                decorationColor={colors.textTertiary}
+                href={company.url}
+              >
+                {company.name}
+              </TextLink>
+            ) : (
+              <Text weight={600} color={colors.textSecondary} size={fonts.fontSize1}>
+                {company.name}
+              </Text>
+            )}
+          </div>
+        </HideOnMobile>
+        <div style={{ flex: 1 }}>
+          <Text size={fonts.fontSize2} color={colors.textAccent}>
             {role}
           </Text>
-          {company.url ? (
-            <TextLink
-              color={colors.textSecondary}
-              hoverColor={colors.textProse}
-              decorationColor={colors.textTertiary}
-              href={company.url}
-            >
-              {company.url}
-            </TextLink>
-          ) : (
-            <Text weight={500} color={colors.textSecondary} size={fonts.fontSize1}>
-              {company.name}
-            </Text>
-          )}
-          <HideOnDesktop>
-            <Spacer top={0.5} />
-            <DateRange date={date} />
-          </HideOnDesktop>
-        </Stack>
+        </div>
+        <HideOnDesktop>
+          <Spacer top={0.5} />
+          <DateRange date={date} />
+        </HideOnDesktop>
         <HideOnMobile>
           <DateRange date={date} />
         </HideOnMobile>
@@ -295,7 +333,7 @@ export default function AboutPage() {
 
       <Spacer top={5} />
 
-      <Stack gap={3} align="left">
+      <Stack gap={0} align="left">
         {jobs.map((job) => (
           <Job
             key={`${job.company}-${job.from}`}

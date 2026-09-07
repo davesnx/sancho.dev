@@ -54,6 +54,30 @@ export const postContentClass = css`
     color: ${colors.textSecondary};
   }
 
+  & ul {
+    padding-left: 1.5rem;
+  }
+
+  & ul > li {
+    position: relative;
+    padding-left: 0;
+  }
+
+  & ul > li::marker {
+    content: "";
+  }
+
+  & ul > li::before {
+    content: "";
+    position: absolute;
+    top: 13px;
+    left: -1.5rem;
+    width: 10px;
+    height: 2px;
+    border-radius: 4px;
+    background-color: ${colors.textSecondary};
+  }
+
   & blockquote {
     margin: 2rem 0;
     padding: 0.25rem 0 0.25rem 1.25rem;

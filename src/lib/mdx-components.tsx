@@ -74,7 +74,6 @@ const blockquoteClass = css`
   position: relative;
   padding: 0;
   margin-left: 24px;
-  opacity: 0.6;
 
   &:before {
     content: "";
@@ -203,17 +202,17 @@ const headingWrapClass = css`
 const imageWrapClass = css`
   display: block;
   margin: 1rem 0 3rem 0;
-
-    border-radius: 6px;
+  border-radius: 6px;
 `;
 
 const imageCaptionClass = css`
   display: block;
-  margin-top: 0;
+  margin-top: 4px;
   text-align: left;
   font-family: ${fonts.sans};
   font-size: ${fonts.fontSizeN1};
-  color: ${colors.textTertiary};
+  color: ${colors.textProse};
+  font-weight: 600;
   font-style: italic;
 `;
 

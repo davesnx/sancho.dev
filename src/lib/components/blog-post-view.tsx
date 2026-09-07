@@ -29,7 +29,6 @@ const titleWrapClass = css`
 `;
 
 const titleClass = css`
-  margin: 5rem 0px 1rem;
   font-size: 3rem;
   width: 100%;
   text-align: center;
@@ -44,6 +43,20 @@ const titleClass = css`
 const metaRowClass = css`
   justify-content: center;
   flex-wrap: wrap;
+`;
+
+const authorLinkClass = css`
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  white-space: nowrap;
+`;
+
+const authorAvatarClass = css`
+  display: block;
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
 `;
 
 const thanksClass = css`
@@ -78,7 +91,7 @@ const twitterIconClass = css`
 
 const TwitterIcon = () => (
   <svg
-    role="img"
+    aria-hidden="true"
     viewBox="0 0 24 24"
     xmlns="http://www.w3.org/2000/svg"
     className={twitterIconClass}
@@ -102,33 +115,44 @@ export function BlogPostView({
       title={
         <>
           <div className={titleWrapClass}>
-            <H1 className={titleClass}>{post.title}</H1>
+            <Spacer top={4} bottom={2}>
+              <H1 className={titleClass}>{post.title}</H1>
+              <Spacer bottom={1} />
+              <div style={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
+                <Text color={colors.textSecondary} size={fonts.fontSize1} weight={400} align="center">
+                  {post.description}
+                </Text>
+              </div>
+            </Spacer>
           </div>
           <Spacer bottom={1} />
-          <Row className={metaRowClass} gap={2}>
-            <Text kerning="0.05rem" color={colors.textSecondary} size={fonts.fontSizeN2} weight={600} monospace>
+          <Row className={metaRowClass} gap={2} wrap>
+            <Text kerning="0.05rem" color={colors.textSecondary} size={fonts.fontSizeN2} weight={400} monospace>
               {format(parseISO(post.publishedAt), 'MMM yyyy').toUpperCase()}
             </Text>
             <Text color={colors.textTertiary} size={fonts.fontSize0} weight={400} monospace>
               •
             </Text>
-            <Text kerning="0.05rem" weight={600} size={fonts.fontSizeN2} monospace>
+            <Text kerning="0.05rem" color={colors.textSecondary} size={fonts.fontSizeN2} weight={400} monospace>
+              {`${Math.max(1, Math.floor(post.readingTime.minutes))} MINUTES`}
+            </Text>
+
+            <Text color={colors.textTertiary} size={fonts.fontSize0} weight={400} monospace>
+              •
+            </Text>
+            <Text kerning="0.05rem" weight={400} size={fonts.fontSizeN2} monospace>
               <TextLink
                 href="/about"
-                weight={600}
+                className={authorLinkClass}
+                weight={400}
                 color={colors.textSecondary}
                 hoverColor={colors.textProse}
                 decorationColor="transparent"
                 monospace
               >
                 DAVESNX
+                <img src="/images/twitter-avatar.jpg" width={18} height={18} className={authorAvatarClass} alt="" />
               </TextLink>
-            </Text>
-            <Text color={colors.textTertiary} size={fonts.fontSize0} weight={400} monospace>
-              •
-            </Text>
-            <Text kerning="0.05rem" color={colors.textSecondary} size={fonts.fontSizeN2} weight={600} monospace>
-              {`${Math.max(1, Math.floor(post.readingTime.minutes))} MINUTES`}
             </Text>
           </Row>
         </>

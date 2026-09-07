@@ -105,13 +105,18 @@ const textLinkClass = css`
   overflow-wrap: break-word;
   word-wrap: break-word;
   display: inherit;
-  transition: color 150ms ease, text-decoration-color 150ms ease;
+  border-radius: 2px;
+  margin: 0 -2px;
+  padding: 1px 5px;
+  transition: color 150ms ease, text-decoration-color 150ms ease, background-color 150ms ease;
   text-decoration-line: underline;
-  text-decoration-thickness: 1.5px;
-  text-underline-offset: 2px;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
   text-decoration-color: var(--link-decoration-color, ${colors.textTertiary});
 
-  &:hover {
+  &:hover,
+  &:focus-visible {
+    background-color: ${colors.backgroundPill};
     color: var(--link-hover-color);
     text-decoration-color: var(--link-hover-color);
   }
@@ -121,6 +126,25 @@ const buttonLinkClass = css`
   color: inherit;
   text-decoration: none;
   cursor: pointer;
+`;
+
+const filledButtonLinkClass = css`
+  display: inline-flex;
+  align-items: center;
+  padding: 10px 16px;
+  border-radius: 10px;
+  background: ${colors.backgroundSecondary};
+  color: ${colors.textPrimary};
+
+  &:hover,
+  &:focus-visible {
+    background: ${colors.backgroundTertiary};
+  }
+
+  &:focus-visible {
+    outline: 2px solid ${colors.textPrimary};
+    outline-offset: 3px;
+  }
 `;
 
 const hideOnMobileClass = css`
@@ -155,7 +179,7 @@ type BoxProps = HTMLAttributes<HTMLElement> & {
 
 type TextProps = BoxProps & {
   size?: string;
-  weight?: number;
+  weight?: 400 | 600;
   color?: string;
   monospace?: boolean;
   align?: CSSProperties['textAlign'];
@@ -489,23 +513,36 @@ export function TextLink({
 export function ButtonLink({
   href,
   children,
+  variant = 'plain',
   className,
   style,
   ...props
 }: Omit<AnchorHTMLAttributes<HTMLAnchorElement>, 'color'> & {
   href: string;
   children: ReactNode;
+  variant?: 'plain' | 'filled';
 }) {
   if (usesPlainAnchor(href)) {
     return (
-      <a href={href} {...externalAnchorProps(href)} className={cx(buttonLinkClass, className)} style={style} {...props}>
+      <a
+        href={href}
+        {...externalAnchorProps(href)}
+        className={cx(buttonLinkClass, variant === 'filled' && filledButtonLinkClass, className)}
+        style={style}
+        {...props}
+      >
         {children}
       </a>
     );
   }
 
   return (
-    <Link href={href} className={cx(buttonLinkClass, className)} style={style} {...props}>
+    <Link
+      href={href}
+      className={cx(buttonLinkClass, variant === 'filled' && filledButtonLinkClass, className)}
+      style={style}
+      {...props}
+    >
       {children}
     </Link>
   );
