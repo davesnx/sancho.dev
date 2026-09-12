@@ -1,10 +1,10 @@
-import { buildMetadata } from "@/site";
-import { ChromaticDemo } from "./chromatic-demo";
+import { buildMetadata } from '@/site';
+import { ChromaticDemo } from './chromatic-demo';
 
 export const metadata = buildMetadata({
-  title: "Chromatic Aberration",
-  description: "An interactive chromatic aberration text experiment.",
-  path: "/experiments/chromatic",
+  title: 'Chromatic Aberration',
+  description: 'An interactive chromatic aberration text experiment.',
+  path: '/experiments/chromatic',
 });
 
 export default function ChromaticExperimentPage() {

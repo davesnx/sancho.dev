@@ -1,66 +1,45 @@
-export type AboutSegment =
-  | string
-  | {
-      text: string;
-      href: string;
-    };
+import { Fragment, isValidElement } from 'react';
 
-export const aboutParagraphs: AboutSegment[][] = [
-  [
-    "Hi, I'm David. A software engineer based in Barcelona, who spends the cold winter in the Pyrenees. My work bridges functional programming, web technologies and maintanability; by focusing on creating better developer tools and experiences with ",
-    { text: "Reason", href: "http://reasonml.github.io/" },
-    " and ",
-    { text: "OCaml", href: "https://ocaml.org/" },
-    ".",
-  ],
-  [
-    "I believe that the recipe for creating maintainable and powerful software lies in designing with clarity, sound architecture, and embracing the iterative nature of development. Currently working at ",
-    { text: "ahrefs", href: "https://ahrefs.com/" },
-    ", primarily building developer tooling to help create nice UIs, also maintaining several Open Source projects in the Reason ecosystem, such as ",
-    {
-      text: "reason-react",
-      href: "https://github.com/reasonml/reason-react",
-    },
-    ", ",
-    {
-      text: "server-reason-react",
-      href: "https://github.com/ml-in-barcelona/server-reason-react",
-    },
-    " and ",
-    { text: "styled-ppx", href: "https://github.com/davesnx/styled-ppx" },
-    ".",
-  ],
-  [
-    "I also contribute to the broader Reason and Melange ecosystems and co-host ",
-    { text: "emelle.tv", href: "https://www.twitch.tv/emelletv" },
-    ", where we explore ML-family languages and meet incredible authors from the ecosystem.",
-  ],
-  [
-    "Previously, I helped build visual app development platforms at ",
-    { text: "Draftbit", href: "https://draftbit.com" },
-    " for a year and, even before, worked at ",
-    { text: "Typeform", href: "https://www.typeform.com" },
-    " for 5 years where I lead the form rendering engine.",
-  ],
-  [
-    "Want to chat? DM me on ",
-    { text: "Twitter", href: "https://x.com/davesnx" },
-    " or ",
-    {
-      text: "Bluesky",
-      href: "https://bsky.app/profile/david.sancho.dev",
-    },
-  ],
-];
+import { IconTextLink } from '@/components/icon-text-link';
+import { Text, TextLink } from '@/components/ui';
+import AboutPage from './page';
 
-const toMarkdown = (segment: AboutSegment) => {
-  if (typeof segment === "string") {
-    return segment;
+function inlineMarkdown(node: unknown): string {
+  if (node == null || typeof node === 'boolean') return '';
+  if (typeof node === 'number') return String(node);
+  if (typeof node === 'string') {
+    return node
+      .replace(/[\\`*_[\]<>#|~]/g, '\\$&')
+      .replace(/&(?=#\d+;|#x[\da-f]+;|[a-z][\da-z]+;)/gi, '\\&')
+      .replace(/^( {0,3})([-+])(?=\s)/gm, '$1\\$2')
+      .replace(/^( {0,3}\d+)([.)])(?=\s)/gm, '$1\\$2');
+  }
+  if (Array.isArray(node)) return node.map(inlineMarkdown).join('');
+
+  if (isValidElement<{ children?: unknown; href?: unknown }>(node)) {
+    if (node.type === Fragment) return inlineMarkdown(node.props.children);
+    if (node.type === IconTextLink || node.type === TextLink) {
+      if (typeof node.props.href !== 'string') {
+        throw new Error('About prose links must have a string href.');
+      }
+      const href = node.props.href
+        .replace(/[\\()]/g, '\\$&')
+        .replace(/[\s<>]/g, encodeURIComponent)
+        .replace(/&(?=#\d+;|#x[\da-f]+;|[a-z][\da-z]+;)/gi, '\\&');
+      return `[${inlineMarkdown(node.props.children)}](${href})`;
+    }
   }
 
-  return `[${segment.text}](${segment.href})`;
-};
+  throw new Error('Unsupported inline About prose. Add explicit support in src/app/about/content.ts before using it.');
+}
 
-export const aboutMarkdown = aboutParagraphs
-  .map((paragraph) => paragraph.map(toMarkdown).join(""))
-  .join("\n\n");
+function proseParagraphs(node: unknown): string[] {
+  if (Array.isArray(node)) return node.flatMap(proseParagraphs);
+  if (!isValidElement<{ children?: unknown }>(node)) return [];
+  if (node.type === Text) return [inlineMarkdown(node.props.children)];
+
+  // Only inspect explicit children, never the output of nested components.
+  return proseParagraphs(node.props.children);
+}
+
+export const aboutMarkdown = proseParagraphs(AboutPage()).join('\n\n');

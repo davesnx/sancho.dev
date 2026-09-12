@@ -1,0 +1,67 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="560" viewBox="0 0 960 560" role="img" aria-labelledby="title desc">
+  <title id="title">Exceptions unwind; effects can resume</title>
+  <desc id="desc">An exception discards stack frames on the way to its handler. An effect preserves the suspended stack as continuation k, which the handler can continue with a value or discontinue with an exception.</desc>
+  <defs>
+    <marker id="arrow-muted" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">
+      <path d="M0 0L8 4L0 8Z" fill="#848686"/>
+    </marker>
+    <marker id="arrow-green" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">
+      <path d="M0 0L8 4L0 8Z" fill="#17E620"/>
+    </marker>
+    <style>
+      .sans { font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
+      .mono { font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace; }
+      .heading { fill: #DCDCDC; font-size: 18px; font-weight: 700; letter-spacing: .08em; }
+      .label { fill: #CCCCCC; font-size: 17px; font-weight: 650; }
+      .body { fill: #999FA8; font-size: 15px; }
+      .code { fill: #DCDCDC; font-size: 16px; }
+      .small { fill: #848686; font-size: 13px; }
+    </style>
+  </defs>
+
+  <rect width="960" height="560" rx="18" fill="#171717"/>
+  <text x="48" y="54" class="sans heading">THE SAME JUMP, A DIFFERENT STACK POLICY</text>
+  <line x1="480" y1="86" x2="480" y2="512" stroke="#393F48"/>
+
+  <text x="48" y="112" class="sans label">Exception</text>
+  <rect x="48" y="140" width="330" height="62" rx="10" fill="#272727" stroke="#4C4D4D"/>
+  <text x="70" y="178" class="mono code">raise Error</text>
+
+  <line x1="213" y1="202" x2="213" y2="248" stroke="#848686" stroke-width="2" stroke-dasharray="5 6" marker-end="url(#arrow-muted)"/>
+  <text x="232" y="232" class="sans small">unwind</text>
+
+  <g opacity=".5">
+    <rect x="76" y="262" width="274" height="34" rx="6" fill="none" stroke="#78818C" stroke-dasharray="5 5"/>
+    <rect x="92" y="306" width="242" height="34" rx="6" fill="none" stroke="#78818C" stroke-dasharray="5 5"/>
+    <path d="M70 258L354 344M354 258L70 344" stroke="#FF211B" stroke-width="2"/>
+  </g>
+  <text x="116" y="373" class="sans body">intermediate frames are gone</text>
+
+  <rect x="48" y="404" width="330" height="62" rx="10" fill="#272727" stroke="#4C4D4D"/>
+  <text x="70" y="442" class="mono code">with Error -&gt; ...</text>
+  <text x="48" y="500" class="sans small">The handler cannot return to the raise.</text>
+
+  <text x="526" y="112" class="sans label">Effect</text>
+  <rect x="526" y="140" width="386" height="62" rx="10" fill="#272727" stroke="#4C4D4D"/>
+  <text x="548" y="178" class="mono code">perform (Emit value)</text>
+
+  <line x1="719" y1="202" x2="719" y2="248" stroke="#17E620" stroke-width="2" marker-end="url(#arrow-green)"/>
+  <text x="738" y="232" class="sans small">capture</text>
+
+  <rect x="556" y="262" width="326" height="68" rx="9" fill="#141414" stroke="#17E620"/>
+  <text x="578" y="290" class="sans body">handler receives</text>
+  <text x="578" y="316" class="mono code">value + continuation k</text>
+
+  <path d="M719 330V367H613V399" fill="none" stroke="#17E620" stroke-width="2" marker-end="url(#arrow-green)"/>
+  <path d="M719 367H824V399" fill="none" stroke="#17E620" stroke-width="2" marker-end="url(#arrow-green)"/>
+
+  <rect x="526" y="404" width="174" height="62" rx="10" fill="#272727" stroke="#4C4D4D"/>
+  <text x="544" y="430" class="mono code">continue k ()</text>
+  <text x="544" y="452" class="sans small">perform returns ()</text>
+
+  <rect x="724" y="404" width="188" height="62" rx="10" fill="#272727" stroke="#4C4D4D"/>
+  <text x="741" y="430" class="mono code">discontinue k e</text>
+  <text x="741" y="452" class="sans small">perform raises e</text>
+
+  <text x="526" y="500" class="sans small">The suspended frames must be consumed exactly once.</text>
+</svg>

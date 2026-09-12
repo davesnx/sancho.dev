@@ -1,0 +1,208 @@
+---
+title: "What do we lose moving from Reason to mlx?"
+description: "Explain which nice syntactic features we had in Reason that we won't be able to keep if we migrate to mlx"
+publishedAt: "2025-09-12"
+published: true
+tags:
+  - "mlx"
+  - "OCaml"
+  - "Reason"
+  - "Melange"
+---
+
+[Reason](https://reasonml.github.io/) is technically a different syntax for writing OCaml programs. You can mix and match Reason and OCaml however you want in any project.
+
+We often say that “Reason sits on top of OCaml”, so all the tooling just works: the compiler, build system, package manager, LSP, and documentation are exactly the same.
+
+Besides this, I see Reason as a bit more than “just a different syntax” and more like an umbrella of syntax + style + accessibility to functional programming. One of the goals was to move OCaml much closer to the web.
+
+[mlx](https://github.com/ocaml-mlx/mlx), on the other hand, is a very minimal extension to the OCaml syntax that adds just JSX, the possibility to express HTML-like elements as a first-class citizen in the language.
+
+A component looks like this:
+
+```mlx
+let[@react.component] make ~name ~user =
+  <section className="profile">
+    <h2>(React.string name)</h2>
+    <p>
+      (React.string
+         (match user with
+         | Online -> "Online"
+         | Offline -> "Offline"))
+    </p>
+  </section>
+```
+
+## Does syntax matter?
+
+People say that syntax doesn't matter, and they are wrong.
+
+I consider myself a creative person: appreciate the beauty, the great user experiences and I find myself resolving big problems by drawing.
+
+Syntax is the most important touch point of the interface of the language, followed by error
+messages. And as such, it needs to be treated as crucial.
+
+I consider myself a creative person. I appreciate beauty, good user
+experience, and good solutions to visual problems. Syntax is the most
+important part of a language's interface for me. I want us to treat it that way.
+
+There's some truth in the opposite view, where the meaning is the substance and at the end of the day, it will remain the only factor. Mega true, but in cases where the syntax stops you from getting the meaning... it stops being a detail.
+
+## Does syntax matter for LLMs?
+
+Probably less. These days, LLMs benefit from fast feedback loops: a quick compiler and clear errors that help them fix their code.
+
+## Here's the list
+
+Anyway, here's the list of things we lose:
+
+### JavaScript objects
+
+Reason lets us write JavaScript objects with quoted keys. The keys can
+contain punctuation or words that OCaml reserves.
+
+```reason
+let headers = {
+  "user-agent": userAgent,
+  "Content-Type": contentType,
+  "type": requestType,
+};
+```
+
+In the converted code, the object uses `[%mel.obj]`. Each renamed field
+needs `[@mel.as]` to keep its JavaScript key. Since record fields are idents, and can't express all the JavaScript object fields.
+
+```ocaml
+let headers =
+  [%mel.obj
+    {
+      user_agent = userAgent [@mel.as "user-agent"];
+      contentType = contentType [@mel.as "Content-Type"];
+      type_ = requestType [@mel.as "type"];
+    }]
+```
+
+### Uncurried functions and calls
+
+The curried form takes one argument and returns a function for the next:
+
+```reason
+let add = left => right => left + right;
+let total = add(1, 2);
+```
+
+In Reason, a dot inside the argument list marks an uncurried function or call.
+
+```reason
+let add = (. left, right) => left + right;
+let total = add(. 1, 2);
+```
+
+In mlx with Melange, the same operations use attributes:
+
+```ocaml
+let add = (fun left right -> left + right) [@u]
+let total = (add 1 2 [@u])
+```
+
+We lose the dedicated notation: the dot beside the arguments becomes an attribute after the expression.
+
+### Attribute placement
+
+Reason puts a deriving attribute before its type declaration:
+
+```reason
+[@deriving (enumerate, toString)]
+type hAlign =
+  | Left
+  | Center
+  | Right;
+```
+
+In mlx, the attribute follows the declaration:
+
+```ocaml
+type hAlign =
+  | Left
+  | Center
+  | Right
+[@@deriving enumerate, toString]
+```
+
+The same happens with Melange bindings:
+
+```reason
+[@mel.get]
+external tagName: Dom.element => string = "tagName";
+```
+
+```ocaml
+external tagName : Dom.element -> string = "tagName"
+[@@mel.get]
+```
+
+This does not apply to every attribute or ppx extension. Forms such as
+`let[@react.component]`, `let%browser_only`, and `match%platform` can still
+put the annotation near the start.
+
+### Precedence
+
+In Reason, the parentheses around a function's arguments make the call
+boundary explicit:
+
+```reason
+let value = React.Event.Form.target(event)##value;
+```
+
+OCaml uses spaces for function application. To read a property from the
+result, we put parentheses around the call:
+
+```ocaml
+let value = (React.Event.Form.target event)##value
+```
+
+Without those parentheses:
+
+```ocaml
+React.Event.Form.target event##value
+```
+
+the expression groups as:
+
+```ocaml
+React.Event.Form.target (event##value)
+```
+
+This is a different operation: it reads `value` from the event first, then passes it to `target`.
+
+### Data-first pipe
+
+In Reason we have `->`, called data-first pipe, it applies the value to the function, as a first argument on the function:
+
+```reason
+value->f(arg);
+/* Equivalent to f(value, arg). */
+```
+
+In OCaml, the data-first pipe is written `|.`:
+
+```ocaml
+value |. f arg
+```
+
+`|>` remains unchanged.
+
+### Descriptive binding operators
+
+Reason lets binding operators have descriptive names. For example, promise
+operators:
+
+```reason
+let view = id => {
+  let.await user = fetchUser(id)
+  and.await settings = fetchSettings(id);
+  render(user, settings);
+};
+```
+
+There's nothing like this in mlx.

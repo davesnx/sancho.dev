@@ -1,16 +1,16 @@
-import { css } from "@linaria/core";
+import { css } from '@linaria/core';
 
-import { H4, Row, Stack, Text } from "@/components/ui";
-import breakpoints from "@/theme/constants";
-import font from "@/theme/fonts";
-import { colors } from "@/theme/theme";
+import { H2, Row, Stack, Text } from '@/components/ui';
+import breakpoints from '@/theme/constants';
+import font from '@/theme/fonts';
+import { colors } from '@/theme/theme';
 
 const iconWrapperClass = css`
   line-height: 0;
 
   svg {
+    opacity: 0.5;
     filter: grayscale(1);
-    transition: filter 150ms ease;
   }
 `;
 
@@ -26,13 +26,14 @@ const boxClass = css`
   border-radius: 0.5rem;
   border: 1px solid ${colors.borderStrong};
   background-color: ${colors.backgroundSecondary};
-  transition: background-color 150ms ease, transform 120ms ease-out;
+  transition: background-color 300ms ease, transform 120ms ease-out;
 
   @media (max-width: ${breakpoints.mobile.width}px) {
     padding: 2rem;
   }
 
-  &:hover {
+  &:hover,
+  &:focus-visible {
     background-color: ${colors.backgroundTertiary};
   }
 
@@ -40,22 +41,9 @@ const boxClass = css`
     transform: scale(0.99);
   }
 
-  &:hover .talk-meta {
-    color: ${colors.textSecondary};
-  }
-
-  &:hover .talk-icon svg {
-    filter: grayscale(0.3);
-  }
-
   &:hover .talk-title {
     color: ${colors.textAccent};
   }
-`;
-
-const metaClass = css`
-  color: ${colors.textTertiary};
-  transition: color 150ms ease;
 `;
 
 const titleClass = css`
@@ -88,22 +76,27 @@ export function TalkItem({
   return (
     <Row fullWidth align="center" justify="between" gap={2}>
       <a className={boxClass} href={link} target="_blank" rel="noopener noreferrer">
-        <div>
+        <Stack align="left" gap={1}>
+          <H2 className={`talk-title ${titleClass}`}>{title}</H2>
           <Row justify="left" align="center" gap={1}>
-            <Text className={`talk-meta ${metaClass}`} size={font.fontSize1} weight={700}>
+            <Text
+              as="span"
+              size={font.fontSize1}
+              weight={600}
+              color={colors.textProse}
+              kerning="normal"
+              style={{ lineHeight: 1.3 }}
+            >
               {meta}
             </Text>
             <div className={`talk-icon ${iconWrapperClass}`}>
               <YouTubeIcon />
             </div>
           </Row>
-          <Stack align="left" gap={1}>
-            <H4 className={`talk-title ${titleClass}`}>{title}</H4>
-            <Text color={colors.textSecondary} size={font.fontSize0}>
-              {description}
-            </Text>
-          </Stack>
-        </div>
+          <Text color={colors.textProse} size={font.fontSize0}>
+            {description}
+          </Text>
+        </Stack>
       </a>
     </Row>
   );

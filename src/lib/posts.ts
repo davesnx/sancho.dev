@@ -1,12 +1,12 @@
-import Fs from "node:fs";
-import Path from "node:path";
-import { cache } from "react";
+import Fs from 'node:fs';
+import Path from 'node:path';
+import { cache } from 'react';
 
-import { compareDesc } from "date-fns/compareDesc";
-import { parseISO } from "date-fns/parseISO";
-import { globbySync } from "globby";
-import matter from "gray-matter";
-import readingTime from "reading-time";
+import { compareDesc } from 'date-fns/compareDesc';
+import { parseISO } from 'date-fns/parseISO';
+import { globbySync } from 'globby';
+import matter from 'gray-matter';
+import readingTime from 'reading-time';
 
 export type BlogPostFrontmatter = {
   title?: string;
@@ -21,7 +21,7 @@ export type BlogPostFrontmatter = {
 export type BlogPost = {
   slug: string;
   sourcePath: string;
-  extension: "md" | "mdx";
+  extension: 'md' | 'mdx';
   title: string;
   description: string;
   publishedAt: string;
@@ -34,18 +34,17 @@ export type BlogPost = {
   readingTime: ReturnType<typeof readingTime>;
 };
 
-const POSTS_DIR = Path.join(process.cwd(), "src", "content", "posts");
+const POSTS_DIR = Path.join(process.cwd(), 'src', 'content', 'posts');
 const VALID_SLUG = /^[a-z0-9/_-]+$/i;
 
 const toSlug = (sourcePath: string) =>
-  Path.relative(POSTS_DIR, sourcePath).replace(/\.(md|mdx)$/, "").split(Path.sep).join("/");
+  Path.relative(POSTS_DIR, sourcePath)
+    .replace(/\.(md|mdx)$/, '')
+    .split(Path.sep)
+    .join('/');
 
-const getRequiredField = (
-  sourcePath: string,
-  field: "title" | "publishedAt",
-  value: unknown,
-) => {
-  if (typeof value === "string" && value.length > 0) {
+const getRequiredField = (sourcePath: string, field: 'title' | 'publishedAt', value: unknown) => {
+  if (typeof value === 'string' && value.length > 0) {
     return value;
   }
 
@@ -57,28 +56,24 @@ const readAllPosts = cache((): BlogPost[] => {
 
   return files
     .map((sourcePath) => {
-      const source = Fs.readFileSync(sourcePath, "utf8");
+      const source = Fs.readFileSync(sourcePath, 'utf8');
       const { data, content } = matter(source);
       const frontmatter = data as BlogPostFrontmatter;
       const slug = toSlug(sourcePath);
-      const extension = sourcePath.endsWith(".md") ? "md" : "mdx";
+      const extension = sourcePath.endsWith('.md') ? 'md' : 'mdx';
 
       return {
         slug,
         sourcePath,
         extension,
-        title: getRequiredField(sourcePath, "title", frontmatter.title),
-        description:
-          typeof frontmatter.description === "string" ? frontmatter.description : "",
-        publishedAt: getRequiredField(sourcePath, "publishedAt", frontmatter.publishedAt),
+        title: getRequiredField(sourcePath, 'title', frontmatter.title),
+        description: typeof frontmatter.description === 'string' ? frontmatter.description : '',
+        publishedAt: getRequiredField(sourcePath, 'publishedAt', frontmatter.publishedAt),
         tags: Array.isArray(frontmatter.tags)
-          ? frontmatter.tags.filter((tag): tag is string => typeof tag === "string")
+          ? frontmatter.tags.filter((tag): tag is string => typeof tag === 'string')
           : [],
         draft: frontmatter.draft === true,
-        canonicalUrl:
-          typeof frontmatter.canonicalUrl === "string"
-            ? frontmatter.canonicalUrl
-            : undefined,
+        canonicalUrl: typeof frontmatter.canonicalUrl === 'string' ? frontmatter.canonicalUrl : undefined,
         published: frontmatter.published !== false,
         content,
         wordCount: content.split(/\s+/g).filter(Boolean).length,
@@ -101,8 +96,7 @@ export const getPublishedPostBySlug = (slug: string) => {
   return getPublishedPosts().find((post) => post.slug === slug);
 };
 
-export const getPostStaticParams = () =>
-  getPublishedPosts().map((post) => ({ slug: post.slug.split("/") }));
+export const getPostStaticParams = () => getPublishedPosts().map((post) => ({ slug: post.slug.split('/') }));
 
 export const loadPostModule = async (post: BlogPost) => {
   return import(`../content/posts/${post.slug}.${post.extension}`);

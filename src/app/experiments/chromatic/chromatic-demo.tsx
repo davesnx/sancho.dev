@@ -1,14 +1,14 @@
-"use client";
+'use client';
 
-import { css } from "@linaria/core";
-import React from "react";
+import { css } from '@linaria/core';
+import React from 'react';
 
-import { TextLink } from "@/components/ui";
-import useDeviceOrientation from "@/device-orientation";
-import { useIsMobile } from "@/media-query";
-import useMousePosition from "@/mouse-position";
-import font from "@/theme/fonts";
-import { colors } from "@/theme/theme";
+import { TextLink } from '@/components/ui';
+import useDeviceOrientation from '@/device-orientation';
+import { useIsMobile } from '@/media-query';
+import useMousePosition from '@/mouse-position';
+import font from '@/theme/fonts';
+import { colors } from '@/theme/theme';
 
 const overlapClass = css`
   position: relative;
@@ -28,7 +28,7 @@ const layerClass = css`
 const nameClass = css`
   font-size: var(--name-size);
   font-family: ${font.sans};
-  font-weight: 700;
+  font-weight: 600;
   margin: 0;
   letter-spacing: 10px;
 `;
@@ -43,8 +43,7 @@ const containerClass = css`
 `;
 
 const isTouchDevice =
-  typeof window !== "undefined" &&
-  ("ontouchstart" in window || "msMaxTouchPoints" in window.navigator);
+  typeof window !== 'undefined' && ('ontouchstart' in window || 'msMaxTouchPoints' in window.navigator);
 
 function ChromaticText({
   children,
@@ -91,10 +90,20 @@ function ChromaticText({
       <div className={layerClass} style={{ filter: `blur(${pita / 2}px)`, color: colors.g }}>
         {children}
       </div>
-      <div className={layerClass} style={{ transform: `translate(${translateX}px, ${translateY}px)`, filter: `blur(${pita}px)`, color: colors.r }}>
+      <div
+        className={layerClass}
+        style={{ transform: `translate(${translateX}px, ${translateY}px)`, filter: `blur(${pita}px)`, color: colors.r }}
+      >
         {children}
       </div>
-      <div className={layerClass} style={{ transform: `translate(${-translateX}px, ${-translateY}px)`, filter: `blur(${pita}px)`, color: colors.b }}>
+      <div
+        className={layerClass}
+        style={{
+          transform: `translate(${-translateX}px, ${-translateY}px)`,
+          filter: `blur(${pita}px)`,
+          color: colors.b,
+        }}
+      >
         {children}
       </div>
     </div>
@@ -107,16 +116,16 @@ export function ChromaticDemo() {
   const isMobile = useIsMobile();
 
   return (
-    <div style={{ marginTop: "8rem" }}>
+    <div style={{ marginTop: '8rem' }}>
       <div className={containerClass}>
         <ChromaticText mouse={mouse} orientation={orientation}>
-          <h1 className={nameClass} style={{ ["--name-size" as string]: isMobile ? font.fontSize3 : font.fontSize5 }}>
+          <h1 className={nameClass} style={{ ['--name-size' as string]: isMobile ? font.fontSize3 : font.fontSize5 }}>
             DAVID SANCHO
           </h1>
         </ChromaticText>
-        <div style={{ marginTop: "32px" }}>
-          <p style={{ margin: 0, color: colors.textPrimary, textAlign: "center" }}>
-            {isMobile ? "Incline the phone to see the " : "Move the mouse across the screen to see the "}
+        <div style={{ marginTop: '32px' }}>
+          <p style={{ margin: 0, color: colors.textPrimary, textAlign: 'center' }}>
+            {isMobile ? 'Incline the phone to see the ' : 'Move the mouse across the screen to see the '}
             <TextLink href="https://en.wikipedia.org/wiki/Chromatic_aberration">Chromatic Distortion effect</TextLink>
           </p>
         </div>

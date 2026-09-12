@@ -10,19 +10,17 @@ tags:
   - "testing"
 ---
 
-I'm a strong advocate of unit tests, I can confidently say that it has saved me from introducing regressions countless times. Today I want to share one of the hidden gems of OCaml and their testing story with dune, cram tests.
+I'm a strong advocate of unit tests. I can confidently say they've saved me from introducing regressions countless times. Today I want to share one of the hidden gems in OCaml's testing story with dune: cram tests.
 
-Cram tests, in essence, are snapshots of interactive shell sessions. They provide a versatile framework for testing OCaml projects, but not only OCaml, they can be used for any CLI.
+Cram tests are snapshots of interactive shell sessions. They offer a versatile framework for testing OCaml projects, and you can use them for any CLI.
 
-I’m surprised why this pattern is not more common outside of (the small) world of OCaml, since they come from Python ([bitheap.org/cram](https://bitheap.org/cram)) and there are implementations in Go (https://github.com/mgeisler/cram) and other languages. Probably because it didn’t reach to JavaScript world (??) and they are a bit old.
-
-Regardless, let’s dive in
+I'm surprised this pattern isn't more common outside the (small) world of OCaml. It came from Python ([bitheap.org/cram](https://bitheap.org/cram)), and implementations exist in Go (https://github.com/mgeisler/cram) and other languages. Maybe cram tests never reached the JavaScript world (??), and they're a bit old.
 
 ### Cram test file format
 
-Those test files contain both the execution of the CLI invocations followed by the expected output either from stdout or stderr. The test runner, in this case dune, will run those invocations and diff with the expected output.
+A cram test file contains CLI invocations followed by the expected output from either stdout or stderr. The test runner, dune in this case, runs those invocations and diffs the actual output against the expected output.
 
-Let’s check the syntax with an example:
+For example:
 
 ```cram
 Here there is just a coment about this test, since there is no space at the start
@@ -39,27 +37,27 @@ The command `cat data.txt` gets diffed against the next line `  This command run
 ` from this file, and that's the first beauty of cram tests.
 ```
 
-To define the syntax as rules:
+The syntax has three rules:
 
-- Text and no indentation, are comments
-- Lines with a dollar sign and indentation, run in the shell
-- Lines after a shell, indentation and prefixed by `>` contains the expected output (either stdout or stderr)
+- Text without indentation is a comment
+- Indented lines with a dollar sign run in the shell
+- Lines after a shell command, indented and prefixed by `>`, contain the expected output from either stdout or stderr
 
 ![cram test editor screenshot](/images/cram.png)
 
-This is a screenshot of my editor, showcasing the syntax highlighting and a real `.t` file
+This screenshot shows the syntax highlighting in my editor and a real `.t` file.
 
 ## Dune integrates perfectly with cram tests
 
-dune supports cram tests out of the box and integrates nicely with all your dune test workflow.
+dune supports cram tests out of the box and fits into your existing dune test workflow.
 
-In previous versions of dune, you need to enable them manually. For dune < 3 add `(cram enabled)` in dune-project (might need to create a dune-project file at the root of your project if you don't have one already). If you are using dune > 3, nothing to do, they are already enabled
+With dune < 3, you need to enable them manually. Add `(cram enabled)` to dune-project, and create a dune-project file at the root of your project if you don't already have one. If you are using dune > 3, there is nothing to do because cram tests are already enabled.
 
 ### Your first cram test
 
-If you want to experience the flow of it before using it in a real-world scenario, open your dune project and follow it as a tutorial.
+To experience the workflow before using it in a real-world scenario, open your dune project and follow this tutorial.
 
-Let’s start with the simplest possible test.
+Start with the simplest possible test.
 
 1. Create a file called `simple.t` with:
 
@@ -67,11 +65,11 @@ Let’s start with the simplest possible test.
   $ echo 'lola'
 ```
 
-2. Run the test and let it crash, either
+2. Run the test and let it crash in one of two ways:
 - run the entire “test suite” with **`dune runtest`**
-- or a specific test with their respective alias, since all cram tests are automatically dune aliases: **`dune build @simple —watch`**
+- run a specific test with its respective alias, since all cram tests are automatically dune aliases: **`dune build @simple —watch`**
 
-Output of the execution will be:
+The execution will produce this output:
 
 ```diff
 File "tests/simple.t", line 1, characters 0-0:
@@ -84,38 +82,38 @@ index de6f8c28..ef3231ef 100644
 +  lola
 ```
 
-3. Accept the result as correct. We can update the snapshot with the boring and tedious way, manually or automatically with promotion.
+3. Accept the result as correct. You can update the snapshot the boring and tedious way, either manually or automatically with promotion.
 
-Running **`dune build @simple —auto-promote`** which updates `simple.t` file for you.
+Run **`dune build @simple —auto-promote`** to update the `simple.t` file for you.
 
-To ensure everything works, try running the tests again, which in this case should pass. Run **`dune build @simple`** and the output should be empty. Empty in dune, means very good
+To ensure everything works, run the tests again. In this case, **`dune build @simple`** should pass with empty output. Empty in dune means very good.
 
 ## Organise the cram suite
 
-Directories with `.t` with a `run.t` file inside, are also valid cram tests.
+Directories with `.t` and a `run.t` file inside are also valid cram tests.
 
-Keep all your tests as `.t` files can get out of hand pretty quickly, since some test suites could contain hundreds of tests, and some tests might contain fixtures or any config files
+Keeping all your tests as `.t` files can get out of hand pretty quickly. Some test suites could contain hundreds of tests, and some tests might contain fixtures or config files.
 
 ## Make your executable available under cram tests
 
-You might write a perfect test, only to be greeted with `[ERROR] Program "your_binary" not found!`. This happens because dune doesn't automatically know which executables should be accessible during cram test execution.
+You might write a perfect test only to be greeted with `[ERROR] Program "your_binary" not found!`. This happens because dune doesn't automatically know which executables should be accessible during cram test execution.
 
 There are four ways to expose your executable to cram tests:
 
-- **option A**: add a `public_name` in your executable stanza like `(public_name amazing-binary)`, which makes the executable available to the test suite as `amazing-binary.exe`, and when users install your package, the executable will be under `my-opam-package.amazing-binary`.
-- **option B**: set the executable to be part of the dune installation with the [install stanza](https://dune.readthedocs.io/en/latest/reference/dune/install.html) `(install (section bin) (files amazing-binary.exe))`. Do not confuse dune installation with opam installation, the dune installation offers a way to "copying freshly built artifacts from the workspace to the system", while opam installs opam packages in your opam switch (downloading from opam repositories, building from sources, etc).
-- **option C**: use `(env _ (binaries ../bin/amazing-binary.exe))` to set an executable to be available as a binary: `amazing-binary` will be available to the test suite, and can choose to change which environment will have it. This is useful if you don't want to rely on the exact location of the executable, and don't want to expose the executable to the user. (Thanks to [sim642](https://discuss.ocaml.org/t/ann-cram-tests-a-hidden-gem-of-dune-and-snapshot-tests-for-your-own-ppx/15910/2?u=davesnx) for the tip).
-- **option D**: directly specify the executable as a dependency in your cram test `(deps %{exe:../bin/amazing-binary.exe})`. More info in about the `cram` stanza in the [dune documentation](https://dune.readthedocs.io/en/latest/reference/dune/cram.html).
+- **option A**: Add a `public_name` to your executable stanza, such as `(public_name amazing-binary)`. This makes the executable available to the test suite as `amazing-binary.exe`. When users install your package, the executable will be under `my-opam-package.amazing-binary`.
+- **option B**: Make the executable part of the dune installation with the [install stanza](https://dune.readthedocs.io/en/latest/reference/dune/install.html), `(install (section bin) (files amazing-binary.exe))`. Do not confuse dune installation with opam installation. Dune installation offers a way of "copying freshly built artifacts from the workspace to the system", while opam installs opam packages in your opam switch by downloading them from opam repositories, building from source, and so on.
+- **option C**: Use `(env _ (binaries ../bin/amazing-binary.exe))` to make an executable available as a binary. `amazing-binary` will be available to the test suite, and you can choose which environment will have it. This is useful if you don't want to rely on the executable's exact location or expose it to the user. (Thanks to [sim642](https://discuss.ocaml.org/t/ann-cram-tests-a-hidden-gem-of-dune-and-snapshot-tests-for-your-own-ppx/15910/2?u=davesnx) for the tip).
+- **option D**: Specify the executable directly as a dependency in your cram test with `(deps %{exe:../bin/amazing-binary.exe})`. The [dune documentation](https://dune.readthedocs.io/en/latest/reference/dune/cram.html) has more information about the `cram` stanza.
 
-If you're not sure which to choose, I recommend starting with setting a `public_name` in your executable stanza. It's the most explicit approach and if you are working on a CLI, you will still need a `public_name` to expose it on the opam package.
+If you're not sure which to choose, I recommend starting by setting a `public_name` in your executable stanza. It's the most explicit approach, and if you are working on a CLI, you will still need a `public_name` to expose it on the opam package.
 
 ## What makes a good (cram) test?
 
-Writing effective cram tests requires more than just copying command output, let's see some key principles that will help you write robust and maintainable snapshot tests
+Effective cram tests require more than copying command output. These principles will help you write robust and maintainable snapshot tests.
 
 ### Keep tests hermetic
 
-Your tests should be *hermetic* - meaning they're self-contained and don't depend on external state. Each test should clean up after itself and running it multiple times should produce the same result. For example:
+Your tests should be *hermetic*, meaning they're self-contained and don't depend on external state. Each test should clean up after itself, and running it multiple times should produce the same result. For example:
 
 ```cram
   $ mkdir -p tmp
@@ -129,7 +127,7 @@ Your tests should be *hermetic* - meaning they're self-contained and don't depen
 
 ### Use relative paths and environment variables
 
-One common pitfall is hardcoding absolute paths in your tests. This makes tests brittle and non-portable. Dune provides several environment variables to help write path-independent tests:
+Hardcoding absolute paths is a common pitfall. It makes tests brittle and non-portable. Dune provides several environment variables for writing path-independent tests:
 
 ```cram
 DON'T do this
@@ -146,7 +144,7 @@ Some useful environment variables include:
 - `$PWD`: Current working directory
 - `$DUNE_BUILD_DIR`: Path to dune's build directory
 
-Here's a more complete example showing these variables in action:
+This more complete example shows the variables in action:
 
 ```cram
   $ echo $DUNE_ROOT | grep -o '[^/]*$'
@@ -163,25 +161,25 @@ Test the compiled output
   Hello, World!
 ```
 
-This approach ensures your tests will run consistently across different environments and developer machines. It's especially important if you plan to run these tests in CI or in other developer local envs.
+This approach keeps your tests consistent across different environments and developer machines. It's especially important if you plan to run them in CI or other developers' local environments.
 
 ### Self documenting
 
-A good cram test should explain its purpose and any non-obvious setup, making it easier for others (or yourself in 6 months) to understand what's being tested and why. The comments should focus on the intent behind the test, not just describe the commands being run.
+A good cram test should explain its purpose and any non-obvious setup. This makes it easier for others, or yourself in 6 months, to understand what's being tested and why. Comments should focus on the test's intent rather than describe the commands being run.
 
 ## They are used in the wild
 
-The true testament to cram tests' effectiveness is their adoption by prominent projects in the OCaml ecosystem.
+The adoption of cram tests by prominent projects in the OCaml ecosystem shows their effectiveness.
 
-Dune itself, uses cram tests extensively throughout its codebase - with over 800 tests covering everything from basic builds to complex workspace configurations. They also used cram tests for bug reporting. When users encounter issues, they're encouraged to submit a minimal reproduction case as a cram test. This practice has been so successful that many bug reports in their issue tracker include a `.t` file demonstrating the problem.
+Dune itself uses cram tests extensively throughout its codebase, with over 800 tests covering everything from basic builds to complex workspace configurations. Dune has also used cram tests for bug reporting. When users encounter issues, they're encouraged to submit a minimal reproduction case as a cram test. This practice has been so successful that many bug reports in Dune's issue tracker include a `.t` file demonstrating the problem.
 
-Melange is another great other example of it, where ensures the JavaScript compilation to remain consistent with blackbox tests https://github.com/melange-re/melange/tree/main/test/blackbox-tests.
+Melange is another great example. It uses blackbox tests to ensure that JavaScript compilation remains consistent: https://github.com/melange-re/melange/tree/main/test/blackbox-tests.
 
-As a useful reference, there’s some of my work migrating to cram tests in here:
+For reference, here is some of my work migrating to cram tests:
 
 - **Migrate ReasonML’s tests to cram suite**: https://github.com/reasonml/reason/pull/2694
 - **styled-ppx** contains a few suites of snapshots (mostly ppx transformations): https://github.com/davesnx/styled-ppx/tree/main/packages/ppx/test/snapshot
-- **reason-react-ppx** ensures their ppx generation to be consistent, but also the JavaScript output: https://github.com/reasonml/reason-react/tree/main/ppx/test
+- **reason-react-ppx** keeps its ppx generation and JavaScript output consistent: https://github.com/reasonml/reason-react/tree/main/ppx/test
 
 ## Ending words
 
