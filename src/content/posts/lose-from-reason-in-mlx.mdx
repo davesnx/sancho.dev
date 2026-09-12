@@ -1,6 +1,6 @@
 ---
 title: "What do we lose moving from Reason to mlx?"
-description: "The list of cool Reason syntax features versus mlx"
+description: "The list of cool Reason syntax features we will miss in mlx"
 publishedAt: "2026-09-12"
 published: true
 tags:
@@ -184,7 +184,7 @@ value->f(arg);
 /* Equivalent to f(value, arg). */
 ```
 
-In OCaml, the data-first pipe is written `|.`:
+With Melange, the data-first pipe is written `|.`:
 
 ```ocaml
 value |. f arg
@@ -205,4 +205,38 @@ let view = id => {
 };
 ```
 
-There's nothing like this in mlx.
+OCaml has binding operators too, but only with symbolic names such as `let*` and `and+`. There's no descriptive form in mlx.
+
+### Spread operator
+
+Reason uses the spread operator `...` in three places: lists, records, and JSX children.
+
+```reason
+let all = [first, ...rest];
+let next = {...person, age: person.age + 1};
+```
+
+OCaml have its own notation `::`. It puts an element in front of a list, and `with` copies a record with some fields changed. Patterns follow the same rule: `[head, ...tail]` becomes `head :: tail`.
+
+```ocaml
+let all = first :: rest
+let next = { person with age = person.age + 1 }
+```
+
+JSX children spread doesn't have an equivalent. It passes an existing value as the children, without wrapping it in a new list:
+
+```reason
+<Layout> ...children </Layout>
+```
+
+In mlx, children always become a list. The closest form is to pass `children` as a prop:
+
+```mlx
+<Layout children />
+```
+
+The list of Reason features is long, but there are always tradeoffs, what are the good bits of mlx?
+
+## mlx is awesome, actually
+
+We win in ease of maintenance, simplicity of tooling and a fresh start. mlx is OCaml's parser plus [the JSX rules](https://github.com/ocaml-mlx/mlx/blob/main/mlx/parser.mly), and [ocamlformat-mlx](https://github.com/ocaml-mlx/ocamlformat-mlx) is ocamlformat plus a small patch. Updating to a new OCaml version is easy. ocamlformat-mlx reads the same `.ocamlformat` file, and ocaml-lsp-server supports `.mlx` files.
