@@ -1,0 +1,213 @@
+---
+title: "How OCaml effects simplified my JSON interpreter"
+description: "How effect handlers removed control-flow plumbing from query-json"
+publishedAt: "2026-06-10"
+published: false
+tags:
+  - "OCaml"
+  - "Effect"
+  - "query-json"
+---
+
+{/*
+SKILLS
+state: reviewed-draft
+next: author-review - confirm the voice and publication date, then set published to true
+*/}
+
+{/*
+ASSESSMENT
+
+1) Opinion on quality and voice
+- Ready for an author read before publishing. The post now moves through one story: the result-of-list interpreter, the pressure from pipes and limits, and the effect-handler model that simplified the evaluator.
+- A cold reader recovered the intended thesis exactly: OCaml effects let the interpreter express resumable and cancellable control flow without threading lists and control variants through every recursive function.
+
+2) What's missing or weak
+- The pipe-handler boundary and cancellation section still require careful reading. In particular, "abandoning a continuation stops the suspended work, but it does not unwind that stack" assumes familiarity with continuations and Fun.protect.
+- The ICFP tutorial is part of the personal story but cannot be linked because the exact workshop is unknown.
+- The cancellation section describes current production behavior. Recheck it against Interpreter.ml if query-json changes before publication.
+
+3) How I would finish it
+- Read once for whether the historical account and the candid description of current cancellation behavior feel accurate.
+- Choose the publication date, then set published to true.
+
+4) Hero image and visual concepts
+- Preferred: adapt the exception-versus-effect diagram into a 1200x630 hero, with Yield on one side and continue/discontinue on the other.
+- Alternative: use the four-lane pipeline trace with one bright value moving from producer to collector.
+- Avoid a generic OCaml camel or JSON-braces illustration; the continuation is the memorable idea.
+*/}
+
+A few years ago I wrote [query-json](/blog/cross-compile-query-json), a reimplementation of a subset of [jq](https://jqlang.org) in OCaml. The first version had the kind of interpreter I would still write for a small language:
+
+```ocaml
+val interp : expression -> Json.t -> (Json.t list, error) result
+```
+
+Give it an expression and a JSON value. It returns a list of JSON values or an error. Simple.
+
+It also worked. query-json was small, I was learning how parsers and interpreters worked, and this type made the whole program easy to understand.
+
+Then I kept implementing jq.
+
+jq expressions are generators. One input may produce zero, one, or many outputs:
+
+```bash
+query-json '.users[]' '{"users": ["Alice", "Bob", "Charlie"]}'
+# "Alice"
+# "Bob"
+# "Charlie"
+```
+
+The output of one expression becomes the input of the next one. `limit` needs to stop a generator before it does more work. Errors and exits may happen several recursive calls below the code that knows how to handle them.
+
+My original return type could represent all of this, but the interpreter was becoming a machine for moving control-flow cases around. Pipes created intermediate lists. New ways to stop added new variants. Recursive branches had to forward cases they did not care about.
+
+The code still worked, but I had to reconstruct too much context to understand why.
+
+An ICFP tutorial on effect handlers gave me the missing model. An expression could yield a value, and the pipe around it could decide whether to resume the expression. I could keep the evaluator in direct style and move that decision into a handler.
+
+## The problem with returning a list
+
+Consider a pipe:
+
+```jq
+.users[] | .name
+```
+
+The left side produces users. The right side reads the name of each user. With my first interpreter, the implementation followed the return type:
+
+1. Evaluate `.users[]` and collect every user in a list.
+2. Evaluate `.name` for each item in that list.
+3. Collect those results in another list.
+
+That is fine until the consumer does not want every value. `limit(1; .users[])` should stop after the first user. Taking one item from the final list gives the correct answer, but the producer has already done all the work.
+
+I needed to pause the array iteration when it produced a value, give that value to the pipe, and later resume from the same position. Exceptions can stop the iteration, but they cannot resume it. Encoding pause, resume, error, and exit in return values was the complexity I wanted to remove.
+
+## A resumable exception
+
+Exceptions were my way into effects. An effect works like an exception that can resume.
+
+When code raises an exception, OCaml jumps to the nearest matching handler and unwinds the stack in between. When code performs an effect, OCaml also jumps to a handler, but the handler receives a continuation. That continuation represents the suspended computation from `perform` back to the handler.
+
+The handler can do two important things with it:
+
+- `continue k value` resumes the computation and makes `perform` return `value`.
+- `discontinue k exn` resumes by raising `exn` at the point of `perform`.
+
+![An exception unwinds the stack, while an effect gives its handler a continuation that can be continued or discontinued.](/images/ocaml-effects-control-flow.svg)
+
+query-json calls its output effect `Yield`:
+
+```ocaml
+type _ Effect.t += Yield : Json.t -> unit Effect.t
+
+let yield value = Effect.perform (Yield value)
+```
+
+`type _ Effect.t +=` extends OCaml's effect type with a new operation. `Yield` carries a `Json.t`, and `unit Effect.t` says that `perform` returns `unit` when a handler resumes it.
+
+Here is a small handler that prints every yielded value:
+
+```ocaml
+let print_outputs run =
+  match run () with
+  | () -> ()
+  | effect (Yield value), k ->
+      Json.print value;
+      Effect.Deep.continue k ()
+```
+
+When `run` yields, execution pauses in the effect clause. The handler prints the value and continues `k`. The original call to `yield` returns `()`, then the producer carries on from exactly where it stopped.
+
+This is a deep handler, using the syntax introduced in OCaml 5.3. Continuing `k` installs the same handler again. If the producer yields another value, it comes back to the same clause with a new continuation.
+
+One detail matters before looking at pipes. The public query-json API still collects final outputs into a list, and several operators also collect internally. Effects live inside the evaluator, where the control-flow plumbing was getting painful. The examples below follow that production shape while leaving out unrelated details.
+
+## A pipe becomes a handler
+
+The expression `left | right` means: run `left`, then run `right` once for every value from the left.
+
+This is the control-flow shape of the production implementation:
+
+```ocaml
+let pipe ~ctx left right input =
+  on_yield
+    (fun () -> interp ~ctx left input)
+    ~then_:(fun value -> interp ~ctx right value)
+```
+
+`on_yield` handles values from the left side:
+
+```ocaml
+let on_yield run ~then_ =
+  match run () with
+  | () -> ()
+  | effect (Yield value), k ->
+      then_ value;
+      Effect.Deep.continue k ()
+```
+
+The left expression yields one value and pauses. The handler runs the right expression with that value, then resumes the left continuation to ask for another one.
+
+`then_` runs outside the handler defined by the effect clause. Values yielded by the right expression are not caught by this `on_yield`. They continue outward to the next handler, often the collector at the public boundary.
+
+![Execution trace for a JSON pipeline: the left expression yields an object, the pipe handler pauses it, the right expression yields a name, and the collector receives it before the left side resumes.](/images/ocaml-effects-pipe.svg)
+
+For `.users[] | .name`, the array iterator yields the first user and stays suspended inside `k`. The pipe runs `.name`, which yields to the outer collector. Once `.name` finishes, the pipe resumes `k`, and the array iterator moves to the next user.
+
+The continuation keeps the array iterator's position in the regular call stack. The old implementation materialized that work in an intermediate list and used return cases to move control around. The handler now resumes the stack it already has.
+
+This was the point where effects clicked for me. I could read a pipe from top to bottom again: yield a value, run the right side, and continue the left.
+
+## The difficult part: stopping
+
+I understood `continue` quickly. Stopping took longer.
+
+A reduced version of query-json's current limit handler looks like this:
+
+```ocaml
+let limit n run =
+  let count = ref 0 in
+  match run () with
+  | () -> ()
+  | effect (Yield value), k ->
+      if !count < n then (
+        incr count;
+        yield value;
+        Effect.Deep.continue k ())
+```
+
+The handler forwards up to `n` values. Once another value arrives, it returns without resuming `k`, so the producer does not continue.
+
+This also means the producer resumes after the nth value and may do more work before it tries to yield the next one. The current handler stops at that next yield, not immediately after the nth.
+
+This is where effects stopped feeling simple to me.
+
+OCaml continuations are one-shot. A handler may continue or discontinue each continuation at most once. It may also abandon one, as query-json currently does for `limit`, `first`, errors, and termination. Abandoning a continuation stops the suspended work, but it does not unwind that stack.
+
+That distinction matters when the suspended code owns resources. Cleanup registered with `Fun.protect`, for example, only runs if the stack unwinds. A reusable effect abstraction should usually cancel with `Effect.Deep.discontinue k Enough` and catch `Enough` outside the handler. The exception is then raised at the suspended `yield`, giving the producer a chance to clean up.
+
+query-json evaluates in-memory JSON in these paths, and its current implementation takes the simpler route. I would revisit that choice before putting file handles, sockets, or another external resource behind the same abstraction. Returning without continuing looks like cancellation, but it is only abandonment. That distinction took me a while to understand.
+
+## What changed, and what stayed the same
+
+Inside the evaluator, the main function now returns `unit`:
+
+```ocaml
+val interp : ctx:context -> expression -> Json.t -> unit
+```
+
+Its interesting results travel through effects. `Yield` produces a value. Other effects represent runtime failures, user errors, `break`, and `halt`. A handler only catches the operations it knows about, so a pipe can handle `Yield` while an error keeps travelling to an outer boundary.
+
+The public API is still eager. It installs a collector, resumes every `Yield`, and returns the resulting JSON list or an error. That boundary is useful for a CLI and a JavaScript API. The improvement is inside the recursive evaluator, where ordinary branches no longer need to mention every control-flow case that may cross them.
+
+One thing I dislike is that the function type hides all of this. OCaml types the value carried by each effect and the value returned when it resumes, but nothing in the type above tells me that `interp` may yield, fail, break, or halt. A missing handler becomes `Effect.Unhandled` at runtime. This is the main reason I would not spread effects everywhere.
+
+I still prefer `result` when a failure has one obvious caller. In query-json, control needs to cross a deep recursive evaluator, and the functions in the middle should not decide what it means. Effects fit that part very well.
+
+Would I use effects again in query-json? Yes, especially for pipes. I can read the evaluator without keeping a growing return variant in my head. I would design cancellation first for `limit` and `first`, because that is where the easy model breaks.
+
+The rewrite changed how I write OCaml. When a recursive function starts forwarding control cases it does not own, I now ask whether the caller should be a handler.
+
+The complete interpreter lives in [`source/Interpreter.ml`](https://github.com/davesnx/query-json/blob/main/source/Interpreter.ml), and the [query-json playground](https://query-json.pages.dev) runs in the browser. The [OCaml effect-handler manual](https://ocaml.org/manual/5.3/effects.html) covers the precise semantics and more examples.

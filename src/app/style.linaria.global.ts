@@ -1,23 +1,23 @@
-import { css } from "@linaria/core";
+import { css } from '@linaria/core';
 
-import fonts from "@/theme/fonts";
-import { assignThemeVariables, darkCSSVariables, lightCSSVariables } from "@/theme/theme";
+import fonts from '@/theme/fonts';
+import { assignThemeVariables, darkCSSVariables, lightCSSVariables } from '@/theme/theme';
 
 export const globals = css`
   :global(:root) {
     ${lightCSSVariables}
     ${darkCSSVariables}
-    ${assignThemeVariables("dark")}
+    ${assignThemeVariables('dark')}
     color-scheme: dark;
   }
 
   :global(html[data-theme="light"]) {
-    ${assignThemeVariables("light")}
+    ${assignThemeVariables('light')}
     color-scheme: light;
   }
 
   :global(html[data-theme="dark"]) {
-    ${assignThemeVariables("dark")}
+    ${assignThemeVariables('dark')}
     color-scheme: dark;
   }
 

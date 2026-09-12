@@ -9,15 +9,15 @@ tags:
   - "SSR"
 ---
 
-Server-side rendering should be as fast as possible. I've been working on this problem for a while now (with [server-reason-react](https://github.com/ml-in-barcelona/server-reason-react) and [html_of_jsx](https://github.com/davesnx/html_of_jsx)) and I have plenty of optimizations to do.
+Server-side rendering should be as fast as possible. I've been working on this problem for a while now with [server-reason-react](https://github.com/ml-in-barcelona/server-reason-react) and [html_of_jsx](https://github.com/davesnx/html_of_jsx), and I have plenty of optimizations to do.
 
-Each time I dig into performance, I arrive at the same insight: the first step is to avoid doing work that can be done earlier (and do it only once).
+Each time I dig into performance, I arrive at the same insight: the first step is to avoid doing work that can be done earlier and to do it only once.
 
-This post explains how static analysis can eliminate runtime overhead, making `html_of_jsx` between 2x and 12x faster and some assumptions that I thought were clever but turned out to be crap.
+This post explains how static analysis can eliminate runtime overhead and make `html_of_jsx` between 2x and 12x faster. It also covers some assumptions I thought were clever but that turned out to be crap.
 
 ## What is html_of_jsx
 
-html_of_jsx is an OCaml/Reason library that lets you write JSX, create your components and finally render as HTML, mostly for server-rendered applications, static sites or even HTML emails.
+html_of_jsx is an OCaml/Reason library that lets you write JSX, create your components, and finally render them as HTML, mostly for server-rendered applications, static sites, or even HTML emails.
 
 ```mlx
 let page =
@@ -72,16 +72,16 @@ This works. But consider what happens for a simple static element like `<div id=
 
 1. **Allocate** a `Node` record (4 words: 1 header + 3 fields)
 2. **Allocate** the attributes list (~14 words: cons cells + tuples + polymorphic variants + strings)
-3. **Pattern match** in `render` to identify it's a Node
+3. **Pattern match** in `render` to identify it as a Node
 4. **Pattern match** on each attribute to render it
 
-In OCaml, every heap-allocated value has a 1-word header and each field is another word. A single `<div id="container" />` ends up allocating around **~18 words** (~144 bytes on 64-bit) just to produce a 24-character string:
+In OCaml, every heap-allocated value has a 1-word header, and each field is another word. A single `<div id="container" />` ends up allocating around **~18 words** (~144 bytes on 64-bit) just to produce a 24-character string:
 
 ```html
 <div id="container"></div>
 ```
 
-Looking at a real page like [ocaml.org](https://ocaml.org), it has 590 HTML nodes, almost ~85KB of allocations for static content. There's a lot of room for improvement.
+A real page like [ocaml.org](https://ocaml.org) has 590 HTML nodes and almost ~85KB of allocations for static content. There's a lot of room for improvement.
 
 ## Rethinking the model
 
@@ -97,7 +97,7 @@ let card ~title ~content =
   </div>
 ```
 
-With the tree model, we're forced to allocate records and lists for the `div` and `p` nodes, just to put `title` and `content` in the right place. We need a different perspective.
+The tree model forces us to allocate records and lists for the `div` and `p` nodes just to put `title` and `content` in the right place. We need a different perspective.
 
 Instead of seeing it as a tree, we can see it as a **template**:
 
@@ -116,7 +116,7 @@ Instead of seeing it as a tree, we can see it as a **template**:
 
 ## Inspiration
 
-Separating the static structure from the dynamic values is a technique well-explored in other high-performance systems:
+Other high-performance systems have explored the same technique of separating static structure from dynamic values:
 
 - [Million.js](https://github.com/aidenybai/million): Optimizing compiler for React
 - [blaze-html](https://hackage.haskell.org/package/blaze-html): Haskell's blazingly fast HTML combinator library
@@ -125,7 +125,7 @@ Separating the static structure from the dynamic values is a technique well-expl
 
 ## The strategy
 
-To implement this, I introduced a **static analyzer** step in the preprocessor that walks each JSX element **during the build step** and classifies it:
+I introduced a **static analyzer** step in the preprocessor. It walks each JSX element **during the build step** and classifies it:
 
 1. **Analyze attributes**: Are all attribute values literals (`id="container"`) or do some depend on runtime values (`id={className}`)?
 
@@ -147,7 +147,7 @@ JSX.unsafe "<div id=\"container\"><span>Hello</span></div>"
          and avoids some HTML escaping logic *)
 ```
 
-The string `"<div id=\"container\"><span>Hello</span></div>"` is computed during compilation: escaping attributes, building the tag structure, etc. At runtime, it's just a constant string. Zero computation, zero allocation.
+The string `"<div id=\"container\"><span>Hello</span></div>"` is computed during compilation: escaping attributes, building the tag structure, etc. At runtime, it's a constant string. Zero computation, zero allocation.
 
 For elements with dynamic content, we can't pre-compute the full string, so we generate `Buffer`-based code that assembles the HTML at runtime:
 
@@ -164,7 +164,7 @@ let greet name =
   JSX.unsafe (Buffer.contents buf)
 ```
 
-Notice that even here, the static parts (`"<div>"` and `"</div>"`) are pre-computed string literals. Only the dynamic `name` is processed at runtime.
+Even here, the static parts (`"<div>"` and `"</div>"`) are pre-computed string literals. Only the dynamic `name` is processed at runtime.
 
 ### The results
 
@@ -177,7 +177,8 @@ Baseline (JSX.node):     ~8M renders/sec
 After:                  ~27M renders/sec   → ~3x faster
 ```
 
-For **nested static elements**, the improvement is more dramatic:
+The improvement is more dramatic for **nested static elements**:
+
 ```
 JSX.render <div><header><h1>Title</h1></header><main>...</main></div>
 
@@ -185,13 +186,13 @@ Baseline (JSX.node):     ~2M renders/sec
 After:                  ~27M renders/sec   → ~12x faster
 ```
 
-The deeper the nesting, the less construction and traversal.
+Deeper nesting avoids more construction and traversal.
 
 ## Small wins that added up
 
 ### Eliminating wrapper allocations
 
-Dynamic strings like `<div>(JSX.string name)</div>` were still inefficient. `JSX.string` wraps the value in a `String` variant that eventually gets passed to `JSX.write`, which immediately unwraps it.
+Dynamic strings like `<div>(JSX.string name)</div>` were still inefficient. `JSX.string` wraps the value in a `String` variant, which eventually gets passed to `JSX.write` and immediately unwrapped.
 
 I updated the ppx to detect `JSX.string` at compile time and generate a direct call to a new `JSX.escape` function.
 
@@ -210,15 +211,16 @@ This simple change made rendering dynamic strings **34% faster** (from ~15.5M to
 Most user-generated content doesn't contain HTML special characters (`<`, `>`, `&`, `"`, `'`).
 
 I implemented a "scan-first" strategy:
+
 1. Scan the string to find the first character that needs escaping
-2. If none found, return the original string untouched **(zero allocations)**
-3. If found, start escaping from that position onward, skipping the already-scanned prefix
+2. If none is found, return the original string untouched **(zero allocations)**
+3. If one is found, start escaping from that position onward, skipping the already-scanned prefix
 
 The common case now allocates nothing. The less common case pays with a pass, but that's probably inevitable.
 
 ## Detours: ideas that didn't work out
 
-Performance optimization is humbling. Most "obvious" improvements turn out to be slower, equivalent, or only faster in edge cases. There are some approaches I tried that seemed brilliant at the time:
+Performance optimization is humbling. Most "obvious" improvements turn out to be slower, equivalent, or only faster in edge cases. I tried several approaches that seemed brilliant at the time:
 
 - **Pre-computing exact buffer sizes**: The overhead of calculating the final size exceeded the savings from avoiding reallocation.
 
@@ -226,9 +228,9 @@ Performance optimization is humbling. Most "obvious" improvements turn out to be
 
 - **Inlining `JSX.escape` at every call site**: The compiler already inlines small functions, and the code bloat hurt instruction cache performance.
 
-- **Using `Bytes` instead of `Buffer`**: Manual byte manipulation for "more control". Buffer is already optimized for this exact use case.
+- **Using `Bytes` instead of `Buffer`**: I tried manual byte manipulation for "more control," but Buffer is already optimized for this exact use case.
 
-- **Avoiding the fast-path check in `JSX.escape`**: at first, the scan-then-escape approach seemed wasteful (two passes). But in the common case (strings that don't need escaping), returning the original pointer is a win.
+- **Avoiding the fast-path check in `JSX.escape`**: At first, the scan-then-escape approach seemed wasteful (two passes). But in the common case (strings that don't need escaping), returning the original pointer is a win.
 
 ## Conclusion
 
@@ -245,11 +247,11 @@ The improvement scales with how static your content is. Mostly-static pages (lan
 
 In retrospect, the original implementation was correct, but correctness and efficiency are different goals. Performance often bends correctness (and sometimes maintainability too!).
 
-Once I knew some of the work only needs to happen once, the optimizations became obvious, so again: the fastest code is code that doesn't run at all.
+Once I knew some of the work only needs to happen once, the optimizations became obvious. So again: the fastest code is code that doesn't run at all.
 
 ---
 
-*html_of_jsx is open source at [github.com/davesnx/html_of_jsx](https://github.com/davesnx/html_of_jsx). The code described here are available starting from version 0.0.7.*
+*html_of_jsx is open source at [github.com/davesnx/html_of_jsx](https://github.com/davesnx/html_of_jsx). The code described here is available starting from version 0.0.7.*
 
 If you have ideas for more optimizations, I'd love to hear them -> [open an issue](https://github.com/davesnx/html_of_jsx/issues/new)!
 

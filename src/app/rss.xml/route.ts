@@ -1,6 +1,6 @@
-import { getPublishedPosts } from "@/posts";
+import { getPublishedPosts } from '@/posts';
 
-export const dynamic = "force-static";
+export const dynamic = 'force-static';
 
 export function GET() {
   const posts = getPublishedPosts();
@@ -16,7 +16,7 @@ export function GET() {
         <pubDate>${new Date(post.publishedAt).toUTCString()}</pubDate>
       </item>`,
     )
-    .join("\n");
+    .join('\n');
 
   const xml = `<?xml version="1.0" encoding="UTF-8" ?>
 <rss version="2.0">
@@ -31,7 +31,7 @@ export function GET() {
 
   return new Response(xml, {
     headers: {
-      "Content-Type": "application/rss+xml; charset=utf-8",
+      'Content-Type': 'application/rss+xml; charset=utf-8',
     },
   });
 }

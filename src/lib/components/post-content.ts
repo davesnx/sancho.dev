@@ -1,8 +1,8 @@
-import { css } from "@linaria/core";
+import { css } from '@linaria/core';
 
-import breakpoints from "@/theme/constants";
-import fonts from "@/theme/fonts";
-import { colors } from "@/theme/theme";
+import breakpoints from '@/theme/constants';
+import fonts from '@/theme/fonts';
+import { colors } from '@/theme/theme';
 
 export const postContentClass = css`
   color: ${colors.textProse};
@@ -52,6 +52,30 @@ export const postContentClass = css`
 
   & li::marker {
     color: ${colors.textSecondary};
+  }
+
+  & ul {
+    padding-left: 1.5rem;
+  }
+
+  & ul > li {
+    position: relative;
+    padding-left: 0;
+  }
+
+  & ul > li::marker {
+    content: "";
+  }
+
+  & ul > li::before {
+    content: "";
+    position: absolute;
+    top: 13px;
+    left: -1.5rem;
+    width: 10px;
+    height: 2px;
+    border-radius: 4px;
+    background-color: ${colors.textSecondary};
   }
 
   & blockquote {
