@@ -51,7 +51,7 @@ You can visit the result at [https://melange.re/unstable/api.html](https://melan
 
 ## How does it work
 
-Running `dune build @doc-markdown` reads your `.mli` and `.mld` files, passes them through `odoc`, and produces markdown files under `_build/default/_doc/_markdown/<package>/`. Each module becomes one file, and each `.mld` page becomes one file. The output looks like this:
+Running `dune build @doc-markdown` reads your `.mli` and `.mld` files, passes them through `odoc`, and produces markdown files under `_build/default/_doc/_markdown/<package>/`. Each module becomes one file, and each `.mld` page becomes one file. The output looks like this
 
 ```bash
 _doc/_markdown/
@@ -63,7 +63,7 @@ _doc/_markdown/
 
 The simplest option is to publish that directory: upload `_doc/_markdown` wherever you need it, or point a static host at the folder after the build.
 
-You have more options when wiring the markdown into a bigger pipeline. You can promote generated files into your source tree with `(promote (until-clean))` so a static-site generator sees them as normal files next to your hand-written docs. Running `dune clean` removes the promoted copies so they do not go stale. I use this approach in [parseff](https://github.com/davesnx/parseff), where a Starlight site consumes the promoted markdown. This simplified promote rule handles a single page:
+You have more options when wiring the markdown into a bigger pipeline. You can promote generated files into your source tree with `(promote (until-clean))` so a static-site generator sees them as normal files next to your hand-written docs. Running `dune clean` removes the promoted copies so they do not go stale. I use this approach in [parseff](https://github.com/davesnx/parseff), where a Starlight site consumes the promoted markdown. This simplified promote rule handles a single page
 
 ```dune
 (rule
@@ -82,7 +82,7 @@ After I had the markdown output, I started using the same flow in smaller librar
 
 In [parseff](https://github.com/davesnx/parseff), I use `README.mld` as the source and generate `README.md` for GitHub.
 
-The relevant dune setup looks like this:
+The relevant dune setup looks like this
 
 ```dune
 (documentation

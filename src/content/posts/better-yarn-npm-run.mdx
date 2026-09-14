@@ -16,7 +16,7 @@ To see which scripts are available without opening package.json in an editor, `y
 
 Depending on whether you use npm or yarn, the command either lists the scripts or opens a prompt where you can enter the command you want to run.
 
-This is the output from a recently created expo app:
+This is the output from a recently created expo app
 
 ```bash
 yarn run v1.22.4
@@ -36,7 +36,7 @@ question Which command would you like to run?:
 
 It's very handy. You get a fast lookup instead of spending energy trying to remember the commands. But it's **very slow** (around 250ms!) because it needs to start a node process, parse the json file, and send output to stdin. The **UX could be better**, too, because it forces you to type the command again.
 
-I was a little frustrated, so I created a small bash script to solve it. It's aliased to `run` in my local environment, and it works like this:
+I was a little frustrated, so I created a small bash script to solve it. It's aliased to `run` in my local environment, and it works like this
 
 ![yarn-run.gif](/images/yarn-run.gif)
 

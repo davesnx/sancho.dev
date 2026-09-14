@@ -60,7 +60,7 @@ We'll start with "how do I print a string?" and end with understanding the elega
 
 ## The basics
 
-The simplest way to print something in OCaml:
+The simplest way to print something in OCaml
 
 <MelangePlayground>
 {`(* Just text, no variables *)
@@ -184,7 +184,7 @@ let () = Printf.printf "%s is %d years old\\n" "Alice" 30
 
 In C, Python, or JavaScript, you'd discover this bug when running the code (or worse, in production). In OCaml, the compiler catches it immediately.
 
-How? The format string itself has a type that encodes what arguments it expects:
+How? The format string itself has a type that encodes what arguments it expects
 
 <MelangePlayground>
 {`(* You can give format strings a name *)
@@ -203,7 +203,7 @@ Don't worry about understanding this type yet—we'll break it down later. The p
 
 Printf is great for simple output, but it falls apart for structured data.
 
-Imagine printing a nested data structure:
+Imagine printing a nested data structure
 
 <MelangePlayground>
 {`(* With Printf: everything on one line, or awkward manual line breaks *)
@@ -214,7 +214,7 @@ let () = Printf.printf "{ name = %s; age = %d; city = %s }\\n"
    Printf doesn't help—you'd have to manually calculate where to break lines. *)`}
 </MelangePlayground>
 
-**What we actually want:**
+**What we actually want**
 
 ```
 { name = "Alice"
@@ -302,7 +302,7 @@ let pp_people fmt people =
 let () = printf "People:@.%a@." pp_people people`}
 </MelangePlayground>
 
-**Output (with enough width):**
+**Output (with enough width)**
 ```
 People:
 { name = "Alice"; age = 30; city = "Boston" }
@@ -310,7 +310,7 @@ People:
 { name = "Charlie"; age = 35; city = "San Francisco" }
 ```
 
-**Output (narrow terminal):**
+**Output (narrow terminal)**
 ```
 People:
 { name = "Alice";
@@ -366,7 +366,7 @@ This is the pattern used throughout the OCaml ecosystem. When you see `pp_someth
 
 ## 9. Beyond Format: The Fmt Library
 
-If you find Format's escape sequences (`@[<hov 2>`, `@,`, etc.) hard to read, check out the [Fmt library](https://github.com/dbuenzli/fmt). It provides the same functionality using composable combinators:
+If you find Format's escape sequences (`@[<hov 2>`, `@,`, etc.) hard to read, check out the [Fmt library](https://github.com/dbuenzli/fmt). It provides the same functionality using composable combinators
 
 ```ocaml
 (* Format style *)
@@ -417,7 +417,7 @@ I've written a [separate guide on Fmt](/blog/fmt-pretty-printing-combinators) if
 
 ## 12. The Magic Revealed: Format String Types
 
-Remember earlier when we saw format strings have types? Let's look closer:
+Remember earlier when we saw format strings have types? Let's look closer
 
 <MelangePlayground>
 {`let fmt : _ = "Hello %s, you have %d items"
@@ -446,7 +446,7 @@ The key insight: **the format string's type encodes what arguments it expects**.
 
 ## 13. GADTs: The Engine Behind Format Strings
 
-Here's a simplified version of what happens internally:
+Here's a simplified version of what happens internally
 
 <MelangePlayground>
 {`(* A GADT that encodes format specifiers *)
@@ -485,7 +485,7 @@ The GADT **encodes the function type in the structure itself**. The compiler kno
 
 Format strings are parsed at compile time by OCaml itself—they're not regular strings.
 
-When you write:
+When you write
 
 ```ocaml
 Printf.printf "Hello %s, you are %d years old"

@@ -20,7 +20,7 @@ I'm surprised this pattern isn't more common outside the (small) world of OCaml.
 
 A cram test file contains CLI invocations followed by the expected output from either stdout or stderr. The test runner, dune in this case, runs those invocations and diffs the actual output against the expected output.
 
-For example:
+For example
 
 ```cram
 Here there is just a coment about this test, since there is no space at the start
@@ -59,7 +59,7 @@ To experience the workflow before using it in a real-world scenario, open your d
 
 Start with the simplest possible test.
 
-1. Create a file called `simple.t` with:
+1. Create a file called `simple.t` with
 
 ```cram
   $ echo 'lola'
@@ -69,7 +69,7 @@ Start with the simplest possible test.
 - run the entire “test suite” with **`dune runtest`**
 - run a specific test with its respective alias, since all cram tests are automatically dune aliases: **`dune build @simple —watch`**
 
-The execution will produce this output:
+The execution will produce this output
 
 ```diff
 File "tests/simple.t", line 1, characters 0-0:
@@ -113,7 +113,7 @@ Effective cram tests require more than copying command output. These principles 
 
 ### Keep tests hermetic
 
-Your tests should be *hermetic*, meaning they're self-contained and don't depend on external state. Each test should clean up after itself, and running it multiple times should produce the same result. For example:
+Your tests should be *hermetic*, meaning they're self-contained and don't depend on external state. Each test should clean up after itself, and running it multiple times should produce the same result. For example
 
 ```cram
   $ mkdir -p tmp
@@ -127,7 +127,7 @@ Your tests should be *hermetic*, meaning they're self-contained and don't depend
 
 ### Use relative paths and environment variables
 
-Hardcoding absolute paths is a common pitfall. It makes tests brittle and non-portable. Dune provides several environment variables for writing path-independent tests:
+Hardcoding absolute paths is a common pitfall. It makes tests brittle and non-portable. Dune provides several environment variables for writing path-independent tests
 
 ```cram
 DON'T do this
@@ -144,7 +144,7 @@ Some useful environment variables include:
 - `$PWD`: Current working directory
 - `$DUNE_BUILD_DIR`: Path to dune's build directory
 
-This more complete example shows the variables in action:
+This more complete example shows the variables in action
 
 ```cram
   $ echo $DUNE_ROOT | grep -o '[^/]*$'

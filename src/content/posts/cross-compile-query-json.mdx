@@ -54,7 +54,7 @@ The query describes a jq program. It accesses the `"store"` field and then the `
 ]
 ```
 
-A jq program consists of piped operations. Each operation's output becomes the next operation's input, with the JSON itself as the first input. Some pseudo-code to illustrate:
+A jq program consists of piped operations. Each operation's output becomes the next operation's input, with the JSON itself as the first input. Some pseudo-code to illustrate
 
 ```
 { /* json */ } | filter | transform | count | .field
@@ -68,7 +68,7 @@ Parsing transforms a string into an [AST](https://en.wikipedia.org/wiki/Abstract
 
 One of the beauties of `jq` is that all expressions are piped by default, so `.store | .books` is equivalent to `.store.books`. I designed the _AST_ so its structure represents that pipe. If you want to know more about jq's language, check its [wiki](https://en.wikipedia.org/wiki/Abstract_syntax_tree).
 
-For example, when the parser receives `.store.books`, it returns:
+For example, when the parser receives `.store.books`, it returns
 
 ```reason
 Pipe(Key("store"), Key("books"));
@@ -80,7 +80,7 @@ Variants model values that may assume one of many known variations. This feature
 
 The entire `query-json` AST is one big recursive variant.
 
-A more complex example parses `.store.books | filter(.price > 10)`:
+A more complex example parses `.store.books | filter(.price > 10)`
 
 ```reason
 Pipe(
@@ -93,7 +93,7 @@ Here, `Pipe` represents both the pipe `|` and `.store.books`. The [parsing tests
 
 ### Compiling
 
-The compilation step receives the _AST_ expression and transforms it into code. The compiler is one big recursive [pattern match](https://reasonml.github.io/docs/en/pattern-matching), another great feature of Reason/OCaml. It looks something like this:
+The compilation step receives the _AST_ expression and transforms it into code. The compiler is one big recursive [pattern match](https://reasonml.github.io/docs/en/pattern-matching), another great feature of Reason/OCaml. It looks something like this
 
 ```reason
 let rec compile = (expression, json) => {
@@ -141,7 +141,7 @@ Compiling to JavaScript is the part of this blog post I'm most proud of. It didn
 
 I used [js_of_ocaml](https://github.com/ocsigen/js_of_ocaml), or jsoo for short. jsoo is a compiler that takes an intermediate representation from the OCaml compiler, the bytecode I mentioned earlier, and transforms it into JavaScript.
 
-Because [dune](https://dune.build) supports jsoo out of the box, I only needed to add `(modes js)` to its stanza:
+Because [dune](https://dune.build) supports jsoo out of the box, I only needed to add `(modes js)` to its stanza
 
 ```dune
 (executable

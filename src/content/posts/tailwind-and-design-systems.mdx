@@ -18,7 +18,7 @@ I'm focusing on the technical drawbacks of using Tailwind to create design-syste
 
 ## A little bit about my experience
 
-At the time of writing, I'm working at Draftbit. Our frontend is built on [ReasonReact](https://reasonml.github.io/reason-react) and uses Tailwind. It has about 500 components, and the main page, called the `builder`, looks like this:
+At the time of writing, I'm working at Draftbit. Our frontend is built on [ReasonReact](https://reasonml.github.io/reason-react) and uses Tailwind. It has about 500 components, and the main page, called the `builder`, looks like this
 
 ![screenshot-draftbit-builder](/images/draftbit-builder.png)
 
@@ -42,7 +42,7 @@ I use React as an example, but Tailwind works similarly with any other component
 
 During rendering, React maps the `className` prop to the HTML `class` attribute, which applies CSS classes to the element.
 
-This is the de facto way to use Tailwind with React. You will often see:
+This is the de facto way to use Tailwind with React. You will often see
 
 ```jsx
 <div className="flex md:block w-32 h-full" />
@@ -80,7 +80,7 @@ Creating a coherent, versatile, and scoped component API is already hard. It req
 
 > There's a definite disconnect between a CSS API and a component API. For a design system, I care more about getting the component one right - [@sarah_federman](https://twitter.com/sarah_federman)
 
-For a simple example, suppose you want a component with a prop named `gap`. It accepts every spacing value that Tailwind accepts. You would write it like this:
+For a simple example, suppose you want a component with a prop named `gap`. It accepts every spacing value that Tailwind accepts. You would write it like this
 
 ```jsx
 const Card = (props) => {
@@ -147,7 +147,7 @@ This is a reimplementation of Charkra's UI [Box component](https://chakra-ui.com
 
 ![Card-from-CharkaUI](/images/card.png)
 
-Here are the different approaches to the same UI:
+Here are the different approaches to the same UI
 
 ```jsx
 <Box padding={5} width="320px" border="sm">

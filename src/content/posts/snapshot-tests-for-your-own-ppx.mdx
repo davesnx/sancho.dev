@@ -40,7 +40,7 @@ The goal is to make our ppx transformations accessible to our tests through an e
 
 Dune scans your project for dune files. When it finds one, it generates build artifacts in the _build directory. The contents of these dune files determine exactly what gets built.
 
-For example, when you specify a ppx rewriter:
+For example, when you specify a ppx rewriter
 
 ```dune
 ; a library that uses a ppx
@@ -69,7 +69,7 @@ When Dune finds an executable and runs the build, it generates an executable cal
   (name my_program))
 ```
 
-If you add a public name:
+If you add a public name
 
 ```dune
 (executable
@@ -132,7 +132,7 @@ I usually keep a Makefile with the commands `test`, `test-watch`, and `test-prom
 
 Say we have a ppx that performs the smallest possible transformation, a foobar-kind example: it changes the extension `[%yay]` into the string `"Hello future compiler engineer!"`.
 
-A cram test for it might look like this:
+A cram test for it might look like this
 
 ```cram
 Creates an file with some OCaml code using bash heredoc
@@ -150,7 +150,7 @@ Run the executable from input.ml and print the output to stdout
 
 A real example is browser_ppx, a ppx that handles browser-specific code by stripping it out when the target is not JavaScript. This is very useful when sharing code between native and JavaScript. Its documentation lives [here](https://ml-in-barcelona.github.io/server-reason-react/local/server-reason-react/browser_only.html) and comes from [server-reason-react](https://github.com/ml-in-barcelona/server-reason-react).
 
-A cram test for it might look like this:
+A cram test for it might look like this
 
 ```cram
   $ cat > input.ml << EOF
@@ -194,7 +194,7 @@ The test verifies that the ppx transforms our browser-specific code into an `[%o
 
 In a real-world scenario like [reason-react-ppx](https://github.com/reason/reason-react), we want to ensure that the ppx transformations preserve the AST location of the original code. The generated code should have the same location as the original code so the editor can highlight the correct line, compiler errors can report the correct line and column, and so on.
 
-For these tests, we use `ocamlmerlin` to inspect the AST and ensure the location is correct. Here is part of the test:
+For these tests, we use `ocamlmerlin` to inspect the AST and ensure the location is correct. Here is part of the test
 
 ```cram
 

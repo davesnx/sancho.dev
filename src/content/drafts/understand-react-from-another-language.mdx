@@ -70,14 +70,14 @@ It's not alien. It's JavaScript with a better type system and pattern matching.
 
 The key differences that matter for our journey:
 
-**Types are inferred.** You don't write annotations everywhere—the compiler figures it out:
+**Types are inferred.** You don't write annotations everywhere—the compiler figures it out
 
 ```reason
 let add = (a, b) => a + b;
 // Compiler knows: (int, int) => int
 ```
 
-**Pattern matching instead of switch/if chains:**
+**Pattern matching instead of switch/if chains**
 
 ```reason
 let describe = value =>
@@ -87,7 +87,7 @@ let describe = value =>
   };
 ```
 
-**Variants instead of strings or enums:**
+**Variants instead of strings or enums**
 
 ```reason
 type status =
@@ -104,7 +104,7 @@ This isn't about syntax preferences. These features let us see React's true stru
 
 ### Components: Same Idea, Stronger Foundation
 
-Let's look at a component in this alternate universe:
+Let's look at a component in this alternate universe
 
 ```reason
 [@react.component]
@@ -131,7 +131,7 @@ This is the core insight of the talk.
 
 In JavaScript React, elements are opaque objects. You create them with JSX, you pass them around, but what ARE they? React hides this behind Symbols and fiber nodes and internal structures.
 
-In OCaml, we can see exactly what they are:
+In OCaml, we can see exactly what they are
 
 ```reason
 type element =
@@ -161,7 +161,7 @@ When you understand this, React stops being magic. It's a tree. A recursive data
 
 ### Hooks: Functions All The Way Down
 
-Hooks work the same way, but the types make things explicit:
+Hooks work the same way, but the types make things explicit
 
 ```reason
 let (count, setCount) = React.useState(() => 0);
@@ -173,7 +173,7 @@ let (count, setCount) = React.useState(() => 0);
 
 You can't call `setCount("hello")`. You can't forget that `useState` takes a function. The types guide you.
 
-Here's why `useState` returns what it returns. In JavaScript, it returns an array:
+Here's why `useState` returns what it returns. In JavaScript, it returns an array
 
 ```javascript
 const [count, setCount] = useState(0);
@@ -181,7 +181,7 @@ const [count, setCount] = useState(0);
 
 Why an array? Because JavaScript doesn't have typed tuples. An array was the compromise.
 
-In OCaml, we have proper tuples:
+In OCaml, we have proper tuples
 
 ```reason
 let (count, setCount) = React.useState(() => 0);
@@ -194,7 +194,7 @@ The tuple has a precise type. Each position means something specific. The array 
 
 This is where we blow minds.
 
-In our universe, Suspense works by throwing promises. Yes, throwing. Like exceptions. It's a hack:
+In our universe, Suspense works by throwing promises. Yes, throwing. Like exceptions. It's a hack
 
 ```javascript
 // JavaScript React internals (simplified)
@@ -208,7 +208,7 @@ function readData(resource) {
 
 React catches this thrown promise, renders the fallback, waits for the promise to resolve, then tries again. It works, but it's weird. You're using the exception system for control flow.
 
-In the alternate universe, Suspense is just data:
+In the alternate universe, Suspense is just data
 
 ```reason
 | Suspense({ children: element, fallback: element })
@@ -216,7 +216,7 @@ In the alternate universe, Suspense is just data:
 
 That's it. A node with two branches: what to show when ready, what to show while waiting.
 
-On the server, rendering Suspense is trivial:
+On the server, rendering Suspense is trivial
 
 ```reason
 let rec render_to_string = element =>
@@ -238,7 +238,7 @@ let rec render_to_string = element =>
 
 Suspense isn't magic. It's a node type with two branches. The "magic" is just the runtime deciding which branch to render.
 
-Now here's where it gets interesting. In OCaml 5, we have real algebraic effects. Imagine Suspense without throwing:
+Now here's where it gets interesting. In OCaml 5, we have real algebraic effects. Imagine Suspense without throwing
 
 ```reason
 (* OCaml 5 effects - this is real, not hypothetical *)
@@ -275,7 +275,7 @@ The traditional solutions didn't work for us:
 
 So we asked: what if we could use the exact same React components on the server, but compiled to native code instead of JavaScript?
 
-That's server-reason-react. Same components, two runtimes:
+That's server-reason-react. Same components, two runtimes
 
 {/* Show architecture diagram here */}
 
@@ -316,7 +316,7 @@ But here's the thing: 10x isn't about OCaml being magic. It's about doing less w
 
 {/* DEMO: Show a component compiling to both targets */}
 
-Let me show you a real component:
+Let me show you a real component
 
 ```reason
 module Card = {
@@ -346,7 +346,7 @@ Same source. Two outputs. Type-safe on both sides.
 
 React Server Components take this further. Components that run only on the server. Never shipped to the client. Can access your database directly.
 
-The RSC wire format looks like this:
+The RSC wire format looks like this
 
 ```
 0:["$","div",null,{"children":[

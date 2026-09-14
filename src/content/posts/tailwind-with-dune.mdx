@@ -18,7 +18,7 @@ This tutorial shows you how to set up `dune build` to handle both JavaScript com
 
 You'll need:
 
-1. A Melange project with dune. If you're starting from scratch, the easiest option is [create-melange-app](https://github.com/melange-re/melange-opam-template):
+1. A Melange project with dune. If you're starting from scratch, the easiest option is [create-melange-app](https://github.com/melange-re/melange-opam-template)
 
     ```bash
     npx create-melange-app my-app
@@ -47,7 +47,7 @@ You'll need:
 
 Dune's `install` and `rule` stanzas make Tailwind work seamlessly with Melange. The `rule` stanza defines custom build steps that use dune's dependency tracking and caching.
 
-Add this to your `dune` file:
+Add this to your `dune` file
 
 ```dune
 (install
@@ -82,13 +82,13 @@ Add this to your `dune` file:
 
 The [dune documentation on rules](https://dune.readthedocs.io/en/stable/reference/dune/rule.html) covers them in more detail.
 
-Generate your CSS with:
+Generate your CSS with
 
 ```bash
 dune build output.css
 ```
 
-To rebuild when files change:
+To rebuild when files change
 
 ```bash
 dune build --watch output.css
@@ -119,7 +119,7 @@ If you're unsure what dependencies to declare, you can use `(universe)` as a cat
 
 ## Using the generated CSS
 
-With the rule above, your `output.css` will be in `_build/default/output.css`. You can reference it in your HTML:
+With the rule above, your `output.css` will be in `_build/default/output.css`. You can reference it in your HTML
 
 ```html
 <!DOCTYPE html>
@@ -137,7 +137,7 @@ This works, but knowing the file structure under `_build` can feel a bit awkward
 
 By default, dune generates files in the `_build` directory by replicating your folder structure and storing build metadata.
 
-In this case, you want the generated `output.css` to appear in your source tree so you can reference it directly in your HTML. Dune calls this "promotion," which promotes the file to your source code. Add `(mode promote)` to the rule:
+In this case, you want the generated `output.css` to appear in your source tree so you can reference it directly in your HTML. Dune calls this "promotion," which promotes the file to your source code. Add `(mode promote)` to the rule
 
 ```dune
 (rule
@@ -151,7 +151,7 @@ In this case, you want the generated `output.css` to appear in your source tree 
  (mode promote))
 ```
 
-When you run `dune build`, dune copies `output.css` to your source directory alongside your `dune` file. You can then reference it directly in your HTML:
+When you run `dune build`, dune copies `output.css` to your source directory alongside your `dune` file. You can then reference it directly in your HTML
 
 ```html
 <!DOCTYPE html>
@@ -167,7 +167,7 @@ Dune regenerates the promoted `output.css` file whenever your Tailwind config or
 
 ## Production builds
 
-For production, add the `--minify` flag to reduce file size. You can use dune aliases to create separate development and production builds:
+For production, add the `--minify` flag to reduce file size. You can use dune aliases to create separate development and production builds
 
 ```dune
 (rule

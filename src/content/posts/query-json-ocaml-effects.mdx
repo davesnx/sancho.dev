@@ -37,7 +37,7 @@ ASSESSMENT
 - Avoid a generic OCaml camel or JSON-braces illustration; the continuation is the memorable idea.
 */}
 
-A few years ago I wrote [query-json](/blog/cross-compile-query-json), a reimplementation of a subset of [jq](https://jqlang.org) in OCaml. The first version had the kind of interpreter I would still write for a small language:
+A few years ago I wrote [query-json](/blog/cross-compile-query-json), a reimplementation of a subset of [jq](https://jqlang.org) in OCaml. The first version had the kind of interpreter I would still write for a small language
 
 ```ocaml
 val interp : expression -> Json.t -> (Json.t list, error) result
@@ -49,7 +49,7 @@ It also worked. query-json was small, I was learning how parsers and interpreter
 
 Then I kept implementing jq.
 
-jq expressions are generators. One input may produce zero, one, or many outputs:
+jq expressions are generators. One input may produce zero, one, or many outputs
 
 ```bash
 query-json '.users[]' '{"users": ["Alice", "Bob", "Charlie"]}'
@@ -68,7 +68,7 @@ An ICFP tutorial on effect handlers gave me the missing model. An expression cou
 
 ## The problem with returning a list
 
-Consider a pipe:
+Consider a pipe
 
 ```jq
 .users[] | .name
@@ -97,7 +97,7 @@ The handler can do two important things with it:
 
 ![An exception unwinds the stack, while an effect gives its handler a continuation that can be continued or discontinued.](/images/ocaml-effects-control-flow.svg)
 
-query-json calls its output effect `Yield`:
+query-json calls its output effect `Yield`
 
 ```ocaml
 type _ Effect.t += Yield : Json.t -> unit Effect.t
@@ -107,7 +107,7 @@ let yield value = Effect.perform (Yield value)
 
 `type _ Effect.t +=` extends OCaml's effect type with a new operation. `Yield` carries a `Json.t`, and `unit Effect.t` says that `perform` returns `unit` when a handler resumes it.
 
-Here is a small handler that prints every yielded value:
+Here is a small handler that prints every yielded value
 
 ```ocaml
 let print_outputs run =
@@ -128,7 +128,7 @@ One detail matters before looking at pipes. The public query-json API still coll
 
 The expression `left | right` means: run `left`, then run `right` once for every value from the left.
 
-This is the control-flow shape of the production implementation:
+This is the control-flow shape of the production implementation
 
 ```ocaml
 let pipe ~ctx left right input =
@@ -137,7 +137,7 @@ let pipe ~ctx left right input =
     ~then_:(fun value -> interp ~ctx right value)
 ```
 
-`on_yield` handles values from the left side:
+`on_yield` handles values from the left side
 
 ```ocaml
 let on_yield run ~then_ =
@@ -164,7 +164,7 @@ This was the point where effects clicked for me. I could read a pipe from top to
 
 I understood `continue` quickly. Stopping took longer.
 
-A reduced version of query-json's current limit handler looks like this:
+A reduced version of query-json's current limit handler looks like this
 
 ```ocaml
 let limit n run =
@@ -192,7 +192,7 @@ query-json evaluates in-memory JSON in these paths, and its current implementati
 
 ## What changed, and what stayed the same
 
-Inside the evaluator, the main function now returns `unit`:
+Inside the evaluator, the main function now returns `unit`
 
 ```ocaml
 val interp : ctx:context -> expression -> Json.t -> unit

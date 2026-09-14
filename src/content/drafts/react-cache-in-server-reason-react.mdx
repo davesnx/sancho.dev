@@ -38,7 +38,7 @@ We implemented a tiny request cache in `React.Cache`:
 - Each `cache` call gets a unique `fn_id`.
 - Each cached function has its own `fn_cache` (a `Hashtbl`) keyed by argument identity.
 
-At a high level, it looks like this:
+At a high level, it looks like this
 
 ```
 request_cache: Map<fn_id, fn_cache>

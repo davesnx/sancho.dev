@@ -48,7 +48,7 @@ Let's build up to this step by step.
 
 Before we dive into the fancy stuff, let's make sure we're on the same page about operators.
 
-Most operators you use daily are **infix**—they sit between their operands:
+Most operators you use daily are **infix**—they sit between their operands
 
 ```ocaml
 1 + 2       (* + sits between 1 and 2 *)
@@ -56,7 +56,7 @@ Most operators you use daily are **infix**—they sit between their operands:
 x == y      (* == sits between x and y *)
 ```
 
-This is different from **prefix** notation, where the function comes first:
+This is different from **prefix** notation, where the function comes first
 
 ```ocaml
 (* Prefix: function comes first *)
@@ -84,7 +84,7 @@ So what makes `+` special? Why can you write `1 + 2` but not `1 add 2`?
 
 The answer is surprisingly simple: OCaml looks at the **first character** of a function name. If it starts with certain symbols, OCaml treats it as an infix operator.
 
-The magic characters are:
+The magic characters are
 
 ```
 = < > @ ^ | & + - * / $ % ! ? ~ # . :
@@ -123,7 +123,7 @@ You don't need to memorize these. The point is that when you see `>>=` in OCaml 
 
 Let's create a simple operator to get comfortable with the syntax.
 
-Say we want a safer division that returns `None` instead of crashing on division by zero:
+Say we want a safer division that returns `None` instead of crashing on division by zero
 
 ```ocaml
 (* Step 1: Start with a regular function *)
@@ -170,7 +170,7 @@ When you see `let*` in any OCaml codebase, it means the same thing. That's the k
 
 OCaml 4.08 introduced **binding operators**—a special syntax for a pattern so common that it deserved first-class support.
 
-The community has converged on clear conventions:
+The community has converged on clear conventions
 
 ```ocaml
 (* let* = bind / flatMap / andThen *)
@@ -188,7 +188,7 @@ The community has converged on clear conventions:
 
 When an OCaml programmer sees `let*`, they immediately know what's happening. It's as recognizable as `|>` for piping. This isn't arbitrary symbol soup—these operators have **semantic meaning** that the entire community agrees on.
 
-The pattern works across different types:
+The pattern works across different types
 
 ```ocaml
 (* Option: "if this has a value, continue..." *)
@@ -218,7 +218,7 @@ The `*` suffix signals "this operation might produce more structure" (another Op
 
 Now let's apply this to the real world: JavaScript promises in Melange.
 
-The `Js.Promise` module gives us the building blocks:
+The `Js.Promise` module gives us the building blocks
 
 ```reason
 /* Js.Promise.t('a) is our effect type - a promise that resolves to 'a */
@@ -226,7 +226,7 @@ The `Js.Promise` module gives us the building blocks:
 /* Js.Promise.resolve wraps a value in a resolved promise */
 ```
 
-Here's how we define the binding operators:
+Here's how we define the binding operators
 
 ```reason
 module Promise_syntax = {
@@ -254,7 +254,7 @@ That's it. About 15 lines of code, and we've unlocked a completely different way
 
 ## The Transformation: Before and After
 
-Let's see the payoff. Here's the nested callback version:
+Let's see the payoff. Here's the nested callback version
 
 ```reason
 /* BEFORE: Nested callbacks */
@@ -269,7 +269,7 @@ let fetchUserData = (userId) => {
 };
 ```
 
-And here's the same logic with binding operators:
+And here's the same logic with binding operators
 
 ```reason
 /* AFTER: Sequential, readable flow */
@@ -291,7 +291,7 @@ Notice the last binding uses `let+` instead of `let*`. That's because we're not 
 
 ### Parallel Execution with `and*`
 
-Sometimes you want to fetch multiple things at once, not sequentially:
+Sometimes you want to fetch multiple things at once, not sequentially
 
 ```reason
 open Promise_syntax;
@@ -311,7 +311,7 @@ The `and*` operator runs the promises in parallel. Only after all three resolve 
 
 ### Error Handling
 
-Promises can reject. Here's how to handle that:
+Promises can reject. Here's how to handle that
 
 ```reason
 let fetchWithFallback = (userId) => {
@@ -328,7 +328,7 @@ You can use `Js.Promise.catch` at any point in the chain to handle rejections.
 
 ### Module Organization
 
-I recommend putting your operators in a dedicated module:
+I recommend putting your operators in a dedicated module
 
 ```reason
 /* Promise_syntax.re */
@@ -340,7 +340,7 @@ let (let+) = (promise, fn) =>
 let (and*) = Js.Promise.all2;
 ```
 
-Then open it where needed:
+Then open it where needed
 
 ```reason
 /* UserService.re */
@@ -423,7 +423,7 @@ module Parser = struct
 end
 ```
 
-Now building parsers becomes declarative:
+Now building parsers becomes declarative
 
 ```ocaml
 open Parser

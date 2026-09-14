@@ -27,7 +27,7 @@ But here's the thing: CSS actually has types. The browser knows them and won't t
 
 ## The spec defines the types
 
-Open the [CSS spec for the `display` property](https://drafts.csswg.org/css-display/#the-display-properties) and you'll find something like this:
+Open the [CSS spec for the `display` property](https://drafts.csswg.org/css-display/#the-display-properties) and you'll find something like this
 
 ```
 display: [ <display-outside> || <display-inside> ] | <display-listitem> | <display-internal> | <display-box> | <display-legacy>
@@ -43,7 +43,7 @@ TypeScript moved type checking from runtime to authoring time. The same idea app
 
 ## What this looks like in practice
 
-Imagine writing styles and seeing errors before you refresh:
+Imagine writing styles and seeing errors before you refresh
 
 ```css
 .button {
@@ -60,7 +60,7 @@ Not linting rules you configure. Not "best practices" someone decided. Actual va
 
 The CSS spec isn't just documentation—it's a formal grammar. And formal grammars can be transformed into validators.
 
-Take a simple property like `display`. The spec says it accepts values like `block`, `flex`, `grid`, `inline`, `none`, and a few others. In a typed language, you'd model this as:
+Take a simple property like `display`. The spec says it accepts values like `block`, `flex`, `grid`, `inline`, `none`, and a few others. In a typed language, you'd model this as
 
 ```reason
 type display_value =
@@ -106,7 +106,7 @@ Media queries too. `@media (min-width: 768px)` is valid. `@media (min-width: 768
 
 I built this as [styled-ppx](https://github.com/davesnx/styled-ppx), a tool for writing CSS in Reason and OCaml. It's a compile-time preprocessor that validates your styles against the CSS spec and generates the runtime code.
 
-Here's what an error looks like:
+Here's what an error looks like
 
 ```
 Error: Property "display" has an invalid value: "flexbox"

@@ -37,7 +37,7 @@ Same output, less ceremony.
 
 ## The Core Insight: `'a Fmt.t`
 
-The key to understanding Fmt is this type alias:
+The key to understanding Fmt is this type alias
 
 ```ocaml
 type 'a t = Format.formatter -> 'a -> unit
@@ -58,7 +58,7 @@ Fmt.pr "Numbers: %a" pp_my_list [1; 2; 3]
 
 ## Basic Printers
 
-Fmt provides printers for all the standard types:
+Fmt provides printers for all the standard types
 
 ```ocaml
 Fmt.pr "%a@." Fmt.int 42              (* 42 *)
@@ -70,7 +70,7 @@ Fmt.pr "%a@." Fmt.char 'x'            (* x *)
 
 The `@.` at the end flushes the output—same as in Format.
 
-**Building strings instead of printing:**
+**Building strings instead of printing**
 
 ```ocaml
 let s = Fmt.str "%a" Fmt.int 42       (* "42" *)
@@ -142,7 +142,7 @@ Fmt.pr "%a@." Fmt.(result ~ok:int ~error:string) (Error "oops")
 
 ## Custom Separators with `any`
 
-The `Fmt.any` combinator creates a printer that ignores its input and prints a constant string:
+The `Fmt.any` combinator creates a printer that ignores its input and prints a constant string
 
 ```ocaml
 let arrow = Fmt.any " -> "
@@ -159,7 +159,7 @@ Fmt.pr "%a@." Fmt.(list ~sep:pipe string) ["a"; "b"; "c"]
 
 ## Brackets and Delimiters
 
-Wrap output with brackets, braces, or custom delimiters:
+Wrap output with brackets, braces, or custom delimiters
 
 ```ocaml
 Fmt.pr "%a@." Fmt.(brackets (list ~sep:semi int)) [1; 2; 3]
@@ -179,7 +179,7 @@ Fmt.pr "%a@." Fmt.(quote string) "hello"
 
 ## Pretty-Printing with Boxes
 
-Fmt wraps Format's box system with cleaner combinators:
+Fmt wraps Format's box system with cleaner combinators
 
 ```ocaml
 (* Horizontal box - never breaks *)
@@ -209,7 +209,7 @@ Fmt.pr "%a@." Fmt.(vbox ~indent:2 (list ~sep:cut int)) [1; 2; 3]
 
 ## Styled Output (Colors and Formatting)
 
-Fmt makes terminal styling easy:
+Fmt makes terminal styling easy
 
 ```ocaml
 (* Enable styled output first *)
@@ -236,7 +236,7 @@ Fmt.pr "%a@." Fmt.(styled `Bold (styled (`Fg `Red) string)) "CRITICAL"
 
 ## Building Record Printers
 
-For records, you can use `Fmt.record` with field definitions:
+For records, you can use `Fmt.record` with field definitions
 
 ```ocaml
 type person = {
@@ -263,7 +263,7 @@ Fmt.pr "%a@." pp_person alice
 
 ## Using with `%a`
 
-Since `'a Fmt.t` is just `Format.formatter -> 'a -> unit`, all Fmt printers work with the standard `%a` specifier:
+Since `'a Fmt.t` is just `Format.formatter -> 'a -> unit`, all Fmt printers work with the standard `%a` specifier
 
 ```ocaml
 (* Build a complex printer *)
@@ -338,7 +338,7 @@ let () =
 opam install fmt
 ```
 
-Then in your dune file:
+Then in your dune file
 
 ```lisp
 (library

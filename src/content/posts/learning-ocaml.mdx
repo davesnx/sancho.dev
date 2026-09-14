@@ -108,7 +108,7 @@ match color with
 | RGB (r, g, b) -> "rgb(" ^ string_of_int r ^ "," ^ string_of_int g ^ "," ^ string_of_int b ^ ")"
 ```
 
-The compiler enforces that your pattern match defines every possible case. If I forget a case, such as `| Yellow`, the compiler will say:
+The compiler enforces that your pattern match defines every possible case. If I forget a case, such as `| Yellow`, the compiler will say
 
 ```sh
 Warning number 8
@@ -238,7 +238,7 @@ module Custom_map = Map.Make(struct type t = int let compare a b = a - b end)
                              Here's the module without a name *)
 ```
 
-Here's a simple implementation of the `Map` functor:
+Here's a simple implementation of the `Map` functor
 
 ```ocaml
 module Map = struct

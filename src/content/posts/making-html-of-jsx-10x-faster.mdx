@@ -37,7 +37,7 @@ let html = JSX.render page
 
 Since HTML is a tree, the naive JSX implementation builds one too.
 
-In the original implementation, the ppx (preprocessor) transforms JSX syntax into function calls that build a tree structure at runtime:
+In the original implementation, the ppx (preprocessor) transforms JSX syntax into function calls that build a tree structure at runtime
 
 ```mlx
 (* You write *)
@@ -51,7 +51,7 @@ JSX.node "div"
   [ JSX.node "span" [] [ JSX.string "Hello" ] ]
 ```
 
-The `JSX.node` function creates a `Node` from the type:
+The `JSX.node` function creates a `Node` from the type
 
 ```mlx
 type element =
@@ -75,7 +75,7 @@ This works. But consider what happens for a simple static element like `<div id=
 3. **Pattern match** in `render` to identify it as a Node
 4. **Pattern match** on each attribute to render it
 
-In OCaml, every heap-allocated value has a 1-word header, and each field is another word. A single `<div id="container" />` ends up allocating around **~18 words** (~144 bytes on 64-bit) just to produce a 24-character string:
+In OCaml, every heap-allocated value has a 1-word header, and each field is another word. A single `<div id="container" />` ends up allocating around **~18 words** (~144 bytes on 64-bit) just to produce a 24-character string
 
 ```html
 <div id="container"></div>
@@ -87,7 +87,7 @@ A real page like [ocaml.org](https://ocaml.org) has 590 HTML nodes and almost ~8
 
 Since the ppx transformation runs at build time, the obvious optimization is to pre-render purely static elements into string literals.
 
-That's a good idea, but real components aren't purely static. They mix fixed HTML with dynamic data:
+That's a good idea, but real components aren't purely static. They mix fixed HTML with dynamic data
 
 ```mlx
 let card ~title ~content =
@@ -99,7 +99,7 @@ let card ~title ~content =
 
 The tree model forces us to allocate records and lists for the `div` and `p` nodes just to put `title` and `content` in the right place. We need a different perspective.
 
-Instead of seeing it as a tree, we can see it as a **template**:
+Instead of seeing it as a tree, we can see it as a **template**
 
 ```
   <div id="card">    ├───── Static
@@ -135,7 +135,7 @@ I introduced a **static analyzer** step in the preprocessor. It walks each JSX e
 
 ## Compile-time rendering
 
-For fully static elements, the ppx **runs the rendering at compile time** and emits a string literal:
+For fully static elements, the ppx **runs the rendering at compile time** and emits a string literal
 
 ```mlx
 (* You write *)
@@ -149,7 +149,7 @@ JSX.unsafe "<div id=\"container\"><span>Hello</span></div>"
 
 The string `"<div id=\"container\"><span>Hello</span></div>"` is computed during compilation: escaping attributes, building the tag structure, etc. At runtime, it's a constant string. Zero computation, zero allocation.
 
-For elements with dynamic content, we can't pre-compute the full string, so we generate `Buffer`-based code that assembles the HTML at runtime:
+For elements with dynamic content, we can't pre-compute the full string, so we generate `Buffer`-based code that assembles the HTML at runtime
 
 ```mlx
 (* Has dynamic child - can't fully pre-compute *)
@@ -177,7 +177,7 @@ Baseline (JSX.node):     ~8M renders/sec
 After:                  ~27M renders/sec   → ~3x faster
 ```
 
-The improvement is more dramatic for **nested static elements**:
+The improvement is more dramatic for **nested static elements**
 
 ```
 JSX.render <div><header><h1>Title</h1></header><main>...</main></div>

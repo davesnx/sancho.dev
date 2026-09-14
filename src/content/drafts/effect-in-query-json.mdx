@@ -26,7 +26,7 @@ query-json '.users[]' '{"users": ["Alice", "Bob", "Charlie"]}'
 # "Charlie"
 ```
 
-The `.users[]` expression walks the array and yields three separate results. Those results flow downstream through pipes. The previous version compiled a query string into an expression, then ran it against a JSON value:
+The `.users[]` expression walks the array and yields three separate results. Those results flow downstream through pipes. The previous version compiled a query string into an expression, then ran it against a JSON value
 
 ```ocaml
 (* parses the string into a Ast.expression *)
@@ -36,7 +36,7 @@ val compile : string -> (Ast.expression, string) result
 val interpreter : Ast.expression -> Json.t -> (Json.t list, string) result
 ```
 
-The interpreter itself was a recursive function that pattern-matched on the expression:
+The interpreter itself was a recursive function that pattern-matched on the expression
 
 ```ocaml
 let rec interpreter expression json =
@@ -61,7 +61,7 @@ Each expression takes a JSON value, does its thing, and returns `Ok result` or `
 
 ## Where it breaks
 
-The jq expression's can produce multiple values: `.users[]` expression yields three results from a single input. With the old model, every function returns `(Json.t list, string) result`, which means `pipe` has to collect all results from the left side into a list, then iterate over that list and run the right side for each element, collecting all of those results into another list:
+The jq expression's can produce multiple values: `.users[]` expression yields three results from a single input. With the old model, every function returns `(Json.t list, string) result`, which means `pipe` has to collect all results from the left side into a list, then iterate over that list and run the right side for each element, collecting all of those results into another list
 
 ```ocaml
 | Pipe (left, right) -> (
@@ -78,7 +78,7 @@ The jq expression's can produce multiple values: `.users[]` expression yields th
 
 Everything is eager. `limit(2; .users[])` cannot stop after two yields without running the whole generator first.
 
-Errors make it worse. Every combinator between an `error(...)` and a `try/catch` must propagate failures, even when it does not care about them:
+Errors make it worse. Every combinator between an `error(...)` and a `try/catch` must propagate failures, even when it does not care about them
 
 ```ocaml
 | Comma (left, right) -> (
@@ -113,7 +113,7 @@ When you `throw` in JavaScript or raise an exception in OCaml, execution **jumps
 
 Effects generalize that jump. Instead of only errors, you `perform` a typed signal (`Yield`, `User_error`, ...). The handler (like `catch` for exceptions) receive two things: the effect itself (sometimes with a payload) and a **continuation** that captures the rest of the computation still to run. What the handler does with that continuation is entirely its choice. It can ignore it and abort, handle the effect and stop, or resume it so execution picks up again right after the `perform`. Generators need that last option: yield a value, let the handler observe it, then continue the loop and yield again.
 
-In OCaml 5 you declare effects as extensible variants and perform them with `Effect.perform`:
+In OCaml 5 you declare effects as extensible variants and perform them with `Effect.perform`
 
 ```ocaml
 type _ Effect.t +=
@@ -129,7 +129,7 @@ type _ Effect.t +=
 
 ### A minimal generator (no jq yet)
 
-Before the full interpreter, a toy program shows resumption without JSON:
+Before the full interpreter, a toy program shows resumption without JSON
 
 ```ocaml
 type _ Effect.t += Yield : int -> unit Effect.t
@@ -203,7 +203,7 @@ Notice what's _not_ here: no `result` types, no error propagation, no checking r
 
 ### Pipe and Yield
 
-Every time the interpreter wants to produce a result, it calls:
+Every time the interpreter wants to produce a result, it calls
 
 ```ocaml
 let yield v = Effect.perform (Yield v)
@@ -211,7 +211,7 @@ let yield v = Effect.perform (Yield v)
 
 This doesn't return the value to a caller. It _performs_ the Yield effect, which suspends execution and hands the value to whichever handler is wrapping the current computation.
 
-The simplest handler is `run_and_collect_results`, which catches every `Yield` and accumulates values into a list:
+The simplest handler is `run_and_collect_results`, which catches every `Yield` and accumulates values into a list
 
 ```ocaml
 let run_and_collect_results fn =
@@ -224,7 +224,7 @@ let run_and_collect_results fn =
   List.rev !acc
 ```
 
-When a `Yield` is caught, the handler gets two things: the yielded value `v` and a **continuation** `k`. The continuation is the rest of the computation, everything that would have happened after the `yield` call. By calling `Effect.Deep.continue k ()`, the handler resumes execution right where it left off. The interpreter wraps this in a function called `collect`:
+When a `Yield` is caught, the handler gets two things: the yielded value `v` and a **continuation** `k`. The continuation is the rest of the computation, everything that would have happened after the `yield` call. By calling `Effect.Deep.continue k ()`, the handler resumes execution right where it left off. The interpreter wraps this in a function called `collect`
 
 ```ocaml
 and collect ~ctx expr json =
@@ -235,7 +235,7 @@ Consider what happens when you write `[.users[] | select(.active) | .name]` in a
 
 If you're not familiar with this syntax, try it yourself in the [query-json playground](https://query-json.pages.dev).
 
-Pipes use the same mechanism. The expression `a | b` means "run `a`, and for each result it produces, run `b`":
+Pipes use the same mechanism. The expression `a | b` means "run `a`, and for each result it produces, run `b`"
 
 ```ocaml
 and pipe ~ctx left right json =
@@ -244,7 +244,7 @@ and pipe ~ctx left right json =
     ~then_:(fun json -> interp ~ctx right json)
 ```
 
-`on_yield` is a helper that installs a Yield handler:
+`on_yield` is a helper that installs a Yield handler
 
 ```ocaml
 let on_yield fn ~then_ =
@@ -299,7 +299,7 @@ Pipe threads values across stages. Comma sequences two independent programs on o
 
 ### Optional
 
-`try-catch` with no catch handler (written `expr?` in jq) swallows errors and produces nothing. With effects, this is a thin wrapper:
+`try-catch` with no catch handler (written `expr?` in jq) swallows errors and produces nothing. With effects, this is a thin wrapper
 
 ```ocaml
 | Optional expr ->
@@ -312,7 +312,7 @@ Pipe threads values across stages. Comma sequences two independent programs on o
 
 ### Try/catch and User_error
 
-`error("message")` in the query language raises a user-facing error:
+`error("message")` in the query language raises a user-facing error
 
 ```ocaml
 let user_error value =
@@ -322,7 +322,7 @@ let user_error value =
 
 The `assert false` is dead code: `User_error` is never resumed, so execution never reaches it. It exists to satisfy the type checker.
 
-User errors interact with `try/catch`:
+User errors interact with `try/catch`
 
 ```ocaml
 and try_catch ~ctx expr handler finally_expr json =
@@ -352,7 +352,7 @@ and try_catch ~ctx expr handler finally_expr json =
   (* ... *)
 ```
 
-`catch_errors` installs an effect handler that intercepts `User_error` and `Runtime_error.Fail`, discards the continuation, and runs the catch handler instead. Effects it doesn't recognize (like `Yield` or `Break`) pass through transparently, bubbling up to the next handler:
+`catch_errors` installs an effect handler that intercepts `User_error` and `Runtime_error.Fail`, discards the continuation, and runs the catch handler instead. Effects it doesn't recognize (like `Yield` or `Break`) pass through transparently, bubbling up to the next handler
 
 ```bash
 query-json 'try error("boom") catch "caught: " + .message' 'null'
@@ -363,7 +363,7 @@ This composability is what makes the whole thing work. The `try/catch` handler d
 
 ### Limit, Break, and early exit
 
-Some constructs need to stop producing values early. `limit(n; expr)` runs `expr` but only takes the first `n` results:
+Some constructs need to stop producing values early. `limit(n; expr)` runs `expr` but only takes the first `n` results
 
 ```bash
 query-json 'limit(2; .users[])' '{"users": ["Alice", "Bob", "Charlie"]}'
@@ -371,7 +371,7 @@ query-json 'limit(2; .users[])' '{"users": ["Alice", "Bob", "Charlie"]}'
 # "Bob"
 ```
 
-The implementation installs a Yield handler that can choose _not_ to continue:
+The implementation installs a Yield handler that can choose _not_ to continue
 
 ```ocaml
 and limit ~ctx n expr json =
@@ -397,7 +397,7 @@ When the count reaches `n`, the handler simply doesn't call `continue`. The cont
 
 You could implement `limit` with exceptions: throw a `Limit_reached` exception and catch it at the right level. But consider what that does to `pipe`. In `a | b`, the left side is a generator that yields values one at a time. With effects, `limit` simply stops calling `continue` and the generator disappears. With exceptions, you'd need to throw _through_ the pipe handler, which is also trying to catch yields, and somehow not confuse "I'm done producing values" with "something went wrong." Every intermediate handler becomes responsible for re-raising exceptions it doesn't own. Effects avoid this entirely because each effect type is distinct: a `Break` passes transparently through a `Yield` handler without any explicit forwarding.
 
-`Break` works the same way but at a higher level. It's used inside loops to exit early, and the top-level `execute` function catches unhandled `Break` effects (since `break` outside a loop is meaningless):
+`Break` works the same way but at a higher level. It's used inside loops to exit early, and the top-level `execute` function catches unhandled `Break` effects (since `break` outside a loop is meaningless)
 
 ```ocaml
 let execute ~colorize ~verbose ?(env = []) expr json =
@@ -415,7 +415,7 @@ let execute ~colorize ~verbose ?(env = []) expr json =
 
 ### Halt
 
-`halt` terminates the entire program with an exit code. It's the one effect that never resumes:
+`halt` terminates the entire program with an exit code. It's the one effect that never resumes
 
 ```ocaml
 let halt ?(code = 0) () = Effect.perform (Halt code)

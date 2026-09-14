@@ -62,7 +62,7 @@ When I finally break thought and learned them, I was surprised how simple the co
 
 ## The problem: regex hell
 
-Say you're building a tool that reads a custom log format. Each line looks like this:
+Say you're building a tool that reads a custom log format. Each line looks like this
 
 ```
 [2024-03-15 14:32:01] INFO server: Request completed in 234ms (user_id=42, path="/api/users")
@@ -70,7 +70,7 @@ Say you're building a tool that reads a custom log format. Each line looks like 
 
 You need to extract the timestamp, level, source, message, and those key-value pairs in parentheses. The key-value pairs are optional, and there can be any number of them.
 
-Here's what a regex might look like:
+Here's what a regex might look like
 
 ```ocaml
 let pattern = {|\[(\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2})\] (\w+) (\w+): (.+?)(?:\s+\((.+)\))?$|}
@@ -102,7 +102,7 @@ There are three ways to compose parsers. **Sequence**: parse A, then parse B. **
 opam install angstrom
 ```
 
-And in your dune file:
+And in your dune file
 
 ```lisp
 (library
@@ -112,7 +112,7 @@ And in your dune file:
 
 ## Building blocks
 
-Let's start small. A parser that matches one or more digits and turns them into an integer:
+Let's start small. A parser that matches one or more digits and turns them into an integer
 
 ```ocaml
 open Angstrom
@@ -149,7 +149,7 @@ let key_value =
   return (key, value)
 ```
 
-The `>>=` operator sequences parsers. It says: "run the first parser, take its result, and feed it to the next one." This works, but it's verbose. Angstrom supports `let*` syntax which reads much better:
+The `>>=` operator sequences parsers. It says: "run the first parser, take its result, and feed it to the next one." This works, but it's verbose. Angstrom supports `let*` syntax which reads much better
 
 ```ocaml
 let key_value =
@@ -159,7 +159,7 @@ let key_value =
   return (key, value)
 ```
 
-Same thing, but it looks like regular OCaml code. There's also a more concise style with applicative operators:
+Same thing, but it looks like regular OCaml code. There's also a more concise style with applicative operators
 
 ```ocaml
 let key_value =
@@ -174,7 +174,7 @@ I tend to use `let*` for anything with more than two parsers, and `lift2`/`lift3
 
 ## Choices and alternatives
 
-What if values can be either identifiers or quoted strings? First, a parser for quoted strings:
+What if values can be either identifiers or quoted strings? First, a parser for quoted strings
 
 ```ocaml
 let quoted_string =
@@ -185,7 +185,7 @@ let quoted_string =
 
 This reads left to right: consume a `"`, take everything that isn't a `"`, consume the closing `"`. The `*>` and `<*` operators throw away the quotes and keep only the content between them.
 
-Now we can offer a choice:
+Now we can offer a choice
 
 ```ocaml
 let value = quoted_string <|> identifier
@@ -203,7 +203,7 @@ parse_string ~consume:All value "simple"
 
 ## Repetition
 
-To parse multiple key-value pairs separated by commas:
+To parse multiple key-value pairs separated by commas
 
 ```ocaml
 let pairs = sep_by (char ',' *> skip_many (char ' ')) key_value
@@ -226,7 +226,7 @@ Now let's tackle that log format from the beginning. Here's the structure, broke
 └──── timestamp ─────┘  level └source┘  └────── message ───────┘  └──────── metadata ─────────┘
 */}
 
-First, the types:
+First, the types
 
 ```ocaml
 type log_entry = {
@@ -238,7 +238,7 @@ type log_entry = {
 }
 ```
 
-Then, piece by piece:
+Then, piece by piece
 
 ```ocaml
 let timestamp =
@@ -289,7 +289,7 @@ let log_entry =
 
 Notice that `metadata_value` reuses the `quoted_string` parser we wrote earlier. That's the whole point of this approach: small parsers snap together into bigger ones.
 
-Let's test it:
+Let's test it
 
 ```ocaml
 let input = {|[2024-03-15 14:32:01] INFO server: Request completed in 234ms (user_id=42, path="/api/users")|}
@@ -308,7 +308,7 @@ Compare this to the regex. Yes, it's more code. But read it out loud. `timestamp
 
 ## Error handling
 
-One of the best things about parser combinators: error messages. The `<?>` operator attaches a label to a parser. When it fails, the error message uses this label instead of a cryptic internal name:
+One of the best things about parser combinators: error messages. The `<?>` operator attaches a label to a parser. When it fails, the error message uses this label instead of a cryptic internal name
 
 ```ocaml
 let level =
@@ -323,7 +323,7 @@ parse_string ~consume:All log_entry "[2024-03-15] info server: test"
 
 Compare that to regex's "no match." You actually know what went wrong and where.
 
-For validation beyond syntax, use `fail` to reject values that parse correctly but aren't valid:
+For validation beyond syntax, use `fail` to reject values that parse correctly but aren't valid
 
 ```ocaml
 let valid_level =
