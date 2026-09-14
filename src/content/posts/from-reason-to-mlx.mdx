@@ -37,14 +37,9 @@ let[@react.component] make ~name ~user =
 
 People say that syntax doesn't matter, and they are wrong.
 
-I consider myself a creative person: appreciate the beauty, the great user experiences and I find myself resolving big problems by drawing.
+I consider myself a creative person. I appreciate beauty and great user experiences, and I often solve complex problems by drawing or creating clearer visualizations.
 
-Syntax is the most important touch point of the interface of the language, followed by error
-messages. And as such, it needs to be treated as crucial.
-
-I consider myself a creative person. I appreciate beauty, good user
-experience, and good solutions to visual problems. Syntax is the most
-important part of a language's interface for me. I want us to treat it that way.
+Syntax is the most important touch point of the interface of the language, followed by error messages. And as such, it needs to be treated as crucial.
 
 There's some truth in the opposite view, where the meaning is the substance and at the end of the day, it will remain the only factor. Mega true, but in cases where the syntax stops you from getting the meaning... it stops being a detail.
 
@@ -239,10 +234,18 @@ The list of Reason features is long, but there are always tradeoffs, what are th
 
 ## mlx is awesome, actually
 
-mlx wins in maintenance. It's OCaml's parser with [the JSX rules](https://github.com/ocaml-mlx/mlx/blob/main/mlx/parser.mly), and [ocamlformat-mlx](https://github.com/ocaml-mlx/ocamlformat-mlx) is ocamlformat with a small patch. For Reason, each OCaml release means adapting Reason to the changes. mlx has less separate syntax to maintain.
+### Less to maintain
 
-I also want the story to be clearer. Melange, ReScript, Reason, BuckleScript, js_of_ocaml: people who are not familiar with these projects struggle to understand the differences, and I don't blame them. The ecosystem is modular, which may be great for experts, but alien for newcomers. With mlx, you just write OCaml (with a bit of JSX).
+mlx wins in maintenance. It is OCaml's parser plus [the JSX rules](https://github.com/ocaml-mlx/mlx/blob/main/mlx/parser.mly), and [ocamlformat-mlx](https://github.com/ocaml-mlx/ocamlformat-mlx) is ocamlformat plus a small patch. For Reason, each OCaml release means adapting Reason to the changes.
 
-This fits the wider work on Dune and Melange, and my work on Universal JS and Universal Belt. I want libraries to be easy to compile to both JavaScript and native executables. Today we rely on `copy_files` and custom directories for that. The single-context work in Dune is part of making this simpler. Reason benefits from that work too; mlx gives us a clearer way to describe the language we are using.
+### Clearer story
 
-Reason has been in maintenance mode for a few years, and the momentum is long gone. It's sad to say that about a project I believed in and helped maintain. But maybe mlx is the next chapter we should work on. What do you think?
+Melange, Reason, ReScript, BuckleScript, js_of_ocaml: people who are not familiar with these projects struggle to understand the differences, and I don't blame them. The ecosystem is modular, which may be great for experts, but alien for newcomers. With mlx, you just write OCaml (with a bit of JSX).
+
+### Community effort
+
+This fits the wider work on dune and Melange (with single context), and my work on transforming the ecosystem into universal: libraries to be easy to compile to both JavaScript and native executables. Today we rely on `copy_files` and custom directories for that. The single-context work in Dune is part of making this simpler. Reason benefits from that work too, ofc, but  mlx gives us a clearer way to describe the language we are using.
+
+### What about Reason, then?
+
+Reason has been in maintenance mode for a few years, and the momentum is long gone. There are some fundamental bugs (like refmt bugs or broken syntax such as classes, that have no plans on being fixed). It's sad to say that about a project I believed in and helped maintain. But maybe mlx is the next chapter we should work on. What do you think?
