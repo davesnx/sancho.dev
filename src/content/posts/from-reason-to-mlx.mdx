@@ -18,7 +18,7 @@ Besides this, I see Reason as a bit more than “just a different syntax” and 
 
 [mlx](https://github.com/ocaml-mlx/mlx), on the other hand, is a very minimal extension to the OCaml syntax that adds just JSX, the possibility to express HTML-like elements as a first-class citizen in the language.
 
-A component looks like this:
+A component looks like this
 
 ```mlx
 let[@react.component] make ~name ~user =
@@ -79,7 +79,7 @@ let headers =
 
 ### Uncurried functions and calls
 
-The curried form takes one argument and returns a function for the next:
+The curried form takes one argument and returns a function for the next
 
 ```reason
 let add = left => right => left + right;
@@ -93,7 +93,7 @@ let add = (. left, right) => left + right;
 let total = add(. 1, 2);
 ```
 
-In mlx with Melange, the same operations use attributes:
+In mlx with Melange, the same operations use attributes
 
 ```ocaml
 let add = (fun left right -> left + right) [@u]
@@ -104,7 +104,7 @@ We lose the dedicated notation: the dot beside the arguments becomes an attribut
 
 ### Attribute placement
 
-Reason puts a deriving attribute before its type declaration:
+Reason puts a deriving attribute before its type declaration
 
 ```reason
 [@deriving (enumerate, toString)]
@@ -114,7 +114,7 @@ type hAlign =
   | Right;
 ```
 
-In mlx, the attribute follows the declaration:
+In mlx, the attribute follows the declaration
 
 ```ocaml
 type hAlign =
@@ -124,7 +124,7 @@ type hAlign =
 [@@deriving enumerate, toString]
 ```
 
-The same happens with Melange bindings:
+The same happens with Melange bindings
 
 ```reason
 [@mel.get]
@@ -143,26 +143,26 @@ put the annotation near the start.
 ### Precedence
 
 In Reason, the parentheses around a function's arguments make the call
-boundary explicit:
+boundary explicit
 
 ```reason
 let value = React.Event.Form.target(event)##value;
 ```
 
 OCaml uses spaces for function application. To read a property from the
-result, we put parentheses around the call:
+result, we put parentheses around the call
 
 ```ocaml
 let value = (React.Event.Form.target event)##value
 ```
 
-Without those parentheses:
+Without those parentheses
 
 ```ocaml
 React.Event.Form.target event##value
 ```
 
-the expression groups as:
+the expression groups as
 
 ```ocaml
 React.Event.Form.target (event##value)
@@ -172,14 +172,14 @@ This is a different operation: it reads `value` from the event first, then passe
 
 ### Data-first pipe
 
-In Reason we have `->`, called data-first pipe, it applies the value to the function, as a first argument on the function:
+In Reason we have `->`, called data-first pipe, it applies the value to the function, as a first argument on the function
 
 ```reason
 value->f(arg);
 /* Equivalent to f(value, arg). */
 ```
 
-With Melange, the data-first pipe is written `|.`:
+With Melange, the data-first pipe is written `|.`
 
 ```ocaml
 value |. f arg
@@ -190,7 +190,7 @@ value |. f arg
 ### Descriptive binding operators
 
 Reason lets binding operators have descriptive names. For example, promise
-operators:
+operators
 
 ```reason
 let view = id => {
@@ -218,13 +218,13 @@ let all = first :: rest
 let next = { person with age = person.age + 1 }
 ```
 
-JSX children spread doesn't have an equivalent. It passes an existing value as the children, without wrapping it in a new list:
+JSX children spread doesn't have an equivalent. It passes an existing value as the children, without wrapping it in a new list
 
 ```reason
 <Layout> ...children </Layout>
 ```
 
-In mlx, children always become a list. The closest form is to pass `children` as a prop:
+In mlx, children always become a list. The closest form is to pass `children` as a prop
 
 ```mlx
 <Layout children />
