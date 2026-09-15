@@ -234,7 +234,7 @@ The list of Reason features is long, but there are always tradeoffs, what are th
 
 ## mlx is awesome, actually
 
-It's just one language, OCaml. There are no 2 languages, here: mlx is an extension.
+It's an extension of OCaml that generates OCaml code, like `.mly` (Menhir) or `.mll` (ocamllex). Its JSX syntax could even be proposed upstream.
 
 ### Less to maintain
 
@@ -250,4 +250,6 @@ This fits the wider work on dune and Melange (with single context), and my work 
 
 ### What about Reason, then?
 
-Reason has been in maintenance mode for a few years, and the momentum is long gone. There are some fundamental bugs (like refmt bugs or broken syntax such as classes, that have no plans on being fixed). It's sad to say that about a project I believed in and helped maintain. But maybe mlx is the next chapter we should work on. What do you think?
+Reason maintains a substantially different syntax and its own formatter while staying compatible with OCaml's [Parsetree](https://ocaml.org/manual/5.1/api/compilerlibref/Parsetree.html). mlx also targets that AST, but stays much closer to OCaml's grammar. Reason has accumulated technical debt, including formatting bugs. Most of those are fixable, and I think LLMs could help. We could support more features by encoding them with Reason-specific attributes in OCaml's Parsetree, but that breaks the abstraction and adds more machinery to maintain.
+
+It has been in maintenance mode for a few years, and the momentum is long gone. The Discord has been quiet for a long time. It's sad to say that about a project I helped maintain and believed in for such a long time. But maybe mlx is the next chapter we should work on, a new beginning, or at least a fresh start. What do you think?
