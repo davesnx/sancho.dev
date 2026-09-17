@@ -1,6 +1,5 @@
-import type { AnchorHTMLAttributes, ReactNode } from 'react';
-
 import { css } from '@linaria/core';
+import type { AnchorHTMLAttributes, ReactNode } from 'react';
 
 import { ButtonLink, cx } from '@/components/ui';
 import { colors } from '@/theme/theme';
@@ -12,7 +11,7 @@ const iconClass = css`
   height: 1em;
   vertical-align: middle;
   margin-top: -3px;
-  margin-right: 3px;
+  margin-left: 3px;
   padding: 1px;
   filter: grayscale(1);
   transition: filter 150ms ease;
@@ -52,8 +51,8 @@ export function IconTextLink({
 }) {
   return (
     <ButtonLink href={href} className={cx(iconTextLinkClass, className)} {...props}>
-      <img className={iconClass} src={icon} alt="" width={20} height={20} decoding="async" />
       {children}
+      <img className={iconClass} src={icon} alt="" width={20} height={20} decoding="async" />
     </ButtonLink>
   );
 }
