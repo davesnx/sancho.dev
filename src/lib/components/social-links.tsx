@@ -16,7 +16,7 @@ const socialLinkClass = css`
   && {
     display: inline-flex;
     align-items: center;
-    gap: 3px;
+    gap: 4px;
     white-space: nowrap;
   }
 
@@ -88,8 +88,8 @@ export function SocialLinks({ platforms = allPlatforms }: { platforms?: SocialPl
             hoverColor={link.hoverColor}
             decorationColor={link.decorationColor}
           >
-            <img className={iconClass} src={link.icon} alt="" width={40} height={40} decoding="async" />
             <span>{link.label}</span>
+            <img className={iconClass} src={link.icon} alt="" width={40} height={40} decoding="async" />
           </TextLink>
         );
       })}

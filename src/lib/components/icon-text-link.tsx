@@ -11,7 +11,7 @@ const iconClass = css`
   height: 1em;
   vertical-align: middle;
   margin-top: -3px;
-  margin-left: 3px;
+  margin-left: 4px;
   padding: 1px;
   filter: grayscale(1);
   transition: filter 150ms ease;
