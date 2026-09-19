@@ -37,6 +37,8 @@ const commonValues = {
 
 /**
  * @typedef {Object} ThemeValues
+ * @property {string} accent - Accent background color
+ * @property {string} textOnAccent - Text color on accent backgrounds
  * @property {string} backgroundPrimary - Main page background color
  * @property {string} backgroundSecondary - Secondary surface background (cards, code blocks)
  * @property {string} backgroundLogoTile - Tile behind company logos: dark in light mode, transparent in dark mode
@@ -84,6 +86,8 @@ const greyScale = {
  * @type {ThemeValues}
  */
 const lightValues = {
+  accent: '#E6F6EC',
+  textOnAccent: '#173D2A',
   backgroundLogoTile: greyScale.grey900,
   backgroundPrimary: '#FFFFFF',
   backgroundSecondary: greyScale.grey200,
@@ -104,6 +108,8 @@ const lightValues = {
  * @type {ThemeValues}
  */
 const darkValues = {
+  accent: '#2B4938',
+  textOnAccent: '#E6F6EC',
   backgroundLogoTile: 'transparent',
   backgroundPrimary: greyScale.grey1000,
   backgroundSecondary: greyScale.grey900,

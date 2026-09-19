@@ -101,8 +101,8 @@ export const globals = css`
   }
 
   :global(::selection) {
-    background: var(--c-borderSubtle);
-    color: var(--c-textAccent);
+    background: var(--c-accent);
+    color: var(--c-textOnAccent);
   }
 
   @media (prefers-reduced-motion: reduce) {
