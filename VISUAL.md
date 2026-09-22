@@ -83,15 +83,18 @@ The 2026-09-03 extraction recorded these dark values on /about: text `#cfd2d6`
   rule. This includes text, icon, social, job, navigation, and button links.
   Card links use their documented card radius.
 - Margin `0 -2px`, padding `1px 5px`; transparent background at rest.
-- Hover and keyboard focus: background becomes `backgroundPill`; color and decoration color become `textAccent` unless overridden.
+- Hover and keyboard focus: background becomes `backgroundPill`, the underline
+  is removed, and text becomes `textAccent` unless overridden. The underline
+  returns when the link is no longer hovered or keyboard-focused.
 - Footer links use `textProse` at rest and `textAccent` on hover and keyboard focus.
 - Transition: `color 150ms ease, text-decoration-color 150ms ease, background-color 150ms ease`; the global reduced-motion rule limits duration to 1ms.
 - External links open in a new tab with `rel="noopener noreferrer"`.
 - Bluesky, Discord, and Strava social links use 60% alpha brand foregrounds and
-  20% alpha brand underlines at rest. On hover and keyboard focus, both foregrounds
-  and underlines use the full brand color.
+  20% alpha brand underlines at rest. On hover and keyboard focus, foregrounds
+  use the full brand color and underlines are removed.
 - GitHub and X social links use `textProse` foregrounds and `borderSubtle` underlines
-  at rest. On hover and keyboard focus, both foregrounds and underlines use `textAccent`.
+  at rest. On hover and keyboard focus, foregrounds use `textAccent` and underlines
+  are removed.
 
 ## Spacing
 

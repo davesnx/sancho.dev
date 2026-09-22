@@ -118,7 +118,7 @@ const textLinkClass = css`
   &:focus-visible {
     background-color: ${colors.backgroundPill};
     color: var(--link-hover-color);
-    text-decoration-color: var(--link-hover-color);
+    text-decoration-line: none;
   }
 `;
 
