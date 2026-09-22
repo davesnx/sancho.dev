@@ -21,7 +21,7 @@ const iconTextLinkClass = css`
   display: inline;
   white-space: nowrap;
   padding: 1px 5px 1px 6px;
-  margin: 0 -2px;
+  margin: 0px -5px;
   text-decoration-line: none;
   background: ${colors.backgroundPrimary};
   transition: background 150ms ease;

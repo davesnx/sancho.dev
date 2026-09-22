@@ -219,6 +219,7 @@ const imageCaptionClass = css`
 const preClass = css`
   display: block;
   margin: 1rem 0 3rem 0;
+  border: 1px solid ${colors.borderStrong};
 `;
 
 const codeClass = css`
