@@ -161,9 +161,10 @@ below), matching the rendered h2 margins in blog posts.
   grayscale transition.
   Discord and Strava glyphs come from `https://cdn.simpleicons.org/discord`
   and `https://cdn.simpleicons.org/strava`, on matching 40x40 brand-color tiles.
+- Social links use `1px 5px 1px 6px` padding to match inline icon links.
 - Inline icon links in prose use `IconTextLink`
   (`src/lib/components/icon-text-link.tsx`): an inline pill built on
-  `ButtonLink`, radius 5px, `1px 5px` padding and `0 -2px` margin,
+  `ButtonLink`, radius 5px, `1px 5px 1px 6px` padding and `0 -2px` margin,
   no underline, `white-space:
   nowrap` so icon and text never split across lines, background
   `colors.backgroundPrimary` at rest (#FFFFFF light, #141414 dark)

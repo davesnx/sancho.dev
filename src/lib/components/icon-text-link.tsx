@@ -20,7 +20,7 @@ const iconClass = css`
 const iconTextLinkClass = css`
   display: inline;
   white-space: nowrap;
-  padding: 1px 5px;
+  padding: 1px 5px 1px 6px;
   margin: 0 -2px;
   text-decoration-line: none;
   background: ${colors.backgroundPrimary};
