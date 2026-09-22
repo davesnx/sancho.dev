@@ -39,7 +39,6 @@ const playgroundLinkClass = css`
   align-items: center;
   gap: 0.4rem;
   padding: 0.35rem 0.65rem;
-  border-radius: 4px;
   font-family: ${fonts.mono};
   font-size: 0.7rem;
   font-weight: 700;

@@ -72,7 +72,6 @@ const thanksButtonClass = css`
   background: ${colors.backgroundSecondary};
   color: ${colors.textPrimary};
   padding: 10px 16px;
-  border-radius: 10px;
   text-decoration: none;
   font-weight: 600;
   transition: transform 150ms ease-in-out;
@@ -167,7 +166,7 @@ export function BlogPostView({
         <Spacer top={10} bottom={4}>
           <div className={thanksClass}>
             <Row columnOnMobile justify="space-between" align="center" wrap gap={2}>
-              <div style={{ flex: 1, minWidth: '280px' }}>
+              <div style={{ flex: 1, minWidth: 'min(280px, 100%)' }}>
                 <Text>
                   <strong>Thanks for reading!</strong> <br /> Any feedback is appreciated.
                 </Text>

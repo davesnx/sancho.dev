@@ -39,6 +39,8 @@ const commonValues = {
  * @typedef {Object} ThemeValues
  * @property {string} backgroundPrimary - Main page background color
  * @property {string} backgroundSecondary - Secondary surface background (cards, code blocks)
+ * @property {string} backgroundBox - Raised box background
+ * @property {string} backgroundHover - Quiet hover background for boxes and list rows
  * @property {string} backgroundLogoTile - Tile behind company logos: dark in light mode, transparent in dark mode
  * @property {string} textAccent - Strongest foreground: hover states, emphasis, bold text
  * @property {string} textProse - Long-form content text (paragraphs, nav items, code)
@@ -87,12 +89,14 @@ const lightValues = {
   backgroundLogoTile: greyScale.grey900,
   backgroundPrimary: '#FFFFFF',
   backgroundSecondary: greyScale.grey200,
+  backgroundBox: '#FFFFFF',
+  backgroundHover: '#F2F2F2',
   backgroundTertiary: greyScale.grey300,
   backgroundPill: greyScale.grey300,
   backgroundPillHover: greyScale.grey400,
   borderStrong: navyScale.navy100,
   borderSubtle: greyScale.grey400,
-  textAccent: navyScale.navy900,
+  textAccent: '#171717',
   textPrimary: navyScale.navy700,
   textSecondary: navyScale.navy500,
   textProse: navyScale.navy500,
@@ -107,13 +111,15 @@ const darkValues = {
   backgroundLogoTile: 'transparent',
   backgroundPrimary: greyScale.grey1000,
   backgroundSecondary: greyScale.grey900,
+  backgroundBox: greyScale.grey900,
+  backgroundHover: '#1F1F1F',
   backgroundTertiary: greyScale.grey800,
   backgroundPill: '#1A1A1A',
   backgroundPillHover: greyScale.grey800,
   borderStrong: greyScale.grey800,
   borderSubtle: greyScale.grey700,
   /* borderSubtle: greyScale.grey800, */
-  textAccent: greyScale.grey100,
+  textAccent: '#EDEDED',
   textPrimary: navyScale.navy100,
   textSecondary: greyScale.grey600,
   textProse: greyScale.grey500,
@@ -199,6 +205,6 @@ export const make = (theme) => {
  * Object containing CSS variable references for all theme colors
  * @type {Record<keyof (CommonValues & ThemeValues), string>}
  */
-export const colors = Object.fromEntries(
-  Object.entries(lightTheme).map(([key, _value]) => [key, variable(variableName(key))]),
-);
+export const colors = Object.fromEntries(Object.keys(lightTheme).map((key) => [key, variable(variableName(key))]));
+
+export const radii = { link: '5px' };

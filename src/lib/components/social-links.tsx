@@ -16,7 +16,7 @@ const socialLinkClass = css`
   && {
     display: inline-flex;
     align-items: center;
-    gap: 4px;
+    gap: 5px;
     white-space: nowrap;
   }
 

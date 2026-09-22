@@ -65,6 +65,7 @@ const headingBaseClass = css`
   margin: 0;
   padding: 0;
   font-family: ${fonts.sans};
+  font-optical-sizing: auto;
   font-weight: 600;
   line-height: 1.3;
   color: ${colors.textAccent};
@@ -105,7 +106,6 @@ const textLinkClass = css`
   overflow-wrap: break-word;
   word-wrap: break-word;
   display: inherit;
-  border-radius: 2px;
   margin: 0 -2px;
   padding: 1px 5px;
   transition: color 150ms ease, text-decoration-color 150ms ease, background-color 150ms ease;
@@ -132,7 +132,6 @@ const filledButtonLinkClass = css`
   display: inline-flex;
   align-items: center;
   padding: 10px 16px;
-  border-radius: 10px;
   background: ${colors.backgroundSecondary};
   color: ${colors.textPrimary};
 

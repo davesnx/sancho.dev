@@ -38,14 +38,14 @@ const openSourceItemClass = css`
   cursor: pointer;
   text-decoration: none;
   padding: 1rem;
-  border-radius: 0.5rem;
+  border-radius: 14px;
   border: 1px solid ${colors.borderStrong};
-  background-color: ${colors.backgroundSecondary};
-  transition: background-color 300ms ease, transform 120ms ease-out;
+  background-color: ${colors.backgroundBox};
+  transition: background-color 150ms ease, transform 120ms ease-out;
 
   &:hover,
   &:focus-visible {
-    background-color: ${colors.backgroundTertiary};
+    background-color: ${colors.backgroundHover};
   }
 
   &:active {

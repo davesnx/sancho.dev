@@ -11,7 +11,7 @@ const iconClass = css`
   height: 1em;
   vertical-align: middle;
   margin-top: -3px;
-  margin-left: 4px;
+  margin-left: 5px;
   padding: 1px;
   filter: grayscale(1);
   transition: filter 150ms ease;
@@ -20,7 +20,6 @@ const iconClass = css`
 const iconTextLinkClass = css`
   display: inline;
   white-space: nowrap;
-  border-radius: 2px;
   padding: 1px 5px;
   margin: 0 -2px;
   text-decoration-line: none;

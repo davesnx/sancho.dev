@@ -23,10 +23,10 @@ const boxClass = css`
   cursor: pointer;
   text-decoration: none;
   padding: 3rem;
-  border-radius: 0.5rem;
+  border-radius: 14px;
   border: 1px solid ${colors.borderStrong};
-  background-color: ${colors.backgroundSecondary};
-  transition: background-color 300ms ease, transform 120ms ease-out;
+  background-color: ${colors.backgroundBox};
+  transition: background-color 150ms ease, transform 120ms ease-out;
 
   @media (max-width: ${breakpoints.mobile.width}px) {
     padding: 2rem;
@@ -34,20 +34,12 @@ const boxClass = css`
 
   &:hover,
   &:focus-visible {
-    background-color: ${colors.backgroundTertiary};
+    background-color: ${colors.backgroundHover};
   }
 
   &:active {
     transform: scale(0.99);
   }
-
-  &:hover .talk-title {
-    color: ${colors.textAccent};
-  }
-`;
-
-const titleClass = css`
-  transition: color 150ms ease;
 `;
 
 const youtubeIconClass = css`
@@ -77,7 +69,7 @@ export function TalkItem({
     <Row fullWidth align="center" justify="between" gap={2}>
       <a className={boxClass} href={link} target="_blank" rel="noopener noreferrer">
         <Stack align="left" gap={1}>
-          <H2 className={`talk-title ${titleClass}`}>{title}</H2>
+          <H2>{title}</H2>
           <Row justify="left" align="center" gap={1}>
             <Text
               as="span"

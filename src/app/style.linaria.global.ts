@@ -1,7 +1,7 @@
 import { css } from '@linaria/core';
 
 import fonts from '@/theme/fonts';
-import { assignThemeVariables, darkCSSVariables, lightCSSVariables } from '@/theme/theme';
+import { assignThemeVariables, darkCSSVariables, lightCSSVariables, radii } from '@/theme/theme';
 
 export const globals = css`
   :global(:root) {
@@ -63,6 +63,7 @@ export const globals = css`
 
   :global(a) {
     color: inherit;
+    border-radius: ${radii.link};
   }
 
   :global(img) {

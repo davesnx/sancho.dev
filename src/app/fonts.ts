@@ -5,14 +5,9 @@ export const sansFont = localFont({
   display: 'swap',
   src: [
     {
-      path: '../../public/fonts/DMSans-400.woff2',
+      path: '../../public/fonts/DMSans-opsz-wght.woff2',
       style: 'normal',
-      weight: '400',
-    },
-    {
-      path: '../../public/fonts/DMSans-600.woff2',
-      style: 'normal',
-      weight: '600',
+      weight: '100 1000',
     },
   ],
 });
