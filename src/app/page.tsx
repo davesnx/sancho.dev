@@ -28,10 +28,10 @@ export default function HomePage() {
   return (
     <Page title={<H1 className={nameClass}>Hi, I'm David Sancho</H1>}>
       <Spacer bottom={10}>
-        <Text size={fonts.fontSize1} align="left">
+        <Text size={fonts.fontSize1} align="left" color={colors.textProse}>
           Welcome to my little space on the internet.
         </Text>
-        <Text size={fonts.fontSize1} align="left">
+        <Text size={fonts.fontSize1} align="left" color={colors.textProse}>
           I work as a Remote Software Engineer based in Andorra, making software with{' '}
           <IconTextLink href="https://ocaml.org/" icon="/logos/ocaml-icon.svg" aria-label="OCaml">
             OCaml
@@ -39,7 +39,7 @@ export default function HomePage() {
           .
         </Text>
         <Spacer top={2} />
-        <Text size={fonts.fontSize1}>
+        <Text size={fonts.fontSize1} color={colors.textProse}>
           Currently working at{' '}
           <IconTextLink href="https://ahrefs.com/" icon="/logos/ahrefs-icon.svg" aria-label="ahrefs">
             ahrefs
@@ -67,7 +67,7 @@ export default function HomePage() {
           and company.
         </Text>
         <Spacer top={2} />
-        <Text size={fonts.fontSize1}>
+        <Text size={fonts.fontSize1} color={colors.textProse}>
           Trying to express myself on <TextLink href="/blog">blog</TextLink> and you can read more about me on the{' '}
           <TextLink href="/about">about</TextLink> page.
         </Text>

@@ -33,7 +33,7 @@ Colors are CSS variables (`var(--c-<name>)`) exposed as `colors.<name>` from
 | borderStrong | #ECEEF1 | #272727 | Card borders, interactive outlines |
 | textAccent | #171717 | #EDEDED | Headings, strongest text, hover states, emphasis |
 | textPrimary | #233044 | #ECEEF1 | Default text |
-| textProse | #4C586A | #B1B0B0 | Long-form paragraphs, footer text, image captions, talk metadata and descriptions, GitHub and X social links |
+| textProse | #4C586A | #B1B0B0 | Blog, home and about paragraphs, footer text, image captions, talk metadata and descriptions, GitHub and X social links |
 | textSecondary | #4C586A | #909292 | Dates, metadata |
 | textTertiary | #B9BDC3 | #4C4D4D | Separators, link underlines |
 

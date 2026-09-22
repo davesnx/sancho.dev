@@ -282,7 +282,7 @@ export default function AboutPage() {
   return (
     <Page title={<H1>About</H1>}>
       <div className={contentClass}>
-        <Text size={fonts.fontSize1} align="left">
+        <Text size={fonts.fontSize1} align="left" color={colors.textProse}>
           {
             "Hi, I'm David. Nice to meet you! I'm a Remote Software Engineer based in Ordino, Andorra. My work bridges functional programming, web and maintainability. Right now by focusing on creating better developer tools and experiences with "
           }
@@ -300,7 +300,7 @@ export default function AboutPage() {
           {'.'}
         </Text>
         <Spacer top={2} />
-        <Text size={fonts.fontSize1}>
+        <Text size={fonts.fontSize1} color={colors.textProse}>
           {
             'I believe that creating maintainable and powerful software comes from designing with clarity, building on sound architecture, and embracing the iterative nature of development.'
           }
@@ -312,7 +312,7 @@ export default function AboutPage() {
       </Spacer>
 
       <div className={contentClass}>
-        <Text size={fonts.fontSize1}>
+        <Text size={fonts.fontSize1} color={colors.textProse}>
           {'Currently working at '}
           <IconTextLink href="https://ahrefs.com/" icon="/logos/ahrefs-icon.svg" aria-label="ahrefs">
             ahrefs
@@ -347,7 +347,7 @@ export default function AboutPage() {
       <Spacer top={5} />
 
       <div className={contentClass}>
-        <Text size={fonts.fontSize1}>
+        <Text size={fonts.fontSize1} color={colors.textProse}>
           {'I co-host '}
           <IconTextLink href="https://www.twitch.tv/emelletv" icon="/logos/twitch-icon.svg" aria-label="emelle.tv">
             emelle.tv
@@ -361,7 +361,7 @@ export default function AboutPage() {
       </Spacer>
 
       <div className={contentClass}>
-        <Text size={fonts.fontSize1}>
+        <Text size={fonts.fontSize1} color={colors.textProse}>
           {'I maintain a few open source projects, like '}
           <IconTextLink href="https://melange.re/" icon="/logos/github-icon.svg" aria-label="Melange">
             Melange
@@ -393,7 +393,7 @@ export default function AboutPage() {
           {', the stack behind the UI at ahrefs.'}
         </Text>
         <Spacer top={2} />
-        <Text size={fonts.fontSize1}>
+        <Text size={fonts.fontSize1} color={colors.textProse}>
           {'Open source shaped my career, and I give back to the community where I can. Some of the notable projects:'}
         </Text>
       </div>
@@ -405,7 +405,7 @@ export default function AboutPage() {
       <Spacer top={10} />
 
       <div className={contentClass}>
-        <Text size={fonts.fontSize1}>
+        <Text size={fonts.fontSize1} color={colors.textProse}>
           {'Want to chat? DM me on '}
           <IconTextLink href="https://x.com/davesnx" icon="/logos/x-icon.svg" aria-label="(Twitter)">
             (Twitter)
