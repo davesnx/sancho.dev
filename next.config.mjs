@@ -30,6 +30,8 @@ const withMDX = createMDX({
 const nextConfig = {
   output: "export",
   reactStrictMode: true,
+  // generate:og screenshots the dev server, and the indicator would end up in OG images.
+  devIndicators: false,
   staticPageGenerationTimeout: 15000,
   pageExtensions: ["ts", "tsx", "js", "jsx", "md", "mdx"],
   linaria: {

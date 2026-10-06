@@ -14,7 +14,8 @@
     "clean": "rimraf .next out",
     "ts": "next typegen && tsc --noEmit --pretty",
     "format": "biome format --write src scripts --config-path biome.json",
-    "lint": "biome lint --write src scripts --config-path biome.json"
+    "lint": "biome lint --write src scripts --config-path biome.json",
+    "prepare": "git config core.hooksPath .githooks"
   },
   "devDependencies": {
     "@babel/runtime": "^7.29.7",

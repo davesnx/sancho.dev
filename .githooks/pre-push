@@ -1,0 +1,2 @@
+#!/bin/sh
+exec node --experimental-strip-types scripts/check-og-images.mts
