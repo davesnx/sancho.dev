@@ -45,7 +45,15 @@ There's some truth in the opposite view, where the meaning is the substance and 
 
 ## Does syntax matter for LLMs?
 
-Not much. Models were better at Python and JavaScript because they had [seen more of them](https://arxiv.org/abs/2308.09895). Today [a fast compiler](https://arxiv.org/abs/2308.05177) or a fast linter with [clear errors](https://arxiv.org/abs/2306.09896) does more for a model than a familiar syntax: it writes, reads the error, and fixes it in seconds. Reason and mlx share the compiler and the errors, so nothing changes here.
+Not much. Models used to be better at Python and JavaScript because they [saw more of them in the public datasets](https://arxiv.org/abs/2308.09895).
+
+Researchers consider OCaml a [low-resource language](https://www.youtube.com/watch?v=ahtbcExEKng), but agents have improved. Popularity isn't the only factor anymore: agents prefer fast compilers and clear error messages, since the flow is always 1) write code, 2) compile it, 3) read the error and go back to 1. [José Valim makes this case for Elixir](https://dashbit.co/blog/why-elixir-best-language-for-ai), which had the highest completion rate of 20 languages in [Tencent's AutoCodeBench](https://autocodebench.github.io). He credits immutability, stable docs, and tooling built for that loop.
+
+[Bend 2](https://bend-lang.com) is the extreme case. It came out last month, so models barely saw it during training, and yet agents [ported Rust projects to it on its second day](https://akitaonrails.com/en/2026/09/19/new-ai-language-just-released-bend-2/). The language was built for agents from the start. You describe what the code must do, the AI writes it, and the compiler proves it right or tells the agent why not, in a tenth of a second. When the compiler can tell the agent exactly what's wrong, being new stops being a problem.
+
+Popularity still counts, though. Agents [spend more tokens in OCaml](https://arxiv.org/abs/2607.22807) than in Python, partly because they write code that doesn't compile and then fix it. But that gap comes from training data and tooling, not from syntax.
+
+Reason and mlx share the same compiler, the same type errors and the same tooling, so picking one over the other changes nothing here.
 
 ## Here's the list
 
@@ -53,8 +61,7 @@ Anyway, here's the list of things we lose:
 
 ### JavaScript objects
 
-Reason lets us write JavaScript objects with quoted keys. The keys can
-contain punctuation or words that OCaml reserves.
+In Reason, JavaScript objects have an special syntax with record-like plus quoted keys.
 
 ```reason
 let headers = {
@@ -64,8 +71,7 @@ let headers = {
 };
 ```
 
-In the converted code, the object uses `[%mel.obj]`. Each renamed field
-needs `[@mel.as]` to keep its JavaScript key. Since record fields are idents, and can't express all the JavaScript object fields.
+In mlx there's nothing like this. We need to write `[%mel.obj]` with a record inside, with a small caveat: record fields are OCaml identifiers, so any key that isn't a valid one needs `[@mel.as]` to get its JavaScript name back.
 
 ```ocaml
 let headers =
@@ -79,28 +85,28 @@ let headers =
 
 ### Uncurried functions and calls
 
-The curried form takes one argument and returns a function for the next
+The curried function definition takes one argument and returns a function
 
 ```reason
 let add = left => right => left + right;
 let total = add(1, 2);
 ```
 
-In Reason, a dot inside the argument list marks an uncurried function or call.
+In Reason, a dot inside the argument list marks an uncurried function or call. Meaning that the function has two arguments. This is used in Melange to call JavaScript functions or to optimize the bundle.
 
 ```reason
 let add = (. left, right) => left + right;
 let total = add(. 1, 2);
 ```
 
-In mlx with Melange, the same operations use attributes
+In mlx, the same operations use attributes
 
 ```ocaml
 let add = (fun left right -> left + right) [@u]
 let total = (add 1 2 [@u])
 ```
 
-We lose the dedicated notation: the dot beside the arguments becomes an attribute after the expression.
+It works, but the `[@u]` sits at the end of the expression.
 
 ### Attribute placement
 
@@ -136,21 +142,17 @@ external tagName : Dom.element -> string = "tagName"
 [@@mel.get]
 ```
 
-This does not apply to every attribute or ppx extension. Forms such as
-`let[@react.component]`, `let%browser_only`, and `match%platform` can still
-put the annotation near the start.
+Not every attribute needs to sit at the end, though. Some of them can remain at the start, such as: `let[@react.component]`, `let%browser_only` and `match%platform`.
 
 ### Precedence
 
-In Reason, the parentheses around a function's arguments make the call
-boundary explicit
+In Reason, the parentheses around the arguments tell you where the call ends
 
 ```reason
 let value = React.Event.Form.target(event)##value;
 ```
 
-OCaml uses spaces for function application. To read a property from the
-result, we put parentheses around the call
+OCaml uses spaces for function application, so we need to wrap the call ourselves
 
 ```ocaml
 let value = (React.Event.Form.target event)##value
@@ -168,7 +170,7 @@ the expression groups as
 React.Event.Form.target (event##value)
 ```
 
-This is a different operation: it reads `value` from the event first, then passes it to `target`.
+which reads `value` from the event and passes it to `target`. Easy to get wrong when you come from Reason.
 
 ### Data-first pipe
 
@@ -189,8 +191,7 @@ value |. f arg
 
 ### Descriptive binding operators
 
-Reason lets binding operators have descriptive names. For example, promise
-operators
+Reason lets binding operators can have descriptive names, like `let.await` for promises
 
 ```reason
 let view = id => {
@@ -200,7 +201,7 @@ let view = id => {
 };
 ```
 
-OCaml has binding operators too, but only with symbolic names such as `let*` and `and+`. There's no descriptive form in mlx.
+OCaml has binding operators too, but only with symbolic names such as `let*` and `and+`. There's no descriptive names.
 
 ### Spread operator
 
@@ -218,23 +219,17 @@ let all = first :: rest
 let next = { person with age = person.age + 1 }
 ```
 
-JSX children spread doesn't have an equivalent. It passes an existing value as the children, without wrapping it in a new list
+JSX children spread works the same way in Reason and in mlx.
 
 ```reason
 <Layout> ...children </Layout>
 ```
 
-In mlx, children always become a list. The closest form is to pass `children` as a prop
-
-```mlx
-<Layout children />
-```
-
-The list of Reason features is long, but there are always tradeoffs, what are the good bits of mlx?
+The list of Reason features where it tries to improve the OCaml syntax is long. But what if we didn't need to have a separate language? What are the tradeoffs? Why does mlx exist?
 
 ## mlx is awesome, actually
 
-It's an extension of OCaml that generates OCaml code, like `.mly` (Menhir) or `.mll` (ocamllex). Its JSX syntax could even be proposed upstream.
+It's an extension of OCaml that generates OCaml code, like `.mly` (Menhir) or `.mll` (ocamllex). In this case `.mlx` it's a super-set of OCaml, all OCaml files are mlx files. It could could even be proposed upstream.
 
 ### Less to maintain
 
@@ -242,7 +237,7 @@ mlx wins in maintenance. It is OCaml's parser plus [the JSX rules](https://githu
 
 ### Clearer story
 
-Melange, Reason, ReScript, BuckleScript, js_of_ocaml: people who are not familiar with these projects struggle to understand the differences, and I don't blame them. The ecosystem is modular, which may be great for experts, but alien for newcomers. With mlx, you just write OCaml (with a bit of JSX).
+Melange, Reason, ReScript, BuckleScript, js_of_ocaml: people who are not familiar with these projects struggle to understand the differences, and I don't blame them. The ecosystem is modular, which may be great for experts, but alien for newcomers. With mlx, you just write OCaml (with a bit of JSX), it resolves the syntax layer.
 
 ### Community effort
 
@@ -252,4 +247,4 @@ This fits the wider work on dune and Melange (with single context), and my work 
 
 Reason maintains a substantially different syntax and its own formatter while staying compatible with OCaml's [Parsetree](https://ocaml.org/manual/5.1/api/compilerlibref/Parsetree.html). mlx also targets that AST, but stays much closer to OCaml's grammar. Reason has accumulated technical debt, including formatting bugs. Most of those are fixable, and I think LLMs could help. We could support more features by encoding them with Reason-specific attributes in OCaml's Parsetree, but that breaks the abstraction and adds more machinery to maintain.
 
-It has been in maintenance mode for a few years, and the momentum is long gone. The Discord has been quiet for a long time. It's sad to say that about a project I helped maintain and believed in for such a long time. But maybe mlx is the next chapter we should work on, a new beginning, or at least a fresh start. What do you think?
+It has been in maintenance mode for a few years, and the momentum is long gone. The Discord has been quiet for a long time. It's sad to say that about a project I helped maintain and believed in for such a long time. But maybe mlx is the next chapter. What do you think?
