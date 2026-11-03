@@ -8,36 +8,15 @@ tags:
   - "Learning"
 ---
 
-{/*
-SKILLS
-state: partial
-next: post-draft — two sentences break off mid-thought ("I would have wasted weeks and wouldn't ." and "you can compare/match"); the rest is full prose through the TL;DR
-then: post-sand, post-review
-*/}
+Not every problem is a hard problem. A hard problem it's here you can't articulate what you don't even understand.
 
-Not every problem is a hard problem. A hard problem isn't something that takes a long time. It's something where you don't even know what questions to ask yet. You're staring at a system, a codebase, or a concept, and you can't articulate what you don't understand.
+I've had a process for these moments for years. Now that I learn a few more things, it's basically the Feynman technique: study, explain, find gaps, repeat. I never thought of it that way until I found Feynman work. But the resemblance is obvious, but this one is mine.
 
-I've had a process for these situations for years. Looking at it now, it's basically the Feynman technique: study, explain, find gaps, repeat. I never thought of it that way until I sat down to write this. But the resemblance is obvious, so here it is, annotated with how I actually apply it.
+### Write down all the questions
 
-## The trap: diving in too fast
+Before anything else, open a blank document and start listing every question you have. Just a dotted list of unfiltered, unorganized, like a brain dump of confusion.
 
-The instinct when facing something hard is to start too early. Open the editor, try something, see what breaks. This works for familiar problems where you have good intuition. For genuinely hard problems, it's a trap.
-
-You end up thrashing and realize you misunderstood a fundamental concept, throw it away, start over. Repeat. Each cycle feels like progress because you're typing, but you're not converging on understanding.
-
-When I started implementing React Server Components (RSC) in OCaml, my first instinct was to read the React source code and port it. I would have wasted weeks and wouldn't . RSC isn't just "React but on the server." It's a streaming protocol between client and server for serializing UI state, a component model, a bundler integration pattern, and a mental model for where computation happens. Diving into code before understanding these layers would have been like trying to implement TCP by reading packet captures.
-
-The same trap shows up everywhere. Want to build your own programming language? You could start writing a parser immediately. But without understanding how lexing, parsing, type-checking, and code generation relate to each other, you'll rewrite the parser three times before you get to the interesting parts. Want to implement an HTTP server from scratch? You could start reading bytes off a socket. But the protocol has layers: connection management, request parsing, content negotiation, chunked encoding. Each one builds on the previous.
-
-The pattern is always the same. Hard problems have layers. If you skip straight to code, you're guessing at the layers instead of understanding them.
-
-## The method
-
-Here's what actually works for me.
-
-### Write down questions
-
-Before anything else, I open a blank document and start listing every question I have. Not organized, not filtered. A brain dump of confusion.
+davsnx
 
 For RSC, my list started like this:
 - What actually gets sent over the wire?
@@ -132,16 +111,16 @@ That's the real value of having a method: not that it makes hard problems easy, 
 
 And then you write it down.
 
----
 
-## TL;DR
 
-1. **Write down questions.** Brain dump every point of confusion. Don't organize, don't filter.
-2. **Collect and study.** Hunt for material that answers your questions. Note what you find.
-3. **Implement the hardest thing first.** Build the ugliest, most minimal version that tests your mental model.
-4. **Find a buddy.** Find someone to think with. Come prepared. Don't complain.
-5. **Answer new questions.** The prototype reveals gaps. Update your document.
-6. **Explain it to someone.** If you can't explain it clearly, you don't understand it yet.
-7. **Implement for real.** Build on solid understanding, not guesswork.
+## The trap: diving in too fast
 
-Never delete questions. Group them as you learn. Embrace being the beginner.
+The instinct when facing something hard is to start too early. Open the editor, try something, see what breaks. This works for familiar problems where you have good intuition. For genuinely hard problems, it's a trap.
+
+You end up thrashing and realize you misunderstood a fundamental concept, throw it away, start over. Repeat. Each cycle feels like progress because you're typing, but you're not converging on understanding.
+
+When I started implementing React Server Components (RSC) in OCaml, my first instinct was to read the React source code and port it. I would have wasted weeks and wouldn't . RSC isn't just "React but on the server." It's a streaming protocol between client and server for serializing UI state, a component model, a bundler integration pattern, and a mental model for where computation happens. Diving into code before understanding these layers would have been like trying to implement TCP by reading packet captures.
+
+The same trap shows up everywhere. Want to build your own programming language? You could start writing a parser immediately. But without understanding how lexing, parsing, type-checking, and code generation relate to each other, you'll rewrite the parser three times before you get to the interesting parts. Want to implement an HTTP server from scratch? You could start reading bytes off a socket. But the protocol has layers: connection management, request parsing, content negotiation, chunked encoding. Each one builds on the previous.
+
+The pattern is always the same. Hard problems have layers. If you skip straight to code, you're guessing at the layers instead of understanding them.
