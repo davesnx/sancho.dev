@@ -11,5 +11,6 @@
   "snapshot-tests-for-your-own-ppx": "a0bf81e261b36f5b021e0cae38d02da9",
   "tailwind-and-design-systems": "fb51ecbc9b81f76bce1d9c2ef9331c65",
   "tailwind-with-dune": "391b0e57fd8d923d9793b838dce00621",
-  "whats-possible-with-melange": "b288fd8c56b7ee7165b095120dcd9de8"
+  "whats-possible-with-melange": "b288fd8c56b7ee7165b095120dcd9de8",
+  "query-json-ocaml-effects": "97563ff20f9f428467c02d65b3638c59"
 }
