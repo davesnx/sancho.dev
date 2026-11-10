@@ -1,41 +1,13 @@
 ---
 title: "How OCaml effects simplified my JSON interpreter"
 description: "How effect handlers removed control-flow plumbing from query-json"
-publishedAt: "2026-06-10"
-published: false
+publishedAt: "2026-11-10"
+published: true
 tags:
   - "OCaml"
   - "Effect"
   - "query-json"
 ---
-
-{/*
-SKILLS
-state: reviewed-draft
-next: author-review - confirm the voice and publication date, then set published to true
-*/}
-
-{/*
-ASSESSMENT
-
-1) Opinion on quality and voice
-- Ready for an author read before publishing. The post now moves through one story: the result-of-list interpreter, the pressure from pipes and limits, and the effect-handler model that simplified the evaluator.
-- A cold reader recovered the intended thesis exactly: OCaml effects let the interpreter express resumable and cancellable control flow without threading lists and control variants through every recursive function.
-
-2) What's missing or weak
-- The pipe-handler boundary and cancellation section still require careful reading. In particular, "abandoning a continuation stops the suspended work, but it does not unwind that stack" assumes familiarity with continuations and Fun.protect.
-- The ICFP tutorial is part of the personal story but cannot be linked because the exact workshop is unknown.
-- The cancellation section describes current production behavior. Recheck it against Interpreter.ml if query-json changes before publication.
-
-3) How I would finish it
-- Read once for whether the historical account and the candid description of current cancellation behavior feel accurate.
-- Choose the publication date, then set published to true.
-
-4) Hero image and visual concepts
-- Preferred: adapt the exception-versus-effect diagram into a 1200x630 hero, with Yield on one side and continue/discontinue on the other.
-- Alternative: use the four-lane pipeline trace with one bright value moving from producer to collector.
-- Avoid a generic OCaml camel or JSON-braces illustration; the continuation is the memorable idea.
-*/}
 
 A few years ago I wrote [query-json](/blog/cross-compile-query-json), a reimplementation of a subset of [jq](https://jqlang.org) in OCaml. The first version had the kind of interpreter I would still write for a small language
 
