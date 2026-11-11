@@ -49,16 +49,9 @@ out/
 
 .cursor/
 AGENTS.md
+/*.md
 
 .wrangler/
 .agents/
+
 skills-lock.json
-
-# Twitter voice experiment (scraped data, browser profile, scripts)
-twitter-data/
-
-# Local project tooling
-.impeccable/
-.opencode/
-roadmap/
-style-voice-corpus/
