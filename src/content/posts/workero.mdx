@@ -1,0 +1,348 @@
+---
+title: "workero: Cloudflare Workers in OCaml with WASM"
+description: "Write a Cloudflare Worker in OCaml, compile it to WebAssembly, deploy it with wrangler"
+publishedAt: "2026-10-20"
+published: false
+tags:
+  - "workero"
+  - "OCaml"
+  - "Cloudflare Workers"
+  - "WebAssembly"
+  - "wasm_of_ocaml"
+---
+
+{/* STRUCTURE: intro → two examples → why OCaml → how it works + features → try it. Modeled on https://blog.cloudflare.com/workers-rust-sdk/ */}
+
+[workero](https://github.com/ml-in-barcelona/workero) lets you write [Cloudflare Workers](https://developers.cloudflare.com/workers/) in OCaml. [wasm_of_ocaml](https://ocsigen.org/js_of_ocaml/latest/manual/wasm_overview) compiles your program to WebAssembly, and a small JavaScript shim runs it on Cloudflare's runtime. You deploy it with `wrangler`, the same as any other Worker.
+
+{/* TODO(davesnx): Why did you start workero? One or two sentences about the moment or need that started it. */}
+
+This is a handler:
+
+```ocaml
+let handler req env _ctx =
+  let open Workero in
+  match (Request.method_ req, URL.path (Request.url req)) with
+  | GET, "/" -> Response.text "Hello from OCaml on Cloudflare Workers\n"
+  | POST, "/echo" -> Response.text (Request.text req)
+  | GET, "/env" ->
+      Response.text
+        (Option.value (Env.var env "GREETING") ~default:"unset" ^ "\n")
+  | _ -> Response.text ~status:404 "not found\n"
+
+let () = Workero.serve handler
+```
+
+Routing is a pattern match on the method and the path.
+
+The project is alpha. It is not on opam yet, and the API still changes every day. The demos at `workero-example-*.davesnx.workers.dev` run on it.
+
+{/* TODO(davesnx): Give the exact demo URLs (basic, react, limits, wasm, hello, jspi) that you want to link. */}
+
+## Two Workers in OCaml
+
+### A typed JSON API
+
+Most Workers take JSON in and send JSON out. With workero, you describe the shape once with a type, and the decoder comes from [jsonkit](https://github.com/melange-community/jsonkit)'s `[@@deriving json]`. Add `(preprocess (pps jsonkit.ppx))` to the `dune` stanza:
+
+```ocaml
+module User = struct
+  open Jsonkit.Primitives
+
+  type t = { name : string; age : int } [@@deriving json]
+end
+
+let handler req _env _ctx =
+  let open Workero in
+  match (Request.method_ req, URL.path (Request.url req)) with
+  | POST, "/json/echo" -> (
+      match JSON.parse req with
+      | Ok json -> JSON.response json
+      | Error message -> JSON.error message)
+  | POST, "/json/user" -> (
+      match JSON.decode User.of_json req with
+      | Ok user -> JSON.response (User.to_json user)
+      | Error message -> JSON.error ~status:422 message)
+  | _ -> Response.text ~status:404 "not found\n"
+
+let () = Workero.serve handler
+```
+
+`JSON.decode` reads the body, parses it, and runs the decoder. If any step fails, you get an `Error`. `JSON.error` answers 400 by default, and this handler asks for a 422. If you leave that case out, the compiler warns that the `match` is not exhaustive.
+
+{/* TODO(davesnx): Add a curl session against this Worker: one good request and one with a missing field, with the real responses. */}
+
+### Server-side React with mlx
+
+The second example renders React on the edge. It uses [server-reason-react](https://github.com/ml-in-barcelona/server-reason-react) and [mlx](https://github.com/ocaml-mlx/mlx), the JSX syntax for OCaml:
+
+```mlx
+module Greeting = struct
+  let[@react.component] make ~name ~score () =
+    <p class_name="greeting">
+      (React.string ("Hello, " ^ name ^ "! Score: ")) (React.float score)
+    </p>
+end
+
+let page score =
+  <Components.Layout title="workero + React">
+    <Components.Greeting name="Cloudflare" score />
+    <Components.Fruits items=[ "apple"; "banana"; "cherry" ] />
+  </Components.Layout>
+
+let handler req _env _ctx =
+  let open Workero in
+  match (Request.method_ req, URL.path (Request.url req)) with
+  | GET, "/" ->
+      let score =
+        Option.bind (URL.query (Request.url req) "score") float_of_string_opt
+        |> Option.value ~default:1.5
+      in
+      Response.html (React_dom.render_to_string (page score))
+  | _ -> Response.text ~status:404 "not found\n"
+
+let () = Workero.serve handler
+```
+
+These are the same components that you would write for the browser. The type checker also checks the HTML attributes. On the server, `React_dom.render_to_string` turns them into a string, and `Response.html` sends it.
+
+{/* TODO(davesnx): Link the live React demo and add a screenshot of the rendered page. */}
+
+## Why OCaml in a Worker?
+
+A Worker is a function from a request to a response.
+
+**The handler type tells you what a Worker is.** It is `Request.t -> Env.t -> Context.t -> Response.t`. `Method.t` is a variant, so `GET` is a constructor, not a string you can misspell.
+
+**Async code looks like sync code.** `Request.text`, `Workero.fetch`, and `Promise.await` wait on JavaScript promises, but there is no monad and no callback in your code:
+
+```ocaml
+| GET, "/upstream" ->
+    let r = Workero.fetch "https://example.com/" in
+    Response.text ~status:(Response.status r) (Response.body_text r)
+```
+
+This uses OCaml 5 effects together with [JSPI](https://v8.dev/blog/jspi), the WebAssembly feature that lets a Wasm call stop and wait for a JavaScript promise.
+
+**Errors are exceptions.** If a handler raises, workero rejects the handler's promise with the exception's message, and the runtime answers with status 500.
+
+**You keep the OCaml ecosystem.** Libraries written in pure OCaml compile and run in a Worker: `Str`, `Marshal`, `Int64`, `Digest`, jsonkit, and server-reason-react. The `examples/features` Worker uses each of them.
+
+**The output is small.** `examples/bench.sh` gives these sizes:
+
+| Build | Size | Gzip |
+| --- | --- | --- |
+| Hello world (`.wasm` file) | 55,797 B | 19,720 B |
+| Examples (full upload) | 96–123 KiB | 31–40 KiB |
+
+The [Workers limits](https://developers.cloudflare.com/workers/platform/limits/) are 3 MB compressed on the free plan, so this is far below the limit.
+
+On our deploys, `wrangler deploy` reported a Worker startup time of 16–29 ms. With `wrangler dev --local`, the first request took 8–11 ms, which includes Wasm instantiation. The requests after it took about 4 ms. That is a local measurement, not a production cold start.
+
+{/* TODO(davesnx): Measure a production cold start, and the same Worker in JS and in Rust (workers-rs), if you want a comparison. No such numbers exist yet. Do not compare without them. */}
+
+{/* TODO(davesnx): Your personal reason: why OCaml instead of TypeScript or Rust for your own Workers? */}
+
+## How does it work?
+
+The pipeline has three steps.
+
+{/* TODO(davesnx): A diagram can go here: main.ml → dune/wasm_of_ocaml → .wasm + loader → workero build → _worker/index.js → workerd. */}
+
+### 1. wasm_of_ocaml compiles OCaml to Wasm GC
+
+[wasm_of_ocaml](https://github.com/ocsigen/js_of_ocaml) is the WebAssembly backend of js_of_ocaml. It compiles OCaml bytecode to WebAssembly and uses the [Wasm GC](https://github.com/WebAssembly/gc) proposal. OCaml values become GC-managed Wasm structs, so the module does not ship its own garbage collector. That is one reason why the output is small.
+
+For dune, it is one more mode:
+
+```dune
+(executable
+ (name main)
+ (modes wasm)
+ (libraries workero))
+```
+
+`dune build` makes a `.wasm` file and a JavaScript loader for it.
+
+### 2. `workero build` adapts the loader to workerd
+
+The loader from wasm_of_ocaml expects a browser or Node.js. It fetches the `.wasm` file and compiles it when the program runs. [workerd](https://github.com/cloudflare/workerd) does not allow that: a Worker must import its Wasm modules, and Cloudflare compiles them before the Worker starts.
+
+`workero build src/main.bc.wasm.js` runs `dune build` on that target, with `--profile release` unless you give another profile. Then it writes `_worker/`:
+
+- the `.wasm` files and the wasm_of_ocaml loader
+- `load-wasm.js`, which gives the loader the modules that are already compiled, in place of `fetch`
+- `index.js`, which imports everything and exports the `fetch` and `scheduled` handlers that the OCaml program registered
+
+You do not run it yourself. `wrangler.toml` does:
+
+```toml
+main = "_worker/index.js"
+
+[build]
+command = "workero build src/main.bc.wasm.js"
+watch_dir = "src"
+```
+
+If something else already ran dune, `workero package` writes `_worker/` from that build and does not run dune.
+
+### 3. Each request runs in an OCaml fiber
+
+When a request comes in, `index.js` calls into OCaml. workero starts the handler in a new fiber, an OCaml 5 effect handler. When your code calls `Workero.fetch`, the fiber performs an effect, and JSPI suspends the Wasm stack until the JavaScript promise resolves. Then the handler continues from the same line.
+
+This is why the code in the examples has no `let*` and no `>>=`.
+
+wasm_of_ocaml can also compile effects with a CPS transform. For the same program, the JSPI build is about 11% smaller.
+
+{/* TODO(davesnx): The 11% figure came from a workero session, and nothing in the repo records it. Add the two sizes and the command, or cut the sentence. */}
+
+{/* TODO(davesnx): The jspi demo awaits two 100 ms timers: ~200 ms in sequence, ~100 ms concurrently. Show that code here? */}
+
+### What workero gives you
+
+| Module | What it does |
+| --- | --- |
+| `Workero.serve`, `Workero.scheduled` | Register the fetch handler and the cron handler |
+| `Workero.fetch` | Make outgoing HTTP requests |
+| `Request`, `Response`, `URL` | Read the request, build the response |
+| `JSON` | `parse`, `decode`, `response`, `error`, built on jsonkit |
+| `Env`, `Context` | Vars and secrets, and `wait_until` for work after the response |
+| `Promise` | `make`, `await`, `reject`, to use any JavaScript API |
+
+`Request`, `Response`, `Env`, `Context`, `Promise`, and `Scheduled` have `to_js` and `of_js`. When workero does not bind something, you can use the JavaScript object directly through js_of_ocaml.
+
+The API reference is at [ml-in-barcelona.github.io/workero](https://ml-in-barcelona.github.io/workero/workero/).
+
+## Beyond request and response
+
+Cloudflare gives a Worker storage, a cache, streams, and sockets. In workero, each one is a module, and you call it in direct style, like `fetch`.
+
+### KV and the Cache API
+
+[Workers KV](https://developers.cloudflare.com/kv/) is a global key-value store for text. Bind a namespace in `wrangler.toml` as `[[kv_namespaces]]` with `binding = "KV"`, then open it with `KV.of_env`:
+
+```ocaml
+let kv = KV.of_env env "KV" in
+match (Request.method_ req, URL.path url) with
+| GET, "/kv" -> (
+    match KV.get kv key with
+    | Some value -> Response.text value
+    | None -> Response.text ~status:404 "not found\n")
+| PUT, "/kv" ->
+    KV.put ~expiration_ttl:3600 kv key (Request.text req);
+    Response.text "stored\n"
+```
+
+`KV.get` gives an `option`, so a missing key is a case in the `match`, not a `null` check that you can forget. KV is eventually consistent: a change can take up to 60 seconds to show in other locations.
+
+The Cache API needs no binding. `Cache.match_ url` gives `Some response` or `None`, and `Cache.put` stores a response. On a `*.workers.dev` domain, it stores nothing, so you need a custom domain to see it work in production.
+
+### R2 for files
+
+[R2](https://developers.cloudflare.com/r2/) is object storage. An object is bytes in an OCaml `string`:
+
+```ocaml
+let bucket = R2.of_env env "BUCKET" in
+match Request.method_ req with
+| PUT ->
+    let content_type = Request.header req "content-type" in
+    R2.put ?content_type bucket key (Request.bytes req);
+    Response.text ~status:201 "stored\n"
+| GET -> (
+    match R2.get bucket key with
+    | Some bytes -> Response.make bytes
+    | None -> Response.text ~status:404 "not found\n")
+```
+
+`R2.get` reads the whole object into memory, so keep objects within the memory limit of the Worker.
+
+### D1 with typed SQL values
+
+[D1](https://developers.cloudflare.com/d1/) is SQLite on Cloudflare. `D1.run` runs a statement and gives the number of rows that it changed. `D1.query` gives the rows:
+
+```ocaml
+let db = D1.of_env env "DB" in
+let changed =
+  D1.run db "INSERT INTO users (name) VALUES (?)" ~params:[ Text name ]
+in
+let rows = D1.query db "SELECT id, name FROM users ORDER BY id" in
+```
+
+Each column value is a variant: `Null`, `Int of int64`, `Float of float`, `Text of string`, or `Blob of string`. The parameters use the same type, so you pass user input as `~params` and never join strings into SQL.
+
+D1 carries numbers as JavaScript numbers. An `Int` is exact only within ±2<sup>53</sup>, and workero raises `Invalid_argument` before the SQL runs if an `Int` is outside that range.
+
+### Streaming bodies
+
+{/* TODO(davesnx): Streaming and WebSockets are on the platform-surface branch (e1f9cf3) and are not on main yet. Merge it before you publish, or move these two sections to "What does not work yet". */}
+
+`Response.stream` answers at once, and your function writes the body in its own fiber:
+
+```ocaml
+Response.stream ctx (fun writer ->
+    for i = 1 to 5 do
+      Stream.Writer.write writer (Printf.sprintf "chunk %d\n" i);
+      Promise.await (sleep 1000)
+    done)
+```
+
+`Stream.Writer.write` waits until the client can take more data, so a slow client slows the loop, and unread chunks do not fill the memory of the Worker. (`sleep` is any function that gives a `Promise.t`.) To pass an upstream body through without a copy, give the body of a `fetch` result to `Response.of_stream`. `Request.body` and `Stream.iter` read a large request body in chunks.
+
+The Worker gets no event when the client leaves. The next `write` raises `Js_error`, so catch it to clean up.
+
+### WebSockets
+
+`Websocket.upgrade` returns the `101` response and gives your function the server end of the socket. You read events with a loop:
+
+```ocaml
+Websocket.upgrade ctx (fun ws ->
+    let rec loop () =
+      match Websocket.receive ws with
+      | Message (Text s) ->
+          Websocket.send ws (Text ("echo: " ^ s));
+          loop ()
+      | Message (Binary b) -> Websocket.send ws (Binary b); loop ()
+      | Close _ -> Websocket.close ws
+      | Failed _ -> loop ()
+    in
+    loop ())
+```
+
+Why a loop and not an `on_message` callback? A callback that JavaScript calls cannot wait on a promise. A loop runs in direct style, so it can call `fetch`, `KV`, or `Promise.await` between two messages. If your function raises, the socket closes with code 1011.
+
+{/* TODO(davesnx): The Streaming and WebSockets docs say each was tested on Cloudflare for 60 seconds. Do you want that in the post? */}
+
+## What does not work yet
+
+- There are no Durable Objects and no Queues. There is a design for Durable Objects, and no code yet.
+- A Worker cannot open a WebSocket to another server.
+- `Env.var` reads only string vars and secrets.
+- Libraries with C stubs do not compile to Wasm, so they do not work.
+- workero uses internals of wasm_of_ocaml, so it requires version 6.4.x.
+- Node.js 22 has no JSPI, so unit tests cannot run code that waits on a promise. Those paths have tests in workerd (`make test-worker`).
+- There is no opam release yet.
+
+Durable Objects and Queues are next.
+
+{/* TODO(davesnx): Any date for the first opam release? Where do you want feedback: GitHub issues, Discord, X? */}
+
+## Try it
+
+workero is not on opam yet, so pin it from GitHub:
+
+```bash
+opam pin add workero https://github.com/ml-in-barcelona/workero.git
+```
+
+Copy the [`template/`](https://github.com/ml-in-barcelona/workero/tree/main/template) folder, then:
+
+```bash
+npm install
+npx wrangler dev
+```
+
+When it works on your machine, `npx wrangler deploy` puts it on the edge.
+
+Write a Worker in OCaml, break it, and [tell us what broke](https://github.com/ml-in-barcelona/workero/issues). 🐫
+
+{/* TODO(davesnx): Thanks list: who reviewed this post or helped with workero? Credit the wasm_of_ocaml authors (Jérôme Vouillon and the Tarides team?) by name if you want to. */}
