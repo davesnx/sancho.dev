@@ -1,0 +1,81 @@
+---
+title: "Parsing for dummies"
+description: "Five parsing ideas that replace regex hell, written as plain OCaml functions with Parseff"
+publishedAt: "2026-11-22"
+published: false
+tags:
+  - "OCaml"
+  - "Parsers"
+  - "Parseff"
+---
+
+# Outline (not prose yet)
+
+- Reader: PL-curious developers who have felt regex pain and bounced off academic parser theory or monadic combinator tutorials. May not know OCaml.
+- Reader already knows: functions, basic data types, regexes.
+- Main point: You do not need grammar generators or monadic operator soup (`>>=`, `>>|`, `*>`, `let*`, `let+`, `and+`) to write a real parser. Five core ideas cover almost every real-world format, and in Parseff they read like plain OCaml functions you can still understand 6 months later.
+- Constraint: No internal implementation details (DLS/effects under the hood). Optimization stays out of the tutorial sections (only appears as benchmark proof and a link in the Parseff showcase).
+
+## Opening: Why I stopped fighting regexes (and monads)
+
+- Personal origin: wanting to write parsers by hand without Menhir or yacc, bouncing off Haskell monad tutorials, and hitting the real wall with monadic combinators: opening a parser 6 months later and having to decode `>>=`, `>>|`, `*>`, `let*`, `let+`, `and+` before understanding what the code parses.
+- The regex wall: structured text quickly turns into write-only regexes with no composition, no isolation testing, and "no match" errors.
+- Introduce **Parseff**: a direct-style parser combinator library for OCaml 5 where parsers are plain `unit -> 'a` functions. No custom operators, just normal OCaml.
+- [Q: Keep the log-line regex from the old draft as the opening hook, or switch straight to Parseff's `first-parser` key-value config file so the opening and Section 1 share one format?]
+
+## 1. The three building blocks
+
+- Core mental model: a parser reads from the current position and either returns a value or fails.
+- Build the config file parser from `doc/guides/first-parser.mld` step by step:
+  - **Sequence**: plain `let` bindings (`entry`)
+  - **Choice**: `or_` / `one_of` with automatic backtracking (`comment`, `entry`, blank line)
+  - **Repetition**: `many` / `sep_by` (the whole file and typed values)
+- Short side-by-side snippet: the same 6-line `key_value` parser in Angstrom (`>>=`) vs Parseff (plain `let`), from `doc/guides/comparison.mld`, to prove the "6 months later" claim visually.
+- Introduces: parser as `unit -> 'a`, sequence, choice, automatic backtracking, repetition.
+
+## 2. Errors that actually tell you what went wrong
+
+- Rhythm switch: open with the rendered `Parseff.render_error` output (source excerpt, carets, `* while parsing ...`) before showing the code that produces it.
+- Why naive parsers give terrible errors: backtracking throws away where things went wrong, and raw character expectations (`expected digit`) do not speak the user's language.
+- Four small ideas from `doc/guides/ip-address.mld` and `doc/errors.mld`:
+  - Furthest-failure reporting and merged expectations (automatic)
+  - `expect` for human-readable grammar names
+  - `context` and `cut` to name a construct and seal backtracking once committed to a branch
+  - Typed `custom_error` (`Out_of_range` / `Port_out_of_range`) for domain validation
+- Introduces: `expect`, `context`, `cut`, furthest-failure, `custom_error`.
+
+## 3. When formats nest: recursion (and not blowing the stack)
+
+- Failure mode: nested structures (the exact thing regex fundamentally cannot parse) and the naive-parser trap (malicious `[[[[...` overflowing the stack).
+- Show the recursive core of the JSON parser from `doc/guides/json-parser.mld` (`let rec json () ... and array_parser () ... and object_parser () ...`).
+- Two things that make it production-ready: `Parseff.rec_` with `~max_depth` turning stack overflows into `Depth_limit_exceeded`, and `context ~delimited:true` pointing multi-line errors back to the opening bracket or brace.
+- Introduces: mutual recursion in parsers, depth limits (`rec_`).
+
+## 4. When order lies to you: operator precedence
+
+- Failure mode: parsing `1 + 2 * 3` left-to-right gives `(1 + 2) * 3 = 9` instead of `7`.
+- Mental model (3 lines of grammar, not full boilerplate): why recursive descent splits into precedence tiers (`expr` -> `term` -> `factor`).
+- How Parseff lets you skip the boilerplate: `Parseff.expression` with a precedence table (`infix_left`, `infix_right`, `prefix`, `postfix`) from `doc/guides/expression-parser.mld`, plus a brief pointer to `fold_left` and `precedence` for large grammars.
+- Introduces: precedence, associativity, operator tables.
+
+## 5. Do not stop at the first mistake: error recovery
+
+- Failure mode: stopping at error #1 is fine for a small config, useless for compilers, linters, and editors.
+- Mental model: catch a failure locally, log it to `Diagnostics`, sync to a safe boundary (or insert a missing token), and return a `Hole` AST node so the rest of the file still parses.
+- Compact real example from `doc/guides/error-recovery.mld`: `let x = 1; let y = ; let z = 3; let = 4;` producing `x = 1; <hole>; z = 3; <hole>` and reporting both errors in one pass using `recover ~sync` (plus a brief mention of `require` and `list`/`skip_nested` for delimited lists).
+- Connects directly back to Section 2 (`cut` seals open choices so recovery knows when to kick in).
+- Introduces: `Diagnostics`, `recover`, `require`, `Hole` nodes.
+
+## 6. Meet Parseff: features, performance, and tradeoffs
+
+- Zoom out to the project itself (from `README.md` and `doc/guides/comparison.mld`):
+  - What else is in the box beyond these 5 ideas: pull and push streaming (`Source.parse`, `Push.parse`) with bounded backtracking, OCaml 5 domain-safe, zero-copy `Slice.t`, `Charset`, and fused scanners, single dependency (`uucp`).
+  - Benchmarks (real numbers from `bench/`): generic parsers ~1.4x-1.5x faster than Angstrom; optimized zero-copy JSON ~2x faster (~2.47M parses/sec) with 1.5 GB vs 11.1 GB minor allocations; CSV (~3.93M/s) and Arithmetic (~11.86M/s). Link to the optimization and comparison guides.
+  - Honest tradeoffs and when not to use it: stick to `String.split` or regex for genuinely simple patterns; consider Menhir for large ambiguous grammars; Parseff requires OCaml 5.3+ and is newer than battle-tested Angstrom.
+- [Q: Target the unreleased API on `main` (no trailing `()`, `Source.parse`, `Slice`, collector-free `recover`) or 0.6.0? All the docs on `main` already use the upcoming API.]
+- [Q: Briefly show a `Push`/`Source` streaming snippet here, or keep Section 6 as tight prose plus the benchmark table?]
+
+## Closing
+
+- Short wrap-up tying back to the "6 months later" promise: parsing is not compiler magic; once you know these five pieces, you stop fighting regexes and start reading grammars like regular code.
+- Install (`opam install parseff`) and links to the repo (`https://github.com/davesnx/parseff`) and docs (`https://davesnx.github.io/parseff/`).
