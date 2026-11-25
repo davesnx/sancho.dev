@@ -1,11 +1,13 @@
 ---
 title: "Parsing for dummies"
-description: "Five parsing ideas that replace regex hell, written as plain OCaml functions with Parseff"
+description: "..."
 publishedAt: "2026-11-22"
 published: false
 tags:
   - "OCaml"
-  - "Parsers"
+  - "Parse"
+  - "Parser"
+  - "Parsing"
   - "Parseff"
 ---
 
@@ -14,14 +16,13 @@ tags:
 - Reader: PL-curious developers who have felt regex pain and bounced off academic parser theory or monadic combinator tutorials. May not know OCaml.
 - Reader already knows: functions, basic data types, regexes.
 - Main point: You do not need grammar generators or monadic operator soup (`>>=`, `>>|`, `*>`, `let*`, `let+`, `and+`) to write a real parser. Five core ideas cover almost every real-world format, and in Parseff they read like plain OCaml functions you can still understand 6 months later.
-- Constraint: No internal implementation details (DLS/effects under the hood). Optimization stays out of the tutorial sections (only appears as benchmark proof and a link in the Parseff showcase).
+- Constraint: No internal implementation details (DLS/effects under the hood). Use the simplest core Parseff API (`main`: no trailing `()`, collector-free `recover`) and avoid rare combinators or streaming/push/pull code. Optimization stays out of the tutorial sections (only appears as benchmark proof and a link in the Parseff showcase).
 
 ## Opening: Why I stopped fighting regexes (and monads)
 
 - Personal origin: wanting to write parsers by hand without Menhir or yacc, bouncing off Haskell monad tutorials, and hitting the real wall with monadic combinators: opening a parser 6 months later and having to decode `>>=`, `>>|`, `*>`, `let*`, `let+`, `and+` before understanding what the code parses.
-- The regex wall: structured text quickly turns into write-only regexes with no composition, no isolation testing, and "no match" errors.
-- Introduce **Parseff**: a direct-style parser combinator library for OCaml 5 where parsers are plain `unit -> 'a` functions. No custom operators, just normal OCaml.
-- [Q: Keep the log-line regex from the old draft as the opening hook, or switch straight to Parseff's `first-parser` key-value config file so the opening and Section 1 share one format?]
+- The regex wall: show the nasty log-line regex (`[2024-03-15 14:32:01] INFO server: ...`) as a quick hook for write-only code with no composition, no isolation testing, and "no match" errors.
+- Introduce **Parseff**: a direct-style parser combinator library for OCaml 5 where parsers are plain `unit -> 'a` functions. No custom operators, just normal OCaml. Then pivot to building a real config file parser from scratch.
 
 ## 1. The three building blocks
 
@@ -55,25 +56,23 @@ tags:
 
 - Failure mode: parsing `1 + 2 * 3` left-to-right gives `(1 + 2) * 3 = 9` instead of `7`.
 - Mental model (3 lines of grammar, not full boilerplate): why recursive descent splits into precedence tiers (`expr` -> `term` -> `factor`).
-- How Parseff lets you skip the boilerplate: `Parseff.expression` with a precedence table (`infix_left`, `infix_right`, `prefix`, `postfix`) from `doc/guides/expression-parser.mld`, plus a brief pointer to `fold_left` and `precedence` for large grammars.
+- How Parseff lets you skip the boilerplate: `Parseff.expression` with a precedence table (`infix_left`, `infix_right`, `prefix`, `postfix`) from `doc/guides/expression-parser.mld`.
 - Introduces: precedence, associativity, operator tables.
 
 ## 5. Do not stop at the first mistake: error recovery
 
 - Failure mode: stopping at error #1 is fine for a small config, useless for compilers, linters, and editors.
 - Mental model: catch a failure locally, log it to `Diagnostics`, sync to a safe boundary (or insert a missing token), and return a `Hole` AST node so the rest of the file still parses.
-- Compact real example from `doc/guides/error-recovery.mld`: `let x = 1; let y = ; let z = 3; let = 4;` producing `x = 1; <hole>; z = 3; <hole>` and reporting both errors in one pass using `recover ~sync` (plus a brief mention of `require` and `list`/`skip_nested` for delimited lists).
+- Compact real example from `doc/guides/error-recovery.mld`: `let x = 1; let y = ; let z = 3; let = 4;` producing `x = 1; <hole>; z = 3; <hole>` and reporting both errors in one pass using `recover ~sync` (and a brief mention of `require` for missing tokens).
 - Connects directly back to Section 2 (`cut` seals open choices so recovery knows when to kick in).
 - Introduces: `Diagnostics`, `recover`, `require`, `Hole` nodes.
 
 ## 6. Meet Parseff: features, performance, and tradeoffs
 
-- Zoom out to the project itself (from `README.md` and `doc/guides/comparison.mld`):
-  - What else is in the box beyond these 5 ideas: pull and push streaming (`Source.parse`, `Push.parse`) with bounded backtracking, OCaml 5 domain-safe, zero-copy `Slice.t`, `Charset`, and fused scanners, single dependency (`uucp`).
-  - Benchmarks (real numbers from `bench/`): generic parsers ~1.4x-1.5x faster than Angstrom; optimized zero-copy JSON ~2x faster (~2.47M parses/sec) with 1.5 GB vs 11.1 GB minor allocations; CSV (~3.93M/s) and Arithmetic (~11.86M/s). Link to the optimization and comparison guides.
+- Zoom out to the project itself (tight prose plus benchmark table, no extra streaming or rare-combinator code; from `README.md` and `doc/guides/comparison.mld`):
+  - What else is in the box beyond these 5 ideas: streaming with bounded backtracking (link to streaming docs), OCaml 5 domain-safe, zero-copy slices and fused scanners (link to optimization docs), single dependency (`uucp`).
+  - Benchmarks (real numbers from `bench/`): generic parsers ~1.4x-1.5x faster than Angstrom; optimized zero-copy JSON ~2x faster (~2.47M parses/sec) with 1.5 GB vs 11.1 GB minor allocations; CSV (~3.93M/s) and Arithmetic (~11.86M/s). Link to the comparison guide.
   - Honest tradeoffs and when not to use it: stick to `String.split` or regex for genuinely simple patterns; consider Menhir for large ambiguous grammars; Parseff requires OCaml 5.3+ and is newer than battle-tested Angstrom.
-- [Q: Target the unreleased API on `main` (no trailing `()`, `Source.parse`, `Slice`, collector-free `recover`) or 0.6.0? All the docs on `main` already use the upcoming API.]
-- [Q: Briefly show a `Push`/`Source` streaming snippet here, or keep Section 6 as tight prose plus the benchmark table?]
 
 ## Closing
 

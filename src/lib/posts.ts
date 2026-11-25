@@ -86,7 +86,9 @@ const readAllPosts = cache((): BlogPost[] => {
 export const getAllPosts = () => readAllPosts();
 
 export const getPublishedPosts = () =>
-  readAllPosts().filter((post) => !post.draft && post.published && !post.canonicalUrl);
+  readAllPosts().filter(
+    (post) => !post.draft && (post.published || process.env.NODE_ENV === 'development') && !post.canonicalUrl,
+  );
 
 export const getPublishedPostBySlug = (slug: string) => {
   if (!VALID_SLUG.test(slug)) {

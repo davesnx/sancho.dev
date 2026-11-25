@@ -1,0 +1,274 @@
+---
+title: "Statechart-driven UI"
+description: "What happens when every behaviour of an app is a state machine: you can check it, draw it and run it with no browser"
+publishedAt: "2026-11-12"
+published: false
+tags:
+  - "OCaml"
+  - "State machines"
+  - "silica"
+---
+
+[Q: the origin story goes here. What started this? A real UI bug, the frustration of testing through a browser, or the agent idea? Two or three paragraphs in first person, before any idea is named.]
+
+[TBD: one sentence that connects the story to the question below.]
+
+I kept coming back to the same question: what if all the behaviour of an app lived in state machines, and nothing else was allowed to hold behaviour?
+
+That question turned into three ideas. None of them needs a specific language or library, so I will explain them first with a single button. Then I will show what happened when I built them.
+
+## Idea 1: the state machine is the centre of the app
+
+Take a button that saves a draft. It calls the server, shows the time of the save for two seconds, and goes back to where it started.
+
+Most of us would write this with a few booleans: `isSaving`, `hasError`, maybe a `savedAt`. Three variables give eight combinations, and only four of them mean something. The other four are bugs waiting for the right click at the wrong time.
+
+A state machine writes down the four that mean something, and how you move between them
+
+```text
+idle    -- press Save -->       saving
+saving  -- the server says ok --> saved
+saving  -- the call fails -->   failed
+saved   -- 2 seconds pass -->   idle
+failed  -- press Save -->       saving
+```
+
+[TBD: replace this list with a hand drawing of the four states.]
+
+That is the whole behaviour of the button. The view is a function of the state: given `saving`, draw a disabled button. It decides nothing.
+
+Look at `saving`. There is no line that leaves it on "press Save", so a double click sends one request. I did not write code to prevent the second request. There is no path to it.
+
+Once every state is written down, a few things become possible. You can draw the app, because the drawing and the code are the same thing. You can check it, because a program can visit every state and try every event. You can reason about a change before you make it: a new feature is a new state or a new line between two of them.
+
+## Idea 2: the platform is a detail
+
+The machine above never touches a button. It does not know what a DOM is. It does not paint a page. It declares what should be visible and what work it wants done: show this view, call this endpoint, wake me in two seconds. Something else does them.
+
+Those requests are values, and that is the trick. [pond](https://github.com/saiashirwad/pond), a protocol for remote interfaces that reaches the same idea from the terminal side, says it better than I can:
+
+> Effects are plain data, which means they are serializable, inspectable, loggable, cacheable, replayable, and testable.
+
+[Q: how do you want to introduce pond and its author? I only know the project from its README.]
+
+The app is a guest. It does not own the screen, the clock or the network. I call the thing that owns them a host. The browser is one host. A test can be another: it keeps the last painted view in memory, answers the request by hand, and moves the clock when it wants to. Two seconds pass when the test says so.
+
+So the app runs with no screen, and that is the same app, with the same queue of events and the same timers. A test like this does not mock the framework. It replaces the platform.
+
+Navigation fits here too. A router is a machine whose states are the routes. Going to a page is an event, and the URL is how that state is written down.
+
+## Idea 3: the machine is the app's API for agents
+
+Today an agent uses an app the way a person does: it looks at the screen, guesses what a button does, and clicks. That works, but the app already knows what it can do. pond's vision document has the line I wish I had written:
+
+> Agents don't need better GUIs. They need better primitives for interacting with the world.
+
+A state machine is full of those primitives. The events of a machine have names. The routes of the router have names. They can be exposed to the outside as tools, for example through [MCP](https://modelcontextprotocol.io), so an agent uses the app through its states and not through the screen. The machine also knows which events each state handles, so the list of tools can change as the app moves: no "save" while a save is running.
+
+A person and an agent can then use the same running app. In pond's words, "the human sees a GUI, the agent sees typed data". And because an event is a request that the machine can ignore, an action can be refused before it happens.
+
+This follows from the first two ideas. The events are already named values, and the app already runs with no screen. It is also the least proven of the three, and I will come back to that.
+
+## I built it to find out
+
+[Q: how was silica built? The public history is 44 commits in three days, starts at v0.13 and has "agent trial" commits. If agents wrote most of it with the checker as the judge, say it here.]
+
+[silica](https://github.com/davesnx/silica) is a view framework for OCaml where a component is a machine and a view. It is experimental. The code runs on the server as native OCaml and in the browser as JavaScript, with [Melange](https://melange.re).
+
+Here is the save button
+
+```ocaml
+open Silica
+
+type event = Save | Answer of (string, string) Remote.answer | Reset
+
+type state = Idle | Saving | Saved of string | Failed
+
+let name = function
+  | Idle -> "idle"
+  | Saving -> "saving"
+  | Saved _ -> "saved"
+  | Failed -> "failed"
+
+let machine =
+  Machine.make ~id:"save" ~init:Idle ~name
+    ~during:(function
+      | Saving -> [ Remote.call save "draft" (fun answer -> Answer answer) ]
+      | Saved _ -> [ Source.after 2000 Reset ]
+      | Idle | Failed -> [])
+    (fun state event ->
+      match (state, event) with
+      | (Idle | Failed), Save -> Go Saving
+      | Saving, Answer (Ok time) -> Go (Saved time)
+      | Saving, Answer (Rejected _ | Failed _) -> Go Failed
+      | Saved _, Reset -> Go Idle
+      | _ -> Ignore)
+
+let view (state : state) : event Node.t =
+  <div>
+    (match state with
+     | Idle -> <button on_press=Save>"Save the draft"</button>
+     | Saving -> <button disabled=true>"Saving"</button>
+     | Saved time -> <p>(Node.text ("Saved at " ^ time))</p>
+     | Failed -> <button on_press=Save>"Not saved. Try again"</button>)
+  </div>
+
+let demo = Component.make machine view
+```
+
+If you don't know OCaml: `type state` lists every value a state can be, and `match` must say what happens for each one. `Saved of string` is a state that carries data, the time of the save.
+
+The function at the bottom of `machine` is the list of lines from Idea 1, almost word for word. `during` says what runs while the machine is in a state: the call runs while it is in `Saving`, the timer while it is in `Saved`. Leaving the state stops them. There is no cleanup code to forget.
+
+`on_press` takes an event value, not a function. That detail matters later: a tool can read the view and list the events it offers.
+
+silica draws the statechart from this code
+
+![Statechart of the save button, drawn by silica: idle, saving, saved and failed, with the press, the answer of the server and the timer as edges.](/images/silica-save-statechart.svg)
+
+Nobody keeps that picture up to date. It is made from the code.
+
+## The checker visits every state
+
+silica has a model checker. It runs every event in every state that a component can reach, with no browser.
+
+The app that `silica new` creates is a counter with a Save button. The repository has a test that works on it, and it starts with two requirements: Save is never offered while a save runs, and every save ends
+
+```ocaml
+Check.always ~name:"no-save-while-saving"
+  ~hint:
+    "Disable Save in {state}: a second save waits for the answer of \
+     the first."
+  Check.(not_ (state_named "saving" &&& view save_offered));
+Check.leads_to ~name:"save-ends"
+  ~from:(Check.state_named "saving")
+  ~to_:Check.(state_named "saved" ||| state_named "save_failed")
+  ();
+```
+
+```text
+$ silica check
+counter: 16 states, 45 transitions
+passed (exit 0)
+```
+
+Then the test breaks the component. It removes `disabled` from the Save button, so the view offers Save in every state while the machine still ignores it in two of them. The checker replays the shortest path to the problem
+
+```text
+start: counting
+1. counting -> saving: save, by the view offers press on button "Save" at main > button[3]
+  fails no-save-while-saving: The property "no-save-while-saving" does not hold in state saving.
+    hint: Disable Save in saving: a second save waits for the answer of the first.
+2. saving -> saved: answered ok, by the answer of the call counter/saving//api/save 0 to /api/save
+3. saved -> saved: save, by the view offers press on button "Save" at main > button[3]
+  fails ignored-event: In state saved, the view offers press on button "Save" at main > button[3] gives the event save, and the update returns Ignore.
+    hint: Handle save in state saved, or do not offer it there: disable the element with Machine.can, or leave its timer or call out of during of saved.
+```
+
+`ignored-event` is a built-in rule, nobody had to write it. A button that the user can press and the machine ignores is a dead button, and the checker finds every one of them.
+
+The fix lets the user save again after a save. That changes the behaviour, and the checker says so in words
+
+```text
+golden-drift: The golden file spec/counter.spec.txt differs from what the check found.
+  added edge saved -> saving on save
+```
+
+You don't need to read the diff of the component to know what changed in its behaviour. One edge was added: `saved -> saving on save`. If you expected that edge, you accept it. If you see an edge you did not ask for, you have found a bug without running anything.
+
+[Q: has this changed how you review code? One sentence of your own experience here.]
+
+Properties like `save-ends` found a real bug in the mini Linear app that lives in the repository: a lost save. [TBD: two sentences on what the lost save was and which property caught it.]
+
+[Q: where does this hurt? The checker needs a bound to stay finite (`~within:(fun state -> Counter.count state <= 3)` in the counter), every component needs a check, and some behaviour may not fit a machine. Your honest take goes here.]
+
+[Q: your answer to "this is XState plus a model checker".]
+
+## The platform is one record
+
+In silica, Idea 2 is a type. This is `Platform.t`, without its comments
+
+```ocaml
+type io = {
+  schedule : int -> (unit -> unit) -> cancel;
+  post : path:string -> body:string -> ((reply, string) result -> unit) -> unit;
+  connect : socket_events -> socket;
+  csrf : unit -> string;
+  session_gone : unit -> unit;
+  log : string -> unit;
+}
+
+type 'e t = {
+  renderer : on_route:(Router.event -> 'e) option -> 'e Renderer.make;
+  location : unit -> Url.t;
+  io : io;
+}
+```
+
+A renderer, the current URL, and io: a clock, one way to make an HTTP request, a socket and a log. That is everything the runtime knows about the outside world. The browser is one value of this type. The memory platform that the tests use is another.
+
+When the checker finds a violation, silica can write it as a test for the memory platform. This is the test it wrote for the dead button above
+
+```ocaml
+let () =
+  let page = Memory.mount Counter.component in
+  Memory.press (Memory.by_role page Accessibility.Button ~name:"Save");
+  Memory.reply (Memory.pending_request page "/api/save") "null";
+  Check_expect.handles broken ~name:"Save" page Accessibility.Button
+    Memory.press
+```
+
+Mount the component, press Save, answer the request, press Save again. It reads like a browser test, and there is no browser. The test finds the button the way a screen reader does, by its role and its name. Timers work the same way: `Memory.advance page 2000` moves the clock, and nothing happens until the test calls it.
+
+The memory platform can also print what it painted, as text
+
+```text
+main
+  heading "Counter" level=1
+  status
+    text "0"
+  button "Decrement" disabled [press]
+  button "Increment" [press]
+  button "Save" [press]
+  text "Saved"
+```
+
+That is the page in a form that a person can review in a pull request, and that an agent can read without a screenshot.
+
+[Q: did you try a third platform, such as a terminal or a native screen? Today the evidence is two platforms: the browser and memory.]
+
+## Something I did not plan: agents that write the machine
+
+[Q: keep this section? It is not one of the three ideas, but it is built and it leads into the last one.]
+
+The checker returns its findings as data: a rule, a hint, the steps, the state and the view as text. That makes a loop that needs no person in the middle. An agent writes the requirement as a property, changes the machine, runs `silica check`, reads the findings and fixes them. The repository has a test that runs that whole loop on a new app in every `dune test`.
+
+I ran agents through it [Q: five times? the commits mention a fifth trial], and the trials found defects in silica itself: three soundness bugs in the checker, gaps in the replay, mistakes in the docs. [Q: one concrete defect that an agent trial found, in your words.]
+
+The work moves: the agent writes the code, the checker judges it, and I review the statechart diff.
+
+It also changes what a machine costs. Writing every state, every event and a name for each is more typing than three booleans, and that typing is why most of us never did it. [TBD: author and link of the tweet] put it this way:
+
+> We're going to have to reevaluate a lot of popular libraries whose main purpose is keeping devs from typing too much or thinking too hard.
+>
+> Agents don't care. They'll write explicit, more robust code effortlessly. Better alternatives already exist or are being built. Use them.
+
+[Q: is this the paragraph you had in mind for the tweet? Your own wording goes around it.]
+
+## Idea 3 is not built yet
+
+Agents that write the app are one half. The other half is agents that use it, and that half is one line in the silica README today. There is no code.
+
+[Q: will you build a first version before publishing? If yes, this section becomes a demo. If no, it stays an open idea.]
+
+What I have is the reason it should work. The events of a machine are values with names. `Machine.can` tells whether a machine handles an event in its current state. The router is a machine, so "go to this issue" is an event like any other. The app already runs on a platform with no screen. An MCP server would be one more host, and the agent one more program that sends events. No special mode needed.
+
+[Q: which part of an app would you expose first? An example from mini Linear would make this concrete: for example, the events of the issue list and the routes of the router.]
+
+## Where this leaves me
+
+The first two ideas hold up in silica today. With every state in the code, I can draw the app, check it, replay a bug and test it with no browser. The third idea is a direction, and I don't know yet if it survives a real app.
+
+silica is experimental and it is OCaml, but the ideas are neither. A machine per component, a host between the machine and the platform, and events with names: you can try that in the stack you already have.
+
+[Q: what should the reader do next? Try silica, apply the ideas in their own stack, or follow the MCP work.]

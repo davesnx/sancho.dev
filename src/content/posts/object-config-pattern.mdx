@@ -1,0 +1,162 @@
+---
+title: "The config object that OCaml can't type"
+description: "What I learned trying to type cva-style APIs in OCaml."
+publishedAt: "2026-11-13"
+published: false
+tags:
+  - "OCaml"
+  - "TypeScript"
+  - "Scala"
+  - "Type System"
+---
+
+- Reader: a TypeScript developer who is curious about OCaml
+- Reader already knows: cva or similar variant APIs; object literals; basic TypeScript generics. Does not need OCaml
+- Main point: a mega-common TypeScript design is the **config object**: one object literal is both the runtime config and, via value-derived types, the thing that makes the API type-check and stay safe. OCaml cannot express that. You can get type-safe variants another way, but you cannot keep the call site. Not "FP vs OOP"; Scala can do the cva case. The wall is missing type features.
+- Naming (agreed):
+  - Call it the **config object** in the post (not a coined pattern name, not Parameter Object as the headline)
+  - **Value-derived types** are how cva (and friends) type-check that object and keep it safe: `keyof`, mapped types, sibling-field constraints. Explain that as the mechanism, not as a second brand name
+  - Stress early: this design is extremely common in TypeScript library APIs (cva, XState, and many others), not a niche trick
+  - Glossary note (optional aside, not the name): OOP Parameter/Options Object is only the runtime bundle; the TS safety comes from deriving types from the value
+## Opening
+
+- Author: tried a cva-kind API in OCaml; it did not work. Later, looking at XState while working on silica, same wall
+- Keep origin vague (agreed): no need for product/repo history
+- The realisation: one pattern, OCaml cannot say it
+
+## The pattern, with cva
+
+- Show a small cva call and the call site, real code
+
+```ts
+const button = cva("font-semibold border rounded", {
+  variants: {
+    intent: { primary: "bg-blue-500", secondary: "bg-white" },
+    size: { small: "text-sm", medium: "text-base" },
+  },
+  defaultVariants: { intent: "primary", size: "medium" },
+});
+
+button({ intent: "secondary", size: "small" });
+```
+
+- What the user gets: `intent` and `size` autocomplete, `"secondry"` is a type error, `defaultVariants` cannot name a variant that does not exist
+- Nobody wrote a type. The object is read two times: one time as a value, one time as a type
+- After the example: this is the config object. Extremely common in TypeScript APIs
+- Value-derived types are why it type-checks and stays safe (preview; full walkthrough next)
+- Three properties (later sections test each language against them)
+  - keys become the names of the arguments
+  - values become the allowed literals
+  - one part of the object must agree with another part
+## How TypeScript does it (mini walkthrough)
+
+- Agreed depth: mini walkthrough, not one signature only
+- Frame: value-derived types are the mechanism that makes the config object safe, not a separate pattern
+- Step through: literal types → infer generic from object literal → `keyof` → mapped type for the returned function / `defaultVariants`
+- Reduced mini-cva type built in steps, enough that a TS reader recognizes cva
+- Aside: same design shows up all over TypeScript libraries, not only cva
+- Concept the next section needs: a type that is computed from the keys of a value
+## The same pattern, harder: XState
+
+- Show a small machine config, real code. Suggestion: the save button from the statechart post
+- What is new compared to cva: the object refers to itself. `initial` and each `target` must be a key of `states` in the same object
+- cva needs "keys to arguments". XState needs "keys to references inside the same value"
+- [TBD: check XState v5 `setup` typing before prose]
+
+## Scala can do it (cva API only)
+
+- Claim: Scala 3 can express the cva case
+- Agreed scope: **cva-only**, show the **API / call site**, no full library build
+- [TBD: write a small Scala 3 sketch of the public API shape (named tuples / literal types / match types as needed) and note it is illustrative]
+- Why Scala is here: the limit is type features, not "FP against OOP"
+- XState in Scala: out of scope for this post
+
+## OCaml: what you would write, then the wall
+
+- Purpose: for a TypeScript reader, show the honest substitute first, then the cva-shaped wish, then one fuller attempt
+- Sequence (agreed):
+
+### 1. Minimal config-ish data ("what you would write")
+
+```ocaml
+type intent = [ `primary | `secondary ]
+type size = [ `small | `medium ]
+type props = { intent : intent; size : size }
+
+let classes = function
+  | `primary -> "bg-blue-500"
+  | `secondary -> "bg-white"
+
+let sizes = function
+  | `small -> "text-sm"
+  | `medium -> "text-base"
+
+let button { intent; size } =
+  String.concat " "
+    [ "font-semibold border rounded"; classes intent; sizes size ]
+
+let _ = button { intent = `secondary; size = `small }
+```
+
+- Point: typed, short, real. Axes are declared twice (types + matches). That duplication is the wall, not bad taste
+
+### 2. Wishful version (does not type like cva)
+
+```ocaml
+(* Writable as a value. Cannot be the source of the props type. *)
+let _config =
+  object
+    method variants =
+      object
+        method intent =
+          object
+            method primary = "bg-blue-500"
+            method secondary = "bg-white"
+          end
+        method size =
+          object
+            method small = "text-sm"
+            method medium = "text-base"
+          end
+      end
+    method defaultVariants =
+      object
+        method intent = "primary"
+        method size = "medium"
+      end
+  end
+```
+
+- Point: the shape exists; the type relation does not
+
+### 3. Design B: row-props + packed schema module
+
+- Fuller attempt: first-class module + structural props (`#intent`)
+- Still declares the shape first; still not "types from one config object"
+- Ppx note (short): can fake cva syntax; does not add the type features
+
+### Reader invite
+
+- If a reader has another OCaml design that gets closer to the cva call site, the author wants to see it and may add it
+
+## Why most FP languages cannot
+
+- Keep for now (author undecided on which languages)
+- Framing: not "FP cannot". Scala can. Languages without literal types + key-of + mapped/row computation cannot
+- [Q: which languages to name when drafting; PureScript is the strongest objection if claim stays broad]
+
+## What OCaml does in its place
+
+- silica: `Machine.make` takes variants and **functions**, not a config object. Real code from the repository
+- The machine is defined with functions (transitions as functions), not a self-typing config literal
+- What that shape gives: `match` must handle every state, a state can carry data (`Saved of string`)
+- What it loses: the single readable config object that tools and types both read
+- Ending lean: real loss of the API shape the TypeScript reader likes; functions are the substitute, not a full replacement of the DX
+
+## Conclusion
+
+- The pattern is real and valuable (cva, XState)
+- TypeScript and Scala have the features; OCaml does not
+- You can still build typed machines and variant class APIs in OCaml, but the call site changes (types first, or functions)
+- Closing beat: that change is the real loss for someone coming from TypeScript, not "FP rejects objects"
+- Reader invite can land here or in the OCaml section

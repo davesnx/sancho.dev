@@ -1,0 +1,70 @@
+---
+title: "Beta release of Yuka, modern UI in OCaml"
+description: "A page with no island ships no JavaScript"
+publishedAt: "2026-11-12"
+published: false
+tags:
+  - "Yuka"
+  - "OCaml"
+  - "Melange"
+  - "SSR"
+---
+
+# Outline (not prose yet)
+
+- Reader: OCaml developers who want a web framework; React or Solid developers curious about a typed alternative
+- Reader already knows: components, JSX, SSR, hydration. May not know OCaml or Melange
+- Main point: modern UI can be done in OCaml, faster and leaner
+- Rules: product only, no build story. Name no similar project (React, Solid, Astro) to describe Yuka; describe the features. The benchmark table is the one place other projects appear
+- Term: "web framework", as in the README. The title keeps "modern UI in OCaml"
+- Numbers are temporary; replace with a clean run before publication
+
+## Opening
+
+- Brief origin: years of server-reason-react. Coupled to React, which is often good (stability)
+- The cost, in one or two sentences: reason-react is a bridge, each integration costs, and the Melange output through the bridge is not optimal
+- So Yuka: the whole stack in OCaml. One sentence on what it is
+- Beta release (v0.1), experimental, sharing progress
+## A page, and no JavaScript
+
+- The `home` and `hello` pages from the README, real code
+- The server renders the page and streams the slow parts (`Yuka.suspend`, `Yuka.Await`)
+- Evidence: JavaScript loaded by a page with no island is zero (`make measure-pages`)
+- A few sentences on mlx: the JSX syntax for OCaml, where the first `.mlx` code appears. Link to the post "from-reason-to-mlx"
+- Introduces: page, streaming, mlx
+- [Q: show a network tab screenshot or the measurement table?]
+
+## An island
+
+- `counter.mlx` with `let[@client]`; Melange compiles it to JavaScript
+- State and effects: the component renders once, and each part of the markup that reads a State becomes a hole. A write updates only the holes that read it. Link to `docs/state.md` for depth
+- An island takes server data as props; the data is encoded on the server and decoded in the browser
+- Start strategies, with the real syntax (`start=`): `Load`, `Idle`, `Visible`, `Interaction`, and `Lazy` by a trigger. Each island downloads only when it is needed
+- A few sentences on Melange: it compiles OCaml to JavaScript, so the same component runs on the server (native) and in the browser. Link to the post "why-melange"
+- Introduces: island, State, hole, Melange
+
+## The compiler checks the wiring
+
+- `Routes.ml` and the generated link functions: `Routes.hello ~name:"Yuka" ()`
+- A link to a route that does not exist, or with a wrong param, does not compile
+- Data that crosses from server to client: codecs, actions, `Remote.use`
+- [Q: which real compile error to show]
+
+## What else is in the box
+
+- The claim: complete. Typed router and server actions are built in, with no "than other libraries"
+- A small Dream integration (`yuka-dream`) runs the app; another server needs an adapter
+- Short list of parallel items, each with a docs link, no deep dive:
+  forms that work with no JavaScript, live data, CSS per module, prefetch and view transitions, error boundaries, `yuka dev`
+
+## Numbers
+
+- SSR, 100-row list, one process, `wrk -t4 -c32 -d10s`, median of 5 rounds: Yuka 11,429 req/s, Solid 7,545, server-reason-react 6,493 (temporary; shared machine under load)
+- Size: zero JavaScript by default; about 8 KB gzip for the keyed benchmark app (7,962 B), with Solid's 5,006 B next to it
+- [Q: clean run numbers and the machine]
+
+## Try it
+
+- One install command [Q: from davesnx]
+- The agent skill to try Yuka with agents [Q: from davesnx]
+- Beta: experimental, APIs change [Q: what not to use it for yet]
